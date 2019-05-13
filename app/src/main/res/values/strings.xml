@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">WSDOT</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">WSDOT</string>
+    <string name="nav_header_subtitle">Washington State Department of Transportation</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_traffic_map">Traffic Map</string>
+    <string name="menu_ferries">Ferries</string>
+    <string name="menu_mountain_passes">Mountain Passes</string>
+    <string name="menu_toll_rates">Toll Rates</string>
+    <string name="menu_border_waits">Border Waits</string>
+    <string name="menu_amtrak_cascades">Amtrak Cascades</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_my_route">My Routes</string>
+</resources>
