@@ -10,12 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import androidx.fragment.app.Fragment
+import dagger.android.DaggerActivity
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector {
 
     @Inject

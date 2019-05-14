@@ -1,7 +1,5 @@
 package gov.wa.wsdot.android.wsdot.di
 
-import android.app.Application
-
 // import androidx.room.Room TODO
 
 /*
@@ -13,24 +11,26 @@ import com.android.example.github.util.LiveDataCallAdapterFactory
 */
 import dagger.Module
 import dagger.Provides
+import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
 class AppModule {
-/*
+
     @Singleton
     @Provides
-    fun provideGithubService(): GithubService {
+    fun provideWebService(): WebDataService {
         return Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
+            .baseUrl("https://data.wsdot.wa.gov/mobile/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
-            .create(GithubService::class.java)
+            .create(WebDataService::class.java)
     }
-
+/*
     @Singleton
     @Provides
     fun provideDb(app: Application): GithubDb {

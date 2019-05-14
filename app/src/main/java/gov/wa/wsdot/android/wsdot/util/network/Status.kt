@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.di
+package gov.wa.wsdot.android.wsdot.util.network
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -16,18 +16,15 @@ package gov.wa.wsdot.android.wsdot.di
  * limitations under the License.
  */
 
-
-import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
-
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
-
-@Suppress("unused")
-@Module
-abstract class FragmentBuildersModule {
-
-    @ContributesAndroidInjector
-    abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
-
-
+/**
+ * Status of a resource that is provided to the UI.
+ *
+ *
+ * These are usually created by the Repository classes where they return
+ * `LiveData<Resource<T>>` to pass back the latest data to the UI with its fetch status.
+ */
+enum class Status {
+    SUCCESS,
+    ERROR,
+    LOADING
 }
