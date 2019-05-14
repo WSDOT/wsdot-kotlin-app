@@ -1,39 +1,41 @@
 package gov.wa.wsdot.android.wsdot.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import gov.wa.wsdot.android.wsdot.api.Webservice
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FerriesRepository  @Inject constructor(
-  //  private val appExecutors: AppExecutors,
-   // private val db: GithubDb,
-  //  private val repoDao: RepoDao,
-  //  private val githubService: GithubService
+    private val webservice: WebDataService,
+    private val appExecutors: AppExecutors,
+    private val ferriesDao: ferriesScheduleDao
 ) {
 
-    private val webservice: Webservice = TODO()
+    fun loadSchedule(): LiveData<Resource<List<String>>> {
+        return object : NetworkBoundResource<List<String>, List<String>>(appExecutors) {
 
-    fun getSchedule(): LiveData<String> {
-        // This isn't an optimal implementation. We'll fix it later.
-        val data = MutableLiveData<String>()
-
-        webservice.getFerrySchedules().enqueue(object : Callback<String> {
-
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                data.value = response.body()
+            override fun saveCallResult(item: List<String>) {
+                ferriesDao.insertRepos(item)
             }
 
-            // Error case is left out for brevity.
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                TODO()
+            override fun shouldFetch(data: List<String>?): Boolean {
+                return data == null || data.isEmpty() // || repoListRateLimit.shouldFetch(owner)
             }
-        })
-        return data
+
+             override fun loadFromDb() = ferriesDao.loadSchedules()
+
+            override fun createCall() = webservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
     }
+
+
 }

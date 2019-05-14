@@ -1,4 +1,5 @@
-package gov.wa.wsdot.android.wsdot.di
+package gov.wa.wsdot.android.wsdot.util.api
+
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -16,18 +17,15 @@ package gov.wa.wsdot.android.wsdot.di
  * limitations under the License.
  */
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import gov.wa.wsdot.android.wsdot.api.ApiResponse
+import retrofit2.Response
 
-import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
+object ApiUtil {
+    fun <T : Any> successCall(data: T) = createCall(Response.success(data))
 
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
-
-@Suppress("unused")
-@Module
-abstract class FragmentBuildersModule {
-
-    @ContributesAndroidInjector
-    abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
-
-
+    fun <T : Any> createCall(response: Response<T>) = MutableLiveData<ApiResponse<T>>().apply {
+        value = ApiResponse.create(response)
+    } as LiveData<ApiResponse<T>>
 }

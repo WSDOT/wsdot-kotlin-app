@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.di
+package gov.wa.wsdot.android.wsdot.util.network
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -16,18 +16,22 @@ package gov.wa.wsdot.android.wsdot.di
  * limitations under the License.
  */
 
+/**
+ * A generic class that holds a value with its loading status.
+ * @param <T>
+</T> */
+data class Resource<T>(val status: Status, val data: T?, val message: String?) {
+    companion object {
+        fun <T> success(data: T?): Resource<T> {
+            return Resource(Status.SUCCESS, data, null)
+        }
 
-import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
+        fun <T> error(msg: String, data: T?): Resource<T> {
+            return Resource(Status.ERROR, data, msg)
+        }
 
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
-
-@Suppress("unused")
-@Module
-abstract class FragmentBuildersModule {
-
-    @ContributesAndroidInjector
-    abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
-
-
+        fun <T> loading(data: T?): Resource<T> {
+            return Resource(Status.LOADING, data, null)
+        }
+    }
 }
