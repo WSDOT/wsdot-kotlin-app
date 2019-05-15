@@ -17,7 +17,10 @@ data class FerryScheduleResponse (
     val cacheDate: String,
 
     @field:SerializedName("Date")
-    val schedule: List<Schedule>
+    val schedules: List<Schedule>,
+
+    @field:SerializedName("RouteAlert")
+    val alerts: List<RouteAlert>
 
 ) {
 
@@ -65,4 +68,17 @@ data class FerryScheduleResponse (
             )
         }
     }
+
+    data class RouteAlert(
+        @field:SerializedName("BulletinID")
+        val alertId: Int,
+        @field:SerializedName("PublishDate")
+        val publishDate: String,
+        @field:SerializedName("AlertDescription")
+        val description: String,
+        @field:SerializedName("AlertFullTitle")
+        val fullTitle: String,
+        @field:SerializedName("AlertFullText")
+        val fullText: String
+    )
 }

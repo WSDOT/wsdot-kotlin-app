@@ -22,7 +22,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     lateinit var ferriesViewModel: FerriesViewModel
 
-
     private fun initRoutesList(viewModel: FerriesViewModel) {
         viewModel.routes.observe(viewLifecycleOwner, Observer { routes ->
             // we don't need any null checks here for the adapter since LiveData guarantees that
@@ -44,7 +43,9 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
 
-        initRoutesList(ferriesViewModel);
+        initRoutesList(ferriesViewModel)
+
+
 
     }
 
