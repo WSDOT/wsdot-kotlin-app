@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.core:core-ktx:1.0.1'
+    implementation 'androidx.core:core-ktx:1.0.2'
 
     implementation "androidx.activity:activity-ktx:1.0.0-alpha08"
     implementation "androidx.fragment:fragment-ktx:1.1.0-alpha08"
@@ -46,7 +46,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha01"
-
+    implementation "androidx.room:room-runtime:2.0.0"
+    kapt "androidx.room:room-compiler:2.0.0"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
     def nav_version = "2.0.0"
@@ -67,6 +68,7 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     testImplementation 'junit:junit:4.12'
+    testImplementation "androidx.room:room-testing:2.0.0"
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 

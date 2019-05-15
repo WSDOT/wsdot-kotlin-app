@@ -1,17 +1,12 @@
 package gov.wa.wsdot.android.wsdot.di
 
-// import androidx.room.Room TODO
-
-/*
-import com.android.example.github.api.GithubService
-import com.android.example.github.db.GithubDb
-import com.android.example.github.db.RepoDao
-import com.android.example.github.db.UserDao
-import com.android.example.github.util.LiveDataCallAdapterFactory
-*/
+import android.app.Application
+import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.db.WsdotDB
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,20 +25,20 @@ class AppModule {
             .build()
             .create(WebDataService::class.java)
     }
-/*
+
     @Singleton
     @Provides
-    fun provideDb(app: Application): GithubDb {
+    fun provideDb(app: Application): WsdotDB {
         return Room
-            .databaseBuilder(app, GithubDb::class.java, "github.db")
+            .databaseBuilder(app, WsdotDB::class.java, "wsdot.db")
             .fallbackToDestructiveMigration()
             .build()
     }
 
     @Singleton
     @Provides
-    fun provideUserDao(db: GithubDb): UserDao {
-        return db.userDao()
+    fun provideRepoDao(db: WsdotDB): FerryScheduleDao{
+        return db.ferryScheduleDao()
     }
-*/
+
 }

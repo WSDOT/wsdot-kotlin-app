@@ -1,7 +1,11 @@
 package gov.wa.wsdot.android.wsdot.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
@@ -12,21 +16,40 @@ import javax.inject.Singleton
 class FerriesRepository  @Inject constructor(
     private val webservice: WebDataService,
     private val appExecutors: AppExecutors,
-    private val ferriesDao: ferriesScheduleDao
+    private val ferryDao: FerryScheduleDao
 ) {
 
-    fun loadSchedule(): LiveData<Resource<List<String>>> {
-        return object : NetworkBoundResource<List<String>, List<String>>(appExecutors) {
+    fun loadSchedule(): LiveData<Resource<List<FerrySchedule>>> {
 
-            override fun saveCallResult(item: List<String>) {
-                ferriesDao.insertRepos(item)
+        return object : NetworkBoundResource<List<FerrySchedule>, List<FerryScheduleResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryScheduleResponse>) {
+
+                var dbSchedulesList = arrayListOf<FerrySchedule>()
+
+                for (scheduleResponse in item) {
+
+                    Log.e("debug", scheduleResponse.schedule[0].sailings[0].departingTerminalName)
+
+                    var schedule = FerrySchedule(
+                        scheduleResponse.routeId,
+                        scheduleResponse.description,
+                        scheduleResponse.crossingTime,
+                        scheduleResponse.cacheDate
+                    )
+                    dbSchedulesList.add(schedule)
+                }
+
+                ferryDao.insertSchedules(dbSchedulesList)
             }
 
-            override fun shouldFetch(data: List<String>?): Boolean {
+            override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
+
+                // TODO: Caching time
                 return data == null || data.isEmpty() // || repoListRateLimit.shouldFetch(owner)
             }
 
-             override fun loadFromDb() = ferriesDao.loadSchedules()
+            override fun loadFromDb() = ferryDao.loadSchedules()
 
             override fun createCall() = webservice.getFerrySchedules()
 
