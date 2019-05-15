@@ -1,7 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api
 
 import androidx.lifecycle.LiveData
-import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleResponse
+import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import retrofit2.http.GET
 
 interface WebDataService {
