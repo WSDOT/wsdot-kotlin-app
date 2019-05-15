@@ -1,5 +1,4 @@
-package gov.wa.wsdot.android.wsdot.util.api
-
+package gov.wa.wsdot.android.wsdot.db
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -17,15 +16,22 @@ package gov.wa.wsdot.android.wsdot.util.api
  * limitations under the License.
  */
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import gov.wa.wsdot.android.wsdot.api.ApiResponse
-import retrofit2.Response
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
 
-object ApiUtil {
-    fun <T : Any> successCall(data: T) = createCall(Response.success(data))
+/**
+ * Main database description.
+ */
+@Database(
+    entities = [
+        FerrySchedule::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class WsdotDB : RoomDatabase() {
 
-    fun <T : Any> createCall(response: Response<T>) = MutableLiveData<ApiResponse<T>>().apply {
-        value = ApiResponse.create(response)
-    } as LiveData<ApiResponse<T>>
+    abstract fun ferryScheduleDao(): FerryScheduleDao
+
 }
