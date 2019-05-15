@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.db.ferries
+package gov.wa.wsdot.android.wsdot.api.response.ferries
 
 import com.google.gson.annotations.SerializedName
 
