@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.ferries
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
@@ -13,5 +14,7 @@ import javax.inject.Inject
 class FerriesViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
     val routes : LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadSchedule()
+
+    val alerts : LiveData<Resource<List<FerryAlert>>> = ferriesRepository.loadFerryAlerts(7)
 
 }
