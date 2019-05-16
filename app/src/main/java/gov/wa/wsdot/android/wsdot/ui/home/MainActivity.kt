@@ -15,6 +15,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
+import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -26,6 +27,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -72,34 +74,34 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         when (item.itemId) {
             R.id.nav_traffic_map -> {
                 // Handle the camera action
+                toolbar.title = "Traffic Map"
             }
             R.id.nav_ferries -> {
-
+                toolbar.title = "Ferries"
             }
             R.id.nav_mountain_passes -> {
-
+                toolbar.title = "Mountain Passes"
             }
             R.id.nav_toll_rates -> {
-
+                toolbar.title = "Toll Rates"
             }
             R.id.nav_border_waits -> {
-
+                toolbar.title = "Border Waits"
             }
             R.id.nav_amtrak_cascades -> {
-
+                toolbar.title = "Amtrak Cascades"
             }
             R.id.nav_my_routes -> {
-
+                toolbar.title = "My Routes"
             }
             R.id.nav_favorites -> {
-
+                toolbar.title = "Favorites"
             }
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
-
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 }

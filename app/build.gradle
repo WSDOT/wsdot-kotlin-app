@@ -25,6 +25,9 @@ android {
     kapt {
         generateStubs = true
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -48,6 +51,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-alpha01"
     implementation "androidx.room:room-runtime:2.0.0"
     kapt "androidx.room:room-compiler:2.0.0"
+
+    // Data bind
+    kapt "com.android.databinding:compiler:3.1.4"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
     def nav_version = "2.0.0"
