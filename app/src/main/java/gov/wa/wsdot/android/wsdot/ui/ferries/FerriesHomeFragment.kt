@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.binding.FragmentDataBindingComponent
@@ -20,7 +18,6 @@ import gov.wa.wsdot.android.wsdot.databinding.FerriesHomeFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import java.util.logging.Logger
 import javax.inject.Inject
 
 import gov.wa.wsdot.android.wsdot.util.autoCleared

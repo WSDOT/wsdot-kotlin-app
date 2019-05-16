@@ -6,17 +6,19 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import androidx.fragment.app.Fragment
-import dagger.android.DaggerActivity
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
 import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
+import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
+
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector {
@@ -28,9 +30,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
 
+        setSupportActionBar(findViewById(R.id.toolbar))
+
+        // drawer
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
         val toggle = ActionBarDrawerToggle(
@@ -40,8 +43,27 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         navView.setNavigationItemSelectedListener(this)
+
+        // Navigation component setup with drawer
+
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
+        val config = AppBarConfiguration(
+            setOf(
+                R.id.navTrafficMapFragment,
+                R.id.navFerriesHomeFragment
+            ), drawerLayout)
+
+        NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
+
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout)
     }
 
     override fun onBackPressed() {
@@ -73,35 +95,37 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_traffic_map -> {
-                // Handle the camera action
-                toolbar.title = "Traffic Map"
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
             }
             R.id.nav_ferries -> {
-                toolbar.title = "Ferries"
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
             }
+            /*
             R.id.nav_mountain_passes -> {
-                toolbar.title = "Mountain Passes"
+
             }
             R.id.nav_toll_rates -> {
-                toolbar.title = "Toll Rates"
+
             }
             R.id.nav_border_waits -> {
-                toolbar.title = "Border Waits"
+
             }
             R.id.nav_amtrak_cascades -> {
-                toolbar.title = "Amtrak Cascades"
+
             }
             R.id.nav_my_routes -> {
-                toolbar.title = "My Routes"
+
             }
             R.id.nav_favorites -> {
-                toolbar.title = "Favorites"
+
             }
+            */
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
+
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 }

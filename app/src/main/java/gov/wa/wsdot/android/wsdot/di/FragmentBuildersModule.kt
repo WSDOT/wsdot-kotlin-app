@@ -21,6 +21,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 
 @Suppress("unused")
 @Module
@@ -29,5 +30,7 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeTrafficMapFragment(): TrafficMapFragment
 
 }
