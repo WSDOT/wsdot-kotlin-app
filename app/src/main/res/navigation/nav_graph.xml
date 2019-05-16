@@ -2,12 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/nav_graph"
-                app:startDestination="@id/ferriesHomeFragment">
+                app:startDestination="@id/navTrafficMapFragment">
 
     <fragment
-            android:id="@+id/ferriesHomeFragment"
-            android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
-            android:label="Ferries"
-            tools:layout="@layout/ferries_home_fragment" />
+        android:id="@+id/navFerriesHomeFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
+        android:label="Ferries"
+        tools:layout="@layout/ferries_home_fragment" />
+
+    <fragment
+        android:id="@+id/navTrafficMapFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment"
+        android:label="Traffic Map"
+        tools:layout="@layout/map_fragment" />
 
 </navigation>
