@@ -17,11 +17,12 @@ package gov.wa.wsdot.android.wsdot.ui.ferries
  */
 
 
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingComponent
+import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
+import androidx.databinding.DataBindingUtil
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.ui.common.DataBoundListAdapter
@@ -33,9 +34,8 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 class FerryScheduleListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val showFullName: Boolean,
-    private val repoClickCallback: ((FerrySchedule) -> Unit)?
-) : DataBoundListAdapter<FerrySchedule, RepoItemBinding>(
+    private val scheduleClickCallback: ((FerrySchedule) -> Unit)?
+) : DataBoundListAdapter<FerrySchedule, FerryScheduleItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerrySchedule>() {
         override fun areItemsTheSame(oldItem: FerrySchedule, newItem: FerrySchedule): Boolean {
@@ -48,24 +48,26 @@ class FerryScheduleListAdapter(
     }
 ) {
 
-    override fun createBinding(parent: ViewGroup): RepoItemBinding {
-        val binding = DataBindingUtil.inflate<RepoItemBinding>(
+    override fun createBinding(parent: ViewGroup): FerryScheduleItemBinding {
+
+        val binding = DataBindingUtil.inflate<FerryScheduleItemBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.repo_item,
+            R.layout.ferry_schedule_item,
             parent,
             false,
             dataBindingComponent
         )
-        binding.showFullName = showFullName
+
         binding.root.setOnClickListener {
-            binding.repo?.let {
-                repoClickCallback?.invoke(it)
+            binding.schedule?.let {
+                scheduleClickCallback?.invoke(it)
             }
         }
+
         return binding
     }
 
-    override fun bind(binding: RepoItemBinding, item: FerrySchedule) {
-        binding.repo = item
+    override fun bind(binding: FerryScheduleItemBinding, item: FerrySchedule) {
+        binding.schedule = item
     }
 }

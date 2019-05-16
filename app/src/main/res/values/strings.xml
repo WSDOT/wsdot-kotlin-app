@@ -17,4 +17,13 @@
     <string name="menu_amtrak_cascades">Amtrak Cascades</string>
     <string name="menu_favorites">Favorites</string>
     <string name="menu_my_route">My Routes</string>
+
+    // Ferries
+    <string name="crossing_time">Crossing time ~ %1$s mins</string>
+
+    // Network
+    <string name="unknown_error">Unknown Error</string>
+    <string name="retry">Retry</string>
+    <string name="ferry_reservation">Make A Reservation</string>
+
 </resources>

@@ -10,7 +10,6 @@ import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
-
 class FerryAlertsViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
     private val _routeId: MutableLiveData<RouteId> = MutableLiveData()
