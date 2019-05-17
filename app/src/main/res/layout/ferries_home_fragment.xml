@@ -21,16 +21,14 @@
     <data>
 
         <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
-
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
-
         <import type="androidx.lifecycle.LiveData"/>
-
         <import type="gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule"/>
+        <import type="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel" />
 
         <variable
-            name="schedule"
-            type="LiveData&lt;Resource&lt;FerrySchedule>>" />
+            name="viewModel"
+            type="FerriesViewModel"/>
 
         <variable
             name="retryCallback"
@@ -67,24 +65,32 @@
 
         </GridLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/schedule_list"
-            app:layoutManager="LinearLayoutManager"
-            android:layout_width="0dp"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/button_grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/ferry_schedule_item" />
+            app:refreshing="@{((Resource) viewModel.routes).status == Status.LOADING}"
+            app:onRefreshListener="@{() -> viewModel.refresh()}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/schedule_list"
+                app:layoutManager="LinearLayoutManager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                tools:listitem="@layout/ferry_schedule_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <include
-            layout="@layout/loading_state"
-            app:resource="@{(Resource) schedule}"
+            layout="@layout/loading_error_state"
+            app:resource="@{(Resource) viewModel.routes}"
             app:callback="@{() -> retryCallback.retry()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
