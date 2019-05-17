@@ -63,8 +63,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = ferriesViewModel
 
         binding = dataBinding
-        // ties data in xml to lifecycle of fragment
-        binding.lifecycleOwner = viewLifecycleOwner
 
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
         return dataBinding.root
@@ -74,6 +72,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.lifecycleOwner = viewLifecycleOwner
 
         val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors) {
                 schedule -> Log.e("debug", schedule.description) // TODO() navigation

@@ -11,6 +11,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlertDao
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,9 +31,11 @@ class FerriesRepository  @Inject constructor(
 
             override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
                 Log.e("debug", "forcing refresh...")
-                return forceRefresh || data == null
+                Log.e("debug", data.toString())
+
+                return forceRefresh || data?.isEmpty() ?: true
                 // TODO: Caching time
-                //  repoListRateLimit.shouldFetch(owner)
+                // repoListRateLimit.shouldFetch(owner)
             }
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedules()
@@ -77,11 +80,13 @@ class FerriesRepository  @Inject constructor(
 
         for (scheduleResponse in schedulesResponse) {
 
+            val cacheDate = Date(scheduleResponse.cacheDate.substring(6, 19).toLong()) // TODO: Test failure and new API date format
+
             var schedule = FerrySchedule(
                 scheduleResponse.routeId,
                 scheduleResponse.description,
                 scheduleResponse.crossingTime,
-                scheduleResponse.cacheDate
+                cacheDate
             )
             dbSchedulesList.add(schedule)
 

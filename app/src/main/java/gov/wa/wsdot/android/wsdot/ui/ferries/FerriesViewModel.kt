@@ -26,7 +26,7 @@ class FerriesViewModel @Inject constructor(ferriesRepository: FerriesRepository)
 
     fun refresh() {
         routes.removeSource(routesLiveData)
-        routesLiveData = repo.loadSchedule(false)
+        routesLiveData = repo.loadSchedule(true)
         routes.addSource(routesLiveData) { routes.value = it }
     }
 }
