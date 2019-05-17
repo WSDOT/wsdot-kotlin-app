@@ -22,17 +22,17 @@ class FerriesRepository  @Inject constructor(
     private val ferryAlertDao: FerryAlertDao
 ) {
 
-    fun loadSchedule(): LiveData<Resource<List<FerrySchedule>>> {
+    fun loadSchedule(forceRefresh: Boolean): LiveData<Resource<List<FerrySchedule>>> {
 
         return object : NetworkBoundResource<List<FerrySchedule>, List<FerryScheduleResponse>>(appExecutors) {
 
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
 
             override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
-
-                return true
+                Log.e("debug", "forcing refresh...")
+                return forceRefresh || data == null
                 // TODO: Caching time
-                return data == null || data.isEmpty() // || repoListRateLimit.shouldFetch(owner)
+                //  repoListRateLimit.shouldFetch(owner)
             }
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedules()

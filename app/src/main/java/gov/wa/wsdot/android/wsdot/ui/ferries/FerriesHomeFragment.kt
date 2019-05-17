@@ -37,19 +37,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     private var adapter by autoCleared<FerryScheduleListAdapter>()
 
-    private fun initRoutesList(viewModel: FerriesViewModel) {
-        viewModel.routes.observe(viewLifecycleOwner, Observer { routeResource ->
-            // we don't need any null checks here for the adapter since LiveData guarantees that
-            // it won't call us if fragment is stopped or not started.
-            Log.e("debug", routeResource.toString())
-            if (routeResource?.data != null) {
-                adapter.submitList(routeResource.data)
-            } else {
-                adapter.submitList(emptyList())
-            }
-        })
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,6 +44,8 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
+
+
 
         val dataBinding = DataBindingUtil.inflate<FerriesHomeFragmentBinding>(
             inflater,
@@ -67,21 +56,28 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                // TODO: viewModel.retry()
+                ferriesViewModel.refresh()
             }
         }
+
+        dataBinding.viewModel = ferriesViewModel
+
         binding = dataBinding
+        // ties data in xml to lifecycle of fragment
+        binding.lifecycleOwner = viewLifecycleOwner
+
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
         return dataBinding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors) {
                 schedule -> Log.e("debug", schedule.description) // TODO() navigation
         }
-
         this.adapter = adapter
 
         binding.scheduleList.adapter = adapter
@@ -94,8 +90,12 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        initRoutesList(ferriesViewModel)
-
+        ferriesViewModel.routes.observe(viewLifecycleOwner, Observer { routeResource ->
+            if (routeResource?.data != null) {
+                adapter.submitList(routeResource.data)
+            } else {
+                adapter.submitList(emptyList())
+            }
+        })
     }
-
 }
