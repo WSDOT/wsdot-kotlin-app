@@ -20,6 +20,12 @@ package gov.wa.wsdot.android.wsdot.binding
 
 import androidx.databinding.BindingAdapter
 import android.view.View
+import java.text.SimpleDateFormat
+import java.util.*
+import android.widget.TextView
+import androidx.annotation.NonNull
+
+
 
 /**
  * Data Binding adapters specific to the app.
@@ -36,6 +42,14 @@ object BindingAdapters {
     @BindingAdapter("visibleHidden")
     fun showInvisible(view: View, show: Boolean) {
         view.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindDate")
+    fun bindServerDate(textView: TextView, date: Date) {
+        // TODO: Timestamp
+        val format = SimpleDateFormat("dd/MM/yyy", Locale.ENGLISH)
+        textView.text = format.format(date)
     }
 
 }

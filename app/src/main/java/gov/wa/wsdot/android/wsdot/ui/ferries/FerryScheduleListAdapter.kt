@@ -43,7 +43,7 @@ class FerryScheduleListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: FerrySchedule, newItem: FerrySchedule): Boolean {
-            return oldItem.description == newItem.description
+            return oldItem.description == newItem.description && oldItem.cacheDate.time == newItem.cacheDate.time
         }
     }
 ) {

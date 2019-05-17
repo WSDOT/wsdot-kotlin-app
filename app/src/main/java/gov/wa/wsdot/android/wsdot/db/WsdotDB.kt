@@ -18,6 +18,7 @@ package gov.wa.wsdot.android.wsdot.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlertDao
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
@@ -34,6 +35,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
     version = 1,
     exportSchema = false
 )
+@TypeConverters(WsdotTypeConverters::class)
 abstract class WsdotDB : RoomDatabase() {
 
     abstract fun ferryScheduleDao(): FerryScheduleDao
