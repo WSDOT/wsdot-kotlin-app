@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +17,7 @@ class FerriesViewModel @Inject constructor(ferriesRepository: FerriesRepository)
     // mediator handles resubscribe on refresh
     val routes = MediatorLiveData<Resource<List<FerrySchedule>>>()
 
-    private var routesLiveData : LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadSchedule(false)
+    private var routesLiveData : LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadSchedules(false)
 
     init {
         routes.addSource(routesLiveData) { routes.value = it }
@@ -26,7 +25,7 @@ class FerriesViewModel @Inject constructor(ferriesRepository: FerriesRepository)
 
     fun refresh() {
         routes.removeSource(routesLiveData)
-        routesLiveData = repo.loadSchedule(true)
+        routesLiveData = repo.loadSchedules(true)
         routes.addSource(routesLiveData) { routes.value = it }
     }
 }

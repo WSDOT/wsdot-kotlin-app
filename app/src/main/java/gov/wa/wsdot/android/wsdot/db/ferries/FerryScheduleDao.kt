@@ -18,6 +18,9 @@ abstract class FerryScheduleDao {
     @Query("SELECT * FROM FerrySchedule")
     abstract fun loadSchedules(): LiveData<List<FerrySchedule>>
 
+    @Query("SELECT * FROM FerrySchedule WHERE routeId = (:routeId)")
+    abstract fun loadSchedule(routeId: Int): LiveData<FerrySchedule>
+
    // @Query("SELECT * FROM FerrySchedule WHERE id in (:scheduleIds)")
    // protected abstract fun loadById(scheduleIds: List<Int>): LiveData<List<String>>
 

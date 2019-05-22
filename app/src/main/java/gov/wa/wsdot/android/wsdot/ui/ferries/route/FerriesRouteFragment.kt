@@ -11,11 +11,13 @@ import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import android.view.*
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.*
+import java.util.Calendar.*
 import javax.inject.Inject
 
 
@@ -24,6 +26,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var routeViewModel: FerriesRouteViewModel
+    lateinit var sailingViewModel: FerriesSailingViewModel
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
@@ -41,8 +44,12 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
+        sailingViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(FerriesSailingViewModel::class.java)
+
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
+        routeViewModel.setRouteId(args.routeId)
 
         dayPickerViewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
@@ -55,14 +62,49 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             false
         )
 
-        dataBinding.pickerCallback = object : TapCallback {
+        dataBinding.datePickerCallback = object : TapCallback {
             override fun onTap() {
                 val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title)
                 findNavController().navigate(action)
             }
         }
 
-        dataBinding.viewModel = dayPickerViewModel
+
+        dayPickerViewModel.value.observe(viewLifecycleOwner, Observer { date ->
+            val c = getInstance()
+            if (date != null) {
+                c.time = date
+            }
+            c.set(HOUR_OF_DAY, 0)
+            c.set(MINUTE, 0)
+            c.set(SECOND, 0)
+            c.set(MILLISECOND, 0)
+            Log.e("debug", c.time.toString())
+            sailingViewModel.setSailingQuery(c.time)
+        })
+
+
+
+
+        val c = getInstance()
+        c.set(HOUR_OF_DAY, 0)
+        c.set(MINUTE, 0)
+        c.set(SECOND, 0)
+        c.set(MILLISECOND, 0)
+        Log.e("debug", c.time.toString())
+        sailingViewModel.setSailingQuery(6, 8, 12, c.time)
+
+        sailingViewModel.sailings.observe(viewLifecycleOwner, Observer { sailingData ->
+
+            Log.e("debug", "got some sailing data...")
+            Log.e("debug", sailingData.data.toString())
+
+        })
+
+
+        dataBinding.dateViewModel = dayPickerViewModel
+
+        dataBinding.routeViewModel = routeViewModel
 
         binding = dataBinding
         binding.lifecycleOwner = this
@@ -76,7 +118,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val routeId = args.routeId
         Log.e("debug", routeId.toString())
         Log.e("debug", "on create view")
-
 
     }
 
