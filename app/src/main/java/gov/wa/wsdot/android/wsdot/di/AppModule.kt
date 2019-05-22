@@ -7,6 +7,7 @@ import dagger.Provides
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlertDao
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
@@ -40,6 +41,12 @@ class AppModule {
     @Provides
     fun provideFerryScheduleDao(db: WsdotDB): FerryScheduleDao {
         return db.ferryScheduleDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFerrySailingDao(db: WsdotDB): FerrySailingDao {
+        return db.ferrySailingDao()
     }
 
     @Singleton
