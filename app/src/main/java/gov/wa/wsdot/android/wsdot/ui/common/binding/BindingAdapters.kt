@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.binding
+package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

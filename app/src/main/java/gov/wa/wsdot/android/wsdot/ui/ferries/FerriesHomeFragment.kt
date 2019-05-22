@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.ferries
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.binding.FragmentDataBindingComponent
+import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.databinding.FerriesHomeFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
-import gov.wa.wsdot.android.wsdot.ui.common.RetryCallback
+import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import javax.inject.Inject
 

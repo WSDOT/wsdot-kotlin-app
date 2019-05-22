@@ -29,7 +29,7 @@
 
         <variable
             name="callback"
-            type="gov.wa.wsdot.android.wsdot.ui.common.RetryCallback" />
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback" />
     </data>
 
     <LinearLayout

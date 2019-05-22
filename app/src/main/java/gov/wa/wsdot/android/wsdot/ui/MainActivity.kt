@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.home
+package gov.wa.wsdot.android.wsdot.ui
 
 import android.os.Bundle
 import androidx.core.view.GravityCompat

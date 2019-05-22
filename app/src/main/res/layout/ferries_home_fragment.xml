@@ -32,7 +32,7 @@
 
         <variable
             name="retryCallback"
-            type="gov.wa.wsdot.android.wsdot.ui.common.RetryCallback" />
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

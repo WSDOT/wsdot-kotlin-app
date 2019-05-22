@@ -1,11 +1,10 @@
-package gov.wa.wsdot.android.wsdot.ui.common
+package gov.wa.wsdot.android.wsdot.ui.common.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.util.*
-import javax.inject.Inject
 
+// generic view model for passing data between fragments. Typically for pickers and other menus.
 abstract class SharedValueViewModel<T>: ViewModel() {
 
     private val _value = MutableLiveData<T>()
@@ -16,10 +15,5 @@ abstract class SharedValueViewModel<T>: ViewModel() {
     fun setValue(_value: T?) {
         this._value.value = _value
     }
-}
 
-class SharedDateViewModel @Inject constructor() : SharedValueViewModel<Date>() {
-    init {
-        setValue(Calendar.getInstance().time)
-    }
 }

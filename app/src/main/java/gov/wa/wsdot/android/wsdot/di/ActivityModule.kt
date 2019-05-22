@@ -2,7 +2,7 @@ package gov.wa.wsdot.android.wsdot.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import gov.wa.wsdot.android.wsdot.ui.home.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 @Suppress("unused")
 @Module
