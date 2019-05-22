@@ -21,6 +21,8 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import gov.wa.wsdot.android.wsdot.ui.common.DayPickerFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 
 @Suppress("unused")
@@ -28,9 +30,14 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
+    abstract fun contributeTrafficMapFragment(): TrafficMapFragment
+
+    @ContributesAndroidInjector
     abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeTrafficMapFragment(): TrafficMapFragment
+    abstract fun contributeFerriesRouteFragment(): FerriesRouteFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeDayPickerFragment(): DayPickerFragment
 }

@@ -20,11 +20,10 @@ package gov.wa.wsdot.android.wsdot.binding
 
 import androidx.databinding.BindingAdapter
 import android.view.View
+import android.widget.EditText
 import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.TextView
-import androidx.annotation.NonNull
-
 
 
 /**
@@ -39,17 +38,50 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("visibleHidden")
-    fun showInvisible(view: View, show: Boolean) {
-        view.visibility = if (show) View.VISIBLE else View.INVISIBLE
+    @BindingAdapter("bindDate")
+    fun bindDate(editText: EditText, date: Date) {
+        editText.setText(getDateString(date))
     }
 
     @JvmStatic
-    @BindingAdapter("bindDate")
-    fun bindServerDate(textView: TextView, date: Date) {
-        // TODO: Timestamp
-        val format = SimpleDateFormat("dd/MM/yyy", Locale.ENGLISH)
-        textView.text = format.format(date)
+    @BindingAdapter("bindRelativeDate")
+    fun bindRelativeDate(textView: TextView, date: Date) {
+        textView.text = getRelative(date)
+    }
+
+    // Creates an updated timestamp from date object
+    private fun getDateString(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("EEE, MMMM d", Locale.ENGLISH)
+        return try {
+            displayDateFormat.format(date)
+        } catch (e: Exception) {
+            "Unavailable"
+        }
+    }
+
+    // Creates an updated timestamp from date object
+    private fun getRelative(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("MMMM d, yyyy h:mm a", Locale.ENGLISH)
+
+        try {
+            val relativeDate = Date()
+            var delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
+            return if (delta < 60) {
+                "Just now"
+            } else if (delta < 120) {
+                "1 minute ago"
+            } else if (delta < 60 * 60) {
+                Integer.toString(delta / 60) + " minutes ago"
+            } else if (delta < 120 * 60) {
+                "1 hour ago"
+            } else if (delta < 24 * 60 * 60) {
+                Integer.toString(delta / 3600) + " hours ago"
+            } else {
+                displayDateFormat.format(date)
+            }
+        } catch (e: Exception) {
+            return "Unavailable"
+        }
     }
 
 }

@@ -18,6 +18,9 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_my_route">My Routes</string>
 
+    // Toolbar
+    <string name="action_favorite">Favorite</string>
+
     // Ferries
     <string name="crossing_time">Crossing time ~ %1$s mins</string>
 
