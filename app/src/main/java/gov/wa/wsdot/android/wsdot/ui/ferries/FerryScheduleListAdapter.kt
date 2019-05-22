@@ -25,7 +25,7 @@ import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import androidx.databinding.DataBindingUtil
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
-import gov.wa.wsdot.android.wsdot.ui.common.DataBoundListAdapter
+import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
 /**

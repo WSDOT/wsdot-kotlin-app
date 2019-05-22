@@ -13,9 +13,8 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import gov.wa.wsdot.android.wsdot.ui.common.OpenPickerCallback
-import gov.wa.wsdot.android.wsdot.ui.common.SharedDateViewModel
-import kotlinx.android.synthetic.main.activity_main.*
+import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
+import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.*
 import javax.inject.Inject
 
@@ -45,8 +44,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
 
-        dayPickerViewModel = ViewModelProviders.of(activity!!, viewModelFactory)
-            .get(SharedDateViewModel::class.java)
+        dayPickerViewModel = activity?.run {
+            ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
             inflater,
@@ -55,8 +55,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             false
         )
 
-        dataBinding.pickerCallback = object : OpenPickerCallback {
-            override fun onOpenPicker() {
+        dataBinding.pickerCallback = object : TapCallback {
+            override fun onTap() {
                 val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title)
                 findNavController().navigate(action)
             }

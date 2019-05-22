@@ -7,10 +7,9 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
-import gov.wa.wsdot.android.wsdot.ui.common.SharedDateViewModel
+import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
-import java.util.*
 
 @Suppress("unused")
 @Module

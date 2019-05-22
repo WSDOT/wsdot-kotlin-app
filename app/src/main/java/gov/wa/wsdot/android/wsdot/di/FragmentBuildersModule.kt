@@ -38,6 +38,4 @@ abstract class FragmentBuildersModule {
     @ContributesAndroidInjector
     abstract fun contributeFerriesRouteFragment(): FerriesRouteFragment
 
-    @ContributesAndroidInjector
-    abstract fun contributeDayPickerFragment(): DayPickerFragment
 }

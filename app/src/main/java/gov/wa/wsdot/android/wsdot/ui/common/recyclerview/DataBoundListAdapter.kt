@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.common
+package gov.wa.wsdot.android.wsdot.ui.common.recyclerview
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

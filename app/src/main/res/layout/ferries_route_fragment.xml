@@ -4,15 +4,15 @@
 
     <data>
 
-        <import type="gov.wa.wsdot.android.wsdot.ui.common.SharedDateViewModel" />
+        <import type="gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel" />
 
         <variable
             name="viewModel"
-            type="SharedDateViewModel"/>
+            type="gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel"/>
 
         <variable
             name="pickerCallback"
-            type="gov.wa.wsdot.android.wsdot.ui.common.OpenPickerCallback" />
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,7 +46,7 @@
                 app:bindDate="@{viewModel.value}"
                 android:focusable="false"
                 android:inputType="date"
-                android:onClick="@{() -> pickerCallback.onOpenPicker()}"/>
+                android:onClick="@{() -> pickerCallback.onTap()}"/>
 
         </GridLayout>
 

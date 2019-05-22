@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.common
+package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -16,12 +16,13 @@ package gov.wa.wsdot.android.wsdot.ui.common
  * limitations under the License.
  */
 
-import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import javax.inject.Inject
 
 /**
- * A generic ViewHolder that works with a [ViewDataBinding].
- * @param <T> The type of the ViewDataBinding.
-</T> */
-class DataBoundViewHolder<out T : ViewDataBinding> constructor(val binding: T) :
-    RecyclerView.ViewHolder(binding.root)
+ * Binding adapters that work with a fragment instance.
+ */
+class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
+
+
+}
