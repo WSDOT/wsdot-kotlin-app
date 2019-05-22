@@ -34,7 +34,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 class FerryScheduleListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val scheduleClickCallback: ((FerrySchedule) -> Unit)?
+    private val scheduleClickCallback: ((FerrySchedule) -> Unit)? // ClickCallback for item in the adapter
 ) : DataBoundListAdapter<FerrySchedule, FerryScheduleItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerrySchedule>() {

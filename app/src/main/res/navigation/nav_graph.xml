@@ -5,15 +5,69 @@
                 app:startDestination="@id/navTrafficMapFragment">
 
     <fragment
-        android:id="@+id/navFerriesHomeFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
-        android:label="Ferries"
-        tools:layout="@layout/ferries_home_fragment" />
-
-    <fragment
         android:id="@+id/navTrafficMapFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment"
         android:label="Traffic Map"
-        tools:layout="@layout/map_fragment" />
+        tools:layout="@layout/map_fragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true"/>
+
+    <fragment
+        android:id="@+id/navFerriesHomeFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
+        android:label="Ferries"
+        tools:layout="@layout/ferries_home_fragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true">
+
+        <action
+            android:id="@+id/action_navFerriesHomeFragment_to_navFerriesRouteFragment"
+            app:destination="@id/navFerriesRouteFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navFerriesRouteFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment"
+        android:label="{title}"
+        tools:layout="@layout/ferries_route_fragment" >
+        <argument
+            android:name="route_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Route Details"/>
+
+        <action
+            android:id="@+id/action_navFerriesRouteFragment_to_dayPickerDialogFragment"
+            app:destination="@id/dayPickerDialogFragment"/>
+
+    </fragment>
+
+
+    <!-- Dialog -->
+    <dialog
+        android:id="@+id/dayPickerDialogFragment"
+        android:label="{title}"
+        android:name="gov.wa.wsdot.android.wsdot.ui.common.DayPickerFragment">
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </dialog>
+
+
+    <!-- Global nav actions -->
+    <action android:id="@+id/action_global_navTrafficMapFragment"
+        app:destination="@id/navTrafficMapFragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true"/>
+
+    <action android:id="@+id/action_global_navFerriesHomeFragment"
+        app:destination="@id/navFerriesHomeFragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true"/>
+
 
 </navigation>

@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.binding.FragmentDataBindingComponent
@@ -21,12 +22,13 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import javax.inject.Inject
 
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import androidx.navigation.fragment.findNavController
+
 
 class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     lateinit var ferriesViewModel: FerriesViewModel
 
     @Inject
@@ -45,8 +47,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
 
-
-
         val dataBinding = DataBindingUtil.inflate<FerriesHomeFragmentBinding>(
             inflater,
             R.layout.ferries_home_fragment,
@@ -61,10 +61,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         }
 
         dataBinding.viewModel = ferriesViewModel
-
         binding = dataBinding
 
+        // animation
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+
         return dataBinding.root
 
     }
@@ -74,15 +75,17 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // pass function to be called on adapter item tap
         val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors) {
-                schedule -> Log.e("debug", schedule.description) // TODO() navigation
+                schedule -> navigateToRoute(schedule.routeId, schedule.description)
         }
+
         this.adapter = adapter
 
         binding.scheduleList.adapter = adapter
 
+        // animations
         postponeEnterTransition()
-
         binding.scheduleList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
@@ -96,5 +99,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
                 adapter.submitList(emptyList())
             }
         })
+    }
+
+    // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
+    private fun navigateToRoute(routeId: Int, routeName: String) {
+        val action = FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(routeId, routeName)
+        findNavController().navigate(action)
     }
 }

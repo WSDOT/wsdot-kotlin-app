@@ -2,22 +2,23 @@ package gov.wa.wsdot.android.wsdot.ui.home
 
 import android.os.Bundle
 import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import android.view.Menu
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
-import kotlinx.android.synthetic.main.app_bar_main.*
 import javax.inject.Inject
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -30,27 +31,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        // drawer
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
+
+        val navView: NavigationView = findViewById(R.id.drawer_nav_view)
         navView.setNavigationItemSelectedListener(this)
 
         // Navigation component setup with drawer
-
-        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
         val config = AppBarConfiguration(
             setOf(
                 R.id.navTrafficMapFragment,
@@ -58,12 +47,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             ), drawerLayout)
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
+        NavigationUI.setupActionBarWithNavController(this, navController, config)
 
-    }
+        addDestinationListener(navController)
 
-    override fun onSupportNavigateUp(): Boolean {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        return NavigationUI.navigateUp(Navigation.findNavController(this, R.id.nav_host_fragment), drawerLayout)
     }
 
     override fun onBackPressed() {
@@ -77,7 +64,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
@@ -95,10 +82,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_traffic_map -> {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
             }
             R.id.nav_ferries -> {
-                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
             }
             /*
             R.id.nav_mountain_passes -> {
@@ -126,6 +113,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         return true
     }
 
+    private fun addDestinationListener(navController: NavController) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            // TODO: may not need this..
+        }
+    }
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
 }
