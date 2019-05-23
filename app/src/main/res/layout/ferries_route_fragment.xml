@@ -34,57 +34,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:columnCount="4">
+            android:columnCount="2">
 
-            <TextView
-                android:id="@+id/sailing_spinner_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="16dp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/white"
-                android:text="departing:"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <!--
             <Spinner
                 android:id="@+id/sailing_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/white"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/sailing_picker_label"
-                app:sailings="{@routeViewModel.sailings}"
-                app:selectedSailing="{@routeViewModel.sailing}"
-
-                android:entries="@array/item_list"
-                android:onItemSelected="@{(parent,view,pos,id)-> routeViewModel.onSelectSailing(parent,view,pos,id)}"
-
-
-                />
--->
-
-
-            <TextView
-                android:id="@+id/date_picker_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/white"
-                android:text="sailing date:"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/sailing_spinner_label" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:terminalCombos="@{routeViewModel.terminals}"
+                app:selectedTerminalCombo="@={routeViewModel.selectedTerminalCombo}"/>
 
             <EditText
                 android:id="@+id/date_picker"
@@ -96,7 +59,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/date_picker_label"
+                app:layout_constraintStart_toEndOf="@id/sailing_spinner"
                 app:bindDate="@{dateViewModel.value}"
                 android:focusable="false"
                 android:inputType="date"

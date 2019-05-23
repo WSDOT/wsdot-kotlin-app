@@ -95,6 +95,27 @@ class FerriesRepository  @Inject constructor(
 
         }.asLiveData()
 
+    }
+
+    fun loadTerminalCombos(routeId: Int, forceRefresh: Boolean): LiveData<Resource<List<TerminalCombo>>> {
+
+        return object : NetworkBoundResource<List<TerminalCombo>, List<FerryScheduleResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+
+            override fun shouldFetch(data: List<TerminalCombo>?): Boolean {
+                return forceRefresh
+            }
+
+            override fun loadFromDb() = ferrySailingDao.loadTerminalCombos(routeId)
+
+            override fun createCall() = webservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
 
     }
 

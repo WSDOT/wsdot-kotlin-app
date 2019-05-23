@@ -23,5 +23,8 @@ import androidx.fragment.app.Fragment
  * A Data Binding Component implementation for fragments.
  */
 class FragmentDataBindingComponent(fragment: Fragment) : DataBindingComponent {
-    val adapter = FragmentBindingAdapters(fragment)
+    private val adapter = FragmentBindingAdapters(fragment)
+
+    override fun getFragmentBindingAdapters() = adapter
+
 }

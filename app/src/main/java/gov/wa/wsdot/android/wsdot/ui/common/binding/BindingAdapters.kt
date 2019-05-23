@@ -18,18 +18,29 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 // https://stackoverflow.com/a/47746579/6135860
 
+import android.R
 import androidx.databinding.BindingAdapter
 import android.view.View
-import android.widget.EditText
+import android.widget.*
 import java.text.SimpleDateFormat
 import java.util.*
-import android.widget.TextView
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
+import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
+import gov.wa.wsdot.android.wsdot.util.network.Resource
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+
 
 
 /**
  * Data Binding adapters specific to the app.
  */
 object BindingAdapters {
+
+
 
     @JvmStatic
     @BindingAdapter("visibleGone")
