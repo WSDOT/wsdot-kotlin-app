@@ -11,12 +11,13 @@ import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import android.view.*
+import androidx.databinding.DataBindingComponent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
-import java.util.*
 import java.util.Calendar.*
 import javax.inject.Inject
 
@@ -30,6 +31,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
+    var fragmentDataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     var binding by autoCleared<FerriesRouteFragmentBinding>()
 
     val args: FerriesRouteFragmentArgs by navArgs()
@@ -59,7 +61,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             inflater,
             R.layout.ferries_route_fragment,
             container,
-            false
+            false,
+            fragmentDataBindingComponent // Use the fragment databind
         )
 
         dataBinding.datePickerCallback = object : TapCallback {
@@ -84,8 +87,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         })
 
 
+        routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
+            Log.e("debug", terminals.toString())
+        })
 
 
+
+        //// Move to sailings fragment
         val c = getInstance()
         c.set(HOUR_OF_DAY, 0)
         c.set(MINUTE, 0)
@@ -100,7 +108,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             Log.e("debug", sailingData.data.toString())
 
         })
-
+        ////////////////////////////////////
 
         dataBinding.dateViewModel = dayPickerViewModel
 
