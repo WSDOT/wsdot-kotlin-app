@@ -16,10 +16,6 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
-// https://stackoverflow.com/a/47746579/6135860
-
-
-import android.graphics.Color
 import android.util.Log
 import androidx.databinding.BindingAdapter
 import android.view.View
@@ -50,7 +46,6 @@ object BindingAdapters {
         setCurrentSelection(spinner, selectedTerminal)
         setSpinnerListener(spinner, listener)
 
-
     }
 
     @JvmStatic
@@ -61,7 +56,6 @@ object BindingAdapters {
     }
 
     // Ferries spinner helpers
-
     private fun setSpinnerListener(spinner: Spinner, listener: InverseBindingListener) {
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -86,15 +80,10 @@ object BindingAdapters {
             return
         }
         for (index in 0 until spinner.adapter.count) {
-
             val currentItem = spinner.getItemAtPosition(index) as TerminalCombo
-
             if ( (currentItem.departingTerminalId == selectedItem.departingTerminalId)
                 && (currentItem.arrivingTerminalId == selectedItem.arrivingTerminalId)) {
-
-                //spinner.tag = index
                 spinner.setSelection(index)
-
             }
         }
     }

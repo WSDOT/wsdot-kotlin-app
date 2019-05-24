@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <import type="gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel" />
 
         <variable
@@ -49,7 +48,6 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:terminalCombos="@{routeViewModel.terminals}"
                 app:selectedTerminalCombo="@={routeViewModel.selectedTerminalCombo}"/>
-
 
             <EditText
                 android:id="@+id/date_picker"

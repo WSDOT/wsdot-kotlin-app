@@ -20,6 +20,9 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.Calendar.*
 import javax.inject.Inject
+import androidx.viewpager.widget.ViewPager
+import android.R
+import android.widget.Adapter
 
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -132,5 +135,19 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    // Add Fragments to Tabs
+    private fun setupViewPager(viewPager: ViewPager) {
+
+
+        val adapter = Adapter(childFragmentManager)
+        adapter.addFragment(TodaysFixturesFragment(), "Today")
+        adapter.addFragment(WeekFixturesFragment(), "Week")
+        adapter.addFragment(MonthFixturesFragment(), "Month")
+        adapter.addFragment(AllFixturesFragment(), "Month")
+        adapter.addFragment(MyTeamsFixturesFragment(), "My Teams")
+        viewPager.adapter = adapter
+
+
+    }
 
 }
