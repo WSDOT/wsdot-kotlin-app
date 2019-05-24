@@ -7,8 +7,6 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 
-
-
 class TerminalComboAdapter(
     context: Context,
     textViewResourceId: Int,

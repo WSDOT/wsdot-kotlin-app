@@ -36,26 +36,28 @@
             app:layout_constraintStart_toStartOf="parent"
             android:columnCount="2">
 
+            <!-- Set theme and overlay theme for light selected text and dark dropdown text-->
             <Spinner
                 android:id="@+id/sailing_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/white"
                 android:layout_gravity="center_vertical"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:terminalCombos="@{routeViewModel.terminals}"
                 app:selectedTerminalCombo="@={routeViewModel.selectedTerminalCombo}"/>
+
 
             <EditText
                 android:id="@+id/date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/white"
+                android:textColor="@color/colorWhite"
+                android:backgroundTint="@color/colorWhite"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
