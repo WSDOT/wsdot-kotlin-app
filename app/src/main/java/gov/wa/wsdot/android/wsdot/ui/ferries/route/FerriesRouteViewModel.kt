@@ -7,23 +7,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 
-
 class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
-
-    // 2-way binding value for spinner
-    private val _selectedTerminalCombo = MediatorLiveData<TerminalCombo>()
-    val selectedTerminalCombo: MutableLiveData<TerminalCombo>
-        get() = _selectedTerminalCombo
-
-    init {
-        // dummy value before we get it from two-way binding
-        selectedTerminalCombo.value = TerminalCombo(
-            0,
-            "",
-            0,
-            ""
-        )
-    }
 
     private val _routeId: MutableLiveData<RouteId> = MutableLiveData()
     val routeId: LiveData<RouteId>
@@ -39,6 +23,21 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
         .switchMap(_routeId) { routeId ->
             ferriesRepository.loadTerminalCombos(routeId.routeId, routeId.needsRefresh)
         }
+
+    // 2-way binding value for spinner
+    private val _selectedTerminalCombo = MediatorLiveData<TerminalCombo>()
+    val selectedTerminalCombo: MutableLiveData<TerminalCombo>
+        get() = _selectedTerminalCombo
+
+    init {
+        // dummy value before we get it from two-way binding
+        selectedTerminalCombo.value = TerminalCombo(
+            0,
+            "",
+            0,
+            ""
+        )
+    }
 
     fun setRouteId(newRouteId: Int) {
         val update = RouteId(newRouteId, false)
