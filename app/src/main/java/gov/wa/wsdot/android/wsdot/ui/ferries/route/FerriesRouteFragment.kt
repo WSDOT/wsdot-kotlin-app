@@ -40,7 +40,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-
     }
 
     override fun onCreateView(
@@ -87,14 +86,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             sailingViewModel.setSailingQuery(c.time)
         })
 
+        //// Move to sailings fragment //////////////
 
-        routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
-            Log.e("debug", terminals.toString())
-        })
-
-
-
-        //// Move to sailings fragment
         val c = getInstance()
         c.set(HOUR_OF_DAY, 0)
         c.set(MINUTE, 0)
@@ -109,14 +102,19 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             Log.e("debug", sailingData.data.toString())
 
         })
+
         ////////////////////////////////////
 
-        dataBinding.dateViewModel = dayPickerViewModel
 
+        routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminal ->
+            Log.e("debug", terminal.toString())
+        })
+
+        dataBinding.dateViewModel = dayPickerViewModel
         dataBinding.routeViewModel = routeViewModel
+        dataBinding.lifecycleOwner = viewLifecycleOwner
 
         binding = dataBinding
-        binding.lifecycleOwner = this
 
         return dataBinding.root
 
@@ -127,7 +125,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val routeId = args.routeId
         Log.e("debug", routeId.toString())
         Log.e("debug", "on create view")
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
