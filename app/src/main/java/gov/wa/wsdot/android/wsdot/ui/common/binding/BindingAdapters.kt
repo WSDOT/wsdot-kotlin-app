@@ -18,7 +18,9 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 // https://stackoverflow.com/a/47746579/6135860
 
-import android.R
+
+import android.graphics.Color
+import android.util.Log
 import androidx.databinding.BindingAdapter
 import android.view.View
 import android.widget.*
@@ -30,17 +32,69 @@ import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Spinner
-
-
+import android.widget.TextView
 
 /**
  * Data Binding adapters specific to the app.
  */
 object BindingAdapters {
 
+    // Ferries Binding Adapters
+    @JvmStatic
+    @BindingAdapter(value = ["terminalCombos", "selectedTerminalCombo", "selectedTerminalComboAttrChanged"], requireAll = false)
+    fun setTerminalCombos(spinner: Spinner, terminal: Resource<List<TerminalCombo>>, selectedTerminal: TerminalCombo, listener: InverseBindingListener) {
+        if (terminal.data == null) return
 
+        spinner.adapter = TerminalComboAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, terminal.data)
+
+
+        setCurrentSelection(spinner, selectedTerminal)
+        setSpinnerListener(spinner, listener)
+    }
+
+    @JvmStatic
+    @InverseBindingAdapter(attribute = "selectedTerminalCombo", event = "selectedTerminalComboAttrChanged")
+    fun getSelectedTerminalCombo(spinner: Spinner): TerminalCombo {
+        return spinner.selectedItem as TerminalCombo
+    }
+
+    // Ferries spinner helpers
+
+    private fun setSpinnerListener(spinner: Spinner, listener: InverseBindingListener) {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // do nothing if same item is selected, this prevents infinite loops caused
+                // by the 2-way binding.
+                // https://medium.com/androiddevelopers/android-data-binding-2-way-your-way-ccac20f6313
+                if (position != spinner.selectedItemPosition) {
+                    listener.onChange()
+                }
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) = listener.onChange()
+        }
+    }
+
+    private fun setCurrentSelection(spinner: Spinner, selectedItem: TerminalCombo?): Boolean {
+        if (selectedItem == null) {
+            return false
+        }
+
+        for (index in 0 until spinner.adapter.count) {
+
+            val currentItem = spinner.getItemAtPosition(index) as TerminalCombo
+
+            if ( (currentItem.departingTerminalId == selectedItem.departingTerminalId)
+                && (currentItem.arrivingTerminalId == selectedItem.arrivingTerminalId)) {
+                    spinner.setSelection(index)
+                    return true
+            }
+
+        }
+        return false
+    }
+
+    // General adapters
 
     @JvmStatic
     @BindingAdapter("visibleGone")
