@@ -31,7 +31,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
-    var fragmentDataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    //var fragmentDataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     var binding by autoCleared<FerriesRouteFragmentBinding>()
 
     val args: FerriesRouteFragmentArgs by navArgs()
@@ -39,6 +39,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+
     }
 
     override fun onCreateView(
@@ -61,8 +63,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             inflater,
             R.layout.ferries_route_fragment,
             container,
-            false,
-            fragmentDataBindingComponent // Use the fragment databind
+            false
         )
 
         dataBinding.datePickerCallback = object : TapCallback {
