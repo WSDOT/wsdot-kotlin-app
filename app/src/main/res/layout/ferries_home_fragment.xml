@@ -38,32 +38,42 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
 
-        <GridLayout
+        <LinearLayout
             android:id="@+id/button_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clipToPadding="false"
-            android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:columnCount="1">
+            android:background="#fff"
+            android:elevation="4dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/reservation_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_margin="8dp"
+                android:layout_weight="1"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:text="@string/ferry_reservation"/>
 
-        </GridLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/vessel_watch_button"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/ferry_vessel_watch"/>
+
+        </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"

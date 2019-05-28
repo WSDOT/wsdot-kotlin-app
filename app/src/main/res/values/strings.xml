@@ -28,5 +28,6 @@
     <string name="unknown_error">Unknown Error</string>
     <string name="retry">Retry</string>
     <string name="ferry_reservation">Make A Reservation</string>
+    <string name="ferry_vessel_watch">vessel watch</string>
 
 </resources>

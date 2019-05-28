@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.ferries.route
+package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +25,12 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
         }
 
     fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date) {
-        val update = SailingQuery(routeId, departingId, arrivingId, sailingDate)
+        val update = SailingQuery(
+            routeId,
+            departingId,
+            arrivingId,
+            sailingDate
+        )
         if (_sailingQuery.value == update) {
             return
         }
@@ -39,7 +44,12 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
         val arrivingId = _sailingQuery.value?.arrivingId
 
         if (routeId != null && departingId != null && arrivingId != null){
-            val update = SailingQuery(routeId, departingId, arrivingId, sailingDate)
+            val update = SailingQuery(
+                routeId,
+                departingId,
+                arrivingId,
+                sailingDate
+            )
             if (_sailingQuery.value == update) {
                 return
             }
