@@ -29,15 +29,6 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
     val selectedTerminalCombo: MutableLiveData<TerminalCombo>
         get() = _selectedTerminalCombo
 
-    init {
-        // dummy value before we get it from two-way binding
-        selectedTerminalCombo.value = TerminalCombo(
-            0,
-            "",
-            0,
-            ""
-        )
-    }
 
     fun setRouteId(newRouteId: Int) {
         val update = RouteId(newRouteId, false)

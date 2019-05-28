@@ -22,7 +22,7 @@
 
         <action
             android:id="@+id/action_navFerriesHomeFragment_to_navFerriesRouteFragment"
-            app:destination="@id/navFerriesRouteFragment"/>
+            app:destination="@id/navFerriesRouteFragment" />
 
     </fragment>
 
