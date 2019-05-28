@@ -10,7 +10,7 @@ import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesSailingViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 
 @Suppress("unused")
 @Module

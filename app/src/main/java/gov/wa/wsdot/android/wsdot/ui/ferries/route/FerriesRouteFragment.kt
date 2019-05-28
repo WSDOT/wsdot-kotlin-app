@@ -3,7 +3,6 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -11,18 +10,21 @@ import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import android.view.*
-import androidx.databinding.DataBindingComponent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.Calendar.*
 import javax.inject.Inject
 import androidx.viewpager.widget.ViewPager
-import android.widget.Adapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.navigation.findNavController
+import com.google.android.material.tabs.TabLayout
+import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -33,6 +35,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     lateinit var sailingViewModel: FerriesSailingViewModel
 
     lateinit var dayPickerViewModel: SharedDateViewModel
+
+    private lateinit var fragmentPagerAdapter: FragmentStatePagerAdapter
+    private lateinit var viewPager: ViewPager
 
     //var fragmentDataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     var binding by autoCleared<FerriesRouteFragmentBinding>()
@@ -130,6 +135,18 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val routeId = args.routeId
         Log.e("debug", routeId.toString())
         Log.e("debug", "on create view")
+
+
+        viewPager = view.findViewById(R.id.pager)
+        setupViewPager(viewPager)
+
+
+
+
+
+        val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
+        tabLayout.setupWithViewPager(viewPager)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -140,14 +157,19 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     // Add Fragments to Tabs
     private fun setupViewPager(viewPager: ViewPager) {
 
+        val fragments = ArrayList<Fragment>()
+        fragments.add(FerriesSailingFragment())
+        fragments.add(FerriesSailingFragment())
+        fragments.add(FerriesSailingFragment())
 
-       // val adapter = Adapter(childFragmentManager)
-       // adapter.addFragment(TodaysFixturesFragment(), "Today")
-       // adapter.addFragment(WeekFixturesFragment(), "Week")
-       // adapter.addFragment(MonthFixturesFragment(), "Month")
-       // adapter.addFragment(AllFixturesFragment(), "Month")
-       // adapter.addFragment(MyTeamsFixturesFragment(), "My Teams")
-       // viewPager.adapter = adapter
+        val titles = ArrayList<String>()
+        titles.add("sailings")
+        titles.add("cameras")
+        titles.add("alerts")
+
+        fragmentPagerAdapter = SimpleFragmentPagerAdapter(requireFragmentManager(), fragments, titles)
+
+        viewPager.adapter = fragmentPagerAdapter
 
 
     }

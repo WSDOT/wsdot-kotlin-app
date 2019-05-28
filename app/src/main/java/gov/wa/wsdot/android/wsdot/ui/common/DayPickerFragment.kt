@@ -7,6 +7,7 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
+import kotlinx.android.synthetic.main.ferries_route_fragment.view.*
 import java.util.*
 
 
@@ -35,14 +36,15 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         val year = c.get(Calendar.YEAR)
 
         // Create a new instance of TimePickerDialog and return it
-        val datePicker = DatePickerDialog(requireActivity(), this, year, month, day)
+        val datePickerDialog = DatePickerDialog(requireActivity(), this, year, month, day)
 
         val rangeCal = Calendar.getInstance()
-        datePicker.datePicker.minDate = rangeCal.timeInMillis
-        rangeCal.add(Calendar.DAY_OF_YEAR, 7)
-        datePicker.datePicker.maxDate = rangeCal.timeInMillis
+        datePickerDialog.datePicker.minDate = rangeCal.timeInMillis
+        rangeCal.add(Calendar.DAY_OF_YEAR, 6)
+        datePickerDialog.datePicker.maxDate = rangeCal.timeInMillis
 
-        return datePicker
+
+        return datePickerDialog
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
