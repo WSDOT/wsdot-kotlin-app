@@ -71,8 +71,8 @@
                     android:layout_margin="8dp"
                     android:layout_gravity="center_vertical"
                     android:elevation="4dp"
-                    android:background="@drawable/input_field_border"
-                    >
+                    android:background="@drawable/input_field_border">
+                    
                     <EditText
                         android:id="@+id/date_picker"
                         android:layout_width="match_parent"
@@ -87,8 +87,8 @@
                         android:focusable="false"
                         android:inputType="date"
                         android:onClick="@{(v) -> datePickerCallback.onTap(v)}"
-                        android:autofillHints="select sailing date"
-                        android:hint="select sailing date"/>
+                        android:autofillHints="@string/sailing_hint"
+                        android:hint="@string/sailing_hint"/>
                 </LinearLayout>
             </LinearLayout>
 
