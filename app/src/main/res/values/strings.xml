@@ -23,11 +23,13 @@
 
     // Ferries
     <string name="crossing_time">Crossing time ~ %1$s mins</string>
+    <string name="ferry_reservation">Make A Reservation</string>
+    <string name="ferry_vessel_watch">vessel watch</string>
+    <string name="sailing_hint">select sailing date</string>
 
     // Network
     <string name="unknown_error">Unknown Error</string>
     <string name="retry">Retry</string>
-    <string name="ferry_reservation">Make A Reservation</string>
-    <string name="ferry_vessel_watch">vessel watch</string>
+
 
 </resources>
