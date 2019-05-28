@@ -39,7 +39,7 @@ object BindingAdapters {
     // Ferries Binding Adapters
     @JvmStatic
     @BindingAdapter(value = ["terminalCombos", "selectedTerminalCombo", "selectedTerminalComboAttrChanged"], requireAll = false)
-    fun setTerminalCombos(spinner: Spinner, terminal: Resource<List<TerminalCombo>>, selectedTerminal: TerminalCombo, listener: InverseBindingListener) {
+    fun setTerminalCombos(spinner: Spinner, terminal: Resource<List<TerminalCombo>>, selectedTerminal: TerminalCombo?, listener: InverseBindingListener) {
         if (terminal.data == null) return
         spinner.adapter = TerminalComboAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, terminal.data)
 
@@ -84,8 +84,12 @@ object BindingAdapters {
             if ( (currentItem.departingTerminalId == selectedItem.departingTerminalId)
                 && (currentItem.arrivingTerminalId == selectedItem.arrivingTerminalId)) {
                 spinner.setSelection(index)
+                return
             }
         }
+
+        spinner.setSelection(0)
+
     }
 
     // General adapters

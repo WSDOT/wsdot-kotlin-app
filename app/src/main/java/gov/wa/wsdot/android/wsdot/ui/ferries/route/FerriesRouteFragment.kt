@@ -21,8 +21,8 @@ import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.Calendar.*
 import javax.inject.Inject
 import androidx.viewpager.widget.ViewPager
-import android.R
 import android.widget.Adapter
+import androidx.navigation.findNavController
 
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -42,7 +42,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
     }
 
     override fun onCreateView(
@@ -53,13 +52,16 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         sailingViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesSailingViewModel::class.java)
 
+
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
         routeViewModel.setRouteId(args.routeId)
 
+
         dayPickerViewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
 
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
             inflater,
@@ -69,9 +71,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         )
 
         dataBinding.datePickerCallback = object : TapCallback {
-            override fun onTap() {
+            override fun onTap(view: View) {
                 val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title)
-                findNavController().navigate(action)
+                view.findNavController().navigate(action)
             }
         }
 
@@ -139,13 +141,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     private fun setupViewPager(viewPager: ViewPager) {
 
 
-        val adapter = Adapter(childFragmentManager)
-        adapter.addFragment(TodaysFixturesFragment(), "Today")
-        adapter.addFragment(WeekFixturesFragment(), "Week")
-        adapter.addFragment(MonthFixturesFragment(), "Month")
-        adapter.addFragment(AllFixturesFragment(), "Month")
-        adapter.addFragment(MyTeamsFixturesFragment(), "My Teams")
-        viewPager.adapter = adapter
+       // val adapter = Adapter(childFragmentManager)
+       // adapter.addFragment(TodaysFixturesFragment(), "Today")
+       // adapter.addFragment(WeekFixturesFragment(), "Week")
+       // adapter.addFragment(MonthFixturesFragment(), "Month")
+       // adapter.addFragment(AllFixturesFragment(), "Month")
+       // adapter.addFragment(MyTeamsFixturesFragment(), "My Teams")
+       // viewPager.adapter = adapter
 
 
     }
