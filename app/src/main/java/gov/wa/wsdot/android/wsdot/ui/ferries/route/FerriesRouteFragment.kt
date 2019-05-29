@@ -57,16 +57,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         sailingViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesSailingViewModel::class.java)
 
-
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
         routeViewModel.setRouteId(args.routeId)
 
-
         dayPickerViewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
-
 
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
             inflater,
@@ -136,13 +133,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         Log.e("debug", routeId.toString())
         Log.e("debug", "on create view")
 
-
         viewPager = view.findViewById(R.id.pager)
         setupViewPager(viewPager)
-
-
-
-
 
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
