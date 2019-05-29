@@ -59,6 +59,9 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
     }
 
     // TODO: refresh
+    fun refresh() {
+
+    }
 
     data class SailingQuery(val routeId: Int, val departingId: Int, val arrivingId: Int, val sailingDate: Date) {
         fun <T> ifExists(f: (Int, Int, Int, Date) -> LiveData<T>): LiveData<T> {

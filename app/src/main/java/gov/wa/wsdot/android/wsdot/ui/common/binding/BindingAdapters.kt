@@ -107,6 +107,12 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindDateHour")
+    fun bindDateHour(textView: TextView, date: Date) {
+        textView.text = getHourString(date)
+    }
+
+    @JvmStatic
     @BindingAdapter("bindRelativeDate")
     fun bindRelativeDate(textView: TextView, date: Date) {
         textView.text = getRelative(date)
@@ -121,6 +127,17 @@ object BindingAdapters {
             "Unavailable"
         }
     }
+
+    // Creates an updated timestamp from date object
+    private fun getHourString(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("h:mm", Locale.ENGLISH)
+        return try {
+            displayDateFormat.format(date)
+        } catch (e: Exception) {
+            "Unavailable"
+        }
+    }
+
 
     // Creates an updated timestamp from date object
     private fun getRelative(date: Date): String {

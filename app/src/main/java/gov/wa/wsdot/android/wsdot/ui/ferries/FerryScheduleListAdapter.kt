@@ -19,7 +19,9 @@ package gov.wa.wsdot.android.wsdot.ui.ferries
 
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingComponent
 import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import androidx.databinding.DataBindingUtil
@@ -58,7 +60,7 @@ class FerryScheduleListAdapter(
             dataBindingComponent
         )
 
-        binding.root.setOnClickListener {
+        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
             binding.schedule?.let {
                 scheduleClickCallback?.invoke(it)
             }

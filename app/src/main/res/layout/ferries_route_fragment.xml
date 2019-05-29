@@ -23,8 +23,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
             <LinearLayout
                 android:id="@+id/toolbar_grid"
                 android:layout_width="match_parent"
@@ -72,7 +70,7 @@
                     android:layout_gravity="center_vertical"
                     android:elevation="4dp"
                     android:background="@drawable/input_field_border">
-                    
+
                     <EditText
                         android:id="@+id/date_picker"
                         android:layout_width="match_parent"
