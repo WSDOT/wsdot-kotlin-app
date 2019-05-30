@@ -88,7 +88,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
             if (terminals.data != null) {
-                Log.e("debug", "WOW")
                 routeViewModel.selectedTerminalCombo.value = terminals.data[0]
                 routeViewModel.terminals.removeObservers(viewLifecycleOwner)
             }
