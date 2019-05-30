@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProviders
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import java.util.*
 import javax.inject.Inject
 
 
@@ -24,7 +26,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var sailingViewModel: FerriesSailingViewModel
-    lateinit var dayPickerViewModel: SharedDateViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -46,11 +47,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        sailingViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FerriesSailingViewModel::class.java)
-
-        dayPickerViewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+        sailingViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FerriesSailingFragmentBinding>(
@@ -90,9 +88,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 true
             }
 
-
-
-
         sailingViewModel.sailings.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
                 adapter.submitList(sailingResource.data)
@@ -100,8 +95,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 adapter.submitList(emptyList())
             }
         })
+
     }
-
-
 
 }

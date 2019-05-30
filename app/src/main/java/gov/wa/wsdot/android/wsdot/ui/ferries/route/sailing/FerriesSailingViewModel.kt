@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -14,8 +15,6 @@ import javax.inject.Inject
 class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
-    val sailingQuery: LiveData<SailingQuery>
-        get() = _sailingQuery
 
     val sailings: LiveData<Resource<List<FerrySailing>>> = Transformations
         .switchMap(_sailingQuery) { input ->
@@ -24,7 +23,16 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
             }
         }
 
-    fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date) {
+    fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int) {
+
+        val c = Calendar.getInstance()
+        c.set(Calendar.HOUR_OF_DAY, 0)
+        c.set(Calendar.MINUTE, 0)
+        c.set(Calendar.SECOND, 0)
+        c.set(Calendar.MILLISECOND, 0)
+
+        val sailingDate = _sailingQuery.value?.sailingDate ?: c.time // set to current date if null
+
         val update = SailingQuery(
             routeId,
             departingId,

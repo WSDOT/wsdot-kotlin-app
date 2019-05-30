@@ -62,8 +62,8 @@ data class FerryScheduleResponse (
                 @field:SerializedName("ArrivingTime")
                 val arrivingTime: String?,
 
-                @field:SerializedName("Annotations")
-                val annotations: List<Int>
+                @field:SerializedName("AnnotationIndexes")
+                val annotationIndexes: List<Int>
 
             )
         }

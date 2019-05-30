@@ -12,28 +12,158 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 
-            <TextView
-                style="@style/CardTitleText"
-                android:id="@+id/titleView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bindDateHour="@{sailing.departingTime}"
+            <FrameLayout
+                android:id="@+id/spaces_view"
+                android:orientation="horizontal"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminate="false"
+                    android:visibility="visible"
+                    android:max="100"
+                    android:progress="100"
+                    android:progressDrawable="@drawable/circle_progress_background"
+                    android:rotation="-90" />
+
+                <ProgressBar
+                    android:id="@+id/sailing_spaces_progress_bar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminate="false"
+                    android:max="100"
+                    android:progress="60"
+                    android:progressDrawable="@drawable/circle_progress_foreground"
+                    android:rotation="-90" />
+
+                <TextView
+                    android:id="@+id/sailing_spaces_count_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="156"/>
+
+            </FrameLayout>
+
+
+
+             <LinearLayout
+                 android:id="@+id/timesTextView"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 app:layout_constraintTop_toTopOf="parent"
+                 app:layout_constraintStart_toEndOf="@id/spaces_view"
+                 app:layout_constraintBottom_toTopOf="@id/annotations"
+                 android:layout_marginTop="16dp"
+                 android:layout_marginBottom="8dp"
+                 app:layout_goneMarginBottom="16dp"
+                 android:layout_marginEnd="8dp"
+                 android:layout_marginStart="16dp">
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/departingTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindDateHour="@{sailing.departingTime}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/dash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" - "
+                    app:visibleGone="@{sailing.arrivingTime != null}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/departingTimeTextView"/>
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/arrivingTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindDateHour="@{sailing.arrivingTime}"
+                    app:visibleGone="@{sailing.arrivingTime != null}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/dash"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+             </LinearLayout>
+
+            <TextView
+                style="@style/CardSubTitleText"
+                android:id="@+id/annotations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:bindStringArray="@{sailing.annotations}"
+                app:visibleGone="@{sailing.annotations.size > 0}"
+                app:layout_constraintTop_toBottomOf="@+id/timesTextView"
+                app:layout_constraintStart_toEndOf="@id/spaces_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/spaces_disclaimer"
+                android:layout_marginBottom="8dp"
+                app:layout_goneMarginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:singleLine="false" />
+
+
+            <TextView
+                style="@style/CardFooterText"
+                android:id="@+id/spaces_disclaimer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:visibleGone="@{true}"
+                android:text="vehicles in line for tollbooth are not included in estimate"
+                app:layout_constraintTop_toBottomOf="@+id/annotations"
+                app:layout_constraintStart_toEndOf="@id/spaces_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/divider"
                 android:layout_marginBottom="16dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                />
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:singleLine="false" />
+
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:background="@color/divider"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
+
 </layout>

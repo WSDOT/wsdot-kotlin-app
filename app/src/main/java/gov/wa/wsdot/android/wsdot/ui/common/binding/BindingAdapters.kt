@@ -30,6 +30,9 @@ import gov.wa.wsdot.android.wsdot.util.network.Resource
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
+import android.text.Html
+
+
 
 /**
  * Data Binding adapters specific to the app.
@@ -101,6 +104,20 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindStringArray")
+    fun bindStringArray(textView: TextView, strings: List<String>) {
+
+        var messageString = ""
+
+        for (string in strings) {
+            messageString = "$messageString$string "
+        }
+
+        textView.text = stripHtml(messageString)
+    }
+
+
+    @JvmStatic
     @BindingAdapter("bindDate")
     fun bindDate(editText: EditText, date: Date) {
         editText.setText(getDateString(date))
@@ -108,8 +125,10 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("bindDateHour")
-    fun bindDateHour(textView: TextView, date: Date) {
-        textView.text = getHourString(date)
+    fun bindDateHour(textView: TextView, date: Date?) {
+        if (date != null) {
+            textView.text = getHourString(date)
+        }
     }
 
     @JvmStatic
@@ -130,7 +149,7 @@ object BindingAdapters {
 
     // Creates an updated timestamp from date object
     private fun getHourString(date: Date): String {
-        val displayDateFormat = SimpleDateFormat("h:mm", Locale.ENGLISH)
+        val displayDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
         return try {
             displayDateFormat.format(date)
         } catch (e: Exception) {
@@ -161,6 +180,14 @@ object BindingAdapters {
             }
         } catch (e: Exception) {
             return "Unavailable"
+        }
+    }
+
+    private fun stripHtml(html: String): String {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            Html.fromHtml(html).toString()
         }
     }
 

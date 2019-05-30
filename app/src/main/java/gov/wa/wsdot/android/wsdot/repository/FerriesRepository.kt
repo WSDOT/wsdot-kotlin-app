@@ -11,6 +11,7 @@ import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
 
 @Singleton
 class FerriesRepository  @Inject constructor(
@@ -164,21 +165,36 @@ class FerriesRepository  @Inject constructor(
 
             for (routeSchedules in scheduleResponse.schedules) {
                 for (sailing in routeSchedules.sailings) {
-
                     for (sailingTime in sailing.times) {
 
-                        val sailingItem = FerrySailing(0,
+                        // set up arriving time
+                        val arrivingTimeLong = sailingTime.arrivingTime?.substring(6, 19)?.toLong()
+                        var arrivingTime: Date? = null
+
+                        if (arrivingTimeLong != null) {
+                            arrivingTime = Date(arrivingTimeLong)
+                        }
+
+                        // set up annotations
+                        val annotations = ArrayList<String>()
+
+                        for (annotationIndex: Int in sailingTime.annotationIndexes) {
+                            annotations.add(sailing.annotations[annotationIndex])
+                        }
+
+                        val sailingItem = FerrySailing(
                             scheduleResponse.routeId,
                             Date(routeSchedules.date.substring(6, 19).toLong()),
                             sailing.departingTerminalID,
                             sailing.departingTerminalName,
                             sailing.arrivingTerminalID,
                             sailing.arrivingTerminalName,
-                            emptyList(), // TODO: annotations
+                            annotations,
                             Date(sailingTime.departingTime.substring(6, 19).toLong()),
-                            Date(), // TODO: can be null
+                            arrivingTime,
                             cacheDate
                         )
+
                         dbSailingsList.add(sailingItem)
 
                     }
@@ -202,8 +218,8 @@ class FerriesRepository  @Inject constructor(
         }
 
         ferryScheduleDao.insertSchedules(dbSchedulesList)
-        ferrySailingDao.insertSailings(dbSailingsList)
-        ferryAlertDao.insertAlerts(dbAlertList)
+        ferrySailingDao.insertSailings(dbSailingsList.distinct())
+        ferryAlertDao.insertAlerts(dbAlertList.distinct())
 
     }
 
