@@ -98,6 +98,30 @@ class FerriesRepository  @Inject constructor(
 
     }
 
+
+    fun loadSailingSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailing>>> {
+
+        return object : NetworkBoundResource<List<FerrySailing>, List<FerryScheduleResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+
+            override fun shouldFetch(data: List<FerrySailing>?): Boolean {
+
+                return true
+            }
+
+
+            override fun createCall() = webservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+
+    }
+
+
     fun loadTerminalCombos(routeId: Int, forceRefresh: Boolean): LiveData<Resource<List<TerminalCombo>>> {
 
         return object : NetworkBoundResource<List<TerminalCombo>, List<FerryScheduleResponse>>(appExecutors) {

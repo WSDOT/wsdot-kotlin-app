@@ -82,6 +82,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         // animations
         postponeEnterTransition()
+
         binding.scheduleList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
