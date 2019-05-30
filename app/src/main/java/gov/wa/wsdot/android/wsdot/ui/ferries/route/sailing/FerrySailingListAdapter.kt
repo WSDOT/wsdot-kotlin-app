@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,7 +22,11 @@ class FerrySailingListAdapter(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerrySailing>() {
         override fun areItemsTheSame(oldItem: FerrySailing, newItem: FerrySailing): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.route == newItem.route
+                    && oldItem.departingTime == newItem.departingTime
+                    && oldItem.arrivingTime == newItem.arrivingTime
+                    && oldItem.departingTerminalId == newItem.departingTerminalId
+                    && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
         }
 
         override fun areContentsTheSame(oldItem: FerrySailing, newItem: FerrySailing): Boolean {
@@ -41,6 +46,7 @@ class FerrySailingListAdapter(
     }
 
     override fun bind(binding: FerrySailingItemBinding, item: FerrySailing) {
+        Log.e("debug", item.arrivingTime.toString())
         binding.sailing = item
     }
 }

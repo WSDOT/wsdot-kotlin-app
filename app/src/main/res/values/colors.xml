@@ -9,4 +9,6 @@
     <color name="shadowStart">#FF333333</color>
     <color name="shadowEnd">#33000000</color>
 
+    <color name="divider">#1A000000</color>
+
 </resources>

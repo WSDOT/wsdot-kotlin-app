@@ -25,6 +25,9 @@ import com.google.android.material.tabs.TabLayout
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
+import android.os.Handler
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -49,13 +52,11 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         setHasOptionsMenu(true)
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        sailingViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FerriesSailingViewModel::class.java)
 
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
@@ -63,6 +64,10 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         dayPickerViewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        sailingViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
@@ -76,9 +81,22 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             override fun onTap(view: View) {
                 val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title)
                 view.findNavController().navigate(action)
+                view.isEnabled = false
+                Handler().postDelayed({ view.isEnabled = true }, 1000)
             }
         }
 
+        routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
+            if (terminals.data != null) {
+                Log.e("debug", "WOW")
+                routeViewModel.selectedTerminalCombo.value = terminals.data[0]
+                routeViewModel.terminals.removeObservers(viewLifecycleOwner)
+            }
+        })
+
+        routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminal ->
+            sailingViewModel.setSailingQuery(args.routeId, terminal.departingTerminalId, terminal.arrivingTerminalId)
+        })
 
         dayPickerViewModel.value.observe(viewLifecycleOwner, Observer { date ->
             val c = getInstance()
@@ -89,32 +107,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             c.set(MINUTE, 0)
             c.set(SECOND, 0)
             c.set(MILLISECOND, 0)
-            Log.e("debug", c.time.toString())
             sailingViewModel.setSailingQuery(c.time)
-        })
-
-        //// Move to sailings fragment //////////////
-
-        val c = getInstance()
-        c.set(HOUR_OF_DAY, 0)
-        c.set(MINUTE, 0)
-        c.set(SECOND, 0)
-        c.set(MILLISECOND, 0)
-        Log.e("debug", c.time.toString())
-        sailingViewModel.setSailingQuery(6, 8, 12, c.time)
-
-        sailingViewModel.sailings.observe(viewLifecycleOwner, Observer { sailingData ->
-
-            Log.e("debug", "got some sailing data...")
-            Log.e("debug", sailingData.data.toString())
-
-        })
-
-        ////////////////////////////////////
-
-
-        routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminal ->
-            Log.e("debug", terminal.toString())
         })
 
         dataBinding.dateViewModel = dayPickerViewModel
@@ -122,6 +115,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         dataBinding.lifecycleOwner = viewLifecycleOwner
 
         binding = dataBinding
+
 
         return dataBinding.root
 

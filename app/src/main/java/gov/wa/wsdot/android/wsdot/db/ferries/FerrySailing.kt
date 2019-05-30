@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(
-    indices = arrayOf(Index(value = ["id", "route"],unique = true)),
+    indices = [Index(value = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime", "arrivingTime"], unique = true)],
+    primaryKeys = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime"],
     foreignKeys = [ForeignKey(
         entity = FerrySchedule::class,
         parentColumns = ["routeId"],
@@ -17,8 +18,6 @@ import java.util.*
     )]
 )
 data class FerrySailing(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
     val route: Int,
     val sailingDate: Date,
     val departingTerminalId: Int,
@@ -27,6 +26,6 @@ data class FerrySailing(
     val arrivingTerminalName: String,
     val annotations: List<String>,
     val departingTime: Date,
-    val arrivingTime: Date,
+    val arrivingTime: Date?,
     val cacheDate: Date
 )
