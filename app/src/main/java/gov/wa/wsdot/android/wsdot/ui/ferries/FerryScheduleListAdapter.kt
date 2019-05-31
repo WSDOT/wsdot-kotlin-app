@@ -16,12 +16,11 @@ package gov.wa.wsdot.android.wsdot.ui.ferries
  * limitations under the License.
  */
 
-
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.cardview.widget.CardView
+import android.widget.ImageButton
 import androidx.databinding.DataBindingComponent
 import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import androidx.databinding.DataBindingUtil
@@ -36,7 +35,8 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 class FerryScheduleListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val scheduleClickCallback: ((FerrySchedule) -> Unit)? // ClickCallback for item in the adapter
+    private val scheduleClickCallback: ((FerrySchedule) -> Unit)?, // ClickCallback for item in the adapter
+    private val favoriteClickCallback: ((FerrySchedule) -> Unit)?
 ) : DataBoundListAdapter<FerrySchedule, FerryScheduleItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerrySchedule>() {
@@ -45,7 +45,9 @@ class FerryScheduleListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: FerrySchedule, newItem: FerrySchedule): Boolean {
-            return oldItem.description == newItem.description && oldItem.cacheDate.time == newItem.cacheDate.time
+            return oldItem.description == newItem.description
+                    && oldItem.cacheDate.time == newItem.cacheDate.time
+                    && oldItem.favorite == newItem.favorite
         }
     }
 ) {
@@ -63,6 +65,12 @@ class FerryScheduleListAdapter(
         binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
             binding.schedule?.let {
                 scheduleClickCallback?.invoke(it)
+            }
+        }
+
+        binding.root.findViewById<ImageButton>(R.id.favorite_button).setOnClickListener {
+            binding.schedule?.let {
+                favoriteClickCallback?.invoke(it)
             }
         }
 

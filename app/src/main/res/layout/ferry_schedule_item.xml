@@ -94,10 +94,12 @@
                 />
 
             <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/favorite_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_favorite_border_black"
+                android:src="@drawable/ic_menu_favorite_gray"
+                app:setFavoriteIcon="@{schedule.favorite}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="16dp"

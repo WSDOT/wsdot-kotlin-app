@@ -31,7 +31,7 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
 import android.text.Html
-
+import gov.wa.wsdot.android.wsdot.R
 
 
 /**
@@ -96,6 +96,12 @@ object BindingAdapters {
     }
 
     // General adapters
+
+    @JvmStatic
+    @BindingAdapter("setFavoriteIcon")
+    fun bindFavoriteIcon(button: ImageButton, favorite: Boolean) {
+        button.setImageResource(if (favorite) R.drawable.ic_menu_favorite_pink else R.drawable.ic_menu_favorite_gray)
+    }
 
     @JvmStatic
     @BindingAdapter("visibleGone")

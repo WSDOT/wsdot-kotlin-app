@@ -98,30 +98,6 @@ class FerriesRepository  @Inject constructor(
 
     }
 
-
-    fun loadSailingSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailing>>> {
-
-        return object : NetworkBoundResource<List<FerrySailing>, List<FerryScheduleResponse>>(appExecutors) {
-
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
-
-            override fun shouldFetch(data: List<FerrySailing>?): Boolean {
-
-                return true
-            }
-
-
-            override fun createCall() = webservice.getFerrySchedules()
-
-            override fun onFetchFailed() {
-                //repoListRateLimit.reset(owner)
-            }
-
-        }.asLiveData()
-
-    }
-
-
     fun loadTerminalCombos(routeId: Int, forceRefresh: Boolean): LiveData<Resource<List<TerminalCombo>>> {
 
         return object : NetworkBoundResource<List<TerminalCombo>, List<FerryScheduleResponse>>(appExecutors) {
@@ -168,6 +144,12 @@ class FerriesRepository  @Inject constructor(
         }.asLiveData()
     }
 
+    fun updateFavorite(routeId: Int, isFavorite: Boolean) {
+        appExecutors.diskIO().execute {
+            ferryScheduleDao.updateFavorite(routeId, isFavorite)
+        }
+    }
+
     private fun saveFullSchedule(schedulesResponse: List<FerryScheduleResponse>) {
 
         var dbSchedulesList = arrayListOf<FerrySchedule>()
@@ -182,7 +164,9 @@ class FerriesRepository  @Inject constructor(
                 scheduleResponse.routeId,
                 scheduleResponse.description,
                 scheduleResponse.crossingTime,
-                cacheDate
+                cacheDate,
+                favorite = false,
+                remove = false
             )
             dbSchedulesList.add(schedule)
 
@@ -241,7 +225,7 @@ class FerriesRepository  @Inject constructor(
 
         }
 
-        ferryScheduleDao.insertSchedules(dbSchedulesList)
+        ferryScheduleDao.updateSchedules(dbSchedulesList)
         ferrySailingDao.insertSailings(dbSailingsList.distinct())
         ferryAlertDao.insertAlerts(dbAlertList.distinct())
 
