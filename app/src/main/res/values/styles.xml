@@ -32,4 +32,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="TimeStampText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#606060</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
 </resources>
