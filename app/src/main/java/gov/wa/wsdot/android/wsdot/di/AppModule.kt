@@ -5,6 +5,7 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlertDao
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingDao
@@ -26,6 +27,17 @@ class AppModule {
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
             .create(WebDataService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWsdotApiService(): WsdotApiService {
+        return Retrofit.Builder()
+            .baseUrl("http://www.wsdot.wa.gov/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(LiveDataCallAdapterFactory())
+            .build()
+            .create(WsdotApiService::class.java)
     }
 
     @Singleton
