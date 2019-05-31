@@ -73,10 +73,14 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // pass function to be called on adapter item tap
-        val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors) {
+        // pass function to be called on adapter item tap and favorite
+        val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors,
+            {
                 schedule -> navigateToRoute(schedule.routeId, schedule.description)
-        }
+            },
+            {
+                schedule -> ferriesViewModel.updateFavorite(schedule.routeId, !schedule.favorite)
+            })
 
         this.adapter = adapter
 

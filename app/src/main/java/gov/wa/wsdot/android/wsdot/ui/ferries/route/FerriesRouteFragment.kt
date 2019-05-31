@@ -1,7 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
 import android.os.Bundle
-import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
@@ -26,7 +25,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
-import java.util.*
+import androidx.core.app.ActivityCompat.invalidateOptionsMenu
 import kotlin.collections.ArrayList
 
 
@@ -38,6 +37,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     lateinit var sailingViewModel: FerriesSailingViewModel
 
     lateinit var dayPickerViewModel: SharedDateViewModel
+
+    private lateinit var favoriteMenuItem: MenuItem
+    private var isFavorite: Boolean = false
 
     private lateinit var fragmentPagerAdapter: FragmentStatePagerAdapter
     private lateinit var viewPager: ViewPager
@@ -51,7 +53,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,6 +94,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             }
         })
 
+        routeViewModel.route.observe(viewLifecycleOwner, Observer { schedule ->
+            if (schedule.data != null) {
+                isFavorite = schedule.data.favorite
+                setFavoriteMenuIcon()
+            }
+        })
+
         routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminal ->
             sailingViewModel.setSailingQuery(args.routeId, terminal.departingTerminalId, terminal.arrivingTerminalId)
         })
@@ -115,28 +123,41 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
-
         return dataBinding.root
 
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val routeId = args.routeId
-        Log.e("debug", routeId.toString())
-        Log.e("debug", "on create view")
-
         viewPager = view.findViewById(R.id.pager)
         setupViewPager(viewPager)
-
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.ferry_route_menu, menu)
+        favoriteMenuItem = menu.findItem(R.id.action_favorite)
+        setFavoriteMenuIcon()
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_favorite -> {
+                routeViewModel.updateFavorite(args.routeId)
+                return false
+            }
+            else -> {}
+        }
+        return false
+    }
+
+    private fun setFavoriteMenuIcon(){
+        if (isFavorite) {
+            favoriteMenuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_pink, null)
+        } else {
+            favoriteMenuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_gray, null)
+        }
     }
 
     // Add Fragments to Tabs
@@ -155,7 +176,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         fragmentPagerAdapter = SimpleFragmentPagerAdapter(requireFragmentManager(), fragments, titles)
 
         viewPager.adapter = fragmentPagerAdapter
-
 
     }
 

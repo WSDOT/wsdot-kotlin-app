@@ -23,6 +23,10 @@ class FerriesViewModel @Inject constructor(ferriesRepository: FerriesRepository)
         routes.addSource(routesLiveData) { routes.value = it }
     }
 
+    fun updateFavorite(routeId: Int, isFavorite: Boolean) {
+        repo.updateFavorite(routeId, isFavorite)
+    }
+
     fun refresh() {
         routes.removeSource(routesLiveData)
         routesLiveData = repo.loadSchedules(true)

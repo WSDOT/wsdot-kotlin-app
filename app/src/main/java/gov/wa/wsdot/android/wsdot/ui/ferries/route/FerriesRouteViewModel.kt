@@ -9,6 +9,8 @@ import gov.wa.wsdot.android.wsdot.util.network.Resource
 
 class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
+    private val repo = ferriesRepository
+
     private val _routeId: MutableLiveData<RouteId> = MutableLiveData()
     val routeId: LiveData<RouteId>
         get() = _routeId
@@ -36,6 +38,13 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
             return
         }
         _routeId.value = update
+    }
+
+    fun updateFavorite(routeId: Int) {
+        val favorite = route.value?.data?.favorite
+        if (favorite != null) {
+            repo.updateFavorite(routeId, !favorite)
+        }
     }
 
     fun refresh() {

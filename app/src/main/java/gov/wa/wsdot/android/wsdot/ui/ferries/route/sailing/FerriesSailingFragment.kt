@@ -19,6 +19,8 @@ import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import java.util.*
 import javax.inject.Inject
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 
 class FerriesSailingFragment : DaggerFragment(), Injectable {
@@ -96,7 +98,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 adapter.submitList(emptyList())
             }
         })
-
     }
 
 }

@@ -9,6 +9,8 @@ data class FerrySchedule(
     val routeId: Int,
     val description: String,
     val crossingTime: Int,
-    val cacheDate: Date
+    val cacheDate: Date,
+    val favorite: Boolean,
+    val remove: Boolean
 
 )
