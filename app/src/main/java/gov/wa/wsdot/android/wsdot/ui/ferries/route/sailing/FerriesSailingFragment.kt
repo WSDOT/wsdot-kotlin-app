@@ -21,6 +21,9 @@ import java.util.*
 import javax.inject.Inject
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
 
 
 class FerriesSailingFragment : DaggerFragment(), Injectable {
@@ -36,6 +39,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<FerriesSailingFragmentBinding>()
 
     private var adapter by autoCleared<FerrySailingListAdapter>()
+
+    private var currentSailingIndex = 0
 
    // val args: FerriesSailingFragmentArgs by navArgs()
 
@@ -65,6 +70,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         binding = dataBinding
 
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+
+        Log.e("debug", "onCreateView")
 
         return dataBinding.root
 
@@ -96,13 +103,36 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 true
             }
 
+
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
+            }
+
+            override fun onChanged() {
+                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
+            }
+
+        })
+
         sailingViewModel.sailings.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
+
+                currentSailingIndex = 0
+                for ((i, sailing) in sailingResource.data.withIndex()) {
+                    if (BindingFunctions.hasPassed(sailing.departingTime)) {
+                        currentSailingIndex = i
+                    }
+                }
+
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())
             }
         })
+
+
+
     }
 
 }

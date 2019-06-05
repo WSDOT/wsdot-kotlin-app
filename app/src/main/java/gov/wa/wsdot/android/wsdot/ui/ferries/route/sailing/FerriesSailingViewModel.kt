@@ -71,6 +71,15 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     }
 
+    fun reset() {
+        _sailingQuery.value =  SailingQuery(
+            0,
+            0,
+            0,
+            Date()
+        )
+    }
+
     data class SailingQuery(val routeId: Int, val departingId: Int, val arrivingId: Int, val sailingDate: Date) {
         fun <T> ifExists(f: (Int, Int, Int, Date) -> LiveData<T>): LiveData<T> {
             return if (routeId == 0 || departingId == 0 || arrivingId == 0) {

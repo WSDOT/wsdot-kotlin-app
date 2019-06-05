@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import androidx.navigation.fragment.findNavController
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 
 
 class FerriesHomeFragment : DaggerFragment(), Injectable {
@@ -28,6 +29,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var ferriesViewModel: FerriesViewModel
+    lateinit var sailingViewModel: FerriesSailingViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -44,6 +46,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
+
+        sailingViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        sailingViewModel.reset()
 
         val dataBinding = DataBindingUtil.inflate<FerriesHomeFragmentBinding>(
             inflater,

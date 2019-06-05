@@ -77,7 +77,7 @@ class FerryScheduleListAdapter(
         return binding
     }
 
-    override fun bind(binding: FerryScheduleItemBinding, item: FerrySchedule) {
+    override fun bind(binding: FerryScheduleItemBinding, item: FerrySchedule, position: Int) {
         binding.schedule = item
     }
 }
