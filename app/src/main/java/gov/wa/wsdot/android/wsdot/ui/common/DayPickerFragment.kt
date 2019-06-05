@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.navArgs
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import kotlinx.android.synthetic.main.ferries_route_fragment.view.*
 import java.util.*
@@ -15,6 +16,8 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
+    private val args: DayPickerFragmentArgs by navArgs()
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         // Get view model from activity's lifecycle
@@ -23,8 +26,9 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        // Use the current time as the default values for the picker
+        // Use the first date of sailings as the default values for the picker
         val c = Calendar.getInstance()
+        c.timeInMillis = args.startTime
 
         val selectedDate = dayPickerViewModel.value.value
         if (selectedDate != null) {
@@ -38,11 +42,8 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         // Create a new instance of TimePickerDialog and return it
         val datePickerDialog = DatePickerDialog(requireActivity(), this, year, month, day)
 
-        val rangeCal = Calendar.getInstance()
-        datePickerDialog.datePicker.minDate = rangeCal.timeInMillis
-        rangeCal.add(Calendar.DAY_OF_YEAR, 6)
-        datePickerDialog.datePicker.maxDate = rangeCal.timeInMillis
-
+        datePickerDialog.datePicker.minDate = args.startTime
+        datePickerDialog.datePicker.maxDate = args.endTime
 
         return datePickerDialog
     }

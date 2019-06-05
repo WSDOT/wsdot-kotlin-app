@@ -7,7 +7,7 @@
             android:thickness="7dp">
 
             <gradient
-                android:startColor="@color/colorPrimaryDark"
+                android:startColor="@color/colorAccent"
                 android:endColor="@color/colorAccent"
                 android:type="sweep" />
         </shape>

@@ -17,7 +17,7 @@ data class FerryAlert(
     val alertId: Int,
     val title: String,
     val route: Int,
-    val description: String,
+    val description: String?,
     val fullDescription: String,
     val publishDate: String
 )

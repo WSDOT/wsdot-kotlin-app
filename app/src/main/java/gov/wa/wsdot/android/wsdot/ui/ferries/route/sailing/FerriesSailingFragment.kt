@@ -70,6 +70,11 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        adapter.notifyDataSetChanged()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

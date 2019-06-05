@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
-import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,7 +45,6 @@ class FerrySailingListAdapter(
     }
 
     override fun bind(binding: FerrySailingItemBinding, item: FerrySailing) {
-        Log.e("debug", item.arrivingTime.toString())
         binding.sailing = item
     }
 }

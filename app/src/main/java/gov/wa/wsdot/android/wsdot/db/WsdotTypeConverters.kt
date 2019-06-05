@@ -16,6 +16,7 @@ class WsdotTypeConverters {
         return date?.time
     }
 
+
     @TypeConverter
     fun fromString(value: String?): List<String>? {
 

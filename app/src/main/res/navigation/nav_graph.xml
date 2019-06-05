@@ -63,6 +63,12 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <argument
+            android:name="start_time"
+            app:argType="long" />
+        <argument
+            android:name="end_time"
+            app:argType="long" />
     </dialog>
 
 
