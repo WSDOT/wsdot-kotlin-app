@@ -32,7 +32,7 @@ abstract class FerryScheduleDao {
     open fun updateSchedules(schedules: List<FerrySchedule>) {
         markSchedulesForRemoval()
         for (schedule in schedules) {
-            updateSchedules(schedule.routeId, schedule.description, schedule.crossingTime, schedule.cacheDate, false)
+            updateSchedules(schedule.routeId, schedule.description, schedule.crossingTime, schedule.serverCacheDate, schedule.localCacheDate, false)
         }
         deleteOldSchedules()
         insertNewSchedules(schedules)
@@ -44,10 +44,11 @@ abstract class FerryScheduleDao {
     @Query("UPDATE FerrySchedule SET "
             + "description = :description, "
             + "crossingTime = :crossingTime, "
-            + "cacheDate = :cacheDate, "
+            + "serverCacheDate = :serverCacheDate, "
+            + "localCacheDate = :localCacheDate, "
             + "remove = :remove "
             + "WHERE routeId = :routeId")
-    abstract fun updateSchedules(routeId: Int, description: String, crossingTime: Int, cacheDate: Date, remove: Boolean)
+    abstract fun updateSchedules(routeId: Int, description: String, crossingTime: Int, serverCacheDate: Date, localCacheDate: Date, remove: Boolean)
 
     @Query("DELETE FROM FerrySchedule WHERE remove = 1")
     abstract fun deleteOldSchedules()

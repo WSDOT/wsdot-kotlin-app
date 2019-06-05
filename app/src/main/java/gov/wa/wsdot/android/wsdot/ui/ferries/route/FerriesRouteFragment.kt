@@ -26,6 +26,8 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragmen
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -78,15 +80,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             false
         )
 
-        dataBinding.datePickerCallback = object : TapCallback {
-            override fun onTap(view: View) {
-                val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title)
-                view.findNavController().navigate(action)
-                view.isEnabled = false
-                Handler().postDelayed({ view.isEnabled = true }, 1000)
-            }
-        }
-
         routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
             if (terminals.data != null) {
                 routeViewModel.selectedTerminalCombo.value = terminals.data[0]
@@ -105,7 +98,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             sailingViewModel.setSailingQuery(args.routeId, terminal.departingTerminalId, terminal.arrivingTerminalId)
         })
 
+        // observe shared value to update sailing query when a new date is selected
         dayPickerViewModel.value.observe(viewLifecycleOwner, Observer { date ->
+
             val c = getInstance()
             if (date != null) {
                 c.time = date
@@ -115,6 +110,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             c.set(SECOND, 0)
             c.set(MILLISECOND, 0)
             sailingViewModel.setSailingQuery(c.time)
+
         })
 
         dataBinding.dateViewModel = dayPickerViewModel
@@ -123,8 +119,20 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
-        return dataBinding.root
+        // Observe schedule range for day picker values
+        routeViewModel.scheduleRange.observe(viewLifecycleOwner, Observer { scheduleRange ->
+            binding.datePickerCallback = object : TapCallback {
+                override fun onTap(view: View) {
+                    val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title, scheduleRange.startDate.time, scheduleRange.endDate.time)
+                    view.findNavController().navigate(action)
+                    // short delay to prevent double tap
+                    view.isEnabled = false
+                    Handler().postDelayed({ view.isEnabled = true }, 1000)
+                }
+            }
+        })
 
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

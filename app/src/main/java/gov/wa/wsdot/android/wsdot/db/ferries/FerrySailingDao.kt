@@ -25,6 +25,7 @@ abstract class FerrySailingDao {
     @Query("SELECT DISTINCT departingTerminalId, departingTerminalName, arrivingTerminalId, arrivingTerminalName FROM FerrySailing WHERE route = (:routeId)")
     abstract fun loadTerminalCombos(routeId: Int): LiveData<List<TerminalCombo>>
 
-    // TODO: select by date and route ID?
+    @Query("SELECT MIN(sailingDate) AS startDate, MAX(sailingDate) AS endDate FROM FerrySailing WHERE route = (:routeId)")
+    abstract fun loadScheduleDateRange(routeId: Int): LiveData<FerryScheduleRange>
 
 }

@@ -105,6 +105,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToRoute(routeId: Int, routeName: String) {
+
         val action = FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(routeId, routeName)
         findNavController().navigate(action)
     }

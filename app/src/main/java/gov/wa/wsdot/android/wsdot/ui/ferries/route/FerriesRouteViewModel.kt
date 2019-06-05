@@ -4,6 +4,7 @@ import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import javax.inject.Inject
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleRange
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 
@@ -14,6 +15,11 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
     private val _routeId: MutableLiveData<RouteId> = MutableLiveData()
     val routeId: LiveData<RouteId>
         get() = _routeId
+
+    val scheduleRange: LiveData<FerryScheduleRange> = Transformations
+        .switchMap(_routeId) { routeId ->
+            ferriesRepository.loadScheduleRange(routeId.routeId)
+        }
 
     val route : LiveData<Resource<FerrySchedule>> = Transformations
         .switchMap(_routeId) { routeId ->

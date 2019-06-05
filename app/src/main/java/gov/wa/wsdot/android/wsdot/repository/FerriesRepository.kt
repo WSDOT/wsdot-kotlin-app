@@ -8,10 +8,17 @@ import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.ArrayList
+import javax.xml.datatype.DatatypeConstants.MINUTES
+import javax.xml.datatype.DatatypeConstants.SECONDS
+import java.time.temporal.TemporalAdjusters.previous
+
+
+
 
 @Singleton
 class FerriesRepository  @Inject constructor(
@@ -29,12 +36,20 @@ class FerriesRepository  @Inject constructor(
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
 
             override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
-                Log.e("debug", "forcing refresh...")
-                Log.e("debug", data.toString())
 
-                return forceRefresh || data?.isEmpty() ?: true
-                // TODO: Caching time
-                // repoListRateLimit.shouldFetch(owner)
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+
+                    if (isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                        Log.e("debug", "data is old")
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
             }
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedules()
@@ -55,12 +70,20 @@ class FerriesRepository  @Inject constructor(
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
 
             override fun shouldFetch(data: FerrySchedule?): Boolean {
-                Log.e("debug", "forcing refresh...")
-                Log.e("debug", data.toString())
 
-                return forceRefresh
-                // TODO: Caching time
-                // repoListRateLimit.shouldFetch(owner)
+                var update = false
+
+                if (data != null) {
+
+                    if (isOverXMinOld(data.localCacheDate, x = 15)) {
+                        Log.e("debug", "data is old")
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
             }
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedule(routeId)
@@ -81,9 +104,7 @@ class FerriesRepository  @Inject constructor(
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
 
             override fun shouldFetch(data: List<FerrySailing>?): Boolean {
-
                 return forceRefresh || data?.isEmpty() ?: true
-                // TODO: Caching time
             }
 
             override fun loadFromDb() = ferrySailingDao.loadSailings(routeId, departingId, arrivingId, sailingDate)
@@ -97,6 +118,8 @@ class FerriesRepository  @Inject constructor(
         }.asLiveData()
 
     }
+
+    fun loadScheduleRange(routeId: Int) = ferrySailingDao.loadScheduleDateRange(routeId)
 
     fun loadTerminalCombos(routeId: Int, forceRefresh: Boolean): LiveData<Resource<List<TerminalCombo>>> {
 
@@ -158,13 +181,21 @@ class FerriesRepository  @Inject constructor(
 
         for (scheduleResponse in schedulesResponse) {
 
-            val cacheDate = Date(scheduleResponse.cacheDate.substring(6, 19).toLong()) // TODO: Test failure and new API date format
+            val apiSailingDateFormat = SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.ENGLISH)
+            val apiScheduleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+
+            var cacheDate: Date? = apiSailingDateFormat.parse(scheduleResponse.cacheDate)
+
+            if (cacheDate == null) {
+                cacheDate = Date()
+            }
 
             var schedule = FerrySchedule(
                 scheduleResponse.routeId,
                 scheduleResponse.description,
                 scheduleResponse.crossingTime,
                 cacheDate,
+                Date(),
                 favorite = false,
                 remove = false
             )
@@ -175,12 +206,10 @@ class FerriesRepository  @Inject constructor(
                 for (sailing in routeSchedules.sailings) {
                     for (sailingTime in sailing.times) {
 
-                        // set up arriving time
-                        val arrivingTimeLong = sailingTime.arrivingTime?.substring(6, 19)?.toLong()
+                        // set up arrivingTime
                         var arrivingTime: Date? = null
-
-                        if (arrivingTimeLong != null) {
-                            arrivingTime = Date(arrivingTimeLong)
+                        if (sailingTime.arrivingTime != null) {
+                            arrivingTime = apiSailingDateFormat.parse(sailingTime.arrivingTime)
                         }
 
                         // set up annotations
@@ -192,13 +221,13 @@ class FerriesRepository  @Inject constructor(
 
                         val sailingItem = FerrySailing(
                             scheduleResponse.routeId,
-                            Date(routeSchedules.date.substring(6, 19).toLong()),
+                            apiScheduleDateFormat.parse(routeSchedules.date),
                             sailing.departingTerminalID,
                             sailing.departingTerminalName,
                             sailing.arrivingTerminalID,
                             sailing.arrivingTerminalName,
                             annotations,
-                            Date(sailingTime.departingTime.substring(6, 19).toLong()),
+                            apiSailingDateFormat.parse(sailingTime.departingTime),
                             arrivingTime,
                             cacheDate
                         )
@@ -229,6 +258,15 @@ class FerriesRepository  @Inject constructor(
         ferrySailingDao.insertSailings(dbSailingsList.distinct())
         ferryAlertDao.insertAlerts(dbAlertList.distinct())
 
+    }
+
+    private fun isOverXMinOld(date: Date, x: Int): Boolean {
+        val previous = Calendar.getInstance()
+        previous.time = date
+        val now = Calendar.getInstance()
+        val diff = now.timeInMillis - previous.timeInMillis
+        val duration = x * 60 * 1000
+        return diff >= duration
     }
 
 }
