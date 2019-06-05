@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,6 +11,9 @@ import gov.wa.wsdot.android.wsdot.databinding.FerrySailingItemBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailing
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import androidx.recyclerview.widget.RecyclerView
+import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
+
 
 /**
  * A RecyclerView adapter for [FerrySailing] class.
@@ -29,7 +33,12 @@ class FerrySailingListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: FerrySailing, newItem: FerrySailing): Boolean {
-            return oldItem.cacheDate.time == newItem.cacheDate.time
+            return oldItem.route == newItem.route
+                    && oldItem.departingTime == newItem.departingTime
+                    && oldItem.arrivingTime == newItem.arrivingTime
+                    && oldItem.departingTerminalId == newItem.departingTerminalId
+                    && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
+                    && oldItem.cacheDate.time == newItem.cacheDate.time
         }
     }
 ) {
@@ -44,7 +53,8 @@ class FerrySailingListAdapter(
         )
     }
 
-    override fun bind(binding: FerrySailingItemBinding, item: FerrySailing) {
+    override fun bind(binding: FerrySailingItemBinding, item: FerrySailing, position: Int) {
         binding.sailing = item
     }
+
 }

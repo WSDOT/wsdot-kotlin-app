@@ -45,9 +45,9 @@ abstract class DataBoundListAdapter<T, V : ViewDataBinding>(
     protected abstract fun createBinding(parent: ViewGroup): V
 
     override fun onBindViewHolder(holder: DataBoundViewHolder<V>, position: Int) {
-        bind(holder.binding, getItem(position))
+        bind(holder.binding, getItem(position), position)
         holder.binding.executePendingBindings()
     }
 
-    protected abstract fun bind(binding: V, item: T)
+    protected abstract fun bind(binding: V, item: T, position: Int)
 }

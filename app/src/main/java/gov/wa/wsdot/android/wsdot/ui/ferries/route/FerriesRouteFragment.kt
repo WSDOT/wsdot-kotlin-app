@@ -26,10 +26,10 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragmen
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
 import androidx.core.app.ActivityCompat.invalidateOptionsMenu
+import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
 
@@ -61,6 +61,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
+        // set up view models
         routeViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
         routeViewModel.setRouteId(args.routeId)
@@ -73,6 +74,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+
+        // create the data binding
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
             inflater,
             R.layout.ferries_route_fragment,
@@ -80,6 +83,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             false
         )
 
+        // obverse all available terminal combos for the route ONCE.
+        // this allows us to set the initial value for the two-way bound data.
         routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
             if (terminals.data != null) {
                 routeViewModel.selectedTerminalCombo.value = terminals.data[0]
@@ -87,15 +92,16 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             }
         })
 
+        // observe the schedule item to update the favorite icon
         routeViewModel.route.observe(viewLifecycleOwner, Observer { schedule ->
             if (schedule.data != null) {
                 isFavorite = schedule.data.favorite
                 setFavoriteMenuIcon()
             }
         })
-
-        routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminal ->
-            sailingViewModel.setSailingQuery(args.routeId, terminal.departingTerminalId, terminal.arrivingTerminalId)
+        // observe terminal combo changes. the terminalCombo is two way data bound to the UI selector
+        routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminalCombo ->
+            sailingViewModel.setSailingQuery(args.routeId, terminalCombo.departingTerminalId, terminalCombo.arrivingTerminalId)
         })
 
         // observe shared value to update sailing query when a new date is selected
@@ -113,6 +119,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         })
 
+        // bind view models to view
         dataBinding.dateViewModel = dayPickerViewModel
         dataBinding.routeViewModel = routeViewModel
         dataBinding.lifecycleOwner = viewLifecycleOwner
