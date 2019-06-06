@@ -1,11 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailing
+import androidx.lifecycle.*
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.network.Resource
@@ -16,12 +12,27 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
 
-    val sailings: LiveData<Resource<List<FerrySailing>>> = Transformations
+    private val sailings: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
         .switchMap(_sailingQuery) { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 ferriesRepository.loadSailings(routeId, departingId, arrivingId, sailingDate, false)
             }
         }
+
+    private val spaces: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
+        .switchMap(_sailingQuery) { input ->
+            input.ifExists { routeId, departingId, arrivingId, sailingDate ->
+                ferriesRepository.loadSpaces(routeId, departingId, arrivingId, sailingDate)
+            }
+        }
+
+    val sailingsWithSpaces: MediatorLiveData<Resource<List<FerrySailingWithSpaces>>> = MediatorLiveData()
+
+    init {
+        sailingsWithSpaces.addSource(sailings) { sailingsWithSpaces.value = it }
+        sailingsWithSpaces.addSource(spaces) { sailingsWithSpaces.value = it }
+    }
+
 
     fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int) {
 
@@ -61,14 +72,21 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
             if (_sailingQuery.value == update) {
                 return
             }
+
             _sailingQuery.value = update
         }
 
     }
 
-    // TODO: refresh
     fun refresh() {
+        val routeId = _sailingQuery.value?.routeId
+        val departingId = _sailingQuery.value?.departingId
+        val arrivingId = _sailingQuery.value?.arrivingId
+        val sailingDate = _sailingQuery.value?.sailingDate
 
+        if (routeId != null && departingId != null && arrivingId != null && sailingDate != null) {
+            _sailingQuery.value = SailingQuery(routeId, departingId, arrivingId, sailingDate)
+        }
     }
 
     fun reset() {

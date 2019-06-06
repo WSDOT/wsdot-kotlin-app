@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.api
 
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,6 +16,6 @@ interface WsdotApiService {
     fun getFerrySailingSpaces(
         @Path("departingId") departingId: Int,
         @Query("apiaccesscode") apiKey: String
-    ): LiveData<ApiResponse<List<FerrySpacesResponse>>>
+    ): LiveData<ApiResponse<FerrySpacesResponse>>
 
 }

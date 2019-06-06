@@ -41,6 +41,38 @@ data class FerrySpacesResponse (
 
         data class ArrivingSpaces(
 
+            @field:SerializedName("TerminalID")
+            val terminalId: Int,
+
+            @field:SerializedName("TerminalName")
+            val terminalName: String,
+
+            @field:SerializedName("VesselID")
+            val vesselId: Int,
+
+            @field:SerializedName("VesselName")
+            val vesselName: String,
+
+            @field:SerializedName("DisplayReservableSpace")
+            val displayReservableSpace: Boolean,
+
+            @field:SerializedName("ReservableSpaceCount")
+            val reservableSpaceCount: Int,
+
+            @field:SerializedName("ReservableSpaceHexColor")
+            val reservableSpaceHexColor: String,
+
+            @field:SerializedName("DisplayDriveUpSpace")
+            val displayDriveUpSpace: Boolean,
+
+            @field:SerializedName("DriveUpSpaceCount")
+            val driveUpSpaceCount: Int,
+
+            @field:SerializedName("DriveUpSpaceHexColor")
+            val driveUpSpaceHexColor: String,
+
+            @field:SerializedName("MaxSpaceCount")
+            val maxSpaceCount: Int,
 
             @field:SerializedName("ArrivalTerminalIDs")
             val arrivalTerminalIds: List<Int>
@@ -48,25 +80,4 @@ data class FerrySpacesResponse (
         )
     }
 
-
 }
-
-/*
-
-    "SpaceForArrivalTerminals": [
-        {
-        "TerminalID": 8,
-        "TerminalName": "Edmonds",
-        "VesselID": 25,
-        "VesselName": "Puyallup",
-        "DisplayReservableSpace": false,
-        "ReservableSpaceCount": null,
-        "ReservableSpaceHexColor": null,
-        "DisplayDriveUpSpace": true,
-        "DriveUpSpaceCount": 53,
-        "DriveUpSpaceHexColor": "#FFFF00",
-        "MaxSpaceCount": 203,
-
-
-
- */

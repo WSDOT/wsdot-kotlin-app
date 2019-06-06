@@ -109,6 +109,31 @@ object BindingAdapters {
         view.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+
+    @JvmStatic
+    @BindingAdapter("setMax")
+    fun bindSetMax(progress: ProgressBar, max: Int?) {
+        if (max != null) {
+            progress.max = max
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setCurrent")
+    fun bindSetCurrent(progress: ProgressBar, current: Int?) {
+        if (current != null) {
+            progress.progress = current
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("setTextFromInt")
+    fun bindSetCurrent(textView: TextView, int: Int?) {
+        if (int != null) {
+            textView.text = int.toString()
+        }
+    }
+
     @JvmStatic
     @BindingAdapter("bindStringArray")
     fun bindStringArray(textView: TextView, strings: List<String>) {

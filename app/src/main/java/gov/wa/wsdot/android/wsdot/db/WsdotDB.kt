@@ -28,7 +28,8 @@ import gov.wa.wsdot.android.wsdot.db.ferries.*
     entities = [
         FerrySchedule::class,
         FerrySailing::class,
-        FerryAlert::class
+        FerryAlert::class,
+        FerrySpace::class
     ],
     version = 1,
     exportSchema = false
@@ -41,5 +42,9 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun ferrySailingDao(): FerrySailingDao
 
     abstract fun ferryAlertDao(): FerryAlertDao
+
+    abstract fun ferrySpaceDao(): FerrySpaceDao
+
+    abstract fun ferrySailingWithSpacesDao(): FerrySailingWithSpacesDao
 
 }

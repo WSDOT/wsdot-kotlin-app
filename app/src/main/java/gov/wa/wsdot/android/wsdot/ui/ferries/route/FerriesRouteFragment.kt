@@ -25,10 +25,6 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
-import androidx.core.app.ActivityCompat.invalidateOptionsMenu
-import androidx.recyclerview.widget.RecyclerView
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -74,7 +70,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
             inflater,
@@ -96,8 +91,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         routeViewModel.route.observe(viewLifecycleOwner, Observer { schedule ->
             if (schedule.data != null) {
                 isFavorite = schedule.data.favorite
-                setFavoriteMenuIcon()
+                activity?.invalidateOptionsMenu()
             }
+
         })
         // observe terminal combo changes. the terminalCombo is two way data bound to the UI selector
         routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminalCombo ->
@@ -151,8 +147,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.ferry_route_menu, menu)
-        favoriteMenuItem = menu.findItem(R.id.action_favorite)
-        setFavoriteMenuIcon()
+        setFavoriteMenuIcon(menu.findItem(R.id.action_favorite))
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -167,11 +162,11 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         return false
     }
 
-    private fun setFavoriteMenuIcon(){
+    private fun setFavoriteMenuIcon(menuItem: MenuItem){
         if (isFavorite) {
-            favoriteMenuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_pink, null)
+            menuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_pink, null)
         } else {
-            favoriteMenuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_gray, null)
+            menuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_gray, null)
         }
     }
 

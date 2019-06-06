@@ -15,13 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
-import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import java.util.*
 import javax.inject.Inject
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
 
@@ -71,8 +66,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
-        Log.e("debug", "onCreateView")
-
         return dataBinding.root
 
     }
@@ -115,7 +108,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         })
 
-        sailingViewModel.sailings.observe(viewLifecycleOwner, Observer { sailingResource ->
+        sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
 
                 currentSailingIndex = 0
@@ -125,13 +118,13 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                     }
                 }
 
+                Log.e("debug", sailingResource.data.toString())
+
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())
             }
         })
-
-
 
     }
 
