@@ -3,9 +3,12 @@ package gov.wa.wsdot.android.wsdot.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
+import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
+import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.text.SimpleDateFormat
@@ -13,19 +16,17 @@ import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.ArrayList
-import javax.xml.datatype.DatatypeConstants.MINUTES
-import javax.xml.datatype.DatatypeConstants.SECONDS
-import java.time.temporal.TemporalAdjusters.previous
-
-
 
 
 @Singleton
 class FerriesRepository  @Inject constructor(
-    private val webservice: WebDataService,
+    private val dataWebservice: WebDataService,
+    private val wsdotWebservice: WsdotApiService,
     private val appExecutors: AppExecutors,
     private val ferryScheduleDao: FerryScheduleDao,
     private val ferrySailingDao: FerrySailingDao,
+    private val ferrySpaceDao: FerrySpaceDao,
+    private val ferrySailingWithSpacesDao: FerrySailingWithSpacesDao,
     private val ferryAlertDao: FerryAlertDao
 ) {
 
@@ -41,7 +42,7 @@ class FerriesRepository  @Inject constructor(
 
                 if (data != null && data.isNotEmpty()) {
 
-                    if (isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
                         Log.e("debug", "data is old")
                         update = true
                     }
@@ -54,7 +55,7 @@ class FerriesRepository  @Inject constructor(
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedules()
 
-            override fun createCall() = webservice.getFerrySchedules()
+            override fun createCall() = dataWebservice.getFerrySchedules()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -75,7 +76,7 @@ class FerriesRepository  @Inject constructor(
 
                 if (data != null) {
 
-                    if (isOverXMinOld(data.localCacheDate, x = 15)) {
+                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 15)) {
                         Log.e("debug", "data is old")
                         update = true
                     }
@@ -88,7 +89,7 @@ class FerriesRepository  @Inject constructor(
 
             override fun loadFromDb() = ferryScheduleDao.loadSchedule(routeId)
 
-            override fun createCall() = webservice.getFerrySchedules()
+            override fun createCall() = dataWebservice.getFerrySchedules()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -97,19 +98,40 @@ class FerriesRepository  @Inject constructor(
         }.asLiveData()
     }
 
-    fun loadSailings(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailing>>> {
+    fun loadSailings(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithSpaces>>> {
 
-        return object : NetworkBoundResource<List<FerrySailing>, List<FerryScheduleResponse>>(appExecutors) {
+        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, List<FerryScheduleResponse>>(appExecutors) {
 
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
 
-            override fun shouldFetch(data: List<FerrySailing>?): Boolean {
+            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
                 return forceRefresh || data?.isEmpty() ?: true
             }
 
-            override fun loadFromDb() = ferrySailingDao.loadSailings(routeId, departingId, arrivingId, sailingDate)
+            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
 
-            override fun createCall() = webservice.getFerrySchedules()
+            override fun createCall() = dataWebservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+    fun loadSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailingWithSpaces>>> {
+
+        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, FerrySpacesResponse>(appExecutors) {
+
+            override fun saveCallResult(item: FerrySpacesResponse) = saveSailingSpaces(item)
+
+            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
+                return true
+            }
+
+            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
+
+            override fun createCall() = wsdotWebservice.getFerrySailingSpaces(departingId, apiKey = "")
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -118,6 +140,7 @@ class FerriesRepository  @Inject constructor(
         }.asLiveData()
 
     }
+
 
     fun loadScheduleRange(routeId: Int) = ferrySailingDao.loadScheduleDateRange(routeId)
 
@@ -133,7 +156,7 @@ class FerriesRepository  @Inject constructor(
 
             override fun loadFromDb() = ferrySailingDao.loadTerminalCombos(routeId)
 
-            override fun createCall() = webservice.getFerrySchedules()
+            override fun createCall() = dataWebservice.getFerrySchedules()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -158,7 +181,7 @@ class FerriesRepository  @Inject constructor(
 
             override fun loadFromDb() = ferryAlertDao.loadAlertsById(forRoute)
 
-            override fun createCall() = webservice.getFerrySchedules()
+            override fun createCall() = dataWebservice.getFerrySchedules()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -260,13 +283,59 @@ class FerriesRepository  @Inject constructor(
 
     }
 
-    private fun isOverXMinOld(date: Date, x: Int): Boolean {
-        val previous = Calendar.getInstance()
-        previous.time = date
-        val now = Calendar.getInstance()
-        val diff = now.timeInMillis - previous.timeInMillis
-        val duration = x * 60 * 1000
-        return diff >= duration
+
+    private fun saveSailingSpaces(spaceResponse: FerrySpacesResponse?) {
+
+        var dbSpacesList = arrayListOf<FerrySpace>()
+
+        if (spaceResponse == null) {
+            Log.e("debug", "spaces null")
+            ferrySpaceDao.insertSpaces(dbSpacesList)
+            return
+        }
+
+        val departingTerminalId = spaceResponse.terminalId
+
+        for (departingSpaces in spaceResponse.departingSpaces) {
+
+            val maxSpaces = departingSpaces.maxSpaceCount
+            val departureTime = departingSpaces.departureTime
+
+            for (arrivalSpaces in departingSpaces.spaceForArrivalTerminals) {
+
+                val arrivingTerminalId = arrivalSpaces.terminalId
+
+                var spaces = 0
+                var color = ""
+
+                if (arrivalSpaces.displayReservableSpace) {
+                    spaces = arrivalSpaces.reservableSpaceCount
+                    color = arrivalSpaces.reservableSpaceHexColor
+                } else {
+                    spaces = arrivalSpaces.driveUpSpaceCount
+                    color = arrivalSpaces.driveUpSpaceHexColor
+                }
+
+                val spacesItem = FerrySpace(
+                    departingTerminalId,
+                    arrivingTerminalId,
+                    maxSpaces,
+                    spaces,
+                    color,
+                    Date(departureTime.substring(6, 19).toLong()),
+                    Date()
+                )
+
+                dbSpacesList.add(spacesItem)
+
+            }
+        }
+
+
+        Log.e("debug", dbSpacesList.toString())
+
+        ferrySpaceDao.insertSpaces(dbSpacesList)
+
     }
 
 }

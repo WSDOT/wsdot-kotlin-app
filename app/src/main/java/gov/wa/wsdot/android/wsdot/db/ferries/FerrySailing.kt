@@ -7,15 +7,18 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity(
-    indices = [Index(value = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime", "arrivingTime"], unique = true)],
+    indices = [Index(value = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime", "arrivingTime"], unique = true),
+                Index(value = ["departingTerminalId", "arrivingTerminalId", "departingTime"], unique = true)],
     primaryKeys = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime"],
-    foreignKeys = [ForeignKey(
-        entity = FerrySchedule::class,
-        parentColumns = ["routeId"],
-        childColumns = ["route"],
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    foreignKeys = [
+        ForeignKey(
+            entity = FerrySchedule::class,
+            parentColumns = ["routeId"],
+            childColumns = ["route"],
+            onUpdate = ForeignKey.CASCADE,
+            deferred = true
+        )
+    ]
 )
 data class FerrySailing(
     val route: Int,
@@ -28,4 +31,5 @@ data class FerrySailing(
     val departingTime: Date,
     val arrivingTime: Date?,
     val cacheDate: Date
+
 )

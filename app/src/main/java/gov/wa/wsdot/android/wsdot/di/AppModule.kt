@@ -7,9 +7,7 @@ import dagger.Provides
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
-import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlertDao
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingDao
-import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
+import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,7 +31,7 @@ class AppModule {
     @Provides
     fun provideWsdotApiService(): WsdotApiService {
         return Retrofit.Builder()
-            .baseUrl("http://www.wsdot.wa.gov/")
+            .baseUrl("https://www.wsdot.wa.gov/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .build()
@@ -65,6 +63,18 @@ class AppModule {
     @Provides
     fun provideFerryAlertDao(db: WsdotDB): FerryAlertDao {
         return db.ferryAlertDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFerrySpacesDao(db: WsdotDB): FerrySpaceDao {
+        return db.ferrySpaceDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFerrySailingWithSpacesDao(db: WsdotDB): FerrySailingWithSpacesDao {
+        return db.ferrySailingWithSpacesDao()
     }
 
 }

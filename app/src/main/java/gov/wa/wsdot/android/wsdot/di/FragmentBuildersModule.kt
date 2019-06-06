@@ -39,6 +39,6 @@ abstract class FragmentBuildersModule {
     abstract fun contributeFerriesRouteFragment(): FerriesRouteFragment
 
     @ContributesAndroidInjector
-    abstract fun contributeFerriesSaillingFragment(): FerriesSailingFragment
+    abstract fun contributeFerriesSailingFragment(): FerriesSailingFragment
 
 }
