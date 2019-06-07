@@ -23,7 +23,6 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import androidx.navigation.fragment.findNavController
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 
-
 class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -66,6 +65,12 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         }
 
         dataBinding.viewModel = ferriesViewModel
+
+        dataBinding.reservationButton.setOnClickListener {
+            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://secureapps.wsdot.wa.gov/Ferries/Reservations/Vehicle/default.aspx", "Reservation")
+            findNavController().navigate(action)
+        }
+
         binding = dataBinding
 
         // animation
