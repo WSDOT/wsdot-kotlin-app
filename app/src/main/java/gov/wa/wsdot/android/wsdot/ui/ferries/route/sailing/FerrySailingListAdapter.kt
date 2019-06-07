@@ -3,6 +3,8 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.postponeEnterTransition
+import androidx.core.app.ActivityCompat.startPostponedEnterTransition
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import gov.wa.wsdot.android.wsdot.R
@@ -29,6 +31,7 @@ class FerrySailingListAdapter(
                     && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
                     && oldItem.spaces == newItem.spaces
                     && oldItem.maxSpaces == newItem.maxSpaces
+                    && oldItem.spacesCacheDate == oldItem.spacesCacheDate
         }
 
         override fun areContentsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
@@ -40,6 +43,7 @@ class FerrySailingListAdapter(
                     && oldItem.cacheDate.time == newItem.cacheDate.time
                     && oldItem.spaces == newItem.spaces
                     && oldItem.maxSpaces == newItem.maxSpaces
+                    && oldItem.spacesCacheDate == newItem.spacesCacheDate
         }
     }
 ) {

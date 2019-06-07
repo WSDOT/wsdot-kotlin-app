@@ -14,5 +14,7 @@ data class FerrySailingWithSpaces(
     val arrivingTime: Date?,
     val cacheDate: Date,
     val maxSpaces: Int?,
-    val spaces: Int?
+    val spaces: Int?,
+    val reserveSpaces: Int?,
+    val spacesCacheDate: Date?
 )

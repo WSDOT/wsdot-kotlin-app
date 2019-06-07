@@ -21,8 +21,10 @@ data class FerrySpace(
     val departingTerminalId: Int,
     val arrivingTerminalId: Int,
     val maxSpacesCount: Int,
-    val currentSpacesCount: Int,
-    val currentSpacesColor: String,
+    val currentSpacesCount: Int?,
+    val reservableSpacesCount: Int?,
+    val currentSpacesColor: String?,
+    val reservableSpacesColor: String?,
     val departureTime: Date,
     val localCacheDate: Date
 

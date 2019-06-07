@@ -19,6 +19,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import javax.inject.Inject
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
+import java.util.*
 
 
 class FerriesSailingFragment : DaggerFragment(), Injectable {
@@ -36,6 +37,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
     private var adapter by autoCleared<FerrySailingListAdapter>()
 
     private var currentSailingIndex = 0
+
+    lateinit var t: Timer
 
    // val args: FerriesSailingFragmentArgs by navArgs()
 
@@ -89,23 +92,19 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         // animations
         postponeEnterTransition()
-
         binding.scheduleList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
                 true
             }
 
-
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
             }
-
             override fun onChanged() {
                 binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
             }
-
         })
 
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
@@ -118,14 +117,28 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                     }
                 }
 
-                Log.e("debug", sailingResource.data.toString())
-
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())
             }
         })
 
+        startSailingSpacesTask()
+
     }
 
+    private fun startSailingSpacesTask() {
+        t = Timer()
+        t.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        sailingViewModel.refresh()
+                    }
+                }
+            },
+            0,
+            120000
+        )
+    }
 }

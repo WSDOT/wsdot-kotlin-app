@@ -164,8 +164,10 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("bindRelativeDate")
-    fun bindRelativeDate(textView: TextView, date: Date) {
-        textView.text = getRelative(date)
+    fun bindRelativeDate(textView: TextView, date: Date?) {
+        if (date != null) {
+            textView.text = getRelative(date)
+        }
     }
 
     // Creates an updated timestamp from date object

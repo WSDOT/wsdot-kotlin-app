@@ -57,7 +57,7 @@ data class FerrySpacesResponse (
             val displayReservableSpace: Boolean,
 
             @field:SerializedName("ReservableSpaceCount")
-            val reservableSpaceCount: Int,
+            val reservableSpaceCount: Int?,
 
             @field:SerializedName("ReservableSpaceHexColor")
             val reservableSpaceHexColor: String,
