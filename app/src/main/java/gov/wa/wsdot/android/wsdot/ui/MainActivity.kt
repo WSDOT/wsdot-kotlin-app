@@ -18,7 +18,10 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import gov.wa.wsdot.android.wsdot.ui.common.BackFragment
 import kotlinx.android.synthetic.main.activity_main.*
+
+
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
