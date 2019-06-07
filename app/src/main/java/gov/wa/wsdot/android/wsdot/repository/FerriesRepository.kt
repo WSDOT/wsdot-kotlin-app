@@ -283,7 +283,6 @@ class FerriesRepository  @Inject constructor(
 
     }
 
-
     private fun saveSailingSpaces(spaceResponse: FerrySpacesResponse?) {
 
         var dbSpacesList = arrayListOf<FerrySpace>()
@@ -303,39 +302,55 @@ class FerriesRepository  @Inject constructor(
 
             for (arrivalSpaces in departingSpaces.spaceForArrivalTerminals) {
 
-                val arrivingTerminalId = arrivalSpaces.terminalId
+                val resSpaces = arrivalSpaces.reservableSpaceCount
+                val resColor = arrivalSpaces.reservableSpaceHexColor
 
-                var spaces = 0
-                var color = ""
+                val spaces = arrivalSpaces.driveUpSpaceCount
+                val color = arrivalSpaces.driveUpSpaceHexColor
 
-                if (arrivalSpaces.displayReservableSpace) {
-                    spaces = arrivalSpaces.reservableSpaceCount
-                    color = arrivalSpaces.reservableSpaceHexColor
-                } else {
-                    spaces = arrivalSpaces.driveUpSpaceCount
-                    color = arrivalSpaces.driveUpSpaceHexColor
-                }
-
-                val spacesItem = FerrySpace(
+                var spacesItem = FerrySpace(
                     departingTerminalId,
-                    arrivingTerminalId,
+                    arrivalSpaces.terminalId,
                     maxSpaces,
                     spaces,
+                    resSpaces,
                     color,
+                    resColor,
                     Date(departureTime.substring(6, 19).toLong()),
                     Date()
                 )
 
                 dbSpacesList.add(spacesItem)
 
+                // Check for '->' because some entries in the data
+                // have arrival terminals for sailings that aren't there
+                if (arrivalSpaces.terminalName.contains("->")) {
+                    for (arrivalTerminal in arrivalSpaces.arrivalTerminalIds) {
+                        if (arrivalTerminal != arrivalSpaces.terminalId) {
+
+                            spacesItem = FerrySpace(
+                                departingTerminalId,
+                                arrivalTerminal,
+                                maxSpaces,
+                                spaces,
+                                resSpaces,
+                                color,
+                                resColor,
+                                Date(departureTime.substring(6, 19).toLong()),
+                                Date()
+                            )
+
+                            dbSpacesList.add(spacesItem)
+
+                        }
+                    }
+                }
             }
         }
-
 
         Log.e("debug", dbSpacesList.toString())
 
         ferrySpaceDao.insertSpaces(dbSpacesList)
 
     }
-
 }
