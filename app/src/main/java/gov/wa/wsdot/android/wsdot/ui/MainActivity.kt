@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import android.view.Menu
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import dagger.android.DispatchingAndroidInjector
@@ -18,10 +17,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import gov.wa.wsdot.android.wsdot.ui.common.BackFragment
-import kotlinx.android.synthetic.main.activity_main.*
-
-
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
