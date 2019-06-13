@@ -20,7 +20,7 @@ import kotlin.collections.ArrayList
 
 
 @Singleton
-class FerriesRepository  @Inject constructor(
+class FerriesRepository @Inject constructor(
     private val dataWebservice: WebDataService,
     private val wsdotWebservice: WsdotApiService,
     private val appExecutors: AppExecutors,

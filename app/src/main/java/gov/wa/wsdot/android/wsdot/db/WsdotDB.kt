@@ -20,6 +20,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import gov.wa.wsdot.android.wsdot.db.ferries.*
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 
 /**
  * Main database description.
@@ -30,7 +32,8 @@ import gov.wa.wsdot.android.wsdot.db.ferries.*
         FerrySailing::class,
         FerryAlert::class,
         FerrySpace::class,
-        Vessel::class
+        Vessel::class,
+        Camera::class
     ],
     version = 1,
     exportSchema = false
@@ -49,5 +52,7 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun ferrySailingWithSpacesDao(): FerrySailingWithSpacesDao
 
     abstract fun vesselDao(): VesselDao
+
+    abstract fun cameraDao(): CameraDao
 
 }

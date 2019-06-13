@@ -8,6 +8,7 @@ import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.db.ferries.*
+import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -81,6 +82,12 @@ class AppModule {
     @Provides
     fun provideFerrySailingWithSpacesDao(db: WsdotDB): FerrySailingWithSpacesDao {
         return db.ferrySailingWithSpacesDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCameraDao(db: WsdotDB): CameraDao {
+        return db.cameraDao()
     }
 
 }
