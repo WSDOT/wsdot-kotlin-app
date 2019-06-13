@@ -9,16 +9,7 @@ import java.util.*
 @Entity(
     indices = [Index(value = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime", "arrivingTime"], unique = true),
                 Index(value = ["departingTerminalId", "arrivingTerminalId", "departingTime"], unique = true)],
-    primaryKeys = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime"],
-    foreignKeys = [
-        ForeignKey(
-            entity = FerrySchedule::class,
-            parentColumns = ["routeId"],
-            childColumns = ["route"],
-            onUpdate = ForeignKey.CASCADE,
-            deferred = true
-        )
-    ]
+    primaryKeys = ["route", "sailingDate", "departingTerminalId", "arrivingTerminalId", "departingTime"]
 )
 data class FerrySailing(
     val route: Int,

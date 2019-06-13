@@ -7,6 +7,7 @@ import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
+import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
@@ -131,7 +132,7 @@ class FerriesRepository  @Inject constructor(
 
             override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
 
-            override fun createCall() = wsdotWebservice.getFerrySailingSpaces(departingId, apiKey = "")
+            override fun createCall() = wsdotWebservice.getFerrySailingSpaces(departingId, apiKey = ApiKeys.WSDOT_KEY)
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -278,7 +279,7 @@ class FerriesRepository  @Inject constructor(
         }
 
         ferryScheduleDao.updateSchedules(dbSchedulesList)
-        ferrySailingDao.insertSailings(dbSailingsList.distinct())
+        ferrySailingDao.updateSailings(dbSailingsList.distinct())
         ferryAlertDao.insertAlerts(dbAlertList.distinct())
 
     }
@@ -350,7 +351,7 @@ class FerriesRepository  @Inject constructor(
 
         Log.e("debug", dbSpacesList.toString())
 
-        ferrySpaceDao.insertSpaces(dbSpacesList)
+        ferrySpaceDao.updateSpaces(dbSpacesList)
 
     }
 }

@@ -7,14 +7,7 @@ import java.util.*
 
 @Entity(
     indices = [Index(value = ["departingTerminalId", "arrivingTerminalId", "departureTime"], unique = true)],
-    primaryKeys = ["departingTerminalId", "arrivingTerminalId", "departureTime"],
-    foreignKeys = [ForeignKey(
-        entity = FerrySailing::class,
-        parentColumns = ["departingTime", "departingTerminalId", "arrivingTerminalId"],
-        childColumns = ["departureTime", "departingTerminalId","arrivingTerminalId"],
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    primaryKeys = ["departingTerminalId", "arrivingTerminalId", "departureTime"]
 )
 data class FerrySpace(
 

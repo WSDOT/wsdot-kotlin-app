@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
@@ -20,7 +22,6 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import javax.inject.Inject
 
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import androidx.navigation.fragment.findNavController
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 
 class FerriesHomeFragment : DaggerFragment(), Injectable {
@@ -71,6 +72,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
             findNavController().navigate(action)
         }
 
+        dataBinding.vesselWatchButton.setOnClickListener {
+            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavVesselWatchFragment()
+            findNavController().navigate(action)
+        }
+
         binding = dataBinding
 
         // animation
@@ -117,7 +123,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToRoute(routeId: Int, routeName: String) {
-
         val action = FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(routeId, routeName)
         findNavController().navigate(action)
     }

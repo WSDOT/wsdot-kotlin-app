@@ -29,6 +29,14 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
         <action
+            android:id="@+id/action_navFerriesRouteFragment_to_navVesselWatchFragment"
+            app:destination="@id/navVesselWatchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
             android:id="@+id/action_navFerriesRouteFragment_to_navWebViewFragment"
             app:destination="@id/navWebViewFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -60,6 +68,36 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/navVesselWatchFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment"
+        android:label="Vessel Watch"
+        tools:layout="@layout/vessel_watch" >
+
+        <action
+            android:id="@+id/action_navVesselWatchFragment_to_navVesselDetailsFragment"
+            app:destination="@id/navVesselDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navVesselDetailsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment"
+        android:label="{title}"
+        tools:layout="@layout/vessel_watch" >
+        <argument
+            android:name="vessel_id"
+            app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
     </fragment>
 
     <fragment

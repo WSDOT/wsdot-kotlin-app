@@ -23,6 +23,8 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 
 @Suppress("unused")
@@ -40,5 +42,11 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFerriesSailingFragment(): FerriesSailingFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeVesselWatchFragment(): VesselWatchFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeVesselDetailsFragment(): VesselDetailsFragment
 
 }
