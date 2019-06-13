@@ -11,6 +11,8 @@ import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchViewModel
 
 @Suppress("unused")
 @Module
@@ -30,6 +32,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FerriesSailingViewModel::class)
     abstract fun bindFerriesSailingViewModel(ferriesSailingViewModel: FerriesSailingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(VesselWatchViewModel::class)
+    abstract fun bindVesselWatchViewModel(vesselWatchViewModel: VesselWatchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(VesselDetailsViewModel::class)
+    abstract fun bindVesselDetailsViewModel(vesselDetailsViewModel: VesselDetailsViewModel): ViewModel
 
     @Binds
     @IntoMap

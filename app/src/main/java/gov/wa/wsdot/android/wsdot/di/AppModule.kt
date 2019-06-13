@@ -73,6 +73,12 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideVesselDao(db: WsdotDB): VesselDao {
+        return db.vesselDao()
+    }
+
+    @Singleton
+    @Provides
     fun provideFerrySailingWithSpacesDao(db: WsdotDB): FerrySailingWithSpacesDao {
         return db.ferrySailingWithSpacesDao()
     }

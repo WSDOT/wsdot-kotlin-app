@@ -30,11 +30,15 @@ sealed class ApiResponse<T> {
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
             Log.e("debug", "unknown error")
+            Log.e("debug", error.toString())
             return ApiErrorResponse(error.message ?: "unknown error")
         }
 
         fun <T> create(response: Response<T>): ApiResponse<T> {
             return if (response.isSuccessful) {
+
+                Log.e("debug", response.toString())
+
                 val body = response.body()
                 if (body == null || response.code() == 204) {
                     Log.e("debug", "empty")
