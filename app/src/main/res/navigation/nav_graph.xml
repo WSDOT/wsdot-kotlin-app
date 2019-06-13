@@ -13,6 +13,20 @@
         app:popUpToInclusive="true"/>
 
     <fragment
+        android:id="@+id/navCameraFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment"
+        android:label="{title}"
+        tools:layout="@layout/camera_fragment" >
+        <argument
+            android:name="camera_id"
+            app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navFerriesHomeFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
         android:label="Ferries"
@@ -79,6 +93,14 @@
         <action
             android:id="@+id/action_navVesselWatchFragment_to_navVesselDetailsFragment"
             app:destination="@id/navVesselDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_navVesselWatchFragment_to_navCameraFragment"
+            app:destination="@id/navCameraFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

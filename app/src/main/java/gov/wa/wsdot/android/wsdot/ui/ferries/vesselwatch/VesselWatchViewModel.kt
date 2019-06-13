@@ -5,14 +5,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
+import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
-class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepository) : ViewModel() {
+class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepository, cameraRepository: CameraRepository) : ViewModel() {
 
-    private val repo = vesselRepository
+    private val vesselRepo = vesselRepository
+
+    val cameras = cameraRepository.loadCamerasOnRoad("Ferries", false)
 
     private val _vesselId: MutableLiveData<VesselId> = MutableLiveData()
     val vesselId: LiveData<VesselId>
@@ -30,13 +32,13 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
     // TODO: let users bookmark vessel watch
     /*
     fun updateFavorite() {
-        repo.updateFavorite(isFavorite)
+        vesselRepo.updateFavorite(isFavorite)
     }
     */
 
     fun refresh() {
         vessels.removeSource(vesselsLiveData)
-        vesselsLiveData = repo.loadVessels(true)
+        vesselsLiveData = vesselRepo.loadVessels(true)
         vessels.addSource(vesselsLiveData) { vessels.value = it }
     }
 

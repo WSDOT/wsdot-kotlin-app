@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class VesselRepository  @Inject constructor(
+class VesselRepository @Inject constructor(
     private val wsdotWebservice: WsdotApiService,
     private val appExecutors: AppExecutors,
     private val vesselDao: VesselDao
@@ -85,6 +85,7 @@ class VesselRepository  @Inject constructor(
     }
 
 /*
+    // TODO: favorite vessel locations
     fun updateFavorite(routeId: Int, isFavorite: Boolean) {
         appExecutors.diskIO().execute {
             ferryScheduleDao.updateFavorite(routeId, isFavorite)

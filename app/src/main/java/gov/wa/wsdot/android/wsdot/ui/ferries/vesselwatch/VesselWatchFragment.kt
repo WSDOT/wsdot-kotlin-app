@@ -22,6 +22,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.VesselWatchBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
@@ -40,6 +41,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private lateinit var mapFragment: SupportMapFragment
 
     private val vesselMarkers = HashMap<Marker, Vessel>()
+    private val cameraMarkers = HashMap<Marker, Camera>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,6 +106,28 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 }
             }
         })
+
+
+        vesselViewModel.cameras.observe(viewLifecycleOwner, Observer { cameras ->
+            if (cameras.data != null) {
+
+                with(cameraMarkers.iterator()) {
+                    forEach {
+                        it.key.remove()
+                        remove()
+                    }
+                }
+
+                for (camera in cameras.data) {
+                    val marker = mMap.addMarker(MarkerOptions()
+                        .position(LatLng(camera.latitude, camera.longitude))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
+                    cameraMarkers[marker] = camera
+
+                }
+            }
+        })
+
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -113,10 +137,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         if (vessel != null) {
             val action = VesselWatchFragmentDirections.actionNavVesselWatchFragmentToNavVesselDetailsFragment(vessel.vesselId, vessel.vesselName)
             findNavController().navigate(action)
+            return true
         }
 
-
-        // TODO: Cameras
+        val camera = cameraMarkers[marker]
+        if (camera != null) {
+            val action = VesselWatchFragmentDirections.actionNavVesselWatchFragmentToNavCameraFragment(camera.cameraId, camera.title)
+            findNavController().navigate(action)
+            return true
+        }
 
         return true
     }

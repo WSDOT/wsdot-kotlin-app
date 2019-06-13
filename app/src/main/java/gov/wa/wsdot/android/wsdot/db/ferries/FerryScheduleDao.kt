@@ -10,9 +10,6 @@ import java.util.*
 @Dao
 abstract class FerryScheduleDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertSchedules(schedules: List<FerrySchedule>)
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertNewSchedules(schedules: List<FerrySchedule>)
 
@@ -41,13 +38,15 @@ abstract class FerryScheduleDao {
     @Query("UPDATE FerrySchedule SET remove = 1")
     abstract fun markSchedulesForRemoval()
 
-    @Query("UPDATE FerrySchedule SET "
-            + "description = :description, "
-            + "crossingTime = :crossingTime, "
-            + "serverCacheDate = :serverCacheDate, "
-            + "localCacheDate = :localCacheDate, "
-            + "remove = :remove "
-            + "WHERE routeId = :routeId")
+    @Query("""
+        UPDATE FerrySchedule SET
+        description = :description,
+        crossingTime = :crossingTime,
+        serverCacheDate = :serverCacheDate,
+        localCacheDate = :localCacheDate,
+        remove = :remove
+        WHERE routeId = :routeId
+    """)
     abstract fun updateSchedules(routeId: Int, description: String, crossingTime: Int, serverCacheDate: Date, localCacheDate: Date, remove: Boolean)
 
     @Query("DELETE FROM FerrySchedule WHERE remove = 1")

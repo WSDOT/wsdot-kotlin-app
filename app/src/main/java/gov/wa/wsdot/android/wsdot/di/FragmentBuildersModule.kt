@@ -21,6 +21,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
@@ -33,6 +34,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTrafficMapFragment(): TrafficMapFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeCameraFragment(): CameraFragment
 
     @ContributesAndroidInjector
     abstract fun contributeFerriesHomeFragment(): FerriesHomeFragment
