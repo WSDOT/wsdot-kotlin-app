@@ -31,7 +31,9 @@ import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
 import android.text.Html
+import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 
 
 /**
@@ -48,11 +50,31 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindCameraImage")
+    fun bindCameraImage(imageView: ImageView, camera: Resource<Camera>) {
+        if (camera.data != null) {
+            Picasso.get()
+                .load(camera.data.url)
+                .placeholder(R.drawable.image_placeholder)
+                .fit()
+                .centerInside()
+                .into(imageView)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindCameraMilepost")
+    fun bindCameraMilepost(textView: TextView, camera: Resource<Camera>) {
+        if (camera.data != null) {
+            textView.text = String.format("Near milepost %d", camera.data.milepost)
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("visibleGone")
     fun showHide(view: View, show: Boolean) {
         view.visibility = if (show) View.VISIBLE else View.GONE
     }
-
 
     @JvmStatic
     @BindingAdapter("setMax")

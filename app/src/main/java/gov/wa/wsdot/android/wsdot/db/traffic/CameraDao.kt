@@ -12,6 +12,9 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera")
     abstract fun loadCameras(): LiveData<List<Camera>>
 
+    @Query("SELECT * FROM Camera WHERE cameraId = :cameraId")
+    abstract fun loadCamera(cameraId: Int): LiveData<Camera>
+
     @Query("SELECT * FROM Camera WHERE roadName = :roadName")
     abstract fun loadCamerasOnRoad(roadName: String): LiveData<List<Camera>>
 
