@@ -1,5 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -26,6 +28,9 @@ import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
+import android.preference.PreferenceManager
+import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.putDouble
 
 
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -76,9 +81,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         mMap = map as GoogleMap
 
-        val seattle = LatLng(47.6062, -122.3321)
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seattle, 12.0f))
+        val latitude = settings.getDouble("KEY_VESSEL_WATCH_LAT", 47.5990)
+        val longitude = settings.getDouble("KEY_VESSEL_WATCH_LON", -122.3350)
+        val zoom = settings.getFloat("KEY_VESSEL_WATCH_ZOOM", 12f)
+
+        val startLocation = LatLng(latitude, longitude)
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, zoom))
         mMap.setOnMarkerClickListener(this)
 
         vesselViewModel.vessels.observe(viewLifecycleOwner, Observer { vessels ->
@@ -128,6 +139,16 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
         })
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = settings.edit()
+        editor.putDouble("KEY_VESSEL_WATCH_LAT", mMap.projection.visibleRegion.latLngBounds.center.latitude)
+        editor.putDouble("KEY_VESSEL_WATCH_LON", mMap.projection.visibleRegion.latLngBounds.center.longitude)
+        editor.putFloat("KEY_VESSEL_WATCH_ZOOM", mMap.cameraPosition.zoom)
+        editor.apply()
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
