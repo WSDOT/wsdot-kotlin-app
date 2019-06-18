@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.cameras
 
-import android.graphics.Camera
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
@@ -11,9 +10,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
@@ -22,11 +21,11 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class FerriesHomeFragment : DaggerFragment(), Injectable {
+class CameraListFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var cameraViewModel: CameraViewModel
+    lateinit var camerasViewModel: CameraListViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -41,8 +40,8 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-       cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CameraViewModel::class.java)
+       camerasViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(CameraListViewModel::class.java)
 
 
         val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
@@ -54,11 +53,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                cameraViewModel.refresh()
+                camerasViewModel.refresh()
             }
         }
 
-        dataBinding.viewModel = cameraViewModel
+        dataBinding.viewModel = camerasViewModel
 
         binding = dataBinding
 
@@ -77,22 +76,25 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         // pass function to be called on adapter item tap and favorite
         val adapter = CameraListAdapter(dataBindingComponent, appExecutors,
             {
-                    camera -> navigateToCamera(camera.routeId)
+                    camera -> navigateToCamera(camera.cameraId)
+            },
+            {
+
             })
 
         this.adapter = adapter
 
-        binding.scheduleList.adapter = adapter
+        binding.cameraList.adapter = adapter
 
         // animations
         postponeEnterTransition()
-        binding.scheduleList.viewTreeObserver
+        binding.cameraList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
                 true
             }
 
-        cameraViewModel.cameras.observe(viewLifecycleOwner, Observer { cameraResource ->
+        camerasViewModel.cameras.observe(viewLifecycleOwner, Observer { cameraResource ->
             if (cameraResource.data != null) {
                 adapter.submitList(cameraResource.data)
             } else {
@@ -103,7 +105,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToCamera(cameraId: Int){
-        val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
-        findNavController().navigate(action)
+       // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
+       // findNavController().navigate(action)
     }
 }
