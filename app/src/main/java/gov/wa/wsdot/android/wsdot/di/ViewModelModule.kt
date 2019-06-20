@@ -12,7 +12,9 @@ import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchViewModel
 
@@ -27,8 +29,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CameraListViewModel::class)
-    abstract fun bindCameraListViewModel(cameraListViewModel: CameraListViewModel): ViewModel
+    @ViewModelKey(TerminalCamerasViewModel::class)
+    abstract fun bindTerminalCamerasViewModel(terminalCamerasViewModel: TerminalCamerasViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -54,6 +56,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(VesselDetailsViewModel::class)
     abstract fun bindVesselDetailsViewModel(vesselDetailsViewModel: VesselDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FerryAlertsViewModel::class)
+    abstract fun bindFerryAlertsViewModel(ferryAlertsViewModel: FerryAlertsViewModel): ViewModel
 
     @Binds
     @IntoMap

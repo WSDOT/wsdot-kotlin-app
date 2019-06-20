@@ -33,15 +33,17 @@ import javax.inject.Singleton
  */
 @Singleton
 open class AppExecutors(
-    private val diskIO: Executor,
     private val networkIO: Executor,
+    private val diskIO: Executor,
+    private val taskIO: Executor,
     private val mainThread: Executor
 ) {
 
     @Inject
     constructor() : this(
-        Executors.newSingleThreadExecutor(),
         Executors.newFixedThreadPool(3),
+        Executors.newSingleThreadExecutor(),
+        Executors.newSingleThreadExecutor(),
         MainThreadExecutor()
     )
 
@@ -51,6 +53,10 @@ open class AppExecutors(
 
     fun networkIO(): Executor {
         return networkIO
+    }
+
+    fun taskIO(): Executor {
+        return taskIO
     }
 
     fun mainThread(): Executor {

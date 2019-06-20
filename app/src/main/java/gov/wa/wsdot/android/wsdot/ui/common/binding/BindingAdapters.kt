@@ -16,19 +16,12 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
-import android.util.Log
 import androidx.databinding.BindingAdapter
 import android.view.View
 import android.widget.*
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
-import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.util.network.Resource
-import android.widget.AdapterView
-import android.widget.Spinner
 import android.widget.TextView
 import android.text.Html
 import com.squareup.picasso.Picasso
@@ -55,11 +48,24 @@ object BindingAdapters {
         if (camera.data != null) {
             Picasso.get()
                 .load(camera.data.url)
-                .placeholder(R.drawable.image_placeholder)
+                .placeholder(R.drawable.image_progress_animation)
+                .error(R.drawable.camera_offline)
                 .fit()
                 .centerInside()
                 .into(imageView)
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindCameraImage")
+    fun bindCameraImage(imageView: ImageView, camera: Camera) {
+        Picasso.get()
+            .load(camera.url)
+            .placeholder(R.drawable.image_progress_animation)
+            .error(R.drawable.camera_offline)
+            .fit()
+            .centerInside()
+            .into(imageView)
     }
 
     @JvmStatic

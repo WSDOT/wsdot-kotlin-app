@@ -25,14 +25,21 @@ class CameraListAdapter(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<Camera>() {
         override fun areItemsTheSame(oldItem: Camera, newItem: Camera): Boolean {
-            return false // TODO
+            return oldItem.cameraId == newItem.cameraId
         }
 
         override fun areContentsTheSame(oldItem: Camera, newItem: Camera): Boolean {
-            return false // TODO
+            return oldItem.url == newItem.url && oldItem.localCacheDate == newItem.localCacheDate
         }
     }
 ) {
+
+    /*
+
+    Unfortunately, since some 4.2 devices can use https and we now require https connections on our servers,
+    the choice was made to continue supporting 4.2 for those select devices. Since androi d
+
+     */
 
     override fun createBinding(parent: ViewGroup): CameraItemBinding {
 
@@ -44,7 +51,7 @@ class CameraListAdapter(
             dataBindingComponent
         )
 /*
-        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
+        binding.root.findViewById<View>(R.id.cameraView).setOnClickListener {
             binding.camera?.let {
                 cameraClickCallback?.invoke(it)
             }
