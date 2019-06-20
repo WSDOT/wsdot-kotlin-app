@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.db.ferries
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import java.util.*
 
 @Entity(
     primaryKeys = ["alertId", "route"],
@@ -19,5 +20,5 @@ data class FerryAlert(
     val route: Int,
     val description: String?,
     val fullDescription: String,
-    val publishDate: String
+    val publishDate: Date
 )

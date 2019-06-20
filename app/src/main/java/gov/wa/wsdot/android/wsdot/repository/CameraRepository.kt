@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
@@ -107,7 +106,7 @@ class CameraRepository @Inject constructor(
                 return forceRefresh || update
             }
 
-            override fun loadFromDb() = cameraDao.loadCamerasOnRoad(roadName)
+            override fun loadFromDb() = if (roadName == "") cameraDao.loadCameras() else cameraDao.loadCamerasOnRoad(roadName)
 
             override fun createCall() = dataWebservice.getCameras()
 

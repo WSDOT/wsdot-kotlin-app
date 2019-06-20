@@ -44,7 +44,6 @@ class FerriesRepository @Inject constructor(
                 if (data != null && data.isNotEmpty()) {
 
                     if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
-                        Log.e("debug", "data is old")
                         update = true
                     }
                 } else {
@@ -78,7 +77,6 @@ class FerriesRepository @Inject constructor(
                 if (data != null) {
 
                     if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 15)) {
-                        Log.e("debug", "data is old")
                         update = true
                     }
                 } else {
@@ -127,7 +125,19 @@ class FerriesRepository @Inject constructor(
             override fun saveCallResult(item: FerrySpacesResponse) = saveSailingSpaces(item)
 
             override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
-                return true
+                var update = false
+
+                if (data != null) {
+                    if (data.isNotEmpty()) {
+                        if (TimeUtils.isOverXMinOld(data[0].cacheDate, x = 3)) {
+                            update = true
+                        }
+                    }
+                } else {
+                    update = true
+                }
+
+                return update
             }
 
             override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
@@ -176,8 +186,6 @@ class FerriesRepository @Inject constructor(
             override fun shouldFetch(data: List<FerryAlert>?): Boolean {
 
                 return true
-                // TODO: Caching time
-                return data == null || data.isEmpty() // || repoListRateLimit.shouldFetch(owner)
             }
 
             override fun loadFromDb() = ferryAlertDao.loadAlertsById(forRoute)
@@ -270,12 +278,10 @@ class FerriesRepository @Inject constructor(
                     schedule.routeId,
                     scheduleAlertResponse.description,
                     scheduleAlertResponse.fullText,
-                    scheduleAlertResponse.publishDate
+                    apiSailingDateFormat.parse(scheduleAlertResponse.publishDate)
                 )
                 dbAlertList.add(alert)
             }
-
-
         }
 
         ferryScheduleDao.updateSchedules(dbSchedulesList)
@@ -289,7 +295,6 @@ class FerriesRepository @Inject constructor(
         var dbSpacesList = arrayListOf<FerrySpace>()
 
         if (spaceResponse == null) {
-            Log.e("debug", "spaces null")
             ferrySpaceDao.insertSpaces(dbSpacesList)
             return
         }
@@ -348,8 +353,6 @@ class FerriesRepository @Inject constructor(
                 }
             }
         }
-
-        Log.e("debug", dbSpacesList.toString())
 
         ferrySpaceDao.updateSpaces(dbSpacesList)
 

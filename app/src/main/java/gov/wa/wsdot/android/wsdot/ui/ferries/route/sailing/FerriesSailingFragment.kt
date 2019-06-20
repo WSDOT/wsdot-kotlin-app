@@ -67,21 +67,25 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
+        binding.lifecycleOwner = viewLifecycleOwner
+
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
         return dataBinding.root
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.notifyDataSetChanged()
+    override fun onPause() {
+        super.onPause()
+        // remove the auto scroll observer to prevent crash when
+        // binding var is autoCleared in pager
+        adapter.removeObserver()
+        t.cancel()
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap
         val adapter = FerrySailingListAdapter(dataBindingComponent, appExecutors)
@@ -90,7 +94,12 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         binding.scheduleList.adapter = adapter
 
-        // animations
+        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
+            }
+        })
+
         postponeEnterTransition()
         binding.scheduleList.viewTreeObserver
             .addOnPreDrawListener {
@@ -98,18 +107,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
-            }
-            override fun onChanged() {
-                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
-            }
-        })
-
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
-
                 currentSailingIndex = 0
                 for ((i, sailing) in sailingResource.data.withIndex()) {
                     if (BindingFunctions.hasPassed(sailing.departingTime)) {
@@ -137,7 +136,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                     }
                 }
             },
-            0,
+            30000,
             120000
         )
     }

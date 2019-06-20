@@ -24,7 +24,9 @@ import dagger.android.ContributesAndroidInjector
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
@@ -52,9 +54,15 @@ abstract class FragmentBuildersModule {
     abstract fun contributeFerriesSailingFragment(): FerriesSailingFragment
 
     @ContributesAndroidInjector
+    abstract fun contributeTerminalCamerasListFragment(): TerminalCamerasListFragment
+
+    @ContributesAndroidInjector
     abstract fun contributeVesselWatchFragment(): VesselWatchFragment
 
     @ContributesAndroidInjector
     abstract fun contributeVesselDetailsFragment(): VesselDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFerryAlertsFragment(): FerryAlertsFragment
 
 }

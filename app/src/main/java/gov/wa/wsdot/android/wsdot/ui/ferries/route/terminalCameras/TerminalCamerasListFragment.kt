@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.cameras
+package gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras
 
 import android.os.Bundle
 import android.transition.TransitionInflater
@@ -14,18 +14,20 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListAdapter
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
-
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class CameraListFragment : DaggerFragment(), Injectable {
+class TerminalCamerasListFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var camerasViewModel: CameraListViewModel
+    lateinit var terminalCamerasViewModel: TerminalCamerasViewModel
+    lateinit var sailingViewModel: FerriesSailingViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -40,30 +42,35 @@ class CameraListFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-       camerasViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CameraListViewModel::class.java)
+        terminalCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(TerminalCamerasViewModel::class.java)
 
-       val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
-           inflater,
-           R.layout.camera_list_fragment,
-           container,
-           false
-       )
+        // Get the sailingViewModel for the terminal ID
+        sailingViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
-       dataBinding.retryCallback = object : RetryCallback {
-           override fun retry() {
-               camerasViewModel.refresh()
-           }
-       }
+        val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
+            inflater,
+            R.layout.camera_list_fragment,
+            container,
+            false
+        )
 
-       dataBinding.viewModel = camerasViewModel
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                terminalCamerasViewModel.refresh()
+            }
+        }
 
-       binding = dataBinding
+        dataBinding.viewModel = terminalCamerasViewModel
 
-       // animation
-       sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        binding = dataBinding
 
-       return dataBinding.root
+        // animation
+        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+
+        return dataBinding.root
 
     }
 
@@ -93,18 +100,25 @@ class CameraListFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        camerasViewModel.cameras.observe(viewLifecycleOwner, Observer { cameraResource ->
-            if (cameraResource.data != null) {
-                adapter.submitList(cameraResource.data)
-            } else {
-                adapter.submitList(emptyList())
+        // get the departing terminal from the sailingViewModel
+        sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailings ->
+            if (sailings != null) {
+                if (sailings.data != null) {
+                    if (sailings.data.isNotEmpty()) {
+                        terminalCamerasViewModel.setCameraQuery(sailings.data[0].departingTerminalId)
+                    }
+                }
             }
+        })
+
+        terminalCamerasViewModel.terminalCameras.observe(viewLifecycleOwner, Observer { cameras ->
+            adapter.submitList(cameras)
         })
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToCamera(cameraId: Int){
-       // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
-       // findNavController().navigate(action)
+        // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
+        // findNavController().navigate(action)
     }
 }

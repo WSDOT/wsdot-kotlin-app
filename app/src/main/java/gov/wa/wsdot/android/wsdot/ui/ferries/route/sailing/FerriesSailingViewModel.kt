@@ -33,7 +33,6 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
         sailingsWithSpaces.addSource(spaces) { sailingsWithSpaces.value = it }
     }
 
-
     fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int) {
 
         val c = Calendar.getInstance()

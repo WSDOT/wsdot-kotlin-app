@@ -25,6 +25,10 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
+import androidx.core.view.get
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
 import kotlin.collections.ArrayList
 
 class FerriesRouteFragment : DaggerFragment(), Injectable {
@@ -33,10 +37,10 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var routeViewModel: FerriesRouteViewModel
     lateinit var sailingViewModel: FerriesSailingViewModel
+    lateinit var ferryAlertsViewModel: FerryAlertsViewModel
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
-    private lateinit var favoriteMenuItem: MenuItem
     private var isFavorite: Boolean = false
 
     private lateinit var fragmentPagerAdapter: FragmentStatePagerAdapter
@@ -69,6 +73,12 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         sailingViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        // set alert route ID for pager fragment
+        ferryAlertsViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        ferryAlertsViewModel.setFerryAlertQuery(args.routeId)
 
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(
@@ -175,8 +185,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
         val fragments = ArrayList<Fragment>()
         fragments.add(FerriesSailingFragment())
-        fragments.add(FerriesSailingFragment())
-        fragments.add(FerriesSailingFragment())
+        fragments.add(TerminalCamerasListFragment())
+        fragments.add(FerryAlertsFragment())
 
         val titles = ArrayList<String>()
         titles.add("sailings")
