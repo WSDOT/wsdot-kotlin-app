@@ -14,6 +14,8 @@ class CameraViewModel @Inject constructor(cameraRepository: CameraRepository) : 
 
     private val _cameraQuery: MutableLiveData<CameraQuery> = MutableLiveData()
 
+    private val repo = cameraRepository
+
     val camera: LiveData<Resource<Camera>> = Transformations
         .switchMap(_cameraQuery) { input ->
             input.ifExists {
@@ -31,6 +33,13 @@ class CameraViewModel @Inject constructor(cameraRepository: CameraRepository) : 
 
     fun refresh() {
 
+    }
+
+    fun updateFavorite(cameraId: Int) {
+        val favorite = camera.value?.data?.favorite
+        if (favorite != null) {
+            repo.updateFavorite(cameraId, !favorite)
+        }
     }
 
     data class CameraQuery(val cameraId: Int) {

@@ -32,7 +32,7 @@ class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepos
         }
 
     fun updateFavorite(cameraId: Int, isFavorite: Boolean) {
-        //  repo.updateFavorite(cameraId, isFavorite)
+        repo.updateFavorite(cameraId, isFavorite)
     }
 
     override fun refresh() {

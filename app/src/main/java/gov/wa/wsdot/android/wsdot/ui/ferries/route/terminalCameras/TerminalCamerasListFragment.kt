@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListAdapter
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
@@ -20,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import kotlinx.android.synthetic.main.camera_item.*
 import javax.inject.Inject
 
 class TerminalCamerasListFragment : DaggerFragment(), Injectable {
@@ -82,10 +87,11 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
         // pass function to be called on adapter item tap and favorite
         val adapter = CameraListAdapter(dataBindingComponent, appExecutors,
             {
-                    camera -> navigateToCamera(camera.cameraId)
+                    camera -> navigateToCamera(camera)
             },
             {
-
+                    Log.e("debug", "fav")
+                    terminalCamerasViewModel.updateFavorite(it.cameraId, !it.favorite)
             })
 
         this.adapter = adapter
@@ -113,12 +119,15 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
 
         terminalCamerasViewModel.terminalCameras.observe(viewLifecycleOwner, Observer { cameras ->
             adapter.submitList(cameras)
+            if (cameras.isEmpty()) {
+                // TODO: show no cameras message
+            }
         })
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToCamera(cameraId: Int){
-        // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
-        // findNavController().navigate(action)
+    private fun navigateToCamera(camera: Camera){
+        val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
+        findNavController().navigate(action)
     }
 }

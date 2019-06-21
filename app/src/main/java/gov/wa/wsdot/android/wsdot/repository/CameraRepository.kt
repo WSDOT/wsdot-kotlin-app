@@ -117,6 +117,12 @@ class CameraRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun updateFavorite(cameraId: Int, isFavorite: Boolean) {
+        appExecutors.diskIO().execute {
+            cameraDao.updateFavorite(cameraId, isFavorite)
+        }
+    }
+
     private fun saveCameras(camerasResponse: CamerasResponse) {
 
         var dbCameraList = arrayListOf<Camera>()

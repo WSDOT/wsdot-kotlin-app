@@ -29,17 +29,12 @@ class CameraListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: Camera, newItem: Camera): Boolean {
-            return oldItem.url == newItem.url && oldItem.localCacheDate == newItem.localCacheDate
+            return oldItem.url == newItem.url
+                    && oldItem.localCacheDate == newItem.localCacheDate
+                    && oldItem.favorite == newItem.favorite
         }
     }
 ) {
-
-    /*
-
-    Unfortunately, since some 4.2 devices can use https and we now require https connections on our servers,
-    the choice was made to continue supporting 4.2 for those select devices. Since androi d
-
-     */
 
     override fun createBinding(parent: ViewGroup): CameraItemBinding {
 
@@ -50,7 +45,7 @@ class CameraListAdapter(
             false,
             dataBindingComponent
         )
-/*
+
         binding.root.findViewById<View>(R.id.cameraView).setOnClickListener {
             binding.camera?.let {
                 cameraClickCallback?.invoke(it)
@@ -62,7 +57,7 @@ class CameraListAdapter(
                 favoriteClickCallback?.invoke(it)
             }
         }
-*/
+
         return binding
     }
 
