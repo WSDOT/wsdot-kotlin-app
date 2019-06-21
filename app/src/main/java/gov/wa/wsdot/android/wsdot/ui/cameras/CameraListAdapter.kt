@@ -31,8 +31,9 @@ class CameraListAdapter(
         override fun areContentsTheSame(oldItem: Camera, newItem: Camera): Boolean {
             return oldItem.url == newItem.url
                     && oldItem.localCacheDate == newItem.localCacheDate
-                    && oldItem.favorite == newItem.favorite
+                    && oldItem.url == newItem.url
         }
+
     }
 ) {
 

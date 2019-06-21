@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras
 
-import android.util.Log
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
@@ -64,11 +63,9 @@ class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepos
         if (terminalId == null || ferryCameras == null) return emptyList()
 
         val terminalCameras = ArrayList<Camera>()
-
         val terminals = DistanceUtils.getTerminalLocations()
 
         for (camera in ferryCameras) {
-
             if (DistanceUtils.getDistanceFromPoints(camera.latitude, camera.longitude, terminals[terminalId].latitude, terminals[terminalId].longitude) < 2 ) {
                 terminalCameras.add(camera)
             }
