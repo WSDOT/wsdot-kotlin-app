@@ -119,6 +119,11 @@ object BindingAdapters {
         textView.text = stripHtml(messageString)
     }
 
+    @JvmStatic
+    @BindingAdapter("bindHTML")
+    fun bindHTML(textView: TextView, text: String) {
+        textView.text = stripHtml(text).trimEnd()
+    }
 
     @JvmStatic
     @BindingAdapter("bindDate")
