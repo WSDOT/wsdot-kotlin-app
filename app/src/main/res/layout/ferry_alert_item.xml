@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
             name="alert"
             type="gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert"/>
     </data>
-
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -30,26 +28,26 @@
                 android:id="@+id/titleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{alert.description}"
+                app:bindHTML="@{alert.description}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"
+                android:autoLink="all"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                />
+                android:layout_marginRight="@dimen/default_margin" />
 
             <TextView
                 style="@style/CardSubTitleText"
                 android:id="@+id/subTitleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{alert.fullDescription}"
-                tools:text=""
+                app:bindHTML="@{alert.fullDescription}"
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintStart_toStartOf="parent"
+                android:autoLink="all"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="@dimen/default_margin"
