@@ -74,9 +74,7 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = FerryAlertsListAdapter(dataBindingComponent, appExecutors) {
-                alert -> navigateToRoute(alert.alertId, alert.title)
-        }
+        val adapter = FerryAlertsListAdapter(dataBindingComponent, appExecutors)
 
         this.adapter = adapter
 

@@ -46,7 +46,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     private lateinit var fragmentPagerAdapter: FragmentStatePagerAdapter
     private lateinit var viewPager: ViewPager
 
-    //var fragmentDataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     var binding by autoCleared<FerriesRouteFragmentBinding>()
 
     val args: FerriesRouteFragmentArgs by navArgs()
@@ -191,9 +190,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val titles = ArrayList<String>()
         titles.add("sailings")
         titles.add("cameras")
-        titles.add("alerts")
+        titles.add("bulletins")
 
-        fragmentPagerAdapter = SimpleFragmentPagerAdapter(requireFragmentManager(), fragments, titles)
+        fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
 
         viewPager.adapter = fragmentPagerAdapter
 

@@ -29,6 +29,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import android.preference.PreferenceManager
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 
@@ -163,7 +164,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         val camera = cameraMarkers[marker]
         if (camera != null) {
-            val action = VesselWatchFragmentDirections.actionNavVesselWatchFragmentToNavCameraFragment(camera.cameraId, camera.title)
+            val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
             findNavController().navigate(action)
             return true
         }

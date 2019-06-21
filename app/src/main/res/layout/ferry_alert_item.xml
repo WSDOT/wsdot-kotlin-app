@@ -16,12 +16,9 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/tap_view"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:background="?android:attr/selectableItemBackground"
-            android:focusable="true"
-            android:clickable="true">
+            android:background="?android:attr/selectableItemBackground">
 
             <TextView
                 style="@style/CardTitleText"
@@ -31,8 +28,11 @@
                 app:bindHTML="@{alert.description}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp"
                 android:autoLink="all"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
@@ -47,7 +47,10 @@
                 app:bindHTML="@{alert.fullDescription}"
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:autoLink="all"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="@dimen/default_margin"

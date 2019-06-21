@@ -18,7 +18,7 @@ abstract class FerryAlertDao {
     @Query("SELECT * FROM FerryAlert")
     abstract fun loadAlerts(): LiveData<List<FerryAlert>>
 
-    @Query("SELECT * FROM FerryAlert WHERE route in (:routeId)")
+    @Query("SELECT * FROM FerryAlert WHERE route in (:routeId) ORDER BY publishDate DESC")
     abstract fun loadAlertsById(routeId: Int): LiveData<List<FerryAlert>>
 
 }

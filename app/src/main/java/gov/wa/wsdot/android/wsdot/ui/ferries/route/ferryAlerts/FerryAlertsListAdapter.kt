@@ -17,8 +17,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
  */
 class FerryAlertsListAdapter(
     private val dataBindingComponent: DataBindingComponent,
-    appExecutors: AppExecutors,
-    private val alertClickCallback: ((FerryAlert) -> Unit)?
+    appExecutors: AppExecutors
 ) : DataBoundListAdapter<FerryAlert, FerryAlertItemBinding>(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerryAlert>() {
@@ -41,12 +40,6 @@ class FerryAlertsListAdapter(
             false,
             dataBindingComponent
         )
-
-        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
-            binding.alert?.let {
-                alertClickCallback?.invoke(it)
-            }
-        }
 
         return binding
     }
