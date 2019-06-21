@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,6 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import kotlinx.android.synthetic.main.camera_item.*
 import javax.inject.Inject
 
 class TerminalCamerasListFragment : DaggerFragment(), Injectable {
@@ -69,10 +67,8 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
         }
 
         dataBinding.viewModel = terminalCamerasViewModel
-
         binding = dataBinding
 
-        // animation
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
         return dataBinding.root
@@ -90,7 +86,6 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
                     camera -> navigateToCamera(camera)
             },
             {
-                    Log.e("debug", "fav")
                     terminalCamerasViewModel.updateFavorite(it.cameraId, !it.favorite)
             })
 
@@ -98,7 +93,6 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
 
         binding.cameraList.adapter = adapter
 
-        // animations
         postponeEnterTransition()
         binding.cameraList.viewTreeObserver
             .addOnPreDrawListener {

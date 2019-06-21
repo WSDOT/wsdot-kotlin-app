@@ -7,6 +7,9 @@
         <variable
             name="camera"
             type="gov.wa.wsdot.android.wsdot.db.traffic.Camera"/>
+        <variable
+            name="favorite"
+            type="boolean"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -40,7 +43,7 @@
                 app:backgroundTint="@color/white"
                 android:background="@color/white"
                 android:src="@drawable/ic_menu_favorite_gray"
-                app:setFavoriteIcon="@{camera.favorite}"
+                app:setFavoriteIcon="@{favorite}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp" />
