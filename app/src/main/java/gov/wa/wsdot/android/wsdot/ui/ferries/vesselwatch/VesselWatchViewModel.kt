@@ -14,6 +14,16 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
 
     private val vesselRepo = vesselRepository
 
+    // Camera display toggle logic
+    private val _showCameras: MutableLiveData<Boolean> = MutableLiveData()
+    fun setShowCameras(showCameras: Boolean) {
+        _showCameras.value = showCameras
+    }
+
+    val showCameras: LiveData<Boolean>
+        get() = _showCameras
+
+
     val cameras = cameraRepository.loadCamerasOnRoad("Ferries", false)
 
     private val _vesselId: MutableLiveData<VesselId> = MutableLiveData()
@@ -35,6 +45,7 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
         vesselRepo.updateFavorite(isFavorite)
     }
     */
+
 
     fun refresh() {
         vessels.removeSource(vesselsLiveData)

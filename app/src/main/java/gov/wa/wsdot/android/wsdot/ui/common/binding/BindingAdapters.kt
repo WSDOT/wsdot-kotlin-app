@@ -24,6 +24,7 @@ import java.util.*
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import android.widget.TextView
 import android.text.Html
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
@@ -35,6 +36,11 @@ import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 object BindingAdapters {
 
     // General adapters
+    @JvmStatic
+    @BindingAdapter("setCameraIconForFab")
+    fun setCameraIconForFab(fab: FloatingActionButton, showCamera: Boolean) {
+        fab.setImageResource(if (showCamera) R.drawable.ic_camera_on else R.drawable.ic_camera_off)
+    }
 
     @JvmStatic
     @BindingAdapter("setFavoriteIcon")
