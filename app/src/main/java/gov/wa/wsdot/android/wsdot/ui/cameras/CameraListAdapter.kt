@@ -32,6 +32,7 @@ class CameraListAdapter(
             return oldItem.url == newItem.url
                     && oldItem.localCacheDate == newItem.localCacheDate
                     && oldItem.url == newItem.url
+                    && oldItem.favorite == newItem.favorite
         }
 
     }
