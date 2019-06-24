@@ -21,9 +21,7 @@ import java.util.*
  */
 object FerriesBindingAdapters {
 
-    // Ferries Binding Adapters
-
-
+    // Regular Binding Adapters
     @JvmStatic
     @BindingAdapter("bindVesselName")
     fun bindVesselName(textView: TextView, vessel: Resource<Vessel>) {
@@ -111,6 +109,7 @@ object FerriesBindingAdapters {
     }
 
 
+    // Two-way binding adapters
     @JvmStatic
     @BindingAdapter(value = ["terminalCombos", "selectedTerminalCombo", "selectedTerminalComboAttrChanged"], requireAll = false)
     fun setTerminalCombos(spinner: Spinner, terminal: Resource<List<TerminalCombo>>, selectedTerminal: TerminalCombo?, listener: InverseBindingListener) {
@@ -125,7 +124,6 @@ object FerriesBindingAdapters {
     @JvmStatic
     @InverseBindingAdapter(attribute = "selectedTerminalCombo", event = "selectedTerminalComboAttrChanged")
     fun getSelectedTerminalCombo(spinner: Spinner): TerminalCombo {
-        Log.e("debug", "setting terminal combo in VM")
         return spinner.selectedItem as TerminalCombo
     }
 

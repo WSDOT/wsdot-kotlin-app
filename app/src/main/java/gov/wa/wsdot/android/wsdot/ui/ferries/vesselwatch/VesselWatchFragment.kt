@@ -49,6 +49,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private val vesselMarkers = HashMap<Marker, Vessel>()
     private val cameraMarkers = HashMap<Marker, Camera>()
 
+    var showCameras: Boolean = true
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,14 +67,19 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             container,
             false)
 
-
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        showCameras = settings.getBoolean("KEY_VESSEL_WATCH_CAMERA_VISIBILITY", true)
 
-        // bind view models to view
+        vesselViewModel.setShowCameras(showCameras)
+
+        dataBinding.vesselViewModel = vesselViewModel
+
+        dataBinding.lifecycleOwner = this
+
         binding = dataBinding
-
 
         return dataBinding.root
     }
@@ -84,9 +91,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 
-        val latitude = settings.getDouble("KEY_VESSEL_WATCH_LAT", 47.5990)
-        val longitude = settings.getDouble("KEY_VESSEL_WATCH_LON", -122.3350)
-        val zoom = settings.getFloat("KEY_VESSEL_WATCH_ZOOM", 12f)
+        val latitude = settings.getDouble("KEY_VESSEL_WATCH_LAT", 47.583571)
+        val longitude = settings.getDouble("KEY_VESSEL_WATCH_LON", -122.473468)
+        val zoom = settings.getFloat("KEY_VESSEL_WATCH_ZOOM", 10f)
 
         val startLocation = LatLng(latitude, longitude)
 
@@ -133,12 +140,29 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 for (camera in cameras.data) {
                     val marker = mMap.addMarker(MarkerOptions()
                         .position(LatLng(camera.latitude, camera.longitude))
+                        .visible(showCameras)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
                     cameraMarkers[marker] = camera
 
                 }
             }
         })
+
+        binding.cameraVisibilityFab.setOnClickListener {
+            val editor = PreferenceManager.getDefaultSharedPreferences(activity).edit()
+            editor.putBoolean("KEY_VESSEL_WATCH_CAMERA_VISIBILITY", !showCameras)
+            editor.apply()
+            showCameras = !showCameras
+            vesselViewModel.setShowCameras(showCameras)
+
+            // loop over camera markers, setting viability
+            with(cameraMarkers.iterator()) {
+                forEach {
+                    it.key.isVisible = showCameras
+                }
+            }
+
+        }
 
     }
 
