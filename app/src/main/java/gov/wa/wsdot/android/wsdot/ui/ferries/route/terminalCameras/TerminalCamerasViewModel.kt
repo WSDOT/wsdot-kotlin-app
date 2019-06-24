@@ -41,12 +41,6 @@ class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepos
         }
     }
 
-    fun reset() {
-        _terminalCameraQuery.value =  TerminalCameraQuery(
-            -1
-        )
-    }
-
     fun setCameraQuery(terminalId: Int) {
         val update = TerminalCameraQuery(terminalId)
         if (_terminalCameraQuery.value == update) { return }
