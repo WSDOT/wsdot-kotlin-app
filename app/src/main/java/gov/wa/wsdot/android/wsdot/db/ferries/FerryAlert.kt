@@ -5,14 +5,7 @@ import androidx.room.ForeignKey
 import java.util.*
 
 @Entity(
-    primaryKeys = ["alertId", "route"],
-    foreignKeys = [ForeignKey(
-        entity = FerrySchedule::class,
-        parentColumns = ["routeId"],
-        childColumns = ["route"],
-        onUpdate = ForeignKey.CASCADE,
-        deferred = true
-    )]
+    primaryKeys = ["alertId", "route"]
 )
 data class FerryAlert(
     val alertId: Int,
