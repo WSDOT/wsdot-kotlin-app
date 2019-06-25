@@ -29,7 +29,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var ferriesViewModel: FerriesViewModel
-    lateinit var sailingViewModel: FerriesSailingViewModel
+    // lateinit var sailingViewModel: FerriesSailingViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -39,6 +39,12 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     private var adapter by autoCleared<FerryScheduleListAdapter>()
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clear view models since they are no longer needed
+        viewModelStore.clear()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,11 +52,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
-
-        sailingViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-        sailingViewModel.reset()
 
         val dataBinding = DataBindingUtil.inflate<FerriesHomeFragmentBinding>(
             inflater,

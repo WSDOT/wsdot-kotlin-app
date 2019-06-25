@@ -78,10 +78,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        // clear all view models when switching app sections
-        // helps to reduce memory impact
-        viewModelStore.clear()
-
         when (item.itemId) {
             R.id.nav_traffic_map -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
