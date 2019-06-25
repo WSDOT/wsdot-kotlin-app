@@ -127,8 +127,10 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("bindHTML")
-    fun bindHTML(textView: TextView, text: String) {
-        textView.text = stripHtml(text).trimEnd()
+    fun bindHTML(textView: TextView, text: String?) {
+        text?.let {
+            textView.text = stripHtml(it).trimEnd()
+        }
     }
 
     @JvmStatic

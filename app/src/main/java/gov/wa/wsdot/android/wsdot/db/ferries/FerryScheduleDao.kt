@@ -16,7 +16,7 @@ abstract class FerryScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun update(schedules: List<FerrySchedule>)
 
-    @Query("SELECT * FROM FerrySchedule")
+    @Query("SELECT * FROM FerrySchedule ORDER BY FerrySchedule.description ASC")
     abstract fun loadSchedules(): LiveData<List<FerrySchedule>>
 
     @Query("SELECT * FROM FerrySchedule WHERE routeId = (:routeId)")
