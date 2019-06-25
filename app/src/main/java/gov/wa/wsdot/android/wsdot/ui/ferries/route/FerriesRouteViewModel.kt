@@ -1,12 +1,17 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
+import android.location.Location
+import android.util.Log
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import javax.inject.Inject
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleRange
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
+import gov.wa.wsdot.android.wsdot.model.FerriesTerminalItem
+import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.lang.Double.POSITIVE_INFINITY
 
 class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
@@ -44,6 +49,37 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
             return
         }
         _routeId.value = update
+    }
+
+    /*
+     *  Swaps the initial terminal query if the arriving terminal is closer to the user than the departing.
+     */
+    fun selectTerminalNearestTo(location: Location) {
+        terminals.value?.let {
+            it.data?.let {terminals ->
+
+                val terminalLocations = DistanceUtils.getTerminalLocations()
+
+                var nearestTerminalCombo: TerminalCombo? = null
+                var winner = Int.MAX_VALUE
+
+                for (terminalCombo in terminals) {
+
+                    terminalLocations[terminalCombo.departingTerminalId]?.let {
+
+                        val contender = DistanceUtils.getDistanceFromPoints(it.latitude, it.longitude, location.latitude, location.longitude)
+
+                        if (contender < winner) {
+                            winner = contender
+                            nearestTerminalCombo = terminalCombo
+                        }
+                    }
+                }
+                nearestTerminalCombo?.let {termCombo ->
+                    _selectedTerminalCombo.value = termCombo
+                }
+            }
+        }
     }
 
     fun updateFavorite(routeId: Int) {

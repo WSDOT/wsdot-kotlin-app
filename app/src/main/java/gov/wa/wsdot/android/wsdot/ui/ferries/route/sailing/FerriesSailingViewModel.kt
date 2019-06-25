@@ -1,9 +1,12 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
+import android.location.Location
+import android.util.Log
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
+import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.util.*
 import javax.inject.Inject
@@ -77,6 +80,8 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     }
 
+
+
     fun refresh() {
         val routeId = _sailingQuery.value?.routeId
         val departingId = _sailingQuery.value?.departingId
@@ -86,15 +91,6 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
         if (routeId != null && departingId != null && arrivingId != null && sailingDate != null) {
             _sailingQuery.value = SailingQuery(routeId, departingId, arrivingId, sailingDate)
         }
-    }
-
-    fun reset() {
-        _sailingQuery.value =  SailingQuery(
-            0,
-            0,
-            0,
-            Date()
-        )
     }
 
     data class SailingQuery(val routeId: Int, val departingId: Int, val arrivingId: Int, val sailingDate: Date) {

@@ -1,5 +1,12 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context.LOCATION_SERVICE
+import android.content.DialogInterface
+import android.content.Intent
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
@@ -25,12 +32,21 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
+import android.provider.Settings
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.get
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
+import permissions.dispatcher.*
 import kotlin.collections.ArrayList
 
+@RuntimePermissions
 class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -50,9 +66,17 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     val args: FerriesRouteFragmentArgs by navArgs()
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Clear view models since they are no longer needed
+        viewModelStore.clear()
     }
 
     override fun onCreateView(
@@ -152,6 +176,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         setupViewPager(viewPager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
+
+        setClosestTerminalWithPermissionCheck()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -198,4 +225,40 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     }
 
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun setClosestTerminal() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        routeViewModel.selectTerminalNearestTo(it)
+                    }
+                }
+        }
+    }
+
+    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        showRationaleDialog(R.string.permission_terminal_location_rationale, request)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        // NOTE: delegate the permission handling to generated function
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Location Permission")
+            builder.setMessage(rationMessage)
+            builder.setCancelable(false)
+            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+    }
 }
