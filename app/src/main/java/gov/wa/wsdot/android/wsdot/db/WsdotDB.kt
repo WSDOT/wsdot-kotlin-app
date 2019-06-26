@@ -20,6 +20,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import gov.wa.wsdot.android.wsdot.db.ferries.*
+import gov.wa.wsdot.android.wsdot.db.mountainpass.*
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 
@@ -33,12 +34,13 @@ import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
         FerryAlert::class,
         FerrySpace::class,
         Vessel::class,
-        Camera::class
+        Camera::class,
+        MountainPass::class
     ],
     version = 1,
     exportSchema = false
 )
-@TypeConverters(WsdotTypeConverters::class)
+@TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)
 abstract class WsdotDB : RoomDatabase() {
 
     abstract fun ferryScheduleDao(): FerryScheduleDao
@@ -52,6 +54,8 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun ferrySailingWithSpacesDao(): FerrySailingWithSpacesDao
 
     abstract fun vesselDao(): VesselDao
+
+    abstract fun mountainPassDao(): MountainPassDao
 
     abstract fun cameraDao(): CameraDao
 
