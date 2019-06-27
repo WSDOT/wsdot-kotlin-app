@@ -17,6 +17,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewMod
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchViewModel
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 
 @Suppress("unused")
 @Module
@@ -61,6 +62,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FerryAlertsViewModel::class)
     abstract fun bindFerryAlertsViewModel(ferryAlertsViewModel: FerryAlertsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MountainPassViewModel::class)
+    abstract fun bindMountainPassViewModel(mountainPassViewModel: MountainPassViewModel): ViewModel
 
     @Binds
     @IntoMap

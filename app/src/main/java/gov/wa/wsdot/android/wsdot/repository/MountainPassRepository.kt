@@ -121,6 +121,12 @@ class MountainPassRepository @Inject constructor(
         mountainPassDao.updateMountainPasses(dbPassList)
     }
 
+    fun updateFavorite(passId: Int, isFavorite: Boolean) {
+        appExecutors.diskIO().execute {
+            mountainPassDao.updateFavorite(passId, isFavorite)
+        }
+    }
+
     private fun parsePassDate(passDate: List<Int>): Date {
         // TODO
         /*
