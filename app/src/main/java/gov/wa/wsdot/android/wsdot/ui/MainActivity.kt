@@ -85,10 +85,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.nav_ferries -> {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
             }
-            /*
             R.id.nav_mountain_passes -> {
-
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
             }
+            /*
             R.id.nav_toll_rates -> {
 
             }
