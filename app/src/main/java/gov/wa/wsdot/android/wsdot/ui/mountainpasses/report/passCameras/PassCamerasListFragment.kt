@@ -1,30 +1,33 @@
-package gov.wa.wsdot.android.wsdot.ui.cameras
+package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras
 
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListAdapter
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
-
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class CameraListFragment : DaggerFragment(), Injectable {
+class PassCamerasListFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     lateinit var cameraListViewModel: CameraListViewModel
 
     @Inject
@@ -40,30 +43,29 @@ class CameraListFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        cameraListViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CameraListViewModel::class.java)
+        cameraListViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(CameraListViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
-       val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
-           inflater,
-           R.layout.camera_list_fragment,
-           container,
-           false
-       )
+        val dataBinding = inflate<CameraListFragmentBinding>(
+            inflater,
+            R.layout.camera_list_fragment,
+            container,
+            false
+        )
 
-       dataBinding.retryCallback = object : RetryCallback {
-           override fun retry() {
-               cameraListViewModel.refresh()
-           }
-       }
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                cameraListViewModel.refresh()
+            }
+        }
 
-       dataBinding.viewModel = cameraListViewModel
+        dataBinding.viewModel = cameraListViewModel
+        binding = dataBinding
 
-       binding = dataBinding
+        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
-       // animation
-       sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
-
-       return dataBinding.root
+        return dataBinding.root
 
     }
 
@@ -74,18 +76,17 @@ class CameraListFragment : DaggerFragment(), Injectable {
 
         // pass function to be called on adapter item tap and favorite
         val adapter = CameraListAdapter(dataBindingComponent, appExecutors,
-            {
-                    camera -> navigateToCamera(camera.cameraId)
+            { camera ->
+                navigateToCamera(camera)
             },
             {
-
+                cameraListViewModel.updateFavorite(it.cameraId, !it.favorite)
             })
 
         this.adapter = adapter
 
         binding.cameraList.adapter = adapter
 
-        // animations
         postponeEnterTransition()
         binding.cameraList.viewTreeObserver
             .addOnPreDrawListener {
@@ -93,18 +94,17 @@ class CameraListFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        cameraListViewModel.cameras.observe(viewLifecycleOwner, Observer { cameraResource ->
-            if (cameraResource.data != null) {
-                adapter.submitList(cameraResource.data)
-            } else {
-                adapter.submitList(emptyList())
+        cameraListViewModel.cameras.observe(viewLifecycleOwner, Observer { cameras ->
+            if (cameras.data != null) {
+                adapter.submitList(cameras.data)
             }
+            // TODO: show no cameras message
         })
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToCamera(cameraId: Int){
-       // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
-       // findNavController().navigate(action)
+    private fun navigateToCamera(camera: Camera) {
+        //val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
+        //findNavController().navigate(action)
     }
 }

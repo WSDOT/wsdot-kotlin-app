@@ -32,7 +32,7 @@ class CameraViewModel @Inject constructor(cameraRepository: CameraRepository) : 
     }
 
     fun refresh() {
-
+        // TODO
     }
 
     fun updateFavorite(cameraId: Int) {

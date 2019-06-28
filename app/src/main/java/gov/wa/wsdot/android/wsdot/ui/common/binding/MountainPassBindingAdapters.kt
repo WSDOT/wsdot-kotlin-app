@@ -138,7 +138,7 @@ object MountainPassBindingAdapters {
         if (weather_thunderstorm.any{forecast.contains(it, ignoreCase = true)}) {
             return R.drawable.ic_weather_tstorm_3
         }
-        
+
         return null
 
     }

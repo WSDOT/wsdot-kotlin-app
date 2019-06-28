@@ -2,11 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context.LOCATION_SERVICE
-import android.content.DialogInterface
-import android.content.Intent
 import android.location.Location
-import android.location.LocationManager
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.navArgs
@@ -32,12 +28,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import android.os.Handler
-import android.provider.Settings
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.view.get
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
@@ -182,7 +173,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.ferry_route_menu, menu)
+        inflater.inflate(R.menu.favorite_menu, menu)
         setFavoriteMenuIcon(menu.findItem(R.id.action_favorite))
         super.onCreateOptionsMenu(menu, inflater)
     }
