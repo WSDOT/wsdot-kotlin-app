@@ -14,6 +14,7 @@ android {
         targetSdkVersion 28
         versionCode 21000100
         versionName "0.1.0"
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
