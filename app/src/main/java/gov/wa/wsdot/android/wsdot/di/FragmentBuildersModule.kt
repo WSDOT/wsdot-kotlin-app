@@ -30,6 +30,8 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamer
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassHomeFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 
 @Suppress("unused")
@@ -68,5 +70,11 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeMountainPassHomeFragment(): MountainPassHomeFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMountainPassReportFragment(): MountainPassReportFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePassCamerasListFragment(): PassCamerasListFragment
 
 }
