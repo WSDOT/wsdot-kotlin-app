@@ -79,8 +79,13 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
                 isFavorite = pass.data.favorite
                 activity?.invalidateOptionsMenu()
 
-                val ids = pass.data.cameras.map { it.id }
-                cameraListViewModel.setCamerasQuery(ids)
+                val cameraIds = pass.data.cameras.map { it.id }
+                cameraListViewModel.setCamerasQuery(cameraIds)
+
+                viewPager = dataBinding.root.findViewById(R.id.pager)
+                setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
+                val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
+                tabLayout.setupWithViewPager(viewPager)
 
             }
         })
@@ -92,10 +97,10 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewPager = view.findViewById(R.id.pager)
-        setupViewPager(viewPager)
-        val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
-        tabLayout.setupWithViewPager(viewPager)
+     //   viewPager = view.findViewById(R.id.pager)
+     //   setupViewPager(viewPager)
+      //  val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
+     //   tabLayout.setupWithViewPager(viewPager)
 
     }
 
@@ -125,17 +130,17 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     }
 
     // Add Fragments to Tabs
-    private fun setupViewPager(viewPager: ViewPager) {
+    private fun setupViewPager(viewPager: ViewPager, withCameras: Boolean, withForecast: Boolean) {
 
         val fragments = ArrayList<Fragment>()
-        fragments.add(PassCamerasListFragment())
-        fragments.add(PassCamerasListFragment())
-        fragments.add(PassCamerasListFragment())
+        fragments.add(FerryAlertsFragment())
+        if (withCameras) { fragments.add(PassCamerasListFragment()) }
+        if (withForecast) { fragments.add(FerryAlertsFragment()) }
 
         val titles = ArrayList<String>()
-        titles.add("Report")
-        titles.add("cameras")
-        titles.add("Forecast")
+        titles.add("report")
+        if (withCameras) { titles.add("cameras") }
+        if (withForecast) { titles.add("forecast") }
 
         fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
 

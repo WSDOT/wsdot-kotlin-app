@@ -41,13 +41,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         val config = AppBarConfiguration(
             setOf(
                 R.id.navTrafficMapFragment,
-                R.id.navFerriesHomeFragment
+                R.id.navFerriesHomeFragment,
+                R.id.navMountainPassHomeFragment
             ), drawerLayout)
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
-
-        addDestinationListener(navController)
 
     }
 
@@ -109,13 +108,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
-    }
-
-    private fun addDestinationListener(navController: NavController) {
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-
-            // TODO: may not need this..
-        }
     }
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
