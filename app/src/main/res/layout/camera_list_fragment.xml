@@ -8,11 +8,11 @@
         <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
-        <import type="gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel" />
+        <import type="gov.wa.wsdot.android.wsdot.ui.cameras.DataBoundCameraListViewModel" />
 
         <variable
             name="viewModel"
-            type="CameraListViewModel"/>
+            type="DataBoundCameraListViewModel"/>
 
         <variable
             name="retryCallback"

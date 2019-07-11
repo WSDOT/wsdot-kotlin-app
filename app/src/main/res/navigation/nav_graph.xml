@@ -73,7 +73,6 @@
             android:name="title"
             app:argType="string"
             android:defaultValue="Route Details"/>
-
         <action
             android:id="@+id/action_navFerriesRouteFragment_to_dayPickerDialogFragment"
             app:destination="@id/dayPickerDialogFragment"
@@ -124,28 +123,28 @@
         app:popUpToInclusive="true">
 
         <action
-            android:id="@+id/action_navFerriesHomeFragment_to_navFerriesRouteFragment"
-            app:destination="@id/navFerriesRouteFragment"
+            android:id="@+id/action_navMountainPassHomeFragment_to_navMountainPassReportFragment"
+            app:destination="@id/navMountainPassReportFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
-        <action
-            android:id="@+id/action_navFerriesRouteFragment_to_navVesselWatchFragment"
-            app:destination="@id/navVesselWatchFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 
-        <action
-            android:id="@+id/action_navFerriesRouteFragment_to_navWebViewFragment"
-            app:destination="@id/navWebViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/navMountainPassReportFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFragment"
+        android:label="{title}"
+        tools:layout="@layout/ferries_route_fragment" >
+        <argument
+            android:name="pass_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Route Details"/>
 
     </fragment>
 

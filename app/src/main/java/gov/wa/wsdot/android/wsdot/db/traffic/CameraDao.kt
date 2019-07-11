@@ -18,6 +18,10 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera WHERE roadName = :roadName")
     abstract fun loadCamerasOnRoad(roadName: String): LiveData<List<Camera>>
 
+    @Query("SELECT * FROM Camera WHERE cameraId IN (:ids)")
+    abstract fun loadCamerasWithIds(ids: List<Int>): LiveData<List<Camera>>
+
+
     @Query("UPDATE Camera SET favorite = :isFavorite WHERE cameraId = :cameraId")
     abstract fun updateFavorite(cameraId: Int, isFavorite: Boolean)
 
