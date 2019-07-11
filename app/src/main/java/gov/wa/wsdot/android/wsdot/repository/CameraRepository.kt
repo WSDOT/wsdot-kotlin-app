@@ -13,6 +13,7 @@ import java.util.*
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
 
 @Singleton
 class CameraRepository @Inject constructor(
@@ -107,6 +108,38 @@ class CameraRepository @Inject constructor(
             }
 
             override fun loadFromDb() = if (roadName == "") cameraDao.loadCameras() else cameraDao.loadCamerasOnRoad(roadName)
+
+            override fun createCall() = dataWebservice.getCameras()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+    fun loadCamerasWithIds(cameraIds: List<Int>, forceRefresh: Boolean): LiveData<Resource<List<Camera>>> {
+
+        return object : NetworkBoundResource<List<Camera>, CamerasResponse>(appExecutors) {
+
+            override fun saveCallResult(item: CamerasResponse) = saveCameras(item)
+
+            override fun shouldFetch(data: List<Camera>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = cameraDao.loadCamerasWithIds(cameraIds)
 
             override fun createCall() = dataWebservice.getCameras()
 

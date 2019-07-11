@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -80,7 +81,7 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
         // pass function to be called on adapter item tap and favorite
         val adapter = MountainPassListAdapter(dataBindingComponent, appExecutors,
             {
-                    pass -> navigateToRoute(pass.passId, pass.passName)
+                    pass -> navigateToPassReport(pass.passId, pass.passName)
             },
             {
                     pass -> passViewModel.updateFavorite(pass.passId, !pass.favorite)
@@ -108,8 +109,8 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToRoute(routeId: Int, routeName: String) {
-       // val action = FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(routeId, routeName)
-       // findNavController().navigate(action)
+    private fun navigateToPassReport(routeId: Int, routeName: String) {
+       val action = MountainPassHomeFragmentDirections.actionNavMountainPassHomeFragmentToNavMountainPassReportFragment(routeId, routeName)
+       findNavController().navigate(action)
     }
 }
