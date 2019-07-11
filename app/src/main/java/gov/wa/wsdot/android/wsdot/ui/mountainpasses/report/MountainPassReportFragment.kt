@@ -82,10 +82,12 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
                 val cameraIds = pass.data.cameras.map { it.id }
                 cameraListViewModel.setCamerasQuery(cameraIds)
 
+                // TODO: Only do this once
                 viewPager = dataBinding.root.findViewById(R.id.pager)
                 setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
                 val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
                 tabLayout.setupWithViewPager(viewPager)
+
 
             }
         })
@@ -101,7 +103,6 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
      //   setupViewPager(viewPager)
       //  val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
      //   tabLayout.setupWithViewPager(viewPager)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
