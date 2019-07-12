@@ -140,6 +140,12 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindDate")
+    fun bindDate(textView: TextView, date: Date?) {
+        date?.let { textView.text = getDateTimeStamp(it) }
+    }
+
+    @JvmStatic
     @BindingAdapter("bindDateHour")
     fun bindDateHour(textView: TextView, date: Date?) {
         if (date != null) {
@@ -158,6 +164,16 @@ object BindingAdapters {
     // Creates an updated timestamp from date object
     private fun getDateString(date: Date): String {
         val displayDateFormat = SimpleDateFormat("EEE, MMMM d", Locale.ENGLISH)
+        return try {
+            displayDateFormat.format(date)
+        } catch (e: Exception) {
+            "Unavailable"
+        }
+    }
+
+    // Creates an updated timestamp from date object
+    private fun getDateTimeStamp(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("MMMM d, YYYY h:mm a", Locale.ENGLISH)
         return try {
             displayDateFormat.format(date)
         } catch (e: Exception) {
