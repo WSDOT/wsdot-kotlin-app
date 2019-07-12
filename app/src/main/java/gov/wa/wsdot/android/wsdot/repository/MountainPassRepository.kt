@@ -12,6 +12,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -129,16 +130,19 @@ class MountainPassRepository @Inject constructor(
     }
 
     private fun parsePassDate(passDate: List<Int>): Date {
-        // TODO
-        /*
-        Date array:
-        DateUpdated: [2019,6,24,20,46]
-         */
+        // DateUpdated: [2019,6,24,20,46]
+        val parseDateFormat = SimpleDateFormat("yyyy,M,d,HH,m") //e.g. [2010, 11, 2, 8, 22, 32, 883, 0, 0]
 
+        val sb = StringBuilder()
+        for (dateItem in passDate) {
+            sb.append(dateItem)
+            sb.append(",")
+        }
 
+        val dateString = sb.toString()
+        parseDateFormat.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"))
+        return parseDateFormat.parse(dateString)
 
-
-        return Date()
     }
 
 }
