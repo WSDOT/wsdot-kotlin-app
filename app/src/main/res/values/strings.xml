@@ -29,6 +29,10 @@
     <string name="ferry_vessel_watch">vessel watch</string>
     <string name="sailing_hint">select sailing date</string>
 
+    // Mountain Passes
+    <string name="restriction_header_text">Restrictions %s:</string>
+    <string name="elevation_text">%d ft</string>
+
     // Network
     <string name="unknown_error">Unknown Error</string>
     <string name="retry">Retry</string>

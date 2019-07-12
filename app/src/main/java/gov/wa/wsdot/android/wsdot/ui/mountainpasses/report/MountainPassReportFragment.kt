@@ -20,6 +20,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.mountainPassConditions.MountainPassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var passViewModel: MountainPassReportViewModel
+    lateinit var passReportViewModel: MountainPassReportViewModel
     lateinit var cameraListViewModel: CameraListViewModel
 
     private var isFavorite: Boolean = false
@@ -58,9 +59,10 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     ): View? {
 
         // set up view models
-        passViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MountainPassReportViewModel::class.java)
-        passViewModel.setPassId(args.passId)
+        passReportViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+        passReportViewModel.setPassId(args.passId)
 
         cameraListViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(CameraListViewModel::class.java)
@@ -74,7 +76,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
             false
         )
 
-        passViewModel.pass.observe(viewLifecycleOwner, Observer { pass ->
+        passReportViewModel.pass.observe(viewLifecycleOwner, Observer { pass ->
             if (pass.data != null) {
                 isFavorite = pass.data.favorite
                 activity?.invalidateOptionsMenu()
@@ -114,7 +116,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                passViewModel.updateFavorite(args.passId)
+                passReportViewModel.updateFavorite(args.passId)
                 return false
             }
             else -> {}
@@ -134,7 +136,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     private fun setupViewPager(viewPager: ViewPager, withCameras: Boolean, withForecast: Boolean) {
 
         val fragments = ArrayList<Fragment>()
-        fragments.add(FerryAlertsFragment())
+        fragments.add(MountainPassConditionsFragment())
         if (withCameras) { fragments.add(PassCamerasListFragment()) }
         if (withForecast) { fragments.add(FerryAlertsFragment()) }
 

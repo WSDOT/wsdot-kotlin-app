@@ -1,9 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
-import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,10 +9,24 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 
 
-
 object MountainPassBindingAdapters {
 
     // Regular Binding Adapters
+    @JvmStatic
+    @BindingAdapter("bindTemperature")
+    fun bindTemperature(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            if (pass.weatherCondition.isNotEmpty()) {
+                textView.text = String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar())
+            } else {
+                textView.text = "N/A"
+            }
+        }
+
+    }
+
+
     @JvmStatic
     @BindingAdapter("bindPassWeatherSummary")
     fun bindPassWeatherSummary(textView: TextView, pass: MountainPass) {
