@@ -1,7 +1,6 @@
-package gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts
+package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast
 
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,54 +9,55 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
+import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.FerryAlertsFragmentBinding
+import gov.wa.wsdot.android.wsdot.databinding.MountainPassForecastFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class FerryAlertsFragment : DaggerFragment(), Injectable {
+class PassForecastListFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var ferryAlertsViewModel: FerryAlertsViewModel
+    lateinit var passReportViewModel: MountainPassReportViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
-    var binding by autoCleared<FerryAlertsFragmentBinding>()
+    var binding by autoCleared<MountainPassForecastFragmentBinding>()
 
-    private var adapter by autoCleared<FerryAlertsListAdapter>()
+    private var adapter by autoCleared<PassForecastListAdapter>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        ferryAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
+        passReportViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        val dataBinding = DataBindingUtil.inflate<FerryAlertsFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<MountainPassForecastFragmentBinding>(
             inflater,
-            R.layout.ferry_alerts_fragment,
+            R.layout.mountain_pass_forecast_fragment,
             container,
             false
         )
 
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                ferryAlertsViewModel.refresh()
+                passReportViewModel.refresh()
             }
         }
 
-        dataBinding.viewModel = ferryAlertsViewModel
+        dataBinding.viewModel = passReportViewModel
 
         binding = dataBinding
 
@@ -74,7 +74,7 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = FerryAlertsListAdapter(dataBindingComponent, appExecutors)
+        val adapter = PassForecastListAdapter(dataBindingComponent, appExecutors)
 
         this.adapter = adapter
 
@@ -87,9 +87,10 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        ferryAlertsViewModel.ferryAlerts.observe(viewLifecycleOwner, Observer { alertsResource ->
-            if (alertsResource?.data != null) {
-                adapter.submitList(alertsResource.data)
+        passReportViewModel.pass.observe(viewLifecycleOwner, Observer { pass ->
+
+            if (pass?.data != null) {
+                adapter.submitList(pass.data.forecasts)
             } else {
                 adapter.submitList(emptyList())
             }
