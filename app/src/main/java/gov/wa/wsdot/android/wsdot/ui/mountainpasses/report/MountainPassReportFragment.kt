@@ -17,8 +17,7 @@ import gov.wa.wsdot.android.wsdot.databinding.MountainPassReportFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
-import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.PassConditions.PassConditionsFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.util.autoCleared
@@ -83,12 +82,14 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
                 val cameraIds = pass.data.cameras.map { it.id }
                 cameraListViewModel.setCamerasQuery(cameraIds)
 
-                // TODO: Only do this once
-                viewPager = dataBinding.root.findViewById(R.id.pager)
-                setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
-                val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
-                tabLayout.setupWithViewPager(viewPager)
-
+                // Only set up the tabs if the pager hasn't been initialized yet
+                // This prevents tabs from resetting when forecasts and favorite is updated
+                if (!this::viewPager.isInitialized) {
+                    viewPager = dataBinding.root.findViewById(R.id.pager)
+                    setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
+                    val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
+                    tabLayout.setupWithViewPager(viewPager)
+                }
 
             }
         })
@@ -97,13 +98,6 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
         binding = dataBinding
 
         return dataBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-     //   viewPager = view.findViewById(R.id.pager)
-     //   setupViewPager(viewPager)
-      //  val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
-     //   tabLayout.setupWithViewPager(viewPager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
