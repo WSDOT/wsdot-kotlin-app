@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.mountainPassConditions
+package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.PassConditions
 
 import android.os.Bundle
 import android.util.Log
@@ -17,7 +17,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportVie
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class MountainPassConditionsFragment : DaggerFragment(), Injectable {
+class PassConditionsFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

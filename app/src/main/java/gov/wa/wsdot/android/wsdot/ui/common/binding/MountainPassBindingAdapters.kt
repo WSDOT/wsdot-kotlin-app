@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 
 
@@ -66,6 +67,15 @@ object MountainPassBindingAdapters {
             }
         }
 
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassWeatherIcon")
+    fun bindPassWeatherIcon(imageView: ImageView, forecast: MountainPassResponse.PassConditions.PassItem.PassForecast) {
+        getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
+            imageView.setImageResource(it)
+            imageView.visibility = View.VISIBLE
+        }
     }
 
     private fun getIconFromForecast(day: String, forecast: String): Int? {

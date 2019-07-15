@@ -18,10 +18,9 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
-import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.mountainPassConditions.MountainPassConditionsFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.PassConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -136,9 +135,9 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     private fun setupViewPager(viewPager: ViewPager, withCameras: Boolean, withForecast: Boolean) {
 
         val fragments = ArrayList<Fragment>()
-        fragments.add(MountainPassConditionsFragment())
+        fragments.add(PassConditionsFragment())
         if (withCameras) { fragments.add(PassCamerasListFragment()) }
-        if (withForecast) { fragments.add(FerryAlertsFragment()) }
+        if (withForecast) { fragments.add(PassForecastListFragment()) }
 
         val titles = ArrayList<String>()
         titles.add("report")
