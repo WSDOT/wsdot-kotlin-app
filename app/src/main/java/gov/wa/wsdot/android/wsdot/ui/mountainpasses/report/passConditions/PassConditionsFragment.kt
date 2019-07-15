@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.PassConditions
+package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions
 
 import android.os.Bundle
 import android.util.Log
@@ -43,11 +43,6 @@ class PassConditionsFragment : DaggerFragment(), Injectable {
 
         passReportViewModel.pass.observe(viewLifecycleOwner, Observer { pass ->
             if (pass.data != null) {
-
-
-                Log.e("debug", "test")
-                Log.e("debug", pass.data.weatherCondition)
-
                 binding.pass = pass.data
             }
         })

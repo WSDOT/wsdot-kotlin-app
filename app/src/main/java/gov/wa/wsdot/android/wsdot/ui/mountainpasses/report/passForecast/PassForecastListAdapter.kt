@@ -23,11 +23,12 @@ class PassForecastListAdapter(
     diffCallback = object : DiffUtil.ItemCallback<PassForecast>() {
         override fun areItemsTheSame(oldItem: PassForecast, newItem: PassForecast): Boolean {
             return oldItem.forecastText == newItem.forecastText
-
+                    && oldItem.day == newItem.day
         }
 
         override fun areContentsTheSame(oldItem: PassForecast, newItem: PassForecast): Boolean {
             return oldItem.forecastText == newItem.forecastText
+                    && oldItem.day == newItem.day
         }
     }
 ) {

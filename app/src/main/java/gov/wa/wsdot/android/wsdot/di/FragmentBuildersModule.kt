@@ -31,7 +31,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFragment
-import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.PassConditions.PassConditionsFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
