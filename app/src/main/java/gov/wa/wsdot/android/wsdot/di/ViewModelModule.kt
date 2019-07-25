@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
+import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
@@ -17,6 +18,8 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewMod
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchViewModel
+import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel
+import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 
@@ -31,8 +34,23 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(CamerasViewModel::class)
+    abstract fun bindCamerasViewModel(camerasViewModel: CamerasViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(CameraListViewModel::class)
     abstract fun bindCameraListViewModel(cameraViewModel: CameraListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HighwayAlertViewModel::class)
+    abstract fun bindHighwayAlertViewModel(highwayAlertViewModel: HighwayAlertViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HighwayAlertsViewModel::class)
+    abstract fun bindHighwayAlertsViewModel(highwayAlertsViewModel: HighwayAlertsViewModel): ViewModel
 
     @Binds
     @IntoMap

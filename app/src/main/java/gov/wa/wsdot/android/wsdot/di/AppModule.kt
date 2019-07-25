@@ -10,6 +10,7 @@ import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
+import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -47,6 +48,12 @@ class AppModule {
             .databaseBuilder(app, WsdotDB::class.java, "wsdot.db")
             .fallbackToDestructiveMigration()
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun highwayAlertDao(db: WsdotDB): HighwayAlertDao {
+        return db.highwayAlertDao()
     }
 
     @Singleton
