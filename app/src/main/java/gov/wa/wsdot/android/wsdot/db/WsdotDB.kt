@@ -23,12 +23,15 @@ import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.*
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
+import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
+import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
 
 /**
  * Main database description.
  */
 @Database(
     entities = [
+        HighwayAlert::class,
         FerrySchedule::class,
         FerrySailing::class,
         FerryAlert::class,
@@ -42,6 +45,8 @@ import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 )
 @TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)
 abstract class WsdotDB : RoomDatabase() {
+
+    abstract fun highwayAlertDao(): HighwayAlertDao
 
     abstract fun ferryScheduleDao(): FerryScheduleDao
 
