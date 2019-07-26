@@ -1,7 +1,10 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,11 +32,20 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.enableMyLocationWithPermissionCheck
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.onRequestPermissionsResult
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnShowRationale
+import permissions.dispatcher.PermissionRequest
+import permissions.dispatcher.RuntimePermissions
 
-
+@RuntimePermissions
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Inject
@@ -48,6 +60,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private val vesselMarkers = HashMap<Marker, Vessel>()
     private val cameraMarkers = HashMap<Marker, Camera>()
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     var showCameras: Boolean = true
 
@@ -88,6 +102,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
+
+        enableMyLocationWithPermissionCheck()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 
@@ -189,6 +205,43 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         }
 
         return true
+    }
+
+    // Location Permission
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun enableMyLocation() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        mMap.isMyLocationEnabled = true
+                    }
+                }
+        }
+    }
+
+    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        showRationaleDialog(R.string.permission_map_location_rationale, request)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Location Permission")
+            builder.setMessage(rationMessage)
+            builder.setCancelable(false)
+            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
     }
 
 }
