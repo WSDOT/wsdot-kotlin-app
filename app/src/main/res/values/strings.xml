@@ -44,5 +44,6 @@
     <string name="permission_location_denied">location permission denied</string>
     <string name="permission_location_never_ask_again">location permission denied. Please go to permission settings to allow WSDOT to use your location</string>
     <string name="weather_forecast_icon">weather forecast icon</string>
+    <string name="permission_map_location_rationale">WSDOT wants permission to show your location on the traffic map</string>
 
 </resources>

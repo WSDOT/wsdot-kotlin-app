@@ -1,19 +1,24 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -25,8 +30,10 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
+import permissions.dispatcher.*
 import javax.inject.Inject
 
+@RuntimePermissions
 class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Inject
@@ -43,6 +50,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
     private lateinit var mMap: GoogleMap
 
     private lateinit var mapFragment: SupportMapFragment
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -65,6 +74,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
+
+        enableMyLocationWithPermissionCheck()
 
         val seattle = LatLng(47.6062, -122.3321)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seattle, 12.0f))
@@ -136,4 +147,43 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
 
         return true
     }
+
+
+    // Location Permission
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun enableMyLocation() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        mMap.isMyLocationEnabled = true
+                    }
+                }
+        }
+    }
+
+    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        showRationaleDialog(R.string.permission_map_location_rationale, request)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Location Permission")
+            builder.setMessage(rationMessage)
+            builder.setCancelable(false)
+            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+    }
+
 }
