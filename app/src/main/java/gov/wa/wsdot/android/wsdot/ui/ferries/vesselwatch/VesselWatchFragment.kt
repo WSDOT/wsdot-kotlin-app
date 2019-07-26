@@ -161,9 +161,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     it.key.isVisible = showCameras
                 }
             }
-
         }
-
     }
 
     override fun onPause() {
@@ -178,23 +176,19 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     override fun onMarkerClick(marker: Marker): Boolean {
 
-        val vessel = vesselMarkers[marker]
-
-        if (vessel != null) {
-            val action = VesselWatchFragmentDirections.actionNavVesselWatchFragmentToNavVesselDetailsFragment(vessel.vesselId, vessel.vesselName)
+        vesselMarkers[marker]?.let {
+            val action = VesselWatchFragmentDirections.actionNavVesselWatchFragmentToNavVesselDetailsFragment(it.vesselId, it.vesselName)
             findNavController().navigate(action)
             return true
         }
 
-        val camera = cameraMarkers[marker]
-        if (camera != null) {
-            val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
+        cameraMarkers[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.cameraId, it.title)
             findNavController().navigate(action)
             return true
         }
 
         return true
     }
-
 
 }

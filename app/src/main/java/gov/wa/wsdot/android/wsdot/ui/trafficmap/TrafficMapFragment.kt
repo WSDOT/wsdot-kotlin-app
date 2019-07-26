@@ -13,10 +13,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
@@ -25,7 +27,7 @@ import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
 import javax.inject.Inject
 
-class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback {
+class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -62,11 +64,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap?) {
 
-        System.err.println("OnMapReady start")
         mMap = map as GoogleMap
 
         val seattle = LatLng(47.6062, -122.3321)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seattle, 12.0f))
+
+        mMap.setOnMarkerClickListener(this)
 
         highwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
             if (alerts.data != null) {
@@ -115,5 +118,22 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback {
                 }
             }
         })
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+
+        highwayAlertMarkers[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(it.alertId, it.category)
+            findNavController().navigate(action)
+            return true
+        }
+
+        cameraMarkers[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.cameraId, it.title)
+            findNavController().navigate(action)
+            return true
+        }
+
+        return true
     }
 }
