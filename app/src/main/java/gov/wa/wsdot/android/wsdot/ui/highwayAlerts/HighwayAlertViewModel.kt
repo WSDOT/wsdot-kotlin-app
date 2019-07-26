@@ -16,7 +16,7 @@ class HighwayAlertViewModel @Inject constructor(highwayAlertsRepository: Highway
 
     private val repo = highwayAlertsRepository
 
-    val camera: LiveData<Resource<HighwayAlert>> = Transformations
+    val alert: LiveData<Resource<HighwayAlert>> = Transformations
         .switchMap(_alertQuery) { input ->
             input.ifExists {
                 highwayAlertsRepository.loadHighwayAlert(it)
