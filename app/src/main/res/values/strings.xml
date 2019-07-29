@@ -46,4 +46,13 @@
     <string name="weather_forecast_icon">weather forecast icon</string>
     <string name="permission_map_location_rationale">WSDOT wants permission to show your location on the map</string>
 
+    // Pref
+    <string name="user_preference_vessel_watch_cameras">USER_PREF_KEY_VESSEL_WATCH_CAMERAS</string>
+    <string name="user_preference_traffic_map_latitude">USER_PREF_KEY_TRAFFIC_MAP_LAT</string>
+    <string name="user_preference_traffic_map_longitude">USER_PREF_KEY_TRAFFIC_MAP_LONG</string>
+    <string name="user_preference_traffic_map_zoom">USER_PREF_KEY_TRAFFIC_MAP_ZOOM</string>
+    <string name="user_preference_vessel_watch_latitude">USER_PREF_KEY_VESSEL_WATCH_LAT</string>
+    <string name="user_preference_vessel_watch_longitude">USER_PREF_VESSEL_WATCH_LONG</string>
+    <string name="user_preference_vessel_watch_zoom">USER_PREF_VESSEL_WATCH_ZOOM</string>
+
 </resources>
