@@ -2,11 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.SharedPreferences
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +33,6 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.enableMyLocationWithPermissionCheck
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.onRequestPermissionsResult
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
