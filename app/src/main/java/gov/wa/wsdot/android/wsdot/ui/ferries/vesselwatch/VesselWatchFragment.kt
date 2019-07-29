@@ -80,7 +80,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         mapFragment.getMapAsync(this)
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        showCameras = settings.getBoolean("KEY_VESSEL_WATCH_CAMERA_VISIBILITY", true)
+        showCameras = settings.getBoolean(getString(R.string.user_preference_vessel_watch_cameras), true)
 
         vesselViewModel.setShowCameras(showCameras)
 
@@ -102,9 +102,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 
-        val latitude = settings.getDouble("KEY_VESSEL_WATCH_LAT", 47.583571)
-        val longitude = settings.getDouble("KEY_VESSEL_WATCH_LON", -122.473468)
-        val zoom = settings.getFloat("KEY_VESSEL_WATCH_ZOOM", 10f)
+        val latitude = settings.getDouble(getString(R.string.user_preference_vessel_watch_latitude), 47.583571)
+        val longitude = settings.getDouble(getString(R.string.user_preference_vessel_watch_longitude), -122.473468)
+        val zoom = settings.getFloat(getString(R.string.user_preference_vessel_watch_zoom), 10f)
 
         val startLocation = LatLng(latitude, longitude)
 
@@ -161,7 +161,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         binding.cameraVisibilityFab.setOnClickListener {
             val editor = PreferenceManager.getDefaultSharedPreferences(activity).edit()
-            editor.putBoolean("KEY_VESSEL_WATCH_CAMERA_VISIBILITY", !showCameras)
+            editor.putBoolean(getString(R.string.user_preference_vessel_watch_cameras), !showCameras)
             editor.apply()
             showCameras = !showCameras
             vesselViewModel.setShowCameras(showCameras)
@@ -179,9 +179,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         super.onPause()
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         val editor = settings.edit()
-        editor.putDouble("KEY_VESSEL_WATCH_LAT", mMap.projection.visibleRegion.latLngBounds.center.latitude)
-        editor.putDouble("KEY_VESSEL_WATCH_LON", mMap.projection.visibleRegion.latLngBounds.center.longitude)
-        editor.putFloat("KEY_VESSEL_WATCH_ZOOM", mMap.cameraPosition.zoom)
+        editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), mMap.projection.visibleRegion.latLngBounds.center.latitude)
+        editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
+        editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), mMap.cameraPosition.zoom)
         editor.apply()
     }
 

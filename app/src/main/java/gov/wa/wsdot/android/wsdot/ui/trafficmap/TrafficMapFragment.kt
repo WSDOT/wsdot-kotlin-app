@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +32,8 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
+import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.*
 import javax.inject.Inject
 
@@ -71,14 +75,29 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
         return rootView
     }
 
+
+    override fun onPause() {
+        super.onPause()
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = settings.edit()
+        editor.putDouble(getString(R.string.user_preference_traffic_map_latitude), mMap.projection.visibleRegion.latLngBounds.center.latitude)
+        editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
+        editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), mMap.cameraPosition.zoom)
+        editor.apply()
+    }
+
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
 
         enableMyLocationWithPermissionCheck()
 
-        val seattle = LatLng(47.6062, -122.3321)
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(seattle, 12.0f))
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
+        val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+        val zoom = settings.getFloat(getString(R.string.user_preference_traffic_map_zoom), 12.0f)
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
 
         mMap.setOnMarkerClickListener(this)
 
