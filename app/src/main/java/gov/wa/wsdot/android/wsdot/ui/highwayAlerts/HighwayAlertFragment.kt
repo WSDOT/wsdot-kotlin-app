@@ -73,18 +73,39 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
             if (alert.data != null) {
+
+                var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+
+                val construction = arrayOf("construction", "maintenance")
+                val closure = arrayOf("closed", "closure")
+
+                when {
+                    construction.any { alert.data.category.contains(it, ignoreCase = true) } ->
+                        alertIcon = when(alert.data.priority.toLowerCase()) {
+                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_highest)
+                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_high)
+                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
+                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_low)
+                            else -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
+                        }
+                    closure.any { alert.data.category.contains(it, ignoreCase = true) } -> {
+                        alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                    }
+                    else -> alertIcon = when(alert.data.priority.toLowerCase()) {
+                        "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
+                        "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                        "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                        "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                        else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                    }
+                }
+
                 binding.highwayAlert = alert.data
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(alert.data.startLatitude, alert.data.startLongitude), 14.0f))
                 mMap.addMarker(
                     MarkerOptions()
                         .position(LatLng(alert.data.startLatitude, alert.data.startLongitude))
-                        .icon(when(alert.data.priority.toLowerCase()) {
-                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
-                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
-                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
-                            else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                        }))
+                        .icon(alertIcon))
             }
         })
     }

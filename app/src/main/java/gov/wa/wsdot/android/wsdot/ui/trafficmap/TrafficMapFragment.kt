@@ -92,18 +92,40 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
                     }
                 }
 
+
                 for (alert in alerts.data) {
+
+                    var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+
+                    val construction = arrayOf("construction", "maintenance")
+                    val closure = arrayOf("closed", "closure")
+
+                    when {
+                        construction.any { alert.category.contains(it, ignoreCase = true) } ->
+                            alertIcon = when(alert.priority.toLowerCase()) {
+                                "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_highest)
+                                "high" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_high)
+                                "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
+                                "low" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_low)
+                                else -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
+                            }
+                        closure.any { alert.category.contains(it, ignoreCase = true) } -> {
+                            alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                        }
+                        else -> alertIcon = when(alert.priority.toLowerCase()) {
+                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
+                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                            else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                        }
+                    }
+
                     val marker = mMap.addMarker(
                         MarkerOptions()
                             .position(LatLng(alert.startLatitude, alert.startLongitude))
                             .visible(showAlerts)
-                            .icon(when(alert.priority.toLowerCase()) {
-                                "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
-                                "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
-                                "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                                "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
-                                else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                            }))
+                            .icon(alertIcon))
                     highwayAlertMarkers[marker] = alert
                 }
             }
