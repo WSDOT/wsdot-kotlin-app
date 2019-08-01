@@ -33,16 +33,11 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
 import gov.wa.wsdot.android.wsdot.util.putDouble
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import org.json.JSONArray
-import org.json.JSONException
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
@@ -69,7 +64,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
 
     var showAlerts: Boolean = true
-    var showCameras: Boolean = true
+    var showRestAreas: Boolean = true
 
     private lateinit var mMap: GoogleMap
 
@@ -98,6 +93,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         restAreaViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(RestAreaViewModel::class.java)
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
+        showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
 
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -248,7 +247,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 val marker = mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id)).addMarker(
                     MarkerOptions()
                         .position(LatLng(restArea.latitude, restArea.longitude))
-                        .visible(showAlerts)
+                        .visible(showRestAreas)
                         .icon(BitmapDescriptorFactory.fromResource(restArea.icon)))
 
                 restAreaMarkers[marker] = restArea
@@ -275,6 +274,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             return true
         }
 
+        restAreaMarkers[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.location, it.description)
+            findNavController().navigate(action)
+            return true
+        }
+
         return true
     }
 
@@ -293,6 +298,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         for (marker in collection.markers) {
             marker.isVisible = visibility
         }
+
     }
 
     // Google Maps Cluster Utils
@@ -456,6 +462,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     editor.apply()
 
                     setRestAreaMarkerVisibility(!show)
+                    showRestAreas = !show
 
                     mFab.replaceActionItem(actionItem, getRestAreasVisibilityAction())
                 }
@@ -468,6 +475,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     editor.apply()
 
                     setHighwayAlertMarkerVisibility(!show)
+                    showAlerts = !show
 
                     mFab.replaceActionItem(actionItem, getHighwayAlertsVisibilityAction())
 

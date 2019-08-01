@@ -24,7 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 
 @Suppress("unused")
 @Module
