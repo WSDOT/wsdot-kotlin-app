@@ -13,7 +13,7 @@ class RestAreaViewModel @Inject constructor(): ViewModel() {
     private val _restAreaData: MutableLiveData<RestAreaData> = MutableLiveData()
 
     // Creates a live data using the rest area json provided by the main activity/fragment
-    // utilizes liveData builder to move work onto a coroutine 
+    // utilizes liveData builder to move work onto a coroutine
     val restAreas: LiveData<List<RestAreaItem>> = Transformations
         .switchMap(_restAreaData) { jsonString ->
             jsonString.ifExists {
