@@ -17,6 +17,7 @@ class MapHighwayAlertsViewModel @Inject constructor(highwayAlertRepository: High
     val alerts: LiveData<Resource<List<HighwayAlert>>> = Transformations
         .switchMap(_alertQuery) { input ->
             input.ifExists { bounds, refresh ->
+
                 highwayAlertRepository.loadHighwayAlertsInBounds(bounds, refresh)
             }
         }

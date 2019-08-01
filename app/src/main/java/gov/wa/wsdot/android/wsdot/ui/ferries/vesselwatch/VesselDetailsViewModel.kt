@@ -24,15 +24,11 @@ class VesselDetailsViewModel @Inject constructor(vesselRepository: VesselReposit
         }
 
     fun setVesselQuery(vesselId: Int) {
-
         val update = VesselQuery(vesselId)
-
         if (_vesselQuery.value == update) {
             return
         }
-
         _vesselQuery.value = update
-
     }
 
     fun refresh() {
