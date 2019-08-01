@@ -15,6 +15,9 @@ abstract class HighwayAlertDao {
     @Query("SELECT * FROM HighwayAlert WHERE alertId = :alertId")
     abstract fun loadHighwayAlert(alertId: Int): LiveData<HighwayAlert>
 
+    @Query("SELECT * FROM HighwayAlert WHERE (startLatitude BETWEEN :minLat AND :maxLat) AND (startLongitude BETWEEN :minLng AND :maxLng)")
+    abstract fun loadHighwayAlertsInBounds(minLat: Double, maxLat: Double, minLng: Double, maxLng: Double): LiveData<List<HighwayAlert>>
+
     @Transaction
     open fun updateHighwayAlerts(alerts: List<HighwayAlert>) {
         deleteOldHighwayAlerts()
