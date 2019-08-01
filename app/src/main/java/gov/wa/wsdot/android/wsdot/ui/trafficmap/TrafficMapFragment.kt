@@ -3,12 +3,9 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 import android.Manifest
 import android.annotation.SuppressLint
 import android.location.Location
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +16,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.MarkerManager
 import com.google.maps.android.clustering.Cluster
@@ -30,12 +31,22 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
 import gov.wa.wsdot.android.wsdot.util.putDouble
-import permissions.dispatcher.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONException
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnShowRationale
+import permissions.dispatcher.PermissionRequest
+import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
 @RuntimePermissions
@@ -50,9 +61,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
     lateinit var mapCamerasViewModel: MapCamerasViewModel
+    lateinit var restAreaViewModel: RestAreaViewModel
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
+    private val restAreaMarkers = HashMap<Marker, RestAreaItem>()
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
 
     var showAlerts: Boolean = true
@@ -82,6 +95,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         mapCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MapCamerasViewModel::class.java)
+
+        restAreaViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(RestAreaViewModel::class.java)
 
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -123,10 +139,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         // init a marker manager that will handle clusters and regular map markers
         mMarkerManager = MarkerManager(mMap)
 
-        // init a new collection for alert markers
-        mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
-        mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
-
         // set up a cluster manager with the MarkerManager
         mCameraClusterManager = CameraClusterManager(context, mMap, mMarkerManager)
         // Give it a custom renderer (used to modify icons, etc...)
@@ -139,6 +151,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         mMap.setOnCameraIdleListener(this)
         mMap.setOnCameraMoveStartedListener(this)
         mMap.setOnMarkerClickListener(mMarkerManager)
+
+
+        // init a new collection for alert markers
+        mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
 
         mapHighwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
             if (alerts.data != null) {
@@ -153,7 +170,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
                 for (alert in alerts.data) {
 
-                    var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                    var alertIcon: BitmapDescriptor
 
                     val construction = arrayOf("construction", "maintenance")
                     val closure = arrayOf("closed", "closure")
@@ -208,6 +225,37 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             }
         })
 
+
+        // init a new collection for rest area markers
+        mMarkerManager.newCollection(getString(R.string.rest_area_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id)).setOnMarkerClickListener(this)
+
+        val restAreaJson = resources.openRawResource(R.raw.restareas).bufferedReader().use { it.readText() }
+        restAreaViewModel.setRestAreaData(restAreaJson)
+
+        restAreaViewModel.restAreas.observe(viewLifecycleOwner, Observer { restAreas ->
+
+            with(restAreaMarkers.iterator()) {
+                forEach {
+                    mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id)).remove(it.key)
+                    it.key.remove()
+                    remove()
+                }
+            }
+
+            for (restArea in restAreas) {
+
+                val marker = mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id)).addMarker(
+                    MarkerOptions()
+                        .position(LatLng(restArea.latitude, restArea.longitude))
+                        .visible(showAlerts)
+                        .icon(BitmapDescriptorFactory.fromResource(restArea.icon)))
+
+                restAreaMarkers[marker] = restArea
+
+            }
+        })
+
     }
 
     override fun onCameraMoveStarted(p0: Int) {
@@ -235,6 +283,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
     private fun setHighwayAlertMarkerVisibility(visibility: Boolean){
         val collection = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id))
+        for (marker in collection.markers) {
+            marker.isVisible = visibility
+        }
+    }
+
+    private fun setRestAreaMarkerVisibility(visibility: Boolean){
+        val collection = mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id))
         for (marker in collection.markers) {
             marker.isVisible = visibility
         }
@@ -278,43 +333,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         }
         return true
-    }
-
-    // Location Permission
-    @SuppressLint("MissingPermission")
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun enableMyLocation() {
-        context?.let { context ->
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    location?.let {
-                        mMap.isMyLocationEnabled = true
-                    }
-                }
-        }
-    }
-
-    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun showRationaleForLocation(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_map_location_rationale, request)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
-
-    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
-        context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Location Permission")
-            builder.setMessage(rationMessage)
-            builder.setCancelable(false)
-            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-        }
     }
 
     // settings FAB
@@ -449,4 +467,44 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         }
         return true
     }
+
+
+    // Location Permission
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun enableMyLocation() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        mMap.isMyLocationEnabled = true
+                    }
+                }
+        }
+    }
+
+    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun showRationaleForLocation(request: PermissionRequest) {
+        showRationaleDialog(R.string.permission_map_location_rationale, request)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Location Permission")
+            builder.setMessage(rationMessage)
+            builder.setCancelable(false)
+            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
+            val dialog: AlertDialog = builder.create()
+            dialog.show()
+        }
+    }
+
 }
+
