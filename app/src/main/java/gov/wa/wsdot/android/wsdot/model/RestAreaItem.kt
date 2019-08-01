@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.model
 
 class RestAreaItem (
     var route: String,
+    var description: String,
     var location: String,
     var milepost: Int,
     var direction: String,

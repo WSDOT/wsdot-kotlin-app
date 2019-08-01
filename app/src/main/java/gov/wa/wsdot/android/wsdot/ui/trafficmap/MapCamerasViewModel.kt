@@ -12,25 +12,25 @@ import javax.inject.Inject
 
 class MapCamerasViewModel @Inject constructor(cameraRepository: CameraRepository) : ViewModel() {
 
-    private val _cameraQuery: MutableLiveData<BoundQuery> = MutableLiveData()
+    private val _cameraQueryLatLng: MutableLiveData<LatLngBoundQuery> = MutableLiveData()
 
     val cameras: LiveData<Resource<List<Camera>>> = Transformations
-        .switchMap(_cameraQuery) { input ->
+        .switchMap(_cameraQueryLatLng) { input ->
             input.ifExists { bounds, refresh ->
                 cameraRepository.loadCamerasInBounds(bounds, refresh)
             }
         }
 
     fun setCameraQuery(bounds: LatLngBounds, refresh: Boolean) {
-        val update = BoundQuery(bounds, refresh)
-        if (_cameraQuery.value == update) {
+        val update = LatLngBoundQuery(bounds, refresh)
+        if (_cameraQueryLatLng.value == update) {
             return
         }
-        _cameraQuery.value = update
+        _cameraQueryLatLng.value = update
     }
 
     fun refresh() {
-        _cameraQuery.value?.bounds?.let {
+        _cameraQueryLatLng.value?.bounds?.let {
             setCameraQuery(it, true)
         }
     }

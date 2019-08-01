@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas
 
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.R
@@ -61,6 +61,7 @@ class RestAreaViewModel @Inject constructor(): ViewModel() {
 
                 var item = RestAreaItem(
                     restAreaJSON.getString("location"),
+                    restAreaJSON.getString("description"),
                     restAreaJSON.getString("route"),
                     restAreaJSON.getInt("milepost"),
                     restAreaJSON.getString("direction"),

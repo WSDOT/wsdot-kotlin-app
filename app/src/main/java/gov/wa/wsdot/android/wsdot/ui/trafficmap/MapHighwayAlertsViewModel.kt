@@ -12,10 +12,10 @@ import javax.inject.Inject
 
 class MapHighwayAlertsViewModel @Inject constructor(highwayAlertRepository: HighwayAlertRepository) : ViewModel() {
 
-    private val _alertQuery: MutableLiveData<BoundQuery> = MutableLiveData()
+    private val _alertQueryLatLng: MutableLiveData<LatLngBoundQuery> = MutableLiveData()
 
     val alerts: LiveData<Resource<List<HighwayAlert>>> = Transformations
-        .switchMap(_alertQuery) { input ->
+        .switchMap(_alertQueryLatLng) { input ->
             input.ifExists { bounds, refresh ->
 
                 highwayAlertRepository.loadHighwayAlertsInBounds(bounds, refresh)
@@ -23,15 +23,15 @@ class MapHighwayAlertsViewModel @Inject constructor(highwayAlertRepository: High
         }
 
     fun setAlertQuery(bounds: LatLngBounds, refresh: Boolean) {
-        val update = BoundQuery(bounds, refresh)
-        if (_alertQuery.value == update) {
+        val update = LatLngBoundQuery(bounds, refresh)
+        if (_alertQueryLatLng.value == update) {
             return
         }
-        _alertQuery.value = update
+        _alertQueryLatLng.value = update
     }
 
     fun refresh() {
-        _alertQuery.value?.bounds?.let {
+        _alertQueryLatLng.value?.bounds?.let {
             setAlertQuery(it, true)
         }
     }
