@@ -21,6 +21,8 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera WHERE cameraId IN (:ids)")
     abstract fun loadCamerasWithIds(ids: List<Int>): LiveData<List<Camera>>
 
+    @Query("SELECT * FROM Camera WHERE (latitude BETWEEN :minLat AND :maxLat) AND (longitude BETWEEN :minLng AND :maxLng)")
+    abstract fun loadCamerasInBounds(minLat: Double, maxLat: Double, minLng: Double, maxLng: Double): LiveData<List<Camera>>
 
     @Query("UPDATE Camera SET favorite = :isFavorite WHERE cameraId = :cameraId")
     abstract fun updateFavorite(cameraId: Int, isFavorite: Boolean)

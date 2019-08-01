@@ -54,5 +54,15 @@
     <string name="user_preference_vessel_watch_latitude">USER_PREF_KEY_VESSEL_WATCH_LAT</string>
     <string name="user_preference_vessel_watch_longitude">USER_PREF_VESSEL_WATCH_LONG</string>
     <string name="user_preference_vessel_watch_zoom">USER_PREF_VESSEL_WATCH_ZOOM</string>
+    <string name="highway_alert_marker_collection_id">HIGHWAY_ALERT_MARKERS</string>
+    <string name="user_preference_traffic_map_show_cameras">USER_PREF_KEY_TRAFFIC_MAP_SHOW_CAMERAS</string>
+    <string name="user_preference_traffic_map_show_highway_alerts">USER_PREF_KEY_TRAFFIC_MAP_SHOW_HIGHWAY_ALERTS</string>
+    <string name="user_preference_traffic_map_cluster_cameras">USER_PREF_KEY_TRAFFIC_MAP_CLUSTER_CAMERAS</string>
+
+    // FAB labels
+    <string name="fab_highway_alerts_label">Highway Alerts</string>
+    <string name="fab_camera_label">Cameras</string>
+    <string name="fab_camera_Clusters_label">Group Cameras</string>
+    <string name="fab_rest_areas_label">Rest Areas</string>
 
 </resources>

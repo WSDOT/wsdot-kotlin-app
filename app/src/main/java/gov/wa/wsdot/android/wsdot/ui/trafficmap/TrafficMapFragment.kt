@@ -2,13 +2,11 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
@@ -21,32 +19,41 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import com.google.maps.android.MarkerManager
+import com.google.maps.android.clustering.Cluster
+import com.google.maps.android.clustering.ClusterManager
+import com.leinardi.android.speeddial.SpeedDialActionItem
+import com.leinardi.android.speeddial.SpeedDialView
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
-import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
-import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
+import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
+import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.*
 import javax.inject.Inject
 
 @RuntimePermissions
-class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
+    GoogleMap.OnMarkerClickListener,
+    ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
+    ClusterManager.OnClusterClickListener<CameraClusterItem>,
+    GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
+    SpeedDialView.OnActionSelectedListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var highwayAlertsViewModel: HighwayAlertsViewModel
-    lateinit var camerasViewModel: CamerasViewModel
+    lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
+    lateinit var mapCamerasViewModel: MapCamerasViewModel
 
+    // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
-    private val cameraMarkers = HashMap<Marker, Camera>()
+    private val cameraClusterItems = mutableListOf<CameraClusterItem>()
 
     var showAlerts: Boolean = true
     var showCameras: Boolean = true
@@ -57,20 +64,29 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    // Clusters
+    private lateinit var mCameraClusterManager: CameraClusterManager
+    private lateinit var mMarkerManager: MarkerManager
+
+    // FAB
+    private lateinit var mFab: SpeedDialView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
         var rootView = inflater.inflate(R.layout.map_fragment, container, false)
 
-        highwayAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(HighwayAlertsViewModel::class.java)
+        mapHighwayAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MapHighwayAlertsViewModel::class.java)
 
-        camerasViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CamerasViewModel::class.java)
+        mapCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MapCamerasViewModel::class.java)
 
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        initSettingsFAB(rootView)
 
         return rootView
     }
@@ -90,6 +106,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
 
         mMap = map as GoogleMap
 
+        mMap.clear()
+
+        mMap.uiSettings.isCompassEnabled = true
+        mMap.isTrafficEnabled = true
+
         enableMyLocationWithPermissionCheck()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -99,18 +120,36 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
 
-        mMap.setOnMarkerClickListener(this)
+        // init a marker manager that will handle clusters and regular map markers
+        mMarkerManager = MarkerManager(mMap)
 
-        highwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
+        // init a new collection for alert markers
+        mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
+
+        // set up a cluster manager with the MarkerManager
+        mCameraClusterManager = CameraClusterManager(context, mMap, mMarkerManager)
+        // Give it a custom renderer (used to modify icons, etc...)
+        mCameraClusterManager.renderer = CameraRenderer(context, mMap, mCameraClusterManager)
+        mCameraClusterManager.renderer.setAnimation(false)
+
+        mCameraClusterManager.setOnClusterItemClickListener(this)
+        mCameraClusterManager.setOnClusterClickListener(this)
+
+        mMap.setOnCameraIdleListener(this)
+        mMap.setOnCameraMoveStartedListener(this)
+        mMap.setOnMarkerClickListener(mMarkerManager)
+
+        mapHighwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
             if (alerts.data != null) {
 
                 with(highwayAlertMarkers.iterator()) {
                     forEach {
+                        mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).remove(it.key)
                         it.key.remove()
                         remove()
                     }
                 }
-
 
                 for (alert in alerts.data) {
 
@@ -140,36 +179,44 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
                         }
                     }
 
-                    val marker = mMap.addMarker(
+                    val marker = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).addMarker(
                         MarkerOptions()
                             .position(LatLng(alert.startLatitude, alert.startLongitude))
                             .visible(showAlerts)
                             .icon(alertIcon))
+
                     highwayAlertMarkers[marker] = alert
                 }
+
+
             }
         })
 
-        camerasViewModel.cameras.observe(viewLifecycleOwner, Observer { cameras ->
+        mapCamerasViewModel.cameras.observe(viewLifecycleOwner, Observer { cameras ->
             if (cameras.data != null) {
 
-                with(cameraMarkers.iterator()) {
-                    forEach {
-                        it.key.remove()
-                        remove()
-                    }
-                }
+                cameraClusterItems.clear()
+                mCameraClusterManager.clearItems()
 
                 for (camera in cameras.data) {
-                    val marker = mMap.addMarker(MarkerOptions()
-                        .position(LatLng(camera.latitude, camera.longitude))
-                        .visible(showCameras)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
-                    cameraMarkers[marker] = camera
-
+                    val clusterItem = CameraClusterItem(camera.latitude, camera.longitude, camera)
+                    mCameraClusterManager.addItem(clusterItem)
+                    cameraClusterItems.add(clusterItem)
                 }
+
+                mCameraClusterManager.cluster()
             }
         })
+
+    }
+
+    override fun onCameraMoveStarted(p0: Int) {
+        mFab.close()
+    }
+
+    override fun onCameraIdle() {
+        mapCamerasViewModel.setCameraQuery(mMap.projection.visibleRegion.latLngBounds, false)
+        mapHighwayAlertsViewModel.setAlertQuery(mMap.projection.visibleRegion.latLngBounds, false)
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -180,15 +227,58 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
             return true
         }
 
-        cameraMarkers[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.cameraId, it.title)
-            findNavController().navigate(action)
-            return true
-        }
-
         return true
     }
 
+
+    // functions to manager non-clustered marker collections
+
+    private fun setHighwayAlertMarkerVisibility(visibility: Boolean){
+        val collection = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id))
+        for (marker in collection.markers) {
+            marker.isVisible = visibility
+        }
+    }
+
+    // Google Maps Cluster Utils
+
+    private fun setCameraMarkerVisibility(visibility: Boolean){
+        mCameraClusterManager.markerCollection?.markers?.let{ markers ->
+            for (marker in markers){
+                marker.isVisible = visibility
+            }
+        }
+        mCameraClusterManager.clusterMarkerCollection?.markers?.let { clusters ->
+            for (cluster in clusters){
+                cluster.isVisible = visibility
+            }
+        }
+    }
+
+    // Called when a clusterable marker is clicked
+    override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
+        p0?.let {
+            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.mCamera.cameraId, it.mCamera.title)
+            findNavController().navigate(action)
+        }
+        return true
+    }
+
+    // Called when a cluster that represents multiple markers is clicked
+    override fun onClusterClick(p0: Cluster<CameraClusterItem>?): Boolean {
+
+        p0?.let { clusterItems ->
+            val builder = LatLngBounds.builder()
+            for (item in clusterItems.items) {
+                builder.include(item.position)
+            }
+
+            val bounds = builder.build()
+            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+
+        }
+        return true
+    }
 
     // Location Permission
     @SuppressLint("MissingPermission")
@@ -227,4 +317,136 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback, Go
         }
     }
 
+    // settings FAB
+
+    private fun initSettingsFAB(view: View) {
+
+        mFab = view.findViewById(R.id.speedDial)
+
+        mFab.addActionItem(getCameraClusterAction(), 0)
+        mFab.addActionItem(getCameraVisibilityAction(), 1)
+        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
+
+
+        mFab.setOnActionSelectedListener(this)
+
+    }
+
+    private fun getHighwayAlertsVisibilityAction(): SpeedDialActionItem  {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
+
+        var actionColor = resources.getColor(R.color.colorPrimary)
+        var icon = R.drawable.ic_layers
+
+        if (!showCameras) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_highway_alert_visibility_action, icon)
+            .setLabel(R.string.fab_highway_alerts_label)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getCameraVisibilityAction(): SpeedDialActionItem {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
+        var actionColor = resources.getColor(R.color.colorPrimary)
+        var icon = R.drawable.ic_layers
+
+        if (!showCameras) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_camera_visibility_action, icon)
+            .setLabel(R.string.fab_camera_label)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getCameraClusterAction(): SpeedDialActionItem {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
+        var actionColor = resources.getColor(R.color.colorPrimary)
+        var icon = R.drawable.ic_done
+
+        if (!showCameras) {
+            actionColor = resources.getColor(R.color.gray)
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_camera_cluster_action, icon)
+            .setLabel(R.string.fab_camera_Clusters_label)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    override fun onActionSelected(actionItem: SpeedDialActionItem?): Boolean {
+
+        actionItem?.let {
+            when(it.id) {
+                R.id.fab_camera_visibility_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_cameras), !show)
+                    editor.apply()
+
+                    setCameraMarkerVisibility(!show)
+
+                    mFab.replaceActionItem(actionItem, getCameraVisibilityAction())
+
+                }
+
+                R.id.fab_highway_alert_visibility_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), !show)
+                    editor.apply()
+
+                    setHighwayAlertMarkerVisibility(!show)
+
+                    mFab.replaceActionItem(actionItem, getHighwayAlertsVisibilityAction())
+
+                }
+
+                R.id.fab_camera_cluster_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val cluster = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), !cluster)
+                    editor.apply()
+
+                    mCameraClusterManager.markerCollection?.markers?.let{ markers ->
+                        for (marker in markers) { marker.remove() }
+                    }
+                    mCameraClusterManager.clusterMarkerCollection?.markers?.let{markers ->
+                        for (marker in markers) { marker.remove() }
+                    }
+
+                    mCameraClusterManager.clearItems()
+                    mCameraClusterManager.addItems(cameraClusterItems)
+                    mCameraClusterManager.cluster()
+
+                    mFab.replaceActionItem(actionItem, getCameraClusterAction())
+
+                }
+
+                else -> return true
+            }
+        }
+        return true
+    }
 }

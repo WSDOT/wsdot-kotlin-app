@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.repository
 
 import androidx.lifecycle.LiveData
+import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
@@ -13,7 +14,6 @@ import java.util.*
 
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.collections.ArrayList
 
 @Singleton
 class CameraRepository @Inject constructor(
@@ -44,6 +44,38 @@ class CameraRepository @Inject constructor(
             }
 
             override fun loadFromDb() = cameraDao.loadCameras()
+
+            override fun createCall() = dataWebservice.getCameras()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+    fun loadCamerasInBounds(bounds: LatLngBounds, forceRefresh: Boolean): LiveData<Resource<List<Camera>>> {
+
+        return object : NetworkBoundResource<List<Camera>, CamerasResponse>(appExecutors) {
+
+            override fun saveCallResult(item: CamerasResponse) = saveCameras(item)
+
+            override fun shouldFetch(data: List<Camera>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = cameraDao.loadCamerasInBounds(bounds.southwest.latitude, bounds.northeast.latitude, bounds.southwest.longitude, bounds.northeast.longitude)
 
             override fun createCall() = dataWebservice.getCameras()
 
