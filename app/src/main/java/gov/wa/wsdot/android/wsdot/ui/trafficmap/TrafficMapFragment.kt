@@ -344,7 +344,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         mFab.addActionItem(getCameraClusterAction(), 0)
         mFab.addActionItem(getCameraVisibilityAction(), 1)
         mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
-
+        mFab.addActionItem(getRestAreasVisibilityAction(), 3)
 
         mFab.setOnActionSelectedListener(this)
 
@@ -366,6 +366,27 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_highway_alert_visibility_action, icon)
             .setLabel(R.string.fab_highway_alerts_label)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getRestAreasVisibilityAction(): SpeedDialActionItem  {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+
+        var actionColor = resources.getColor(R.color.colorPrimary)
+        var icon = R.drawable.ic_layers
+
+        if (!showCameras) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_rest_area_visibility_action, icon)
+            .setLabel(R.string.fab_rest_areas_label)
             .setFabBackgroundColor(actionColor)
             .create()
 
@@ -425,6 +446,18 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
                     mFab.replaceActionItem(actionItem, getCameraVisibilityAction())
 
+                }
+
+                R.id.fab_rest_area_visibility_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), !show)
+                    editor.apply()
+
+                    setRestAreaMarkerVisibility(!show)
+
+                    mFab.replaceActionItem(actionItem, getRestAreasVisibilityAction())
                 }
 
                 R.id.fab_highway_alert_visibility_action -> {
