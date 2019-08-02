@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepository, cameraRepository: CameraRepository) : ViewModel() {
@@ -45,7 +47,6 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
         vesselRepo.updateFavorite(isFavorite)
     }
     */
-
 
     fun refresh() {
         vessels.removeSource(vesselsLiveData)

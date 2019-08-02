@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -79,6 +81,19 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     // FAB
     private lateinit var mFab: SpeedDialView
 
+    // Update Tasks
+    private lateinit var mapUpdateHandler: Handler
+    private val alertsUpdateTask = object: Runnable {
+        override fun run() {
+            mapHighwayAlertsViewModel.refresh()
+            mapUpdateHandler.postDelayed(this, 300000)
+        }
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mapUpdateHandler = Handler(Looper.getMainLooper())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -106,6 +121,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         return rootView
     }
 
+    override fun onResume() {
+        super.onResume()
+        mapUpdateHandler.post(alertsUpdateTask)
+    }
 
     override fun onPause() {
         super.onPause()
@@ -115,6 +134,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
         editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), mMap.cameraPosition.zoom)
         editor.apply()
+
+        mapUpdateHandler.removeCallbacks(alertsUpdateTask)
+
     }
 
     override fun onMapReady(map: GoogleMap?) {
