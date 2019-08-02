@@ -2,8 +2,11 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.icu.text.RelativeDateTimeFormatter
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +42,9 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.util.*
+import kotlin.collections.HashMap
+import kotlin.concurrent.timer
 
 @RuntimePermissions
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -58,7 +64,20 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    var showCameras: Boolean = true
+    private var showCameras: Boolean = true
+
+    private lateinit var vesselUpdateHandler: Handler
+    private val vesselUpdateTask = object: Runnable {
+        override fun run() {
+            vesselViewModel.refresh()
+            vesselUpdateHandler.postDelayed(this, 180000)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        vesselUpdateHandler = Handler(Looper.getMainLooper())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -175,6 +194,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        vesselUpdateHandler.post(vesselUpdateTask)
+    }
+
     override fun onPause() {
         super.onPause()
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -183,6 +207,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
         editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), mMap.cameraPosition.zoom)
         editor.apply()
+
+        vesselUpdateHandler.removeCallbacks(vesselUpdateTask)
+
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
