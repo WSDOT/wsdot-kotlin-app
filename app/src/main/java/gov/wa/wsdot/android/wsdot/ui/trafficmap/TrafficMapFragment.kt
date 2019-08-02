@@ -275,7 +275,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         }
 
         restAreaMarkers[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.location, it.description)
+            val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.description)
             findNavController().navigate(action)
             return true
         }

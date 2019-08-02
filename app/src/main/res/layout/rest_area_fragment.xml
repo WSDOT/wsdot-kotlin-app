@@ -18,27 +18,140 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/restAreaTitle"
-                style="@style/CardSubTitleText"
+            <LinearLayout
+                android:id="@+id/location_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"
-                android:text="@{restArea.description}"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/locationHeader"
+                    style="@style/CardTitleText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center|start"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rest_area_location_header}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/locationText"
+                    style="@style/CardSubTitleText"
+                    android:layout_width="0dp"
+                    android:layout_gravity="center|start"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rest_area_location_text(restArea.location, restArea.description)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/locationHeader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingBottom="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/direction_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/location_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/directionHeader"
+                    style="@style/CardTitleText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="start|center"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rest_area_direction_header}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/directionText"
+                    style="@style/CardSubTitleText"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_gravity="start|center"
+                    android:layout_height="wrap_content"
+                    android:text="@{restArea.direction}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/directionHeader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingBottom="8dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/milepost_layout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/direction_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/milepostHeader"
+                    style="@style/CardTitleText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="start|center"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rest_area_milepost_header}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginStart="8dp"
+                    android:paddingBottom="8dp"/>
+
+                <TextView
+                    android:id="@+id/milepostText"
+                    style="@style/CardSubTitleText"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_gravity="start|center"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/rest_area_milepost_text(restArea.milepost)}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/milepostHeader"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:paddingBottom="8dp"/>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/details"
-                style="@style/CardFooterText"
-                android:layout_width="match_parent"
+                android:id="@+id/amenitiesHeader"
+                style="@style/CardTitleText"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="start|center"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"
-                android:text="@{restArea.location}"
-                app:layout_constraintTop_toBottomOf="@id/restAreaTitle"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:text="@{@string/rest_area_amenities_header}"
+                app:layout_constraintTop_toBottomOf="@id/milepost_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/amenitiesList"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:bindListToTextView="@{restArea.amenities}"
+                app:layout_constraintTop_toBottomOf="@id/amenitiesHeader"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
 
             <fragment
                 xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -46,7 +159,7 @@
                 android:id="@+id/google_map"
                 android:layout_height="300dp"
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/details"
+                app:layout_constraintTop_toBottomOf="@id/amenitiesList"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

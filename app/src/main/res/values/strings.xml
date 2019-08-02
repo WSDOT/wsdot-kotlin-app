@@ -37,6 +37,15 @@
     <string name="restriction_header_text">Restrictions %s:</string>
     <string name="elevation_text">%d ft</string>
 
+    // Rest Areas
+    <string name="rest_area_location_header">Location:</string>
+    <string name="rest_area_location_text">%s - %s</string>
+    <string name="rest_area_direction_header">Direction:</string>
+    <string name="rest_area_milepost_header">Milepost:</string>
+    <string name="rest_area_milepost_text">%d</string>
+    <string name="rest_area_amenities_header">Amenities:</string>
+
+
     // Network
     <string name="unknown_error">Unknown Error</string>
     <string name="retry">Retry</string>
