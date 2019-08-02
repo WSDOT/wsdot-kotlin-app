@@ -29,12 +29,8 @@
     <fragment
         android:id="@+id/navRestAreaFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment"
-        android:label="{title}"
+        android:label="Rest Area"
         tools:layout="@layout/rest_area_fragment" >
-        <argument
-            android:name="title"
-            app:argType="string"
-            android:defaultValue="Rest Area"/>
         <argument
             android:name="description"
             app:argType="string"

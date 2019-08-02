@@ -28,6 +28,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import android.view.LayoutInflater
+import android.widget.LinearLayout
+import java.lang.StringBuilder
 
 
 /**
@@ -36,6 +39,26 @@ import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 object BindingAdapters {
 
     // General adapters
+
+    @JvmStatic
+    @BindingAdapter("bindListToTextView")
+    fun bindListToTextView(textView: TextView, data: ArrayList<String>?) {
+
+        textView.setSingleLine(false)
+
+        val stringBuilder = StringBuilder()
+        data?.let {
+
+            textView.setLines(it.size)
+            for (string in it) {
+                stringBuilder.append("\u2022  ")
+                stringBuilder.append(string)
+                stringBuilder.append(" \n")
+            }
+        }
+        textView.text = stringBuilder.toString()
+    }
+
     @JvmStatic
     @BindingAdapter("setCameraIconForFab")
     fun setCameraIconForFab(fab: FloatingActionButton, showCamera: Boolean) {
