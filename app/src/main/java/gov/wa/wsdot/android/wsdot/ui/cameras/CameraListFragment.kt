@@ -10,9 +10,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
@@ -35,6 +39,8 @@ class CameraListFragment : DaggerFragment(), Injectable {
 
     private var adapter by autoCleared<CameraListAdapter>()
 
+    val args: CameraListFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +48,7 @@ class CameraListFragment : DaggerFragment(), Injectable {
 
         cameraListViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CameraListViewModel::class.java)
+        cameraListViewModel.setCamerasQuery(args.cameraIds.toList())
 
        val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
            inflater,
@@ -75,10 +82,10 @@ class CameraListFragment : DaggerFragment(), Injectable {
         // pass function to be called on adapter item tap and favorite
         val adapter = CameraListAdapter(dataBindingComponent, appExecutors,
             {
-                    camera -> navigateToCamera(camera.cameraId)
+                    camera -> navigateToCamera(camera)
             },
             {
-
+                    cameraListViewModel.updateFavorite(cameraId = it.cameraId, isFavorite = !it.favorite)
             })
 
         this.adapter = adapter
@@ -103,8 +110,8 @@ class CameraListFragment : DaggerFragment(), Injectable {
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToCamera(cameraId: Int){
-       // val action = CameraListFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(cameraId)
-       // findNavController().navigate(action)
+    private fun navigateToCamera(camera: Camera){
+        val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
+        findNavController().navigate(action)
     }
 }

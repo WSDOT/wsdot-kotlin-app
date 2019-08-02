@@ -351,14 +351,22 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     override fun onClusterClick(p0: Cluster<CameraClusterItem>?): Boolean {
 
         p0?.let { clusterItems ->
-            val builder = LatLngBounds.builder()
-            for (item in clusterItems.items) {
-                builder.include(item.position)
+
+            // Open if cluster has 10 or less items?
+            if (clusterItems.size <= 5 && mMap.cameraPosition.zoom > 15) {
+
+                val action = NavGraphDirections.actionGlobalNavCameraListFragment(clusterItems.items.map { it.mCamera.cameraId }.toIntArray(), "Traffic Cameras")
+                findNavController().navigate(action)
+
+            } else {
+                val builder = LatLngBounds.builder()
+                for (item in clusterItems.items) {
+                    builder.include(item.position)
+                }
+
+                val bounds = builder.build()
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
             }
-
-            val bounds = builder.build()
-            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
-
         }
         return true
     }

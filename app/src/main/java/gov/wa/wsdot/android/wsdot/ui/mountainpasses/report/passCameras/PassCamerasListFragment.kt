@@ -9,8 +9,10 @@ import androidx.databinding.DataBindingUtil.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraListFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
@@ -104,7 +106,7 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToCamera(camera: Camera) {
-        //val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
-        //findNavController().navigate(action)
+        val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
+        findNavController().navigate(action)
     }
 }
