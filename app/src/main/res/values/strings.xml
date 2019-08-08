@@ -22,6 +22,10 @@
 
     // Toolbar
     <string name="action_favorite">Favorite</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_alert_in_area">Alerts in this Area</string>
+    <string name="action_go_to_location">Go To Location</string>
+    <string name="action_more">More</string>
 
     // Traffic Map
     <string name="highway_alert_marker_collection_id">HIGHWAY_ALERT_MARKERS</string>
@@ -77,6 +81,9 @@
     <string name="fab_camera_label">Cameras</string>
     <string name="fab_camera_Clusters_label">Group Cameras</string>
     <string name="fab_rest_areas_label">Rest Areas</string>
+
+    // Ads
+    <string name="ad_banner_description">advertisement</string>
 
 
 

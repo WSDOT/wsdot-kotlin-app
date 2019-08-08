@@ -1,11 +1,13 @@
 package gov.wa.wsdot.android.wsdot.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.GravityCompat
 import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import android.view.Menu
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import dagger.android.DispatchingAndroidInjector
@@ -17,10 +19,14 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.ads.doubleclick.PublisherAdView
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector {
+
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -111,4 +117,39 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun supportFragmentInjector() = dispatchingAndroidInjector
+
+    /**
+     * Initialize and display ads.
+     */
+     fun enableAds(view: View, target: String) {
+        val mAdView: PublisherAdView = view.findViewById(R.id.publisherAdView)
+
+        val adRequest = PublisherAdRequest.Builder()
+            .addTestDevice(PublisherAdRequest.DEVICE_ID_EMULATOR) // All emulators
+            .addCustomTargeting("wsdotapp", target)
+            .build()
+
+       // mAdView.visibility = View.GONE
+
+        mAdView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Log.e("debug", "loaded ad")
+                mAdView.visibility = View.VISIBLE
+            }
+        }
+
+        Log.e("debug", "calling load ad..")
+
+        mAdView.loadAd(adRequest)
+    }
+
+    /**
+     * Remove the ad so it doesn't take up any space.
+     */
+    fun disableAds(view: View) {
+        val mAdView: PublisherAdView = view.findViewById(R.id.publisherAdView)
+        mAdView.visibility = View.GONE
+    }
+
 }

@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.maps.android.MarkerManager
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -35,6 +36,7 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -92,13 +94,20 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mapUpdateHandler = Handler(Looper.getMainLooper())
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
         // Inflate the layout for this fragment
-        var rootView = inflater.inflate(R.layout.map_fragment, container, false)
+        val rootView = inflater.inflate(R.layout.map_fragment, container, false)
+
+        initBottomBar(rootView)
+
+        (activity as MainActivity).let{
+            it.enableAds(rootView,"traffic")
+        }
 
         mapHighwayAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MapHighwayAlertsViewModel::class.java)
@@ -353,11 +362,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         p0?.let { clusterItems ->
 
             // Open if cluster has 10 or less items?
-            if (clusterItems.size <= 5 && mMap.cameraPosition.zoom > 15) {
-
+            if (clusterItems.size <= 5) {
                 val action = NavGraphDirections.actionGlobalNavCameraListFragment(clusterItems.items.map { it.mCamera.cameraId }.toIntArray(), "Traffic Cameras")
                 findNavController().navigate(action)
-
             } else {
                 val builder = LatLngBounds.builder()
                 for (item in clusterItems.items) {
@@ -537,6 +544,18 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             }
         }
         return true
+    }
+
+
+    // bottom bar setup
+
+    private fun initBottomBar(view: View){
+        val bottomBar = view.findViewById<BottomAppBar>(R.id.bottom_app_bar)
+        bottomBar.replaceMenu(R.menu.traffic_map_bottom_appbar_menu)
+
+
+
+
     }
 
 

@@ -22,6 +22,7 @@ import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.ShapeDrawable
 import android.view.View
 import android.graphics.Color
+import android.util.Log
 
 
 /**
@@ -82,6 +83,15 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
             val shouldCluster = settings.getBoolean(it.getString(R.string.user_preference_traffic_map_cluster_cameras), true)
             if (!shouldCluster) {
                 return shouldCluster
+            } else {
+                // if cluster items all in same location, always render as cluster
+                cluster?.let { cluster ->
+                    val itemsWithDiffLocations = cluster.items.filter {item ->
+                        item.mCamera.latitude != cluster.items.first().mCamera.latitude
+                                || item.mCamera.longitude != cluster.items.first().mCamera.longitude
+                    }
+                    if (itemsWithDiffLocations.isEmpty() && cluster.items.size > 1) { return true }
+                }
             }
         }
         return super.shouldRenderAsCluster(cluster)

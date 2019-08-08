@@ -1,21 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/google_map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/map_view"
+        android:layout_marginBottom="?attr/actionBarSize">
 
-    <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/speedDial"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_marginBottom="?attr/actionBarSize">
+
+            <fragment
+                android:id="@+id/google_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            app:sdMainFabClosedSrc="@drawable/ic_settings"/>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:id="@+id/filler"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="start|bottom"
+            android:gravity="center_vertical|start"
+            app:backgroundTint="?attr/colorPrimary"/>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            style="@style/Widget.MaterialComponents.BottomAppBar"
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="start|bottom"
+            android:gravity="center_vertical|start"
+            app:backgroundTint="?attr/colorPrimary"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.gms.ads.doubleclick.PublisherAdView
+        android:id="@+id/publisherAdView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        app:sdMainFabClosedSrc="@drawable/ic_settings" />
+        android:layout_height="0dp"
+        app:adSize="SMART_BANNER"
+        app:adUnitId="@string/banner_ad_unit_id"
+        android:contentDescription="@string/ad_banner_description"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintTop_toBottomOf="@id/map_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
