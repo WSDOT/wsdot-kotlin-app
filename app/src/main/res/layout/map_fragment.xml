@@ -34,7 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            app:sdMainFabClosedSrc="@drawable/ic_settings"/>
+            app:sdMainFabAnimationRotateAngle="0"
+            app:sdMainFabClosedSrc="@drawable/ic_layers"/>
 
         <com.google.android.material.bottomappbar.BottomAppBar
             style="@style/Widget.MaterialComponents.BottomAppBar"

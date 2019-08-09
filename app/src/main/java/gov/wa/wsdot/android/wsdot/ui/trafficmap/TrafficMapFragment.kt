@@ -8,10 +8,10 @@ import android.os.Handler
 import android.os.Looper
 import android.preference.PreferenceManager
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -36,7 +36,10 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.model.map.GoToLocationItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.gotolocation.GoToLocationBottomSheetFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.gotolocation.GoToLocationEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -54,7 +57,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
     ClusterManager.OnClusterClickListener<CameraClusterItem>,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
-    SpeedDialView.OnActionSelectedListener {
+    SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
+    GoToLocationEventListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -552,11 +556,52 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     private fun initBottomBar(view: View){
         val bottomBar = view.findViewById<BottomAppBar>(R.id.bottom_app_bar)
         bottomBar.replaceMenu(R.menu.traffic_map_bottom_appbar_menu)
-
-
-
-
+        bottomBar.setOnMenuItemClickListener(this)
     }
+
+    // For bottom menu
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        item?.let {
+            when(it.itemId) {
+                R.id.action_refresh -> {
+                    mapHighwayAlertsViewModel.refresh()
+                    mapCamerasViewModel.refresh()
+                    val toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
+                R.id.action_alerts -> {
+                    Log.e("debug", "alerts")
+                }
+
+                R.id.action_go_to_location -> {
+                    fragmentManager?.let { fragmentManagerValue ->
+                        val goToLocationBottomSheet =
+                            GoToLocationBottomSheetFragment(this)
+                        goToLocationBottomSheet.show(fragmentManagerValue, "go_to_location_bottom_sheet")
+                    }
+                }
+
+                R.id.action_favorite -> {
+                    Log.e("debug", "fav")
+                }
+
+                R.id.action_more -> {
+                    Log.e("debug", "more")
+                }
+                else -> return true
+            }
+        }
+        return false
+    }
+
+
+    // GoToLocationListener
+    override fun goToLocation(goToLocationItem: GoToLocationItem) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(goToLocationItem.location, goToLocationItem.zoom))
+    }
+
 
 
     // Location Permission
