@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.gotolocation
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.model.map.GoToLocationItem
+import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 
 class GoToLocationBottomSheetAdapter(
     context: Context,
     private val hostFragment: GoToLocationBottomSheetFragment,
-    private val dataSource: List<GoToLocationItem>,
-    private val goToLocationEventListener: GoToLocationEventListener
+    private val dataSource: List<GoToLocationMenuEventItem>,
+    private val goToLocationMenuEventListener: GoToLocationMenuEventListener
 ): BaseAdapter() {
 
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -37,10 +37,9 @@ class GoToLocationBottomSheetAdapter(
         val rowView = inflater.inflate(R.layout.my_simple_list_item, parent, false)
 
         rowView.findViewById<TextView>(R.id.text).text = dataSource[position].name
-
         rowView.setOnClickListener {
             hostFragment.dismiss()
-            goToLocationEventListener.goToLocation(dataSource[position])
+            goToLocationMenuEventListener.goToLocation(dataSource[position])
         }
 
         return rowView
