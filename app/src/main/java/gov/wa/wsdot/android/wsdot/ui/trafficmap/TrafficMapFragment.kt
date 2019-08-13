@@ -36,10 +36,12 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
-import gov.wa.wsdot.android.wsdot.model.map.GoToLocationItem
+import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.gotolocation.GoToLocationBottomSheetFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.gotolocation.GoToLocationEventListener
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -58,7 +60,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     ClusterManager.OnClusterClickListener<CameraClusterItem>,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
     SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
-    GoToLocationEventListener {
+    GoToLocationMenuEventListener, TravelerInfoMenuEventListener {
+
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -588,21 +591,30 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 }
 
                 R.id.action_more -> {
-                    Log.e("debug", "more")
+                    fragmentManager?.let { fragmentManagerValue ->
+                        val travelerInfoBottomSheetFragment =
+                            TravelerInfoBottomSheetFragment(this)
+                        travelerInfoBottomSheetFragment.show(fragmentManagerValue, "traveler_info_bottom_sheet")
+                    }
                 }
                 else -> return true
             }
         }
         return false
     }
-
-
+     
     // GoToLocationListener
-    override fun goToLocation(goToLocationItem: GoToLocationItem) {
+    override fun goToLocation(goToLocationItem: GoToLocationMenuEventItem) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(goToLocationItem.location, goToLocationItem.zoom))
     }
 
-
+    // Traveler Info Menu Listener
+    override fun travelerInfoMenuEvent(eventType: TravelerInfoMenuEventListener.TravelerMenuItemType) {
+        when (eventType) {
+            TravelerInfoMenuEventListener.TravelerMenuItemType.TRAVEL_TIMES -> Log.e("debug", "travel times")
+            TravelerInfoMenuEventListener.TravelerMenuItemType.NEWS_ITEMS -> Log.e("debug", "news")
+        }
+    }
 
     // Location Permission
     @SuppressLint("MissingPermission")
