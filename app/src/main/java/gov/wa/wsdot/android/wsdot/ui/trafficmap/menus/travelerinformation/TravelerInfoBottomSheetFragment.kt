@@ -32,11 +32,30 @@ class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener:
 
         val listItems = mutableListOf<TravelerInfoMenuEventItem>()
         listItems.add(
-            TravelerInfoMenuEventItem("Travel Times", TravelerInfoMenuEventListener.TravelerMenuItemType.TRAVEL_TIMES)
+            TravelerInfoMenuEventItem("Travel Times", TravelerMenuItemType.TRAVEL_TIMES)
         )
+
         listItems.add(
-            TravelerInfoMenuEventItem("News Items", TravelerInfoMenuEventListener.TravelerMenuItemType.NEWS_ITEMS)
+            TravelerInfoMenuEventItem("Social Media Traffic Updates", TravelerMenuItemType.SOCIAL_MEDIA)
         )
+
+        listItems.add(
+            TravelerInfoMenuEventItem("Express Lanes", TravelerMenuItemType.EXPRESS_LANES)
+        )
+
+        listItems.add(
+            TravelerInfoMenuEventItem("News Releases", TravelerMenuItemType.NEWS_ITEMS)
+        )
+
+        listItems.add(
+            TravelerInfoMenuEventItem("Commercial Vehicle Restrictions", TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS)
+        )
+
+        /*
+        listItems.add(
+            TravelerInfoMenuEventItem("Travel Charts", TravelerMenuItemType.TRAVEL_CHARTS)
+        )
+        */
 
         val listHeader = view.findViewById<TextView>(R.id.list_header)
         listHeader.text = "Traveler Information"

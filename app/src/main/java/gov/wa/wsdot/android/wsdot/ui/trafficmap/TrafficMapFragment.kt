@@ -38,10 +38,12 @@ import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragmentDirections
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -609,10 +611,32 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     }
 
     // Traveler Info Menu Listener
-    override fun travelerInfoMenuEvent(eventType: TravelerInfoMenuEventListener.TravelerMenuItemType) {
+    override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
-            TravelerInfoMenuEventListener.TravelerMenuItemType.TRAVEL_TIMES -> Log.e("debug", "travel times")
-            TravelerInfoMenuEventListener.TravelerMenuItemType.NEWS_ITEMS -> Log.e("debug", "news")
+            TravelerMenuItemType.TRAVEL_TIMES -> {
+                Log.e("debug", "travel times")
+
+            }
+            TravelerMenuItemType.NEWS_ITEMS -> {
+                Log.e("debug", "news")
+
+            }
+            TravelerMenuItemType.EXPRESS_LANES -> {
+                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.wa.gov/travel/operations-services/express-lanes/home", "Express Lanes")
+                findNavController().navigate(action)
+            }
+            TravelerMenuItemType.SOCIAL_MEDIA -> {
+                Log.e("debug", "social")
+
+            }
+            TravelerMenuItemType.TRAVEL_CHARTS -> {
+                Log.e("debug", "charts")
+
+            }
+            TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
+                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")
+                findNavController().navigate(action)
+            }
         }
     }
 

@@ -221,6 +221,8 @@
 
 
     <!-- Global nav actions -->
+
+
     <action android:id="@+id/action_global_navTrafficMapFragment"
         app:destination="@id/navTrafficMapFragment"
         app:popUpTo="@+id/nav_graph"
@@ -235,6 +237,14 @@
         app:destination="@id/navMountainPassHomeFragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true"/>
+
+    <action
+        android:id="@+id/action_global_navWebViewFragment"
+        app:destination="@id/navWebViewFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     <action
         android:id="@+id/action_global_navCameraFragment"
