@@ -582,9 +582,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
                 R.id.action_go_to_location -> {
                     fragmentManager?.let { fragmentManagerValue ->
-                        val goToLocationBottomSheet =
-                            GoToLocationBottomSheetFragment(this)
-                        goToLocationBottomSheet.show(fragmentManagerValue, "go_to_location_bottom_sheet")
+                        if (fragmentManagerValue.findFragmentByTag("go_to_location_bottom_sheet") == null) {
+                            val goToLocationBottomSheet =
+                                GoToLocationBottomSheetFragment(this)
+                            goToLocationBottomSheet.show(fragmentManagerValue, "go_to_location_bottom_sheet")
+                        }
                     }
                 }
 
@@ -594,9 +596,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
                 R.id.action_more -> {
                     fragmentManager?.let { fragmentManagerValue ->
-                        val travelerInfoBottomSheetFragment =
-                            TravelerInfoBottomSheetFragment(this)
-                        travelerInfoBottomSheetFragment.show(fragmentManagerValue, "traveler_info_bottom_sheet")
+                        if (fragmentManagerValue.findFragmentByTag("traveler_info_bottom_sheet") == null) {
+                            val travelerInfoBottomSheetFragment =
+                                TravelerInfoBottomSheetFragment(this)
+                            travelerInfoBottomSheetFragment.show(fragmentManagerValue, "traveler_info_bottom_sheet")
+                        }
                     }
                 }
                 else -> return true

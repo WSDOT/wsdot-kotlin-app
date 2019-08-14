@@ -2,8 +2,6 @@ package gov.wa.wsdot.android.wsdot.api.response.traffic
 
 import com.google.gson.annotations.SerializedName
 
-
-
 data class CamerasResponse (
     @field:SerializedName("cameras")
     val cameras: Cameras
