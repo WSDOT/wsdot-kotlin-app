@@ -85,6 +85,12 @@
     // Ads
     <string name="ad_banner_description">advertisement</string>
 
+    // Ad targets
+    <string name="ad_target_traffic">traffic</string>
+    <string name="ad_target_ferries">ferries</string>
+    <string name="ad_target_passes">passes</string>
+    <string name="ad_target_other">other</string>
+
 
 
 </resources>

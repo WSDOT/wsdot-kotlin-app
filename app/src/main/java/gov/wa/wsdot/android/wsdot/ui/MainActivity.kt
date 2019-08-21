@@ -21,15 +21,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector {
 
-
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +40,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         setSupportActionBar(findViewById(R.id.toolbar))
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        drawerLayout = findViewById(R.id.drawer_layout)
 
         val navView: NavigationView = findViewById(R.id.drawer_nav_view)
         navView.setNavigationItemSelectedListener(this)
@@ -53,6 +55,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
+
+
+        enableAds(drawerLayout, resources.getString(R.string.ad_target_traffic))
+
 
     }
 
@@ -85,29 +91,32 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         when (item.itemId) {
             R.id.nav_traffic_map -> {
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_traffic))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
             }
             R.id.nav_ferries -> {
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_ferries))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
             }
             R.id.nav_mountain_passes -> {
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_passes))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
             }
             /*
             R.id.nav_toll_rates -> {
-
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
             R.id.nav_border_waits -> {
-
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
             R.id.nav_amtrak_cascades -> {
-
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
             R.id.nav_my_routes -> {
-
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
             R.id.nav_favorites -> {
-
+                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
             */
         }
@@ -130,12 +139,27 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             .build()
 
        // mAdView.visibility = View.GONE
+        mAdView.adListener = null
 
         mAdView.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
                 Log.e("debug", "loaded ad")
                 mAdView.visibility = View.VISIBLE
+            }
+
+            override fun onAdFailedToLoad(error: Int) {
+                super.onAdFailedToLoad(error)
+                Log.e("debug", "ad failed")
+                when (error) {
+
+                    AdRequest.ERROR_CODE_NO_FILL -> Log.e("debug", "no fill")
+                    AdRequest.ERROR_CODE_INVALID_REQUEST -> Log.e("debug", "invalid request")
+                    AdRequest.ERROR_CODE_NETWORK_ERROR -> Log.e("debug", "network error")
+                    AdRequest.ERROR_CODE_INTERNAL_ERROR -> Log.e("debug", "internal error")
+
+                }
+
             }
         }
 

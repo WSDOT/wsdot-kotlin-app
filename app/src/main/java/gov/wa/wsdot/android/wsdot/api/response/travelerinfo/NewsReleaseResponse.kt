@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.api.response.travelerinfo
 
-import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
 data class NewsReleaseResponse (

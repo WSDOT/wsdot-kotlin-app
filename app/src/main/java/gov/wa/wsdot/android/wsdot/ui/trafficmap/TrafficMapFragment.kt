@@ -114,10 +114,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         initBottomBar(rootView)
 
-        (activity as MainActivity).let{
-            it.enableAds(rootView,"traffic")
-        }
-
         mapHighwayAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MapHighwayAlertsViewModel::class.java)
 
