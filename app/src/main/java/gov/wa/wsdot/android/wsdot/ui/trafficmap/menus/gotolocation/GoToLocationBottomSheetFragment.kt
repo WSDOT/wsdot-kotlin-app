@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -18,14 +17,10 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val d = super.onCreateDialog(savedInstanceState)
-        d.setOnShowListener {
-            // prevents dragging behavior
-            d.window?.let {
-                (it.findViewById<View>(R.id.design_bottom_sheet).layoutParams as CoordinatorLayout.LayoutParams).behavior = null
-            }
-        }
+
         return d
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -133,7 +128,7 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
         )
         listItems.add(
             GoToLocationMenuEventItem(
-                "Snoqualmiepass",
+                "Snoqualmie Pass",
                 LatLng(47.404481, -121.4232569),
                 12.0f
             )
@@ -157,7 +152,6 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
         listHeader.text = "Go To..."
 
         val listView = view.findViewById<ListView>(R.id.bottom_sheet_list)
-
         context?.let {
             val adapter = GoToLocationBottomSheetAdapter(
                 it,
