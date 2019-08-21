@@ -1,28 +1,26 @@
 package gov.wa.wsdot.android.wsdot.util.map
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.preference.PreferenceManager
+import android.util.SparseArray
+import android.view.View
+import android.view.ViewGroup
 import com.google.android.gms.maps.GoogleMap
-import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.view.DefaultClusterRenderer
-import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
-import gov.wa.wsdot.android.wsdot.R
-import com.google.android.gms.maps.model.BitmapDescriptor
-import android.util.SparseArray
+import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.google.maps.android.ui.IconGenerator
-
-import android.view.ViewGroup
 import com.google.maps.android.ui.SquareTextView
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.shapes.OvalShape
-import android.graphics.drawable.ShapeDrawable
-import android.view.View
-import android.graphics.Color
-import android.util.Log
+import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 
 
 /**

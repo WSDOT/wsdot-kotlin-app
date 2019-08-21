@@ -1,17 +1,14 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
 import android.location.Location
-import android.util.Log
-import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
-import javax.inject.Inject
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleRange
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
-import gov.wa.wsdot.android.wsdot.model.FerriesTerminalItem
+import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
-import java.lang.Double.POSITIVE_INFINITY
+import javax.inject.Inject
 
 class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 

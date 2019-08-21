@@ -3,7 +3,6 @@ package gov.wa.wsdot.android.wsdot.api
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

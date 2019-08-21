@@ -2,27 +2,26 @@ package gov.wa.wsdot.android.wsdot.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.core.view.GravityCompat
-import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest
+import com.google.android.gms.ads.doubleclick.PublisherAdView
+import com.google.android.material.navigation.NavigationView
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
 import javax.inject.Inject
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import com.google.android.gms.ads.doubleclick.PublisherAdView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,

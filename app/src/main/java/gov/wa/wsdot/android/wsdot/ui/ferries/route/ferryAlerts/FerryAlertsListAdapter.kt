@@ -1,7 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil

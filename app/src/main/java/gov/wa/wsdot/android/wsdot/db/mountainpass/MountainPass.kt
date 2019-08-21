@@ -1,9 +1,9 @@
 package gov.wa.wsdot.android.wsdot.db.mountainpass
 
 import androidx.room.Entity
-import java.util.*
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassCamera
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassForecast
+import java.util.*
 
 @Entity(primaryKeys = ["passId"])
 data class MountainPass (

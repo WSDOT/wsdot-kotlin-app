@@ -1,16 +1,14 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses
 
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.databinding.DataBindingComponent
-import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MountainPassItemBinding
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors

@@ -35,10 +35,8 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
-import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
-import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragmentDirections
+import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment

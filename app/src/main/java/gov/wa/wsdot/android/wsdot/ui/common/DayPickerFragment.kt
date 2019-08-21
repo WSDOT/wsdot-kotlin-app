@@ -8,7 +8,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
-import kotlinx.android.synthetic.main.ferries_route_fragment.view.*
 import java.util.*
 
 

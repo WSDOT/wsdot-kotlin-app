@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.db.mountainpass
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassForecast
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassCamera
+import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassForecast
 import java.util.*
 
 @Dao

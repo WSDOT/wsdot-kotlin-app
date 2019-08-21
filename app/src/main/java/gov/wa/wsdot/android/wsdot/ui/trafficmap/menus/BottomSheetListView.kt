@@ -1,9 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.AbsListView
 import android.widget.ListView

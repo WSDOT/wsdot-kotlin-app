@@ -17,12 +17,11 @@ import gov.wa.wsdot.android.wsdot.databinding.MountainPassReportFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
-import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class MountainPassReportFragment : DaggerFragment(), Injectable {
 

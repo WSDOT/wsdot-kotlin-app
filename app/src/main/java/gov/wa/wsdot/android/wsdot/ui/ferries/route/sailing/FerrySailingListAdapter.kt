@@ -1,20 +1,17 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.postponeEnterTransition
-import androidx.core.app.ActivityCompat.startPostponedEnterTransition
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerrySailingItemBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailing
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
-import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundViewHolder
 
 /**
  * A RecyclerView adapter for [FerrySailing] class.

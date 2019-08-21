@@ -16,14 +16,7 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
-import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
-import androidx.databinding.*
 import androidx.fragment.app.Fragment
-import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
-import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
 /**
