@@ -1,12 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
-import android.location.Location
-import android.util.Log
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
-import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.util.*
 import javax.inject.Inject

@@ -15,7 +15,6 @@ package gov.wa.wsdot.android.wsdot.util.api
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.ApiResponse
 import retrofit2.CallAdapter

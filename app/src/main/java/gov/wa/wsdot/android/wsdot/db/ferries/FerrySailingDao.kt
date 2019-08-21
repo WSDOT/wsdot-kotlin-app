@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.db.ferries
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import java.util.*
 
 @Dao
 abstract class FerrySailingDao {

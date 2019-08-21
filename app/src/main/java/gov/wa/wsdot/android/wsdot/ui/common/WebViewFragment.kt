@@ -5,20 +5,19 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.webkit.WebView
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.navArgs
-import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.FerriesHomeFragmentBinding
-import gov.wa.wsdot.android.wsdot.databinding.WebViewFragmentBinding
-import gov.wa.wsdot.android.wsdot.util.autoCleared
-import android.webkit.WebViewClient
-import androidx.fragment.app.Fragment
-import android.view.KeyEvent.KEYCODE_BACK
 import android.view.*
+import android.view.KeyEvent.KEYCODE_BACK
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.content.ContextCompat.startActivity
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.databinding.WebViewFragmentBinding
+import gov.wa.wsdot.android.wsdot.util.autoCleared
 
 
 class WebViewFragment: Fragment() {

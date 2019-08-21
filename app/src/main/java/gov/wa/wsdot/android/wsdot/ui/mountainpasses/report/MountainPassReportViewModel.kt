@@ -1,6 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.repository.MountainPassRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource

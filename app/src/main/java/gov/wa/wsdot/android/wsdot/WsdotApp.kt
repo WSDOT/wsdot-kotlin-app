@@ -1,14 +1,12 @@
 package gov.wa.wsdot.android.wsdot
 
+//import timber.log.Timber
 import android.app.Activity
 import android.app.Application
-import androidx.fragment.app.Fragment
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.di.AppInjector
-//import timber.log.Timber
 import javax.inject.Inject
 
 class WsdotApp : Application(), HasActivityInjector {

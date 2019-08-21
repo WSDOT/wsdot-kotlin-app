@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +12,6 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 
 class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener: GoToLocationMenuEventListener) : BottomSheetDialogFragment() {
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val d = super.onCreateDialog(savedInstanceState)
-
-        return d
-    }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

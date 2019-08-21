@@ -10,19 +10,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.databinding.FerriesHomeFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import javax.inject.Inject
-
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
+import javax.inject.Inject
 
 class FerriesHomeFragment : DaggerFragment(), Injectable {
 

@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerryAlertsFragmentBinding

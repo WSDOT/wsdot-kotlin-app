@@ -19,9 +19,10 @@ package gov.wa.wsdot.android.wsdot.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
-import gov.wa.wsdot.android.wsdot.db.mountainpass.*
+import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
+import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassCameraTypeConverters
+import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert

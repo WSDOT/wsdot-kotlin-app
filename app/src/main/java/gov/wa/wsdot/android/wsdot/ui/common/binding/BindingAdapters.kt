@@ -16,21 +16,17 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
-import androidx.databinding.BindingAdapter
+import android.text.Html
 import android.view.View
 import android.widget.*
-import java.text.SimpleDateFormat
-import java.util.*
-import gov.wa.wsdot.android.wsdot.util.network.Resource
-import android.widget.TextView
-import android.text.Html
+import androidx.databinding.BindingAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import java.lang.StringBuilder
+import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /**

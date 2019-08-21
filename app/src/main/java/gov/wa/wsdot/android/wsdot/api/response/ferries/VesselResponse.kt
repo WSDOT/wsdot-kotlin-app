@@ -1,7 +1,6 @@
 package gov.wa.wsdot.android.wsdot.api.response.ferries
 
 import com.google.gson.annotations.SerializedName
-import java.util.*
 
 data class VesselResponse (
     @field:SerializedName("VesselID")

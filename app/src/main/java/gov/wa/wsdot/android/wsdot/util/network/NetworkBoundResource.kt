@@ -16,10 +16,10 @@ package gov.wa.wsdot.android.wsdot.util.network
  * limitations under the License.
  */
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import gov.wa.wsdot.android.wsdot.api.ApiEmptyResponse
 import gov.wa.wsdot.android.wsdot.api.ApiErrorResponse
 import gov.wa.wsdot.android.wsdot.api.ApiResponse

@@ -17,12 +17,11 @@ package gov.wa.wsdot.android.wsdot.di
  */
 
 
-import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
-
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
@@ -32,8 +31,8 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFragment
-import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment

@@ -1,10 +1,10 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.R
-import android.text.Html
-import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.Spinner
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
@@ -12,9 +12,6 @@ import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.util.network.Resource
-import org.w3c.dom.Text
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * Data Binding adapters specific to the app.

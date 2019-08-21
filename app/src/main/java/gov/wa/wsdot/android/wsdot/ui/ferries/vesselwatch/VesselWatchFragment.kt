@@ -2,19 +2,22 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.icu.text.RelativeDateTimeFormatter
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,27 +27,20 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.VesselWatchBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import javax.inject.Inject
-import android.preference.PreferenceManager
-import androidx.appcompat.app.AlertDialog
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
-import java.util.*
-import kotlin.collections.HashMap
-import kotlin.concurrent.timer
+import javax.inject.Inject
 
 @RuntimePermissions
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {

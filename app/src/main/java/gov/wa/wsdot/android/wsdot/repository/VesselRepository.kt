@@ -1,10 +1,10 @@
 package gov.wa.wsdot.android.wsdot.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
-import gov.wa.wsdot.android.wsdot.db.ferries.*
+import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
+import gov.wa.wsdot.android.wsdot.db.ferries.VesselDao
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils

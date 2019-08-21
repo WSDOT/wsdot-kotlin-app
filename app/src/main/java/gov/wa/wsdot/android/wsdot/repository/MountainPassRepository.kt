@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
-import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse.PassConditions.PassItem.PassCamera
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
-import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
