@@ -14,7 +14,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
 /**
- * A RecyclerView adapter for [Camera]] class.
+ * A RecyclerView adapter for [Camera] class.
  */
 class CameraListAdapter(
     private val dataBindingComponent: DataBindingComponent,
