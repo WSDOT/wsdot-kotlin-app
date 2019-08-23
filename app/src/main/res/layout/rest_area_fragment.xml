@@ -144,8 +144,8 @@
             <TextView
                 android:id="@+id/amenitiesList"
                 style="@style/CardSubTitleText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:bindListToTextView="@{restArea.amenities}"
                 app:layout_constraintTop_toBottomOf="@id/amenitiesHeader"
