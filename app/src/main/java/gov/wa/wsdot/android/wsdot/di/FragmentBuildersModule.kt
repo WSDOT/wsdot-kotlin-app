@@ -35,6 +35,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamer
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
 
 @Suppress("unused")
@@ -91,5 +92,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributePassCamerasListFragment(): PassCamerasListFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNewsReleaseFragment(): NewsReleaseFragment
 
 }

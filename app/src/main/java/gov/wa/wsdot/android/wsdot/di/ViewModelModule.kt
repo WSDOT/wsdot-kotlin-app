@@ -24,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 
 @Suppress("unused")
@@ -114,6 +115,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MountainPassReportViewModel::class)
     abstract fun bindMountainPassReportViewModel(mountainPassReportViewModel: MountainPassReportViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewsReleaseViewModel::class)
+    abstract fun bindNewsReleaseViewModel(newsReleaseViewModel: NewsReleaseViewModel): ViewModel
 
     @Binds
     @IntoMap

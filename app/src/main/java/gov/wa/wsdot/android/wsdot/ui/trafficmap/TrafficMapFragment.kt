@@ -617,7 +617,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             }
             TravelerMenuItemType.NEWS_ITEMS -> {
                 Log.e("debug", "news")
-
+                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
+                findNavController().navigate(action)
             }
             TravelerMenuItemType.EXPRESS_LANES -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.wa.gov/travel/operations-services/express-lanes/home", "Express Lanes")

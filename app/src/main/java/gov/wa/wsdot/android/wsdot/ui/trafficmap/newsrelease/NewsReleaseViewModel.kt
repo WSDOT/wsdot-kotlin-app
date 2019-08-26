@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.newrelease
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

@@ -1,17 +1,13 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.newrelease
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
-import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import gov.wa.wsdot.android.wsdot.databinding.NewsItemBinding
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
@@ -50,13 +46,11 @@ class NewsReleaseListAdapter(
             false,
             dataBindingComponent
         )
-
         binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
             binding.newsItem?.let {
                 newsClickCallback?.invoke(it)
             }
         }
-
         return binding
     }
 

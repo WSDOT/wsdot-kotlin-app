@@ -9,7 +9,7 @@
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
         <import type="gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease"/>
-        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.newrelease.NewsReleaseViewModel" />
+        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel" />
 
         <variable
             name="viewModel"
@@ -33,11 +33,11 @@
             app:layout_constraintTop_toBottomOf="@id/button_grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:refreshing="@{((Resource) viewModel.routes).status == Status.LOADING}"
+            app:refreshing="@{((Resource) viewModel.news).status == Status.LOADING}"
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/schedule_list"
+                android:id="@+id/news_list"
                 app:layoutManager="LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

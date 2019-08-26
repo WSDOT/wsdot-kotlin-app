@@ -27,18 +27,28 @@
             <TextView
                 style="@style/CardTitleText"
                 android:id="@+id/titleView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{newsItem.description}"
+                android:text="@{newsItem.title}"
+                android:layout_margin="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
+                app:layout_constraintEnd_toEndOf="parent"
                 />
+
+            <TextView
+                android:id="@+id/timestamp"
+                style="@style/CardFooterText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindRelativeDate="@{newsItem.pubdate}"
+                android:layout_margin="8dp"
+                android:paddingBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/titleView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
