@@ -34,6 +34,8 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFra
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
@@ -50,6 +52,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeHighwayAlertFragment(): HighwayAlertFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeMapHighwayAlertsFragment(): MapHighwayAlertsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeCameraFragment(): CameraFragment

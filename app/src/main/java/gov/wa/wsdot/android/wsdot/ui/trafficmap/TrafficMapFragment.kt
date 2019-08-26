@@ -112,8 +112,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         initBottomBar(rootView)
 
-        mapHighwayAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MapHighwayAlertsViewModel::class.java)
+        // get it from the Activity so it can be shared with the Map Alerts Fragment
+        mapHighwayAlertsViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         mapCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MapCamerasViewModel::class.java)
@@ -572,6 +574,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
                 R.id.action_alerts -> {
                     Log.e("debug", "alerts")
+                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavMapHighwayAlertsFragment()
+                    findNavController().navigate(action)
                 }
 
                 R.id.action_go_to_location -> {
@@ -648,6 +652,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
+
                         mMap.isMyLocationEnabled = true
                     }
                 }
