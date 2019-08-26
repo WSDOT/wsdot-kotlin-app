@@ -7,7 +7,7 @@ import java.util.*
 data class HighwayAlert(
     val alertId: Int,
     val headline: String,
-    val roadName: String,
+    val roadName: String?,
     val priority: String,
     val category: String,
     val startLatitude: Double,
