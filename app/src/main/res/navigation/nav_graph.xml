@@ -10,7 +10,17 @@
         android:label="Traffic Map"
         tools:layout="@layout/map_fragment"
         app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpToInclusive="true">
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navNewsReleaseFragment"
+            app:destination="@id/navNewsReleaseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/navCameraFragment"
@@ -49,6 +59,13 @@
             android:name="description"
             app:argType="string"
             android:defaultValue="Rest Area"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navNewsReleaseFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment"
+        android:label="News Releases"
+        tools:layout="@layout/news_release_fragment" >
     </fragment>
 
     <fragment

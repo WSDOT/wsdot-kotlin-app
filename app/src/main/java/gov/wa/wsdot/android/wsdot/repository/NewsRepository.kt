@@ -9,6 +9,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -62,7 +63,7 @@ class NewsRepository @Inject constructor(
                 newsItem.link,
                 newsItem.title,
                 newsItem.description,
-                Date() // TODO: convert newsItem.pubdate to date
+                parseNewsDate(newsItem.pubdate)
             )
 
             dbNewsList.add(news)
@@ -70,5 +71,13 @@ class NewsRepository @Inject constructor(
         }
 
         newsReleaseDao.updateNewsReleases(dbNewsList)
+    }
+
+    private fun parseNewsDate(newsDate: String): Date {
+        // DateUpdated: [2019,6,24,20,46]
+        val parseDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z") //e.g. "Wed, 14 Aug 2019 00:10:45 +0000"
+        parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
+        return parseDateFormat.parse(newsDate)
+
     }
 }

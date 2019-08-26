@@ -69,6 +69,6 @@ abstract class WsdotDB : RoomDatabase() {
 
     abstract fun cameraDao(): CameraDao
 
-    abstract fun newsItemDao(): NewsReleaseDao
+    abstract fun newsReleaseDao(): NewsReleaseDao
 
 }
