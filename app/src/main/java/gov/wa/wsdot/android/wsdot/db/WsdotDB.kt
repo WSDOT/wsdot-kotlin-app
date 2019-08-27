@@ -23,10 +23,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassCameraTypeConverters
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
-import gov.wa.wsdot.android.wsdot.db.traffic.Camera
-import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
+import gov.wa.wsdot.android.wsdot.db.traffic.*
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
 
@@ -43,7 +40,8 @@ import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
         Vessel::class,
         Camera::class,
         MountainPass::class,
-        NewsRelease::class
+        NewsRelease::class,
+        FavoriteLocation::class
     ],
     version = 1,
     exportSchema = false
@@ -70,5 +68,7 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun cameraDao(): CameraDao
 
     abstract fun newsReleaseDao(): NewsReleaseDao
+
+    abstract fun favoriteLocationDao(): FavoriteLocationDao
 
 }
