@@ -24,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 
@@ -120,6 +121,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsReleaseViewModel::class)
     abstract fun bindNewsReleaseViewModel(newsReleaseViewModel: NewsReleaseViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavoriteLocationViewModel::class)
+    abstract fun bindFavoriteLocationViewModel(favoriteLocationViewModel: FavoriteLocationViewModel): ViewModel
 
     @Binds
     @IntoMap

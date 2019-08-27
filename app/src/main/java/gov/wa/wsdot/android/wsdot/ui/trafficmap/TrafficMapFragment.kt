@@ -2,13 +2,16 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.preference.PreferenceManager
+import android.text.InputType
 import android.util.Log
 import android.view.*
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -37,6 +40,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment
@@ -68,6 +72,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
     lateinit var mapCamerasViewModel: MapCamerasViewModel
     lateinit var restAreaViewModel: RestAreaViewModel
+    lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
@@ -122,6 +127,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         restAreaViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(RestAreaViewModel::class.java)
+
+        favoriteLocationViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(FavoriteLocationViewModel::class.java)
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
@@ -573,7 +581,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 }
 
                 R.id.action_alerts -> {
-                    Log.e("debug", "alerts")
                     val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavMapHighwayAlertsFragment()
                     findNavController().navigate(action)
                 }
@@ -588,9 +595,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     }
                 }
 
-                R.id.action_favorite -> {
-                    Log.e("debug", "fav")
-                }
+                R.id.action_favorite -> showAddFavoriteDialog()
 
                 R.id.action_more -> {
                     fragmentManager?.let { fragmentManagerValue ->
@@ -620,7 +625,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
             }
             TravelerMenuItemType.NEWS_ITEMS -> {
-                Log.e("debug", "news")
                 val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
                 findNavController().navigate(action)
             }
@@ -643,6 +647,42 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         }
     }
 
+    private fun showAddFavoriteDialog(){
+
+        context?.let{
+
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("New Favorite Location")
+
+            val input = EditText(it)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+
+            builder.setView(input)
+
+            val scale = resources.displayMetrics.density
+            val sixteenDP = (16 * scale + 0.5f).toInt()
+            val eightDP = (8 * scale + 0.5f).toInt()
+
+            input.setPaddingRelative(sixteenDP, eightDP, sixteenDP, eightDP)
+
+            builder.setPositiveButton("OK") {_, _ ->
+                val inputText = input.text.toString()
+                Log.e("debug", inputText)
+
+                favoriteLocationViewModel.addFavoriteLocation(
+                    inputText,
+                    mMap.cameraPosition.target.latitude,
+                    mMap.cameraPosition.target.longitude,
+                    mMap.cameraPosition.zoom)
+            }
+
+            builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
+            builder.show()
+
+        }
+    }
+
     // Location Permission
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -652,7 +692,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
-
                         mMap.isMyLocationEnabled = true
                     }
                 }
