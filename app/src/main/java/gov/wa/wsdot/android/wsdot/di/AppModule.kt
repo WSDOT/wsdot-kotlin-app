@@ -14,6 +14,7 @@ import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocationDao
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
+import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -111,6 +112,12 @@ class AppModule {
     @Provides
     fun provideNewsReleaseDao(db: WsdotDB): NewsReleaseDao {
         return db.newsReleaseDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTravelTimeDao(db: WsdotDB): TravelTimeDao {
+        return db.travelTimeDao()
     }
 
     @Singleton

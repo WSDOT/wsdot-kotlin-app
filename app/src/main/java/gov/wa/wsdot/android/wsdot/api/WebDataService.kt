@@ -5,6 +5,7 @@ import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.HighwayAlertsResponse
+import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelTimesResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
 import retrofit2.http.GET
 
@@ -24,6 +25,9 @@ interface WebDataService {
 
     @GET("Cameras.js")
     fun getCameras(): LiveData<ApiResponse<CamerasResponse>>
+
+    @GET("TravelTimesv2.js")
+    fun getTravelTimes(): LiveData<ApiResponse<List<TravelTimesResponse>>>
 
     @GET("News.js")
     fun getNewsItems(): LiveData<ApiResponse<NewsReleaseResponse>>

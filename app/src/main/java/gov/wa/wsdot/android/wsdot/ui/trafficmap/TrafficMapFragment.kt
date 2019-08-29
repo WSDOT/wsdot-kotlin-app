@@ -621,8 +621,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
             TravelerMenuItemType.TRAVEL_TIMES -> {
-                Log.e("debug", "travel times")
-
+                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                findNavController().navigate(action)
             }
             TravelerMenuItemType.NEWS_ITEMS -> {
                 val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()

@@ -27,6 +27,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
 
 @Suppress("unused")
 @Module
@@ -126,6 +127,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavoriteLocationViewModel::class)
     abstract fun bindFavoriteLocationViewModel(favoriteLocationViewModel: FavoriteLocationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TravelTimeListViewModel::class)
+    abstract fun bindTravelTimeListViewModel(travelTimeListViewModel: TravelTimeListViewModel): ViewModel
 
     @Binds
     @IntoMap
