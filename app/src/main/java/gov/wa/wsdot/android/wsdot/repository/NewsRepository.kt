@@ -74,7 +74,6 @@ class NewsRepository @Inject constructor(
     }
 
     private fun parseNewsDate(newsDate: String): Date {
-        // DateUpdated: [2019,6,24,20,46]
         val parseDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z") //e.g. "Wed, 14 Aug 2019 00:10:45 +0000"
         parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
         return parseDateFormat.parse(newsDate)

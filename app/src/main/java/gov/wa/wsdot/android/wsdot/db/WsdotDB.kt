@@ -26,6 +26,8 @@ import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.db.traffic.*
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
+import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
+import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
 
 /**
  * Main database description.
@@ -41,6 +43,7 @@ import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
         Camera::class,
         MountainPass::class,
         NewsRelease::class,
+        TravelTime::class,
         FavoriteLocation::class
     ],
     version = 1,
@@ -68,6 +71,8 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun cameraDao(): CameraDao
 
     abstract fun newsReleaseDao(): NewsReleaseDao
+
+    abstract fun travelTimeDao(): TravelTimeDao
 
     abstract fun favoriteLocationDao(): FavoriteLocationDao
 
