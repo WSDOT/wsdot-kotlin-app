@@ -50,27 +50,27 @@ class CameraListFragment : DaggerFragment(), Injectable {
             .get(CameraListViewModel::class.java)
         cameraListViewModel.setCamerasQuery(args.cameraIds.toList())
 
-       val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
-           inflater,
-           R.layout.camera_list_fragment,
-           container,
-           false
-       )
+        val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(
+            inflater,
+            R.layout.camera_list_fragment,
+            container,
+            false
+        )
 
-       dataBinding.retryCallback = object : RetryCallback {
-           override fun retry() {
-               cameraListViewModel.refresh()
-           }
-       }
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                cameraListViewModel.refresh()
+            }
+        }
 
-       dataBinding.viewModel = cameraListViewModel
+        dataBinding.viewModel = cameraListViewModel
 
-       binding = dataBinding
+        binding = dataBinding
 
-       // animation
-       sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        // animation
+        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
-       return dataBinding.root
+        return dataBinding.root
 
     }
 
@@ -85,7 +85,7 @@ class CameraListFragment : DaggerFragment(), Injectable {
                     camera -> navigateToCamera(camera)
             },
             {
-                    cameraListViewModel.updateFavorite(cameraId = it.cameraId, isFavorite = !it.favorite)
+                cameraListViewModel.updateFavorite(cameraId = it.cameraId, isFavorite = !it.favorite)
             })
 
         this.adapter = adapter
