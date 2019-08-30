@@ -51,33 +51,6 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-/*
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-
-        val searchActionView = SearchView(context)
-        searchActionView.queryHint = "Search Travel Times"
-        searchActionView.setOnQueryTextListener(this)
-
-        val searchMenuItem = menu.add("search").setIcon(R.drawable.ic_search)
-        searchMenuItem.actionView = searchActionView
-
-        searchMenuItem.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
-
-        searchMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                travelTimeListViewModel.setTravelTimeQuery("")
-                return true
-            }
-
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                return true
-            }
-        })
-    }
-*/
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -159,13 +132,9 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
                 inputManager.hideSoftInputFromWindow(viewValue.windowToken, HIDE_NOT_ALWAYS)
             }
         }
-
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-
-        Log.e("debug", "submit")
-
         query?.let {
             travelTimeListViewModel.setTravelTimeQuery(it)
         }
@@ -173,14 +142,10 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-
-        Log.e("debug", "change")
-
         newText?.let {
             travelTimeListViewModel.setTravelTimeQuery(it)
 
         }
-
         return true
     }
 
@@ -189,5 +154,4 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
       //  val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(travelTime.travelTimeId, travelTime.title)
       //  findNavController().navigate(action)
     }
-
 }
