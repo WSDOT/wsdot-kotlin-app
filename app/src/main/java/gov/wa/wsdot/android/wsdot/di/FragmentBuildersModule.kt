@@ -21,6 +21,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragment
+import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
@@ -104,5 +105,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeNewsReleaseFragment(): NewsReleaseFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFavoritesFragment(): FavoritesFragment
 
 }

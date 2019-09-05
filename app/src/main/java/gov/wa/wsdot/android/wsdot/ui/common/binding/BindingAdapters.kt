@@ -165,6 +165,12 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindShortDate")
+    fun bindShortDate(editText: EditText, date: Date) {
+        editText.setText(getShortDateString(date))
+    }
+
+    @JvmStatic
     @BindingAdapter("bindDateHour")
     fun bindDateHour(textView: TextView, date: Date?) {
         if (date != null) {
@@ -183,6 +189,16 @@ object BindingAdapters {
     // Creates an updated timestamp from date object
     private fun getDateString(date: Date): String {
         val displayDateFormat = SimpleDateFormat("EEE, MMMM d", Locale.ENGLISH)
+        return try {
+            displayDateFormat.format(date)
+        } catch (e: Exception) {
+            "Unavailable"
+        }
+    }
+
+    // Creates an updated timestamp from date object
+    private fun getShortDateString(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("EEE, MMM d", Locale.ENGLISH)
         return try {
             displayDateFormat.format(date)
         } catch (e: Exception) {

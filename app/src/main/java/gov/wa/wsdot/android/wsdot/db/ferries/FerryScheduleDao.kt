@@ -19,6 +19,9 @@ abstract class FerryScheduleDao {
     @Query("SELECT * FROM FerrySchedule ORDER BY FerrySchedule.description ASC")
     abstract fun loadSchedules(): LiveData<List<FerrySchedule>>
 
+    @Query("SELECT * FROM FerrySchedule WHERE favorite = :isFavorite")
+    abstract fun loadFavoriteSchedules(isFavorite: Boolean = true): LiveData<List<FerrySchedule>>
+
     @Query("SELECT * FROM FerrySchedule WHERE routeId = (:routeId)")
     abstract fun loadSchedule(routeId: Int): LiveData<FerrySchedule>
 

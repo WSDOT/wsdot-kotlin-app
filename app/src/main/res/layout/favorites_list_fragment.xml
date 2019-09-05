@@ -30,7 +30,7 @@
             app:layout_constraintTop_toBottomOf="@id/button_grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:refreshing="@{((Resource) viewModel.favorites).status == Status.LOADING}"
+            app:refreshing="@{((Resource) viewModel.favoritesLoadingStatus).status == Status.LOADING}"
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -47,7 +47,7 @@
 
         <include
             layout="@layout/loading_error_state"
-            app:resource="@{(Resource) viewModel.favorites}"
+            app:resource="@{(Resource) viewModel.favoritesLoadingStatus}"
             app:callback="@{() -> retryCallback.retry()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

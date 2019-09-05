@@ -11,6 +11,7 @@ import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
+import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesListViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewModel
@@ -132,6 +133,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TravelTimeListViewModel::class)
     abstract fun bindTravelTimeListViewModel(travelTimeListViewModel: TravelTimeListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FavoritesListViewModel::class)
+    abstract fun bindFavoritesListViewModel(favoritesListViewModel: FavoritesListViewModel): ViewModel
 
     @Binds
     @IntoMap

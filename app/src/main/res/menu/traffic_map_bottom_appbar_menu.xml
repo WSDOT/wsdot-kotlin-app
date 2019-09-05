@@ -8,22 +8,22 @@
         android:icon="@drawable/ic_menu_refresh"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/action_alerts"
-        android:title="@string/action_alert_in_area"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_alert"
-        app:showAsAction="always"/>
-
     <item android:id="@+id/action_go_to_location"
         android:title="@string/action_go_to_location"
         android:orderInCategory="100"
         android:icon="@drawable/ic_menu_location"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/action_favorite"
-        android:title="@string/action_favorite"
+    <item android:id="@+id/action_alerts"
+        android:title="@string/action_alert_in_area"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_favorite_outline"
+        android:icon="@drawable/ic_menu_alert"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_travel_times"
+        android:title="@string/action_travel_times"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_menu_travel_times"
         app:showAsAction="always"/>
 
     <item android:id="@+id/action_more"
