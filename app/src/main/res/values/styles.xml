@@ -16,6 +16,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="HeaderTitleText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#606060</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="CardTitleText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">18sp</item>

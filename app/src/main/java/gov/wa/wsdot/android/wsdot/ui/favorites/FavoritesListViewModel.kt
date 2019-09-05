@@ -1,61 +1,170 @@
 package gov.wa.wsdot.android.wsdot.ui.favorites
 
 import androidx.lifecycle.*
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
+import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
+import gov.wa.wsdot.android.wsdot.repository.MountainPassRepository
 import gov.wa.wsdot.android.wsdot.repository.TravelTimesRepository
-import gov.wa.wsdot.android.wsdot.ui.favorites.items.CameraFavorites
-import gov.wa.wsdot.android.wsdot.ui.favorites.items.FavoriteItems
-import gov.wa.wsdot.android.wsdot.ui.favorites.items.TravelTimeFavorite
+import gov.wa.wsdot.android.wsdot.ui.favorites.items.*
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class FavoritesListViewModel @Inject constructor(
-    cameraRepository: CameraRepository,
-    travelTimesRepository: TravelTimesRepository
+    private val cameraRepository: CameraRepository,
+    private val travelTimesRepository: TravelTimesRepository,
+    private val ferriesRepository: FerriesRepository,
+    private val mountainPassRepository: MountainPassRepository
 ) : ViewModel() {
 
-    private val travelTimesRepo = travelTimesRepository
-    private val cameraRepo = cameraRepository
+    // mediator handles refresh status. Used by data bound refresh control in layout xml
+    val favoritesLoadingStatus = MediatorLiveData<Resource<FavoriteItems>>()
 
-    // mediator handles resubscribe on refresh
-    val favorites = MediatorLiveData<FavoriteItems>()
+    // mediators handle each favorite item list
+    val favoriteTravelTimes = MediatorLiveData<List<TravelTime>>()
+    val favoriteFerrySchedules = MediatorLiveData<List<FerrySchedule>>()
+    val favoriteCameras = MediatorLiveData<List<Camera>>()
+    val favoriteMountainPasses = MediatorLiveData<List<MountainPass>>()
 
-    private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadTravelTimes(false)
-    private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadCameras(false)
+    private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadFavoriteTravelTimes(false)
+    private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadFavoriteCameras(false)
+    private var ferryScheduleLiveData: LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadFavoriteSchedules(false)
+    private var mountainPassLiveData: LiveData<Resource<List<MountainPass>>> = mountainPassRepository.loadFavoritePasses(false)
 
     init {
-        favorites.addSource(travelTimeLiveData) {
-            it?.let {
-                favorites.value = TravelTimeFavorite(it)
-            }
-        }
+        addSources()
+    }
 
-        favorites.addSource(cameraLiveData) {
-            it?.let {
-                favorites.value = CameraFavorites(it)
-            }
-        }
+    fun updateFavoriteFerrySchedule(routeId: Int, isFavorite: Boolean) {
+        ferriesRepository.updateFavorite(routeId, isFavorite)
+    }
+
+    fun updateFavoriteTravelTime(travelTimeId: Int, isFavorite: Boolean) {
+        travelTimesRepository.updateFavorite(travelTimeId, isFavorite)
+    }
+
+    fun updateFavoriteCamera(cameraId: Int, isFavorite: Boolean) {
+        cameraRepository.updateFavorite(cameraId, isFavorite)
+    }
+
+    fun updateFavoritePass(passId: Int, isFavorite: Boolean) {
+        mountainPassRepository.updateFavorite(passId, isFavorite)
     }
 
     fun refresh() {
+        removeSources()
 
-        favorites.removeSource(travelTimeLiveData)
-        favorites.removeSource(cameraLiveData)
+        travelTimeLiveData = travelTimesRepository.loadFavoriteTravelTimes(true)
+        cameraLiveData = cameraRepository.loadFavoriteCameras(true)
+        ferryScheduleLiveData = ferriesRepository.loadFavoriteSchedules(true)
+        mountainPassLiveData = mountainPassRepository.loadFavoritePasses(true)
 
-        travelTimeLiveData = travelTimesRepo.loadTravelTimes(true)
-        cameraLiveData = cameraRepo.loadCameras(true)
+        addSources()
+    }
 
-        favorites.addSource(travelTimeLiveData) {
-            it?.let {
-                favorites.value = TravelTimeFavorite(it)
+    private fun addSources() {
+
+        // Travel Times
+
+        favoriteTravelTimes.addSource(travelTimeLiveData) {
+            it?.data?.let { favItems ->
+                favoriteTravelTimes.value = favItems
             }
         }
-        favorites.addSource(cameraLiveData) {
+
+        favoritesLoadingStatus.addSource(travelTimeLiveData) {
             it?.let {
-                favorites.value = CameraFavorites(it)
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(TravelTimeData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(TravelTimeData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, TravelTimeData(data))
+                    }
+                }
             }
         }
+
+        // Cameras
+
+        favoriteCameras.addSource(cameraLiveData) {
+            it?.data?.let { favItems ->
+                favoriteCameras.value = favItems
+            }
+        }
+
+        favoritesLoadingStatus.addSource(cameraLiveData) {
+            it?.let {
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(CameraData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(CameraData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, CameraData(data))
+                    }
+                }
+            }
+        }
+
+        // Ferry Schedules
+
+        favoriteFerrySchedules.addSource(ferryScheduleLiveData) {
+            it?.data?.let { favItems ->
+                favoriteFerrySchedules.value = favItems
+            }
+        }
+
+        favoritesLoadingStatus.addSource(ferryScheduleLiveData) {
+            it?.let {
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(FerryScheduleData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(FerryScheduleData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, FerryScheduleData(data))
+                    }
+                }
+            }
+        }
+
+        // Mountain Passes
+
+        favoriteMountainPasses.addSource(mountainPassLiveData) {
+            it?.data?.let { favItems ->
+                favoriteMountainPasses.value = favItems
+            }
+        }
+
+        favoritesLoadingStatus.addSource(mountainPassLiveData) {
+            it?.let {
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(MountainPassData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(MountainPassData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, MountainPassData(data))
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    private fun removeSources() {
+
+        favoriteTravelTimes.removeSource(travelTimeLiveData)
+        favoriteCameras.removeSource(cameraLiveData)
+        favoriteFerrySchedules.removeSource(ferryScheduleLiveData)
+        favoriteMountainPasses.removeSource(mountainPassLiveData)
+
+        favoritesLoadingStatus.removeSource(travelTimeLiveData)
+        favoritesLoadingStatus.removeSource(cameraLiveData)
+        favoritesLoadingStatus.removeSource(ferryScheduleLiveData)
+        favoritesLoadingStatus.removeSource(mountainPassLiveData)
     }
 }

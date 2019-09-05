@@ -83,7 +83,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        app:bindDate="@{dateViewModel.value}"
+                        app:bindShortDate="@{dateViewModel.value}"
                         android:focusable="false"
                         android:inputType="date"
                         android:cursorVisible="false"

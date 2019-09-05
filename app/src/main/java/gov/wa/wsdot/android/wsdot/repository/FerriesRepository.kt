@@ -198,6 +198,40 @@ class FerriesRepository @Inject constructor(
         }.asLiveData()
     }
 
+
+    fun loadFavoriteSchedules(forceRefresh: Boolean): LiveData<Resource<List<FerrySchedule>>> {
+
+        return object : NetworkBoundResource<List<FerrySchedule>, List<FerryScheduleResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+
+            override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = ferryScheduleDao.loadFavoriteSchedules()
+
+            override fun createCall() = dataWebservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
     fun updateFavorite(routeId: Int, isFavorite: Boolean) {
         appExecutors.diskIO().execute {
             ferryScheduleDao.updateFavorite(routeId, isFavorite)

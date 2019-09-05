@@ -94,6 +94,11 @@
     <string name="ad_target_passes">passes</string>
     <string name="ad_target_other">other</string>
     <string name="no_alerts_string">No Alerts Reported In This Location</string>
+    <string name="favorites_one">FAV_ONE</string>
+    <string name="favorites_two">FAV_TWO</string>
+    <string name="favorites_three">FAV_THREE</string>
+    <string name="favorites_four">FAV_FOUR</string>
+    <string name="action_travel_times">Travel Times</string>
 
 
 </resources>

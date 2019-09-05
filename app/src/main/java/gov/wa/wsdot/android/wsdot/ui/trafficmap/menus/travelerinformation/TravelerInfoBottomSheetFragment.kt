@@ -20,7 +20,7 @@ class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener:
 
         val listItems = mutableListOf<TravelerInfoMenuEventItem>()
         listItems.add(
-            TravelerInfoMenuEventItem("Travel Times", TravelerMenuItemType.TRAVEL_TIMES)
+            TravelerInfoMenuEventItem("Favorite Location", TravelerMenuItemType.NEW_FAVORITE_LOCATION)
         )
 
         listItems.add(
