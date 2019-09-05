@@ -232,7 +232,7 @@
         android:id="@+id/navMountainPassReportFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFragment"
         android:label="{title}"
-        tools:layout="@layout/ferries_route_fragment" >
+        tools:layout="@layout/mountain_pass_report_fragment" >
         <argument
             android:name="pass_id"
             app:argType="integer"
