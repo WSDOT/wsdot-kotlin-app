@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.*
@@ -34,13 +35,12 @@ import java.lang.Exception
 
 class FavoritesListAdapter(
     private val dataBindingComponent: DataBindingComponent,
-    private val appExecutors: AppExecutors,
+    appExecutors: AppExecutors,
     viewTypes: List<Int>,
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
-
 
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
         FavoritesListUpdateCallback(
@@ -48,7 +48,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_TRAVEL_TIME,
             1
         ),
-        AsyncDifferConfig.Builder<TravelTime>(TravelTimeDiffCallback()).build()
+        AsyncDifferConfig.Builder<TravelTime>(TravelTimeDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
     )
 
     private val camerasDiffer = AsyncListDiffer<Camera>(
@@ -57,7 +59,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_CAMERA,
             1
         ),
-        AsyncDifferConfig.Builder<Camera>(CameraDiffCallback()).build()
+        AsyncDifferConfig.Builder<Camera>(CameraDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
     )
 
     private val ferryScheduleDiffer = AsyncListDiffer<FerrySchedule>(
@@ -66,7 +70,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_FERRY,
             1
         ),
-        AsyncDifferConfig.Builder<FerrySchedule>(FerryScheduleDiffCallback()).build()
+        AsyncDifferConfig.Builder<FerrySchedule>(FerryScheduleDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
     )
 
     private val mountainPassesDiffer = AsyncListDiffer<MountainPass>(
@@ -75,7 +81,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_MOUNTAIN_PASS,
             1
         ),
-        AsyncDifferConfig.Builder<MountainPass>(MountainPassDiffCallback()).build()
+        AsyncDifferConfig.Builder<MountainPass>(MountainPassDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
     )
 
 
@@ -122,7 +130,7 @@ class FavoritesListAdapter(
     /**
      * Returns the number of items for a given item_type
      */
-    fun getNumItemsFor(type: Int): Int {
+    fun getNumItemsInSection(type: Int): Int {
         return when(type) {
             ITEM_TYPE_TRAVEL_TIME -> { getTravelTimesSize() }
             ITEM_TYPE_CAMERA -> { getCamerasSize() }

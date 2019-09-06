@@ -189,17 +189,16 @@ class FavoritesFragment : DaggerFragment(), Injectable {
                         R.drawable.ic_remove_favorite,
                         null
                     )
-                    val background = ColorDrawable(Color.parseColor("#c62828"))
+                    val background = ColorDrawable(Color.parseColor("#707070"))
 
                     val backgroundCornerOffset = 10
-                    val iconMargin = 24
+                    val iconMargin = 48
                     val iconTop =
                         viewHolder.itemView.top + (viewHolder.itemView.height - icon!!.intrinsicHeight) / 2
                     val iconBottom = iconTop + icon.intrinsicHeight
 
                     when {
                         dX < 0 -> { // Left swipe
-
                             val iconLeft =
                                 viewHolder.itemView.right - iconMargin - icon.intrinsicWidth
                             val iconRight = viewHolder.itemView.right - iconMargin
@@ -214,10 +213,8 @@ class FavoritesFragment : DaggerFragment(), Injectable {
                         }
                         else -> background.setBounds(0, 0, 0, 0)
                     }
-
                     background.draw(c)
                     icon.draw(c)
-
                 }
 
                 override fun onMove(
@@ -237,7 +234,6 @@ class FavoritesFragment : DaggerFragment(), Injectable {
                         viewHolder
                     )
                 }
-
 
                 override fun onSwiped(holder: RecyclerView.ViewHolder, swipeDir: Int) {
 
