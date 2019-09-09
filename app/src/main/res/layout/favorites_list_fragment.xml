@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
+        <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
+        <import type="androidx.lifecycle.LiveData"/>
+
+        <variable
+            name="viewModel"
+            type="gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesListViewModel"/>
+
+        <variable
+            name="retryCallback"
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_grid"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:refreshing="@{((Resource) viewModel.favoritesLoadingStatus).status == Status.LOADING}"
+            app:onRefreshListener="@{() -> viewModel.refresh()}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favorites_list"
+                app:layoutManager="LinearLayoutManager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/heart_icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_menu_favorite_gray"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/no_fav_title"
+                style="@style/CardTitleText"
+                android:textColor="@color/darkGray"
+                android:gravity="center|top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@id/heart_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/no_favorites_title"/>
+
+            <TextView
+                android:id="@+id/no_fav_text"
+                style="@style/CardSubTitleText"
+                android:textColor="@color/darkGray"
+                android:gravity="center|top"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/no_fav_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/no_favorites_text"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <include
+            layout="@layout/loading_error_state"
+            app:resource="@{(Resource) viewModel.favoritesLoadingStatus}"
+            app:callback="@{() -> retryCallback.retry()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

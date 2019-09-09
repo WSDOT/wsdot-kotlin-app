@@ -44,6 +44,7 @@
 
         <LinearLayout
             android:id="@+id/button_grid"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,27 +53,59 @@
             android:background="#fff"
             android:elevation="4dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/reservation_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/link_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:text="@string/ferry_reservation"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/vessel_watch_button"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:layout_weight="1"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="@string/ferry_vessel_watch"/>
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/reservation_button"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="@string/ferry_reservation"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buy_tickets_button"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/ferry_buy_tickets"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/link_buttons"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/vessel_watch_button"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="@string/ferry_vessel_watch"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

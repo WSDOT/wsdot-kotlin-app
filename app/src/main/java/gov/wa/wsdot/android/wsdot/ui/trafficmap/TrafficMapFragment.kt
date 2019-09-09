@@ -2,19 +2,23 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Vibrator
 import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.Log
 import android.view.*
+import android.view.HapticFeedbackConstants.VIRTUAL_KEY
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -570,6 +574,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
     // For bottom menu
     override fun onMenuItemClick(item: MenuItem?): Boolean {
+
         item?.let {
             when(it.itemId) {
                 R.id.action_refresh -> {
@@ -578,11 +583,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     val toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER,0,500)
                     toast.show()
-                }
-
-                R.id.action_alerts -> {
-                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavMapHighwayAlertsFragment()
-                    findNavController().navigate(action)
                 }
 
                 R.id.action_go_to_location -> {
@@ -595,7 +595,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     }
                 }
 
-                R.id.action_favorite -> showAddFavoriteDialog()
+                R.id.action_alerts -> {
+                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavMapHighwayAlertsFragment()
+                    findNavController().navigate(action)
+                }
+
+                R.id.action_travel_times -> {
+                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                    findNavController().navigate(action)
+                }
 
                 R.id.action_more -> {
                     fragmentManager?.let { fragmentManagerValue ->
@@ -620,9 +628,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     // Traveler Info Menu Listener
     override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
-            TravelerMenuItemType.TRAVEL_TIMES -> {
-                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
-                findNavController().navigate(action)
+            TravelerMenuItemType.NEW_FAVORITE_LOCATION -> {
+                showAddFavoriteDialog()
             }
             TravelerMenuItemType.NEWS_ITEMS -> {
                 val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()

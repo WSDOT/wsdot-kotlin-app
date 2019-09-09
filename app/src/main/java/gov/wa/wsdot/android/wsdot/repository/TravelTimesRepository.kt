@@ -122,6 +122,38 @@ class TravelTimesRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun loadFavoriteTravelTimes(forceRefresh: Boolean): LiveData<Resource<List<TravelTime>>> {
+
+        return object : NetworkBoundResource<List<TravelTime>, List<TravelTimesResponse>>(appExecutors) {
+
+            override fun saveCallResult(items: List<TravelTimesResponse>) = saveTravelTimes(items)
+
+            override fun shouldFetch(data: List<TravelTime>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = travelTimeDao.loadFavoriteTravelTimes()
+
+            override fun createCall() = dataWebservice.getTravelTimes()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
     fun updateFavorite(travelTimeId: Int, isFavorite: Boolean) {
         appExecutors.diskIO().execute {
             travelTimeDao.updateFavorite(travelTimeId, isFavorite)

@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.ui.traveltimes
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,15 +24,18 @@ class TravelTimeListAdapter(
         override fun areItemsTheSame(oldItem: TravelTime, newItem: TravelTime): Boolean {
             return oldItem.travelTimeId == newItem.travelTimeId
         }
-
         override fun areContentsTheSame(oldItem: TravelTime, newItem: TravelTime): Boolean {
             return oldItem.currentTime == newItem.currentTime
                     && oldItem.localCacheDate == newItem.localCacheDate
                     && oldItem.favorite == newItem.favorite
         }
-
     }
 ) {
+
+    companion object {
+        private const val TYPE_TRAVEL_TIME = 0
+        private const val TYPE_CAMERA = 1
+    }
 
     override fun createBinding(parent: ViewGroup): TravelTimeItemBinding {
 
