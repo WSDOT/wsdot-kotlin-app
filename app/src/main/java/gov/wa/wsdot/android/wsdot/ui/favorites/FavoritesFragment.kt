@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
 
 
-class FavoritesFragment : DaggerFragment(), Injectable {
+class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injectable  {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -102,6 +103,7 @@ class FavoritesFragment : DaggerFragment(), Injectable {
         val adapter = FavoritesListAdapter(
             dataBindingComponent,
             appExecutors,
+            this,
             getOrderedViewTypes(),
             { camera ->
                 navigateToCamera(camera)
@@ -129,7 +131,7 @@ class FavoritesFragment : DaggerFragment(), Injectable {
 
         favoritesListViewModel.favoriteTravelTimes.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-               adapter.setTravelTimes(it)
+                adapter.setTravelTimes(it)
             }
         })
 
@@ -153,15 +155,19 @@ class FavoritesFragment : DaggerFragment(), Injectable {
 
     }
 
+    override fun onDataSetChanged() {
+        shouldShowEmptyFavorites(binding)
+    }
+
     private fun getOrderedViewTypes(): List<Int> {
 
         val orderedViewTypes = mutableListOf<Int>()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), FavoritesListAdapter.ITEM_TYPE_FERRY))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), FavoritesListAdapter.ITEM_TYPE_MOUNTAIN_PASS))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), FavoritesListAdapter.ITEM_TYPE_TRAVEL_TIME))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), FavoritesListAdapter.ITEM_TYPE_CAMERA))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_CAMERA))
 
         return orderedViewTypes
     }
@@ -283,13 +289,13 @@ class FavoritesFragment : DaggerFragment(), Injectable {
                             ITEM_TYPE_MOUNTAIN_PASS -> {
                                 favoritesListViewModel.updateFavoritePass(itemId!!.toInt(), true)
                             }
+
                         }
 
                     }
                     snackbar.show()
                 }
             }
-
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
@@ -315,5 +321,17 @@ class FavoritesFragment : DaggerFragment(), Injectable {
         findNavController().navigate(action)
     }
 
+    private fun shouldShowEmptyFavorites(binding: FavoritesListFragmentBinding) {
+
+        Log.e("Debug", String.format("list size: %d", adapter.getNumItems()))
+
+        if (adapter.getNumItems() == 0) {
+            binding.emptyListView.visibility = View.VISIBLE
+            binding.favoritesList.visibility = View.GONE
+        } else {
+            binding.emptyListView.visibility = View.GONE
+            binding.favoritesList.visibility = View.VISIBLE
+        }
+    }
 
 }
