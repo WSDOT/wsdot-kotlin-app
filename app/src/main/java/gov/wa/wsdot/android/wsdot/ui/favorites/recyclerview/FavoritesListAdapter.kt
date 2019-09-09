@@ -22,6 +22,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.CameraDif
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.FerryScheduleDiffCallback
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.MountainPassDiffCallback
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.TravelTimeDiffCallback
+import gov.wa.wsdot.android.wsdot.ui.favorites.AdapterDataSetChangedListener
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import java.lang.Exception
 
@@ -36,6 +37,7 @@ import java.lang.Exception
 class FavoritesListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
+    private val dataSetChangedListener: AdapterDataSetChangedListener,
     viewTypes: List<Int>,
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
@@ -45,6 +47,7 @@ class FavoritesListAdapter(
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
         FavoritesListUpdateCallback(
             this,
+            dataSetChangedListener,
             ITEM_TYPE_TRAVEL_TIME,
             1
         ),
@@ -56,6 +59,7 @@ class FavoritesListAdapter(
     private val camerasDiffer = AsyncListDiffer<Camera>(
         FavoritesListUpdateCallback(
             this,
+            dataSetChangedListener,
             ITEM_TYPE_CAMERA,
             1
         ),
@@ -67,6 +71,7 @@ class FavoritesListAdapter(
     private val ferryScheduleDiffer = AsyncListDiffer<FerrySchedule>(
         FavoritesListUpdateCallback(
             this,
+            dataSetChangedListener,
             ITEM_TYPE_FERRY,
             1
         ),
@@ -78,6 +83,7 @@ class FavoritesListAdapter(
     private val mountainPassesDiffer = AsyncListDiffer<MountainPass>(
         FavoritesListUpdateCallback(
             this,
+            dataSetChangedListener,
             ITEM_TYPE_MOUNTAIN_PASS,
             1
         ),
@@ -138,6 +144,15 @@ class FavoritesListAdapter(
             ITEM_TYPE_MOUNTAIN_PASS -> { getMountainPassesSize() }
             else -> 0
         }
+    }
+
+    fun getNumItems(): Int {
+        return (
+                getTravelTimesSize()
+                + getCamerasSize()
+                + getMountainPassesSize()
+                + getFerrySchedulesSize()
+                )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {

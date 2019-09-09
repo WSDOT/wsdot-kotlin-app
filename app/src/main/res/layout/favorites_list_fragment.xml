@@ -45,6 +45,54 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/heart_icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_menu_favorite_gray"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/no_fav_title"
+                style="@style/CardTitleText"
+                android:textColor="@color/darkGray"
+                android:gravity="center|top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                app:layout_constraintTop_toBottomOf="@id/heart_icon"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/no_favorites_title"/>
+
+            <TextView
+                android:id="@+id/no_fav_text"
+                style="@style/CardSubTitleText"
+                android:textColor="@color/darkGray"
+                android:gravity="center|top"
+                android:padding="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/no_fav_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/no_favorites_text"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
         <include
             layout="@layout/loading_error_state"
             app:resource="@{(Resource) viewModel.favoritesLoadingStatus}"

@@ -100,6 +100,8 @@
     <string name="favorites_three">FAV_THREE</string>
     <string name="favorites_four">FAV_FOUR</string>
     <string name="action_travel_times">Travel Times</string>
+    <string name="no_favorites_title">No Favorites</string>
+    <string name="no_favorites_text">You can add favorites by tapping hearts found throughout the app</string>
 
 
 </resources>

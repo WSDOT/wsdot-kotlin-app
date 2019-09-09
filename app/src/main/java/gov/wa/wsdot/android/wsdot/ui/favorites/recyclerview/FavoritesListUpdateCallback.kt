@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview
 
 import androidx.recyclerview.widget.ListUpdateCallback
+import gov.wa.wsdot.android.wsdot.ui.favorites.AdapterDataSetChangedListener
 
 /**
  * Overrides the basic ListUpdateCallback class to make it
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
  */
 class FavoritesListUpdateCallback(
     private val adapter: FavoritesListAdapter,
+    private val dataSetChangedListener: AdapterDataSetChangedListener,
     private val itemType: Int,
     private val offset: Int
 ) : ListUpdateCallback {
@@ -51,6 +53,7 @@ class FavoritesListUpdateCallback(
             adapterPosition,
             insertCount
         )
+        dataSetChangedListener.onDataSetChanged()
     }
 
     override fun onRemoved(position: Int, count: Int) {
@@ -58,12 +61,14 @@ class FavoritesListUpdateCallback(
             getItemPositionInAdapter(position, itemType),
             getNumItemsRemoved(count, itemType)
         )
+        dataSetChangedListener.onDataSetChanged()
     }
 
     override fun onMoved(fromPosition: Int, toPosition: Int) {
         adapter.notifyItemMoved(
             offsetPosition(fromPosition),
             offsetPosition(toPosition))
+        dataSetChangedListener.onDataSetChanged()
     }
 
     override fun onChanged(position: Int, count: Int, payload: Any?) {
@@ -72,6 +77,7 @@ class FavoritesListUpdateCallback(
             count,
             payload
         )
+        dataSetChangedListener.onDataSetChanged()
     }
 
     /**
