@@ -7,6 +7,7 @@ import dagger.Provides
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
@@ -124,6 +125,12 @@ class AppModule {
     @Provides
     fun provideFavoriteLocationDao(db: WsdotDB): FavoriteLocationDao {
         return db.favoriteLocationDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBorderCrossingDao(db: WsdotDB): BorderCrossingDao {
+        return db.borderCrossingDao()
     }
 
 }
