@@ -5,6 +5,9 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -49,14 +52,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             setOf(
                 R.id.navTrafficMapFragment,
                 R.id.navFerriesHomeFragment,
-                R.id.navMountainPassHomeFragment
+                R.id.navMountainPassHomeFragment,
+                R.id.navFavoritesFragment
             ), drawerLayout)
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
 
 
-        enableAds(drawerLayout, resources.getString(R.string.ad_target_traffic))
+        enableAds(resources.getString(R.string.ad_target_traffic))
 
 
     }
@@ -90,15 +94,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         when (item.itemId) {
             R.id.nav_traffic_map -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_traffic))
+                enableAds(resources.getString(R.string.ad_target_traffic))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
             }
             R.id.nav_ferries -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_ferries))
+                enableAds(resources.getString(R.string.ad_target_ferries))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
             }
             R.id.nav_mountain_passes -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_passes))
+                enableAds(resources.getString(R.string.ad_target_passes))
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
             }
             /*
@@ -114,10 +118,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.nav_my_routes -> {
                 enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
+
+             */
             R.id.nav_favorites -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
+                // Favorites fragment handles its out ad targets
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
             }
-            */
+
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -129,8 +136,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     /**
      * Initialize and display ads.
      */
-     fun enableAds(view: View, target: String) {
-        val mAdView: PublisherAdView = view.findViewById(R.id.publisherAdView)
+     fun enableAds(target: String) {
+        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
+        mAdViewBox.visibility = VISIBLE
+
+        val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
 
         val adRequest = PublisherAdRequest.Builder()
             .addTestDevice(PublisherAdRequest.DEVICE_ID_EMULATOR) // All emulators
@@ -143,36 +153,31 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdView.adListener = object : AdListener() {
             override fun onAdLoaded() {
                 super.onAdLoaded()
-                Log.e("debug", "loaded ad")
                 mAdView.visibility = View.VISIBLE
             }
 
             override fun onAdFailedToLoad(error: Int) {
                 super.onAdFailedToLoad(error)
-                Log.e("debug", "ad failed")
                 when (error) {
-
                     AdRequest.ERROR_CODE_NO_FILL -> Log.e("debug", "no fill")
                     AdRequest.ERROR_CODE_INVALID_REQUEST -> Log.e("debug", "invalid request")
                     AdRequest.ERROR_CODE_NETWORK_ERROR -> Log.e("debug", "network error")
                     AdRequest.ERROR_CODE_INTERNAL_ERROR -> Log.e("debug", "internal error")
-
                 }
-
             }
         }
-
-        Log.e("debug", "calling load ad..")
-
         mAdView.loadAd(adRequest)
     }
 
     /**
      * Remove the ad so it doesn't take up any space.
      */
-    fun disableAds(view: View) {
-        val mAdView: PublisherAdView = view.findViewById(R.id.publisherAdView)
-        mAdView.visibility = View.GONE
+    fun disableAds() {
+        val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
+        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
+        mAdViewBox.visibility = GONE
+        mAdView.visibility = GONE
+        mAdView.pause()
     }
 
 }

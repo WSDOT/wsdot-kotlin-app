@@ -86,6 +86,38 @@ class MountainPassRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun loadFavoritePasses(forceRefresh: Boolean): LiveData<Resource<List<MountainPass>>> {
+
+        return object : NetworkBoundResource<List<MountainPass>, MountainPassResponse>(appExecutors) {
+
+            override fun saveCallResult(item: MountainPassResponse) = savePasses(item)
+
+            override fun shouldFetch(data: List<MountainPass>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = mountainPassDao.loadFavoritePasses()
+
+            override fun createCall() = dataWebservice.getMountainPassReports()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
     private fun savePasses(passResponse: MountainPassResponse) {
 
         Log.e("debug", "saving passes...")
@@ -120,6 +152,8 @@ class MountainPassRepository @Inject constructor(
         }
         mountainPassDao.updateMountainPasses(dbPassList)
     }
+
+
 
     fun updateFavorite(passId: Int, isFavorite: Boolean) {
         appExecutors.diskIO().execute {

@@ -19,8 +19,8 @@ abstract class TravelTimeDao {
     @Query("SELECT * FROM TravelTime WHERE travelTimeId = :travelTimeId")
     abstract fun loadTravelTime(travelTimeId: Int): LiveData<TravelTime>
 
-    @Query("SELECT * FROM TravelTime WHERE favorite = 1")
-    abstract fun loadFavoriteTravelTimes(): LiveData<List<TravelTime>>
+    @Query("SELECT * FROM TravelTime WHERE favorite = :isFavorite")
+    abstract fun loadFavoriteTravelTimes(isFavorite: Boolean = true): LiveData<List<TravelTime>>
 
     @Query("UPDATE TravelTime SET favorite = :isFavorite WHERE travelTimeId = :travelTimeId")
     abstract fun updateFavorite(travelTimeId: Int, isFavorite: Boolean)

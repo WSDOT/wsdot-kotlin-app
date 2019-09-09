@@ -1,7 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -46,7 +48,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     override fun onDestroy() {
         super.onDestroy()
-        // Clear view models since they are no longer needed
+        //Clear view models since they are no longer needed
         viewModelStore.clear()
     }
 
@@ -82,8 +84,14 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
                 cameraListViewModel.setCamerasQuery(cameraIds)
 
                 // Only set up the tabs if the pager hasn't been initialized yet
+                // OR if it has been init and has nothing in it. (The case where we come back from a camera detail)
                 // This prevents tabs from resetting when forecasts and favorite is updated
                 if (!this::viewPager.isInitialized) {
+                    viewPager = dataBinding.root.findViewById(R.id.pager)
+                    setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
+                    val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
+                    tabLayout.setupWithViewPager(viewPager)
+                } else if (viewPager.size == 0) {
                     viewPager = dataBinding.root.findViewById(R.id.pager)
                     setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
                     val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)

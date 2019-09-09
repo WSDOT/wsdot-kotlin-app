@@ -15,6 +15,9 @@ abstract class MountainPassDao {
     @Query("SELECT * FROM MountainPass ORDER BY MountainPass.passName ASC")
     abstract fun loadPasses(): LiveData<List<MountainPass>>
 
+    @Query("SELECT * FROM MountainPass WHERE favorite = :isFavorite ORDER BY MountainPass.passName ASC")
+    abstract fun loadFavoritePasses(isFavorite: Boolean = true): LiveData<List<MountainPass>>
+
     @Query("SELECT * FROM MountainPass WHERE passId = (:passId)")
     abstract fun loadPass(passId: Int): LiveData<MountainPass>
 

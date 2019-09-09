@@ -24,13 +24,21 @@ object TrafficBindingAdapters {
             textView.setTextColor(Color.parseColor("#000000"))
         }
 
-        textView.text = String.format("%s min", travelTime.currentTime)
+        if (travelTime.currentTime != 0) {
+            textView.text = String.format("%s min", travelTime.currentTime)
+        } else {
+            textView.text = "N/A"
+        }
     }
 
     @JvmStatic
     @BindingAdapter("bindTravelTimeInfo")
     fun bindTravelTimeInfo(textView: TextView, travelTime: TravelTime) {
-        textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
+        if (travelTime.miles != 0f && travelTime.avgTime != 0) {
+            textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
+        } else {
+            textView.text = "Not Available"
+        }
     }
 
     @JvmStatic

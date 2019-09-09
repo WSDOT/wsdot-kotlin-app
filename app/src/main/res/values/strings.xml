@@ -36,8 +36,9 @@
 
     // Ferries
     <string name="crossing_time">Crossing time ~ %1$s mins</string>
-    <string name="ferry_reservation">Make A Reservation</string>
+    <string name="ferry_reservation">reservations</string>
     <string name="ferry_vessel_watch">vessel watch</string>
+    <string name="ferry_buy_tickets">buy tickets</string>
     <string name="sailing_hint">select sailing date</string>
 
     // Mountain Passes
@@ -94,6 +95,13 @@
     <string name="ad_target_passes">passes</string>
     <string name="ad_target_other">other</string>
     <string name="no_alerts_string">No Alerts Reported In This Location</string>
+    <string name="favorites_one">FAV_ONE</string>
+    <string name="favorites_two">FAV_TWO</string>
+    <string name="favorites_three">FAV_THREE</string>
+    <string name="favorites_four">FAV_FOUR</string>
+    <string name="action_travel_times">Travel Times</string>
+    <string name="no_favorites_title">No Favorites</string>
+    <string name="no_favorites_text">You can add favorites by tapping hearts found throughout the app</string>
 
 
 </resources>
