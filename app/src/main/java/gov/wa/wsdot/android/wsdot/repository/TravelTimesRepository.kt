@@ -192,7 +192,6 @@ class TravelTimesRepository @Inject constructor(
         val parseDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm a") //e.g. "2019-08-27 08:40 AM"
         parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
         return parseDateFormat.parse(dateString)
-
     }
 
 }
