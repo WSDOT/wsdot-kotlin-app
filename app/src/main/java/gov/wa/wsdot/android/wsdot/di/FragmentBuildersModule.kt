@@ -19,6 +19,9 @@ package gov.wa.wsdot.android.wsdot.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.NorthboundCrossingTimesFragment
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
@@ -36,7 +39,6 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamer
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
@@ -108,5 +110,14 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFavoritesFragment(): FavoritesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBorderCrossingsFragment(): BorderCrossingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNorthboundCrossingTimesFragment(): NorthboundCrossingTimesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSouthboundCrossingTimesFragment(): SouthboundCrossingTimesFragment
 
 }

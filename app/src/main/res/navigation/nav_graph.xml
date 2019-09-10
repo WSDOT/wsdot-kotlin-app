@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/nav_graph"
-                app:startDestination="@id/navTrafficMapFragment">
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph">
 
     <fragment
         android:id="@+id/navTrafficMapFragment"
@@ -43,6 +44,16 @@
         android:name="gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment"
         android:label="Favorites"
         tools:layout="@layout/favorites_list_fragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navBorderCrossingsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment"
+        android:label="Border Waits"
+        tools:layout="@layout/tab_layout"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
 
@@ -290,6 +301,11 @@
 
     <action android:id="@+id/action_global_navMountainPassHomeFragment"
         app:destination="@id/navMountainPassHomeFragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true"/>
+
+    <action android:id="@+id/action_global_navBorderCrossingsFragment"
+        app:destination="@id/navBorderCrossingsFragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true"/>
 

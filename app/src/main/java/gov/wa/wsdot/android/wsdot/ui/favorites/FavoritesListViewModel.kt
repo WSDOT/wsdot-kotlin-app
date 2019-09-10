@@ -1,14 +1,12 @@
 package gov.wa.wsdot.android.wsdot.ui.favorites
 
 import androidx.lifecycle.*
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
-import gov.wa.wsdot.android.wsdot.repository.CameraRepository
-import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
-import gov.wa.wsdot.android.wsdot.repository.MountainPassRepository
-import gov.wa.wsdot.android.wsdot.repository.TravelTimesRepository
+import gov.wa.wsdot.android.wsdot.repository.*
 import gov.wa.wsdot.android.wsdot.ui.favorites.items.*
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import gov.wa.wsdot.android.wsdot.util.network.Status
@@ -18,7 +16,8 @@ class FavoritesListViewModel @Inject constructor(
     private val cameraRepository: CameraRepository,
     private val travelTimesRepository: TravelTimesRepository,
     private val ferriesRepository: FerriesRepository,
-    private val mountainPassRepository: MountainPassRepository
+    private val mountainPassRepository: MountainPassRepository,
+    private val borderCrossingRepository: BorderCrossingRepository
 ) : ViewModel() {
 
     // mediator handles refresh status. Used by data bound refresh control in layout xml
@@ -29,11 +28,13 @@ class FavoritesListViewModel @Inject constructor(
     val favoriteFerrySchedules = MediatorLiveData<List<FerrySchedule>>()
     val favoriteCameras = MediatorLiveData<List<Camera>>()
     val favoriteMountainPasses = MediatorLiveData<List<MountainPass>>()
+    val favoriteBorderCrossings = MediatorLiveData<List<BorderCrossing>>()
 
     private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadFavoriteTravelTimes(false)
     private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadFavoriteCameras(false)
     private var ferryScheduleLiveData: LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadFavoriteSchedules(false)
     private var mountainPassLiveData: LiveData<Resource<List<MountainPass>>> = mountainPassRepository.loadFavoritePasses(false)
+    private var borderCrossingLiveData: LiveData<Resource<List<BorderCrossing>>> = borderCrossingRepository.loadFavoriteCrossings(false)
 
     init {
         addSources()
@@ -55,6 +56,10 @@ class FavoritesListViewModel @Inject constructor(
         mountainPassRepository.updateFavorite(passId, isFavorite)
     }
 
+    fun updateFavoriteBorderCrossings(crossingId: Int, isFavorite: Boolean) {
+        borderCrossingRepository.updateFavorite(crossingId, isFavorite)
+    }
+
     fun refresh() {
         removeSources()
 
@@ -62,6 +67,7 @@ class FavoritesListViewModel @Inject constructor(
         cameraLiveData = cameraRepository.loadFavoriteCameras(true)
         ferryScheduleLiveData = ferriesRepository.loadFavoriteSchedules(true)
         mountainPassLiveData = mountainPassRepository.loadFavoritePasses(true)
+        borderCrossingLiveData = borderCrossingRepository.loadFavoriteCrossings(true)
 
         addSources()
     }
@@ -152,6 +158,26 @@ class FavoritesListViewModel @Inject constructor(
             }
         }
 
+        // Border Crossings
+        favoriteBorderCrossings.addSource(borderCrossingLiveData) {
+            it?.data?.let { favItems ->
+                favoriteBorderCrossings.value = favItems
+            }
+        }
+
+        favoritesLoadingStatus.addSource(borderCrossingLiveData) {
+            it?.let {
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(BorderCrossingData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(BorderCrossingData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, BorderCrossingData(data))
+                    }
+                }
+            }
+        }
+
 
     }
 
@@ -161,10 +187,12 @@ class FavoritesListViewModel @Inject constructor(
         favoriteCameras.removeSource(cameraLiveData)
         favoriteFerrySchedules.removeSource(ferryScheduleLiveData)
         favoriteMountainPasses.removeSource(mountainPassLiveData)
+        favoriteBorderCrossings.removeSource(borderCrossingLiveData)
 
         favoritesLoadingStatus.removeSource(travelTimeLiveData)
         favoritesLoadingStatus.removeSource(cameraLiveData)
         favoritesLoadingStatus.removeSource(ferryScheduleLiveData)
         favoritesLoadingStatus.removeSource(mountainPassLiveData)
+        favoritesLoadingStatus.removeSource(borderCrossingLiveData)
     }
 }

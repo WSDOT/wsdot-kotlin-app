@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api
 
 import androidx.lifecycle.LiveData
+import gov.wa.wsdot.android.wsdot.api.response.borderwaits.BorderCrossingResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
@@ -31,5 +32,8 @@ interface WebDataService {
 
     @GET("News.js")
     fun getNewsItems(): LiveData<ApiResponse<NewsReleaseResponse>>
+
+    @GET("BorderCrossings.js")
+    fun getBorderCrossingItems(): LiveData<ApiResponse<BorderCrossingResponse>>
 
 }
