@@ -34,8 +34,10 @@ import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
+import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_BORDER_CROSSING
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_CAMERA
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_FERRY
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_HEADER
@@ -153,6 +155,12 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             }
         })
 
+        favoritesListViewModel.favoriteBorderCrossings.observe(viewLifecycleOwner, Observer { favItems ->
+            favItems?.let{
+                adapter.setBorderCrossings(it)
+            }
+        })
+
     }
 
     override fun onDataSetChanged() {
@@ -167,7 +175,8 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_CAMERA))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_CAMERA))
 
         return orderedViewTypes
     }
@@ -268,6 +277,11 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             itemId = pass.passId.toString()
                             favoritesListViewModel.updateFavoritePass(pass.passId, false)
                         }
+                        ITEM_TYPE_BORDER_CROSSING -> {
+                            val crossing = adapter.getItem(holder.adapterPosition) as BorderCrossing
+                            itemId = crossing.crossingId.toString()
+                            favoritesListViewModel.updateFavoriteBorderCrossings(crossing.crossingId, false)
+                        }
 
                         else -> itemId = null
                     }
@@ -289,7 +303,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             ITEM_TYPE_MOUNTAIN_PASS -> {
                                 favoritesListViewModel.updateFavoritePass(itemId!!.toInt(), true)
                             }
-
+                            ITEM_TYPE_BORDER_CROSSING -> {
+                                favoritesListViewModel.updateFavoriteBorderCrossings(itemId!!.toInt(), true)
+                            }
                         }
 
                     }
@@ -299,9 +315,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
-
     }
-
 
     private fun navigateToCamera(camera: Camera){
         val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
@@ -323,9 +337,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
     private fun shouldShowEmptyFavorites(binding: FavoritesListFragmentBinding) {
 
-        Log.e("Debug", String.format("list size: %d", adapter.getNumItems()))
-
-        if (adapter.getNumItems() == 0) {
+        if (adapter.itemCount == 0) {
             binding.emptyListView.visibility = View.VISIBLE
             binding.favoritesList.visibility = View.GONE
         } else {

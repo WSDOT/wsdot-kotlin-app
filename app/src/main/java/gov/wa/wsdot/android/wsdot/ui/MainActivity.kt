@@ -53,6 +53,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navTrafficMapFragment,
                 R.id.navFerriesHomeFragment,
                 R.id.navMountainPassHomeFragment,
+                R.id.navBorderCrossingsFragment,
                 R.id.navFavoritesFragment
             ), drawerLayout)
 
@@ -109,9 +110,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.nav_toll_rates -> {
                 enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
+            */
             R.id.nav_border_waits -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
+                enableAds("other")
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
             }
+            /*
             R.id.nav_amtrak_cascades -> {
                 enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }

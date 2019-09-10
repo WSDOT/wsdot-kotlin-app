@@ -49,6 +49,16 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navBorderCrossingsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment"
+        android:label="Border Crossings"
+        tools:layout="@layout/tab_layout"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true">
+
+    </fragment>
+
+    <fragment
         android:id="@+id/navMapHighwayAlertsFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment"
         android:label="Alerts In This Area"
@@ -290,6 +300,11 @@
 
     <action android:id="@+id/action_global_navMountainPassHomeFragment"
         app:destination="@id/navMountainPassHomeFragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true"/>
+
+    <action android:id="@+id/action_global_navBorderCrossingsFragment"
+        app:destination="@id/navBorderCrossingsFragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true"/>
 

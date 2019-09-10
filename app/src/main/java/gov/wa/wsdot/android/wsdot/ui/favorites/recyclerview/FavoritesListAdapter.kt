@@ -14,14 +14,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.*
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
-import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.CameraDiffCallback
-import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.FerryScheduleDiffCallback
-import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.MountainPassDiffCallback
-import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.TravelTimeDiffCallback
+import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.*
 import gov.wa.wsdot.android.wsdot.ui.favorites.AdapterDataSetChangedListener
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import java.lang.Exception
@@ -92,6 +90,18 @@ class FavoritesListAdapter(
             .build()
     )
 
+    private val borderCrossingDiffer = AsyncListDiffer<BorderCrossing>(
+        FavoritesListUpdateCallback(
+            this,
+            dataSetChangedListener,
+            ITEM_TYPE_BORDER_CROSSING,
+            1
+        ),
+        AsyncDifferConfig.Builder<BorderCrossing>(BorderCrossingDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
+    )
+
 
     // sort order for each view type
     private var orderedViewTypes = viewTypes
@@ -102,6 +112,7 @@ class FavoritesListAdapter(
         const val ITEM_TYPE_CAMERA = 2
         const val ITEM_TYPE_FERRY = 3
         const val ITEM_TYPE_MOUNTAIN_PASS = 4
+        const val ITEM_TYPE_BORDER_CROSSING = 5
     }
 
     private var headers = object : LinkedHashMap<Int, String>() {
@@ -110,6 +121,7 @@ class FavoritesListAdapter(
             put(ITEM_TYPE_TRAVEL_TIME, "Travel Times")
             put(ITEM_TYPE_FERRY, "Ferry Schedules")
             put(ITEM_TYPE_MOUNTAIN_PASS, "Mountain Passes")
+            put(ITEM_TYPE_BORDER_CROSSING, "Border Crossings")
         }
     }
 
@@ -133,6 +145,10 @@ class FavoritesListAdapter(
         mountainPassesDiffer.submitList(data)
     }
 
+    fun setBorderCrossings(data: List<BorderCrossing>) {
+        borderCrossingDiffer.submitList(data)
+    }
+
     /**
      * Returns the number of items for a given item_type
      */
@@ -142,42 +158,33 @@ class FavoritesListAdapter(
             ITEM_TYPE_CAMERA -> { getCamerasSize() }
             ITEM_TYPE_FERRY -> { getFerrySchedulesSize() }
             ITEM_TYPE_MOUNTAIN_PASS -> { getMountainPassesSize() }
+            ITEM_TYPE_BORDER_CROSSING -> { getBorderCrossingsSize() }
             else -> 0
         }
-    }
-
-    fun getNumItems(): Int {
-        return (
-                getTravelTimesSize()
-                + getCamerasSize()
-                + getMountainPassesSize()
-                + getFerrySchedulesSize()
-                )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
 
         when (viewType) {
-            ITEM_TYPE_HEADER -> { return FavoriteViewHolder(
-                createHeaderBinding(parent)
-            )
+            ITEM_TYPE_HEADER -> {
+                return FavoriteViewHolder(createHeaderBinding(parent))
             }
-            ITEM_TYPE_TRAVEL_TIME -> { return FavoriteViewHolder(
-                createTravelTimeBinding(parent)
-            )
+            ITEM_TYPE_TRAVEL_TIME -> {
+                return FavoriteViewHolder(createTravelTimeBinding(parent))
             }
-            ITEM_TYPE_CAMERA -> { return FavoriteViewHolder(
-                createCameraBinding(parent)
-            )
+            ITEM_TYPE_CAMERA -> {
+                return FavoriteViewHolder(createCameraBinding(parent))
             }
-            ITEM_TYPE_FERRY -> { return FavoriteViewHolder(
-                createFerryScheduleBinding(parent)
-            )
+            ITEM_TYPE_FERRY -> {
+                return FavoriteViewHolder(createFerryScheduleBinding(parent))
             }
-            ITEM_TYPE_MOUNTAIN_PASS -> { return FavoriteViewHolder(
-                createMountainPassBinding(parent)
-            )
+            ITEM_TYPE_MOUNTAIN_PASS -> {
+                return FavoriteViewHolder(createMountainPassBinding(parent))
             }
+            ITEM_TYPE_BORDER_CROSSING -> {
+                return FavoriteViewHolder(createBorderCrossingBinding(parent))
+            }
+
         }
 
         // TODO: crash reporting
@@ -199,6 +206,7 @@ class FavoritesListAdapter(
                 ITEM_TYPE_TRAVEL_TIME -> { size = getTravelTimesSize() }
                 ITEM_TYPE_FERRY -> { size = getFerrySchedulesSize() }
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
+                ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
             }
 
             if (currentPos == 0 && size > 0) return ITEM_TYPE_HEADER
@@ -233,6 +241,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_FERRY -> pos += getFerrySchedulesSize()
                     ITEM_TYPE_MOUNTAIN_PASS -> pos += getMountainPassesSize()
                     ITEM_TYPE_TRAVEL_TIME -> pos += getTravelTimesSize()
+                    ITEM_TYPE_BORDER_CROSSING -> pos += getBorderCrossingsSize()
                 }
             }
         }
@@ -257,6 +266,7 @@ class FavoritesListAdapter(
                 ITEM_TYPE_TRAVEL_TIME -> { size = getTravelTimesSize() }
                 ITEM_TYPE_FERRY -> { size = getFerrySchedulesSize() }
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
+                ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
             }
 
             if (currentPos == 0 && size > 0) {
@@ -273,6 +283,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_TRAVEL_TIME -> { return travelTimesDiffer.currentList[currentPos - 1] }
                     ITEM_TYPE_FERRY -> { return ferryScheduleDiffer.currentList[currentPos - 1] }
                     ITEM_TYPE_MOUNTAIN_PASS -> { return mountainPassesDiffer.currentList[currentPos - 1] }
+                    ITEM_TYPE_BORDER_CROSSING -> { return borderCrossingDiffer.currentList[currentPos - 1]}
                 }
             }
 
@@ -291,8 +302,8 @@ class FavoritesListAdapter(
                     getCamerasSize() +
                     getTravelTimesSize() +
                     getFerrySchedulesSize() +
-                    getMountainPassesSize()
-                )
+                    getMountainPassesSize() +
+                    getBorderCrossingsSize())
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
@@ -319,6 +330,10 @@ class FavoritesListAdapter(
                 holder.mountainPassItemBinding.pass = getItem(position) as MountainPass
                 holder.mountainPassItemBinding.executePendingBindings()
             }
+            ITEM_TYPE_BORDER_CROSSING -> {
+                holder.borderCrossingItemBinding.crossing = getItem(position) as BorderCrossing
+                holder.borderCrossingItemBinding.executePendingBindings()
+            }
         }
     }
 
@@ -340,6 +355,10 @@ class FavoritesListAdapter(
 
     private fun getMountainPassesSize(): Int {
         return mountainPassesDiffer.currentList.size + (if (mountainPassesDiffer.currentList.isNotEmpty()) 1 else 0)
+    }
+
+    private fun getBorderCrossingsSize(): Int {
+        return borderCrossingDiffer.currentList.size + (if (borderCrossingDiffer.currentList.isNotEmpty()) 1 else 0)
     }
 
     // Binding Methods
@@ -428,6 +447,21 @@ class FavoritesListAdapter(
                 passClickCallback?.invoke(it)
             }
         }
+
+        binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+
+        return binding
+    }
+
+    private fun createBorderCrossingBinding(parent: ViewGroup): BorderCrossingItemBinding {
+
+        val binding = DataBindingUtil.inflate<BorderCrossingItemBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.border_crossing_item,
+            parent,
+            false,
+            dataBindingComponent
+        )
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
 
