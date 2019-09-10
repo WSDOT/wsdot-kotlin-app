@@ -10,6 +10,9 @@ abstract class BorderCrossingDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertNewCrossings(crossings: List<BorderCrossing>)
 
+    @Query("SELECT * FROM BorderCrossing")
+    abstract fun loadCrossings(): LiveData<List<BorderCrossing>>
+
     @Query("SELECT * FROM BorderCrossing WHERE direction = :direction")
     abstract fun loadCrossingsForDirection(direction: String): LiveData<List<BorderCrossing>>
 
@@ -49,7 +52,7 @@ abstract class BorderCrossingDao {
         direction = :direction,
         wait = :wait,
         updated = :updated,
-        localCacheDate = :localCacheDate
+        localCacheDate = :localCacheDate,
         remove = :remove
         WHERE crossingId = :crossingId
         """)

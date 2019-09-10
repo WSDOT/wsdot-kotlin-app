@@ -27,6 +27,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerryScheduleItemBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
+import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.FerryScheduleDiffCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
 /**
@@ -39,17 +40,7 @@ class FerryScheduleListAdapter(
     private val favoriteClickCallback: ((FerrySchedule) -> Unit)?
 ) : DataBoundListAdapter<FerrySchedule, FerryScheduleItemBinding>(
     appExecutors = appExecutors,
-    diffCallback = object : DiffUtil.ItemCallback<FerrySchedule>() {
-        override fun areItemsTheSame(oldItem: FerrySchedule, newItem: FerrySchedule): Boolean {
-            return oldItem.routeId == newItem.routeId
-        }
-
-        override fun areContentsTheSame(oldItem: FerrySchedule, newItem: FerrySchedule): Boolean {
-            return oldItem.description == newItem.description
-                    && oldItem.serverCacheDate.time == newItem.serverCacheDate.time
-                    && oldItem.favorite == newItem.favorite
-        }
-    }
+    diffCallback = FerryScheduleDiffCallback()
 ) {
 
     override fun createBinding(parent: ViewGroup): FerryScheduleItemBinding {
