@@ -19,6 +19,8 @@ package gov.wa.wsdot.android.wsdot.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
+import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassCameraTypeConverters
@@ -44,7 +46,8 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         MountainPass::class,
         NewsRelease::class,
         TravelTime::class,
-        FavoriteLocation::class
+        FavoriteLocation::class,
+        BorderCrossing::class
     ],
     version = 1,
     exportSchema = false
@@ -75,5 +78,7 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun travelTimeDao(): TravelTimeDao
 
     abstract fun favoriteLocationDao(): FavoriteLocationDao
+
+    abstract fun borderCrossingDao(): BorderCrossingDao
 
 }

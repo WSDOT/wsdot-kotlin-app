@@ -7,6 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
@@ -143,6 +144,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SharedDateViewModel::class)
     abstract fun bindSharedDateViewModel(sharedDateViewModel: SharedDateViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BorderCrossingViewModel::class)
+    abstract fun bindBorderCrossingViewModel(borderCrossingViewModel: BorderCrossingViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory

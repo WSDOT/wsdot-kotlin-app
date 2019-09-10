@@ -45,6 +45,9 @@
     <string name="restriction_header_text">Restrictions %s:</string>
     <string name="elevation_text">%d ft</string>
 
+    // Border Crossings
+    <string name="crossing_name_text">%s (%s)</string>
+
     // Rest Areas
     <string name="rest_area_location_header">Location:</string>
     <string name="rest_area_location_text">%s - %s</string>
@@ -102,6 +105,7 @@
     <string name="action_travel_times">Travel Times</string>
     <string name="no_favorites_title">No Favorites</string>
     <string name="no_favorites_text">You can add favorites by tapping hearts found throughout the app</string>
+    <string name="favorites_five">FAV_FIVE</string>
 
 
 </resources>
