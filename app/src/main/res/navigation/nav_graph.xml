@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/nav_graph"
-                app:startDestination="@id/navTrafficMapFragment">
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph">
 
     <fragment
         android:id="@+id/navTrafficMapFragment"
@@ -51,7 +52,7 @@
     <fragment
         android:id="@+id/navBorderCrossingsFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment"
-        android:label="Border Crossings"
+        android:label="Border Waits"
         tools:layout="@layout/tab_layout"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
