@@ -11,6 +11,8 @@ import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavGraph
+import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -42,6 +44,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         setSupportActionBar(findViewById(R.id.toolbar))
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+
         drawerLayout = findViewById(R.id.drawer_layout)
 
         val navView: NavigationView = findViewById(R.id.drawer_nav_view)
@@ -60,6 +63,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
 
+        // TODO: Let user set home screen ///////////////////////
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate(R.navigation.nav_graph)
+        graph.startDestination = R.id.navTrafficMapFragment
+        navController.graph = graph
+        navView.menu.getItem(0).isChecked = true
+        /////////////////////////////////////////////////////////
 
         enableAds(resources.getString(R.string.ad_target_traffic))
 
@@ -75,36 +85,28 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main_menu, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
         when (item.itemId) {
             R.id.nav_traffic_map -> {
-                enableAds(resources.getString(R.string.ad_target_traffic))
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
+                if (navController.currentDestination?.id != R.id.navTrafficMapFragment) {
+                    enableAds(resources.getString(R.string.ad_target_traffic))
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
+                }
             }
             R.id.nav_ferries -> {
-                enableAds(resources.getString(R.string.ad_target_ferries))
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
+                if (navController.currentDestination?.id != R.id.navFerriesHomeFragment) {
+                    enableAds(resources.getString(R.string.ad_target_ferries))
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
+                }
             }
             R.id.nav_mountain_passes -> {
-                enableAds(resources.getString(R.string.ad_target_passes))
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
+                if (navController.currentDestination?.id != R.id.navMountainPassHomeFragment) {
+                    enableAds(resources.getString(R.string.ad_target_passes))
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
+                }
             }
             /*
             R.id.nav_toll_rates -> {
@@ -112,8 +114,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
             */
             R.id.nav_border_waits -> {
-                enableAds("other")
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
+                if (navController.currentDestination?.id != R.id.navBorderCrossingsFragment) {
+                    enableAds("other")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
+                }
             }
             /*
             R.id.nav_amtrak_cascades -> {
@@ -126,7 +130,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
              */
             R.id.nav_favorites -> {
                 // Favorites fragment handles its out ad targets
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
+                if (navController.currentDestination?.id != R.id.navFavoritesFragment) {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
+                }
             }
 
         }
