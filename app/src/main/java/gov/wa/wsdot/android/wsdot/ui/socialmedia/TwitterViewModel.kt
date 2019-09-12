@@ -1,9 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.socialmedia
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.repository.TwitterRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -12,34 +10,39 @@ import javax.inject.Inject
 
 class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository) : ViewModel() {
 
-    private val _accountQuery: MutableLiveData<AccountQuery> = MutableLiveData()
-    private val repo = twitterRepository
+    // 2-way binding value for spinner
+    private val _selectedTwitterAccount = MediatorLiveData<Pair<String, String>>()
+    val selectedTwitterAccount: MutableLiveData<Pair<String, String>>
+        get() = _selectedTwitterAccount
+
+    val twitterAccounts = listOf(
+        Pair("All Accounts",""),
+        Pair("Ferries", "wsferries"),
+        Pair("Snoqualmie Pass", "SnoqualmiePass"),
+        Pair("WSDOT", "wsdot"),
+        Pair("WSDOT East", "WSDOT_East"),
+        Pair("WSDOT North", "wsdot_north"),
+        Pair("WSDOT Southwest", "wsdot_sw"),
+        Pair("WSDOT Tacoma", "wsdot_tacoma"),
+        Pair("WSDOT Traffic", "wsdot_traffic")
+    )
+
+    init {
+        _selectedTwitterAccount.value = twitterAccounts[0]
+    }
 
     val tweets: LiveData<Resource<List<Tweet>>> = Transformations
-        .switchMap(_accountQuery) { input ->
-            input.ifExists {
-                twitterRepository.loadTweetsForAccount(it, false)
-            }
+        .switchMap(_selectedTwitterAccount) {
+            twitterRepository.loadTweetsForAccount(it.second, false)
         }
-
-    fun setAccountQuery(accountName: String) {
-        val update = AccountQuery(accountName)
-        if (_accountQuery.value == update) {
-            return
-        }
-        _accountQuery.value = update
-    }
 
     fun refresh() {
-        val accountName = _accountQuery.value?.accountName
+        val accountName = selectedTwitterAccount.value
         if (accountName != null) {
-            _accountQuery.value = AccountQuery(accountName)
+            _selectedTwitterAccount.value = accountName
         }
     }
 
-    data class AccountQuery(val accountName: String) {
-        fun <T> ifExists(f: (String) -> LiveData<T>): LiveData<T> {
-            return f(accountName)
-        }
-    }
+
+
 }

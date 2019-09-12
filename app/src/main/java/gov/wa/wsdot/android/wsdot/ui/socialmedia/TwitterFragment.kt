@@ -21,6 +21,8 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
 
 class TwitterFragment : DaggerFragment(), Injectable {
 
@@ -43,7 +45,6 @@ class TwitterFragment : DaggerFragment(), Injectable {
 
         tweetViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(TwitterViewModel::class.java)
-        tweetViewModel.setAccountQuery("wsdot_north")
 
         val dataBinding = DataBindingUtil.inflate<TwitterFragmentBinding>(
             inflater,
@@ -99,10 +100,23 @@ class TwitterFragment : DaggerFragment(), Injectable {
                 adapter.submitList(emptyList())
             }
         })
-
     }
 
     private fun openTweetLink(tweet: Tweet){
-        // TODO
+
+
+        Log.e("debug", getString(
+            R.string.twitter_status_url,
+            tweet.userId,
+            tweet.tweetId))
+
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(
+                getString(
+                    R.string.twitter_status_url,
+                    tweet.userId,
+                    tweet.tweetId)))
+        startActivity(intent)
     }
 }
