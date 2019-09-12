@@ -3,8 +3,8 @@ package gov.wa.wsdot.android.wsdot.api.response.socialmedia
 import com.google.gson.annotations.SerializedName
 
 data class TwitterResponse (
-    @field:SerializedName("id")
-    val id: Float,
+    @field:SerializedName("id_str")
+    val id: String,
     @field:SerializedName("text")
     val text: String,
     @field:SerializedName("created_at")
@@ -15,8 +15,8 @@ data class TwitterResponse (
     val user: User
 ) {
     data class User(
-        @field:SerializedName("id")
-        val id: Float,
+        @field:SerializedName("id_str")
+        val id: String,
         @field:SerializedName("name")
         val name: String
     )

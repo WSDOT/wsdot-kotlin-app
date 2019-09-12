@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.socialmedia
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,7 @@ class TwitterListAdapter(
             dataBindingComponent
         )
 
-        binding.root.findViewById<View>(R.id.cardView).setOnClickListener {
+        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
             binding.tweet?.let {
                 tweetClickCallback?.invoke(it)
             }

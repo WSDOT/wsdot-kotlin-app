@@ -2,17 +2,22 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.graphics.Color
 import android.util.Log
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.AdapterView
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterAccountAdapter
 
 /**
  * Data Binding adapters specific to the app.
@@ -75,6 +80,55 @@ object TrafficBindingAdapters {
                 .centerCrop()
                 .into(imageView)
         }
+    }
+    
+
+
+    // Two-way data binding for Twitter
+    @JvmStatic
+    @BindingAdapter(value = ["twitterAccount", "selectedTwitterAccount", "selectedTwitterAccountAttrChanged"], requireAll = false)
+    fun setTwitterAccount(spinner: Spinner, accountNames: List<Pair<String, String>>, selectedAccount: Pair<String, String>?, listener: InverseBindingListener) {
+        if (selectedAccount == null ) { return }
+        spinner.adapter = TwitterAccountAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, accountNames)
+        setCurrentSelection(spinner, selectedAccount)
+        setSpinnerListener(spinner, listener)
+    }
+
+    @JvmStatic
+    @InverseBindingAdapter(attribute = "selectedTwitterAccount", event = "selectedTwitterAccountAttrChanged")
+    fun getSelectedTwitterAccount(spinner: Spinner): Pair<String, String> {
+        return spinner.selectedItem as Pair<String, String>
+    }
+
+    // spinner helpers
+    private fun setSpinnerListener(spinner: Spinner, listener: InverseBindingListener) {
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            var lastPosition = spinner.selectedItemPosition
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // do nothing if same item is selected, this prevents infinite loops caused
+                // by the 2-way binding.
+                // https://medium.com/androiddevelopers/android-data-binding-2-way-your-way-ccac20f6313
+                if (lastPosition != position) {
+                    lastPosition = position
+                    listener.onChange()
+                }
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) = listener.onChange()
+        }
+    }
+
+    private fun setCurrentSelection(spinner: Spinner, selectedItem: Pair<String, String>) {
+        for (index in 0 until spinner.adapter.count) {
+            val currentItem = spinner.getItemAtPosition(index) as Pair<String, String>
+            if (currentItem.first == selectedItem.first) {
+                spinner.setSelection(index)
+                return
+            }
+        }
+        spinner.setSelection(0)
     }
 
 }

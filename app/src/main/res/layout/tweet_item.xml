@@ -15,10 +15,12 @@
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/tap_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackground">
 
             <ImageView
                 android:id="@+id/mediaView"
@@ -30,6 +32,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
+            <ImageView
+                android:id="@+id/accountIcon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:bindAccountIcon="@{tweet}"
+                app:layout_constraintTop_toBottomOf="@id/mediaView"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp" />
+
             <TextView
                 style="@style/CardTitleText"
                 android:layout_width="match_parent"
@@ -39,7 +56,7 @@
                 android:layout_margin="8dp"
                 app:layout_constraintTop_toBottomOf="@id/mediaView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/accountIcon"
                 />
 
             <TextView
@@ -51,7 +68,7 @@
                 android:layout_margin="8dp"
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/accountIcon"
                 />
 
             <TextView
@@ -62,7 +79,7 @@
                 app:bindRelativeDate="@{tweet.createdAt}"
                 android:layout_margin="8dp"
                 app:layout_constraintTop_toBottomOf="@id/textView"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/accountIcon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 

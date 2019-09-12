@@ -57,12 +57,11 @@
     <string name="rest_area_amenities_header">Amenities:</string>
 
     // Social
-    <string name="twitter_status_url">https://twitter.com/%d/status/%d</string>
+    <string name="twitter_status_url">https://twitter.com/%s/status/%s</string>
 
     // Network
     <string name="unknown_error">Unknown Error</string>
     <string name="retry">Retry</string>
-
 
     // Permissions
 
