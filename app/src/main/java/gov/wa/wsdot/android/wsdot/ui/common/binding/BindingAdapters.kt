@@ -17,6 +17,7 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  */
 
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
@@ -229,23 +230,19 @@ object BindingAdapters {
 
     // Creates an updated timestamp from date object
     private fun getRelative(date: Date): String {
+
         val displayDateFormat = SimpleDateFormat("MMMM d, yyyy h:mm a", Locale.ENGLISH)
 
         try {
             val relativeDate = Date()
             var delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
-            return if (delta < 60) {
-                "Just now"
-            } else if (delta < 120) {
-                "1 minute ago"
-            } else if (delta < 60 * 60) {
-                Integer.toString(delta / 60) + " minutes ago"
-            } else if (delta < 120 * 60) {
-                "1 hour ago"
-            } else if (delta < 24 * 60 * 60) {
-                Integer.toString(delta / 3600) + " hours ago"
-            } else {
-                displayDateFormat.format(date)
+            return when {
+                delta < 60 -> "Just now"
+                delta < 120 -> "1 minute ago"
+                delta < 60 * 60 -> Integer.toString(delta / 60) + " minutes ago"
+                delta < 120 * 60 -> "1 hour ago"
+                delta < 24 * 60 * 60 -> Integer.toString(delta / 3600) + " hours ago"
+                else -> displayDateFormat.format(date)
             }
         } catch (e: Exception) {
             return "Unavailable"

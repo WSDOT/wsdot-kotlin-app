@@ -256,6 +256,12 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navTwitterFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment"
+        android:label="Twitter"
+        tools:layout="@layout/twitter_fragment" />
+
+    <fragment
         android:id="@+id/navWebViewFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.common.WebViewFragment"
         android:label="{title}"
@@ -317,6 +323,14 @@
     <action
         android:id="@+id/action_global_navFerriesRouteFragment"
         app:destination="@id/navFerriesRouteFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTwitterFragment"
+        app:destination="@id/navTwitterFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
