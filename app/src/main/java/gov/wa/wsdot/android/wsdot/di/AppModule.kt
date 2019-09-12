@@ -10,6 +10,7 @@ import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
+import gov.wa.wsdot.android.wsdot.db.socialmedia.TweetDao
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocationDao
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
@@ -131,6 +132,12 @@ class AppModule {
     @Provides
     fun provideBorderCrossingDao(db: WsdotDB): BorderCrossingDao {
         return db.borderCrossingDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideTweetDao(db: WsdotDB): TweetDao {
+        return db.tweetDao()
     }
 
 }

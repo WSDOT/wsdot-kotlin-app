@@ -640,8 +640,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.SOCIAL_MEDIA -> {
-                Log.e("debug", "social")
-
+                val action = NavGraphDirections.actionGlobalNavTwitterFragment()
+                findNavController().navigate(action)
             }
             TravelerMenuItemType.TRAVEL_CHARTS -> {
                 Log.e("debug", "charts")

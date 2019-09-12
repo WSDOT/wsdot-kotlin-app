@@ -1,10 +1,18 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.graphics.Color
+import android.util.Log
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
+import com.squareup.picasso.Picasso
+import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
+import gov.wa.wsdot.android.wsdot.util.network.Resource
 
 /**
  * Data Binding adapters specific to the app.
@@ -50,6 +58,22 @@ object TrafficBindingAdapters {
             cardView.setCardBackgroundColor(Color.parseColor("#c62828"))
         } else {
             cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindTweetMedia")
+    fun bindTweetMedia(imageView: ImageView, tweet: Tweet) {
+        imageView.visibility = GONE
+        tweet.mediaUrl?.let {
+
+            imageView.visibility = VISIBLE
+            Picasso.get()
+                .load(it)
+                .placeholder(R.drawable.image_progress_animation)
+                .fit()
+                .centerCrop()
+                .into(imageView)
         }
     }
 
