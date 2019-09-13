@@ -81,8 +81,23 @@ object TrafficBindingAdapters {
                 .into(imageView)
         }
     }
-    
 
+    @JvmStatic
+    @BindingAdapter("bindAccountIcon")
+    fun bindAccountIcon(imageView: ImageView, tweet: Tweet) {
+        imageView.visibility = VISIBLE
+        when(tweet.userId) {
+            "14124059" -> imageView.setImageResource(R.drawable.ic_list_wsdot)
+            "18149541" -> imageView.setImageResource(R.drawable.ic_list_wsdot_north)
+            "743616312" -> imageView.setImageResource(R.drawable.ic_list_wsdot_sw)
+            "2811370788" -> imageView.setImageResource(R.drawable.ic_list_wsdot_east)
+            "16266252" -> imageView.setImageResource(R.drawable.ic_list_wsdot_ferries)
+            "22932788" -> imageView.setImageResource(R.drawable.ic_list_wsdot_tacoma)
+            "21216066" -> imageView.setImageResource(R.drawable.ic_list_wsdot_snoqualmie_pass)
+            "17900666" -> imageView.setImageResource(R.drawable.ic_list_wsdot_traffic)
+            else -> imageView.visibility = GONE
+        }
+    }
 
     // Two-way data binding for Twitter
     @JvmStatic
