@@ -24,7 +24,7 @@ class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener:
         )
 
         listItems.add(
-            TravelerInfoMenuEventItem("Social Media Traffic Updates", TravelerMenuItemType.SOCIAL_MEDIA)
+            TravelerInfoMenuEventItem("Twitter Traffic Updates", TravelerMenuItemType.SOCIAL_MEDIA)
         )
 
         listItems.add(

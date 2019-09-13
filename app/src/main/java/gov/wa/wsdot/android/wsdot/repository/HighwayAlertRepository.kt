@@ -127,8 +127,6 @@ class HighwayAlertRepository @Inject constructor(
 
         for (alertItem in alertsResponse.alerts.items) {
 
-            Log.e("debug", alertItem.alertId.toString())
-
             val alert = HighwayAlert(
                 alertItem.alertId,
                 alertItem.HeadlineDescription,
