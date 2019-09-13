@@ -49,8 +49,8 @@
 
             <TextView
                 style="@style/CardTitleText"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/titleView"
                 android:text="@{tweet.userName}"
                 android:layout_margin="8dp"
@@ -61,8 +61,8 @@
 
             <TextView
                 style="@style/CardSubTitleText"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/textView"
                 android:text="@{tweet.text}"
                 android:layout_margin="8dp"
@@ -74,7 +74,7 @@
             <TextView
                 android:id="@+id/timestamp"
                 style="@style/CardFooterText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindRelativeDate="@{tweet.createdAt}"
                 android:layout_margin="8dp"
