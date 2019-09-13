@@ -15,6 +15,7 @@ class FavoriteViewHolder : RecyclerView.ViewHolder {
     lateinit var ferryScheduleItemBinding: FerryScheduleItemBinding
     lateinit var mountainPassItemBinding: MountainPassItemBinding
     lateinit var borderCrossingItemBinding: BorderCrossingItemBinding
+    lateinit var locationItemBinding: LocationItemBinding
 
     constructor(binding: HeaderItemBinding) : super(binding.root) {
         headerBinding = binding
@@ -38,6 +39,10 @@ class FavoriteViewHolder : RecyclerView.ViewHolder {
 
     constructor(binding: BorderCrossingItemBinding): super(binding.root) {
         borderCrossingItemBinding = binding
+    }
+
+    constructor(binding: LocationItemBinding): super(binding.root) {
+        locationItemBinding = binding
     }
 
 }

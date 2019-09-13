@@ -18,6 +18,7 @@ import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.*
 import gov.wa.wsdot.android.wsdot.ui.favorites.AdapterDataSetChangedListener
@@ -39,7 +40,8 @@ class FavoritesListAdapter(
     viewTypes: List<Int>,
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
-    private val passClickCallback: ((MountainPass) -> Unit)?
+    private val passClickCallback: ((MountainPass) -> Unit)?,
+    private val locationClickCallback: ((FavoriteLocation) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
@@ -102,6 +104,18 @@ class FavoritesListAdapter(
             .build()
     )
 
+    private val locationDiffer = AsyncListDiffer<FavoriteLocation>(
+        FavoritesListUpdateCallback(
+            this,
+            dataSetChangedListener,
+            ITEM_TYPE_LOCATION,
+            1
+        ),
+        AsyncDifferConfig.Builder<FavoriteLocation>(LocationDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
+    )
+
 
     // sort order for each view type
     private var orderedViewTypes = viewTypes
@@ -113,6 +127,7 @@ class FavoritesListAdapter(
         const val ITEM_TYPE_FERRY = 3
         const val ITEM_TYPE_MOUNTAIN_PASS = 4
         const val ITEM_TYPE_BORDER_CROSSING = 5
+        const val ITEM_TYPE_LOCATION = 6
     }
 
     private var headers = object : LinkedHashMap<Int, String>() {
@@ -122,6 +137,7 @@ class FavoritesListAdapter(
             put(ITEM_TYPE_FERRY, "Ferry Schedules")
             put(ITEM_TYPE_MOUNTAIN_PASS, "Mountain Passes")
             put(ITEM_TYPE_BORDER_CROSSING, "Border Crossings")
+            put(ITEM_TYPE_LOCATION, "Traffic Map Locations")
         }
     }
 
@@ -149,6 +165,10 @@ class FavoritesListAdapter(
         borderCrossingDiffer.submitList(data)
     }
 
+    fun setLocations(data: List<FavoriteLocation>) {
+        locationDiffer.submitList(data)
+    }
+
     /**
      * Returns the number of items for a given item_type
      */
@@ -159,6 +179,7 @@ class FavoritesListAdapter(
             ITEM_TYPE_FERRY -> { getFerrySchedulesSize() }
             ITEM_TYPE_MOUNTAIN_PASS -> { getMountainPassesSize() }
             ITEM_TYPE_BORDER_CROSSING -> { getBorderCrossingsSize() }
+            ITEM_TYPE_LOCATION -> { getLocationsSize() }
             else -> 0
         }
     }
@@ -184,6 +205,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_BORDER_CROSSING -> {
                 return FavoriteViewHolder(createBorderCrossingBinding(parent))
             }
+            ITEM_TYPE_LOCATION -> {
+                return FavoriteViewHolder(createLocationBinding(parent))
+            }
 
         }
 
@@ -207,26 +231,23 @@ class FavoritesListAdapter(
                 ITEM_TYPE_FERRY -> { size = getFerrySchedulesSize() }
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
                 ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
+                ITEM_TYPE_LOCATION -> { size = getLocationsSize() }
             }
 
             if (currentPos == 0 && size > 0) return ITEM_TYPE_HEADER
             if (currentPos < size) return viewType
-
             currentPos -= size
 
         }
-
         // TODO: crash reporting
         Log.e("debug", "throwing exception in getItemViewType")
         throw Exception()
-
     }
 
     /**
      *  Sums items before the start of the item type section we want so we can
      *  get the position of an item in the entire adapter.
      */
-
     fun getPositionInAdapterForItem(posInDataList: Int, itemType: Int): Int {
 
         var pos = posInDataList
@@ -242,6 +263,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_MOUNTAIN_PASS -> pos += getMountainPassesSize()
                     ITEM_TYPE_TRAVEL_TIME -> pos += getTravelTimesSize()
                     ITEM_TYPE_BORDER_CROSSING -> pos += getBorderCrossingsSize()
+                    ITEM_TYPE_LOCATION -> pos += getLocationsSize()
                 }
             }
         }
@@ -267,6 +289,7 @@ class FavoritesListAdapter(
                 ITEM_TYPE_FERRY -> { size = getFerrySchedulesSize() }
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
                 ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
+                ITEM_TYPE_LOCATION -> { size = getLocationsSize() }
             }
 
             if (currentPos == 0 && size > 0) {
@@ -284,6 +307,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_FERRY -> { return ferryScheduleDiffer.currentList[currentPos - 1] }
                     ITEM_TYPE_MOUNTAIN_PASS -> { return mountainPassesDiffer.currentList[currentPos - 1] }
                     ITEM_TYPE_BORDER_CROSSING -> { return borderCrossingDiffer.currentList[currentPos - 1]}
+                    ITEM_TYPE_LOCATION -> { return locationDiffer.currentList[currentPos - 1]}
                 }
             }
 
@@ -303,7 +327,8 @@ class FavoritesListAdapter(
                     getTravelTimesSize() +
                     getFerrySchedulesSize() +
                     getMountainPassesSize() +
-                    getBorderCrossingsSize())
+                    getBorderCrossingsSize() +
+                    getLocationsSize())
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
@@ -334,6 +359,10 @@ class FavoritesListAdapter(
                 holder.borderCrossingItemBinding.crossing = getItem(position) as BorderCrossing
                 holder.borderCrossingItemBinding.executePendingBindings()
             }
+            ITEM_TYPE_LOCATION -> {
+                holder.locationItemBinding.locationItem = getItem(position) as FavoriteLocation
+                holder.locationItemBinding.executePendingBindings()
+            }
         }
     }
 
@@ -359,6 +388,10 @@ class FavoritesListAdapter(
 
     private fun getBorderCrossingsSize(): Int {
         return borderCrossingDiffer.currentList.size + (if (borderCrossingDiffer.currentList.isNotEmpty()) 1 else 0)
+    }
+
+    private fun getLocationsSize(): Int {
+        return locationDiffer.currentList.size + (if (locationDiffer.currentList.isNotEmpty()) 1 else 0)
     }
 
     // Binding Methods
@@ -468,4 +501,23 @@ class FavoritesListAdapter(
         return binding
     }
 
+    private fun createLocationBinding(parent: ViewGroup): LocationItemBinding {
+
+        val binding = DataBindingUtil.inflate<LocationItemBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.location_item,
+            parent,
+            false,
+            dataBindingComponent
+        )
+
+        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
+            binding.locationItem?.let {
+                locationClickCallback?.invoke(it)
+            }
+        }
+
+        return binding
+
+    }
 }

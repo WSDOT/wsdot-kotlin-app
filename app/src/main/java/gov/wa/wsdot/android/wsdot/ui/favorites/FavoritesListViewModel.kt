@@ -5,9 +5,11 @@ import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.*
 import gov.wa.wsdot.android.wsdot.ui.favorites.items.*
+import gov.wa.wsdot.android.wsdot.util.network.DBResource
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
@@ -17,7 +19,8 @@ class FavoritesListViewModel @Inject constructor(
     private val travelTimesRepository: TravelTimesRepository,
     private val ferriesRepository: FerriesRepository,
     private val mountainPassRepository: MountainPassRepository,
-    private val borderCrossingRepository: BorderCrossingRepository
+    private val borderCrossingRepository: BorderCrossingRepository,
+    private val favoriteLocationRepository: FavoriteLocationRepository
 ) : ViewModel() {
 
     // mediator handles refresh status. Used by data bound refresh control in layout xml
@@ -29,15 +32,22 @@ class FavoritesListViewModel @Inject constructor(
     val favoriteCameras = MediatorLiveData<List<Camera>>()
     val favoriteMountainPasses = MediatorLiveData<List<MountainPass>>()
     val favoriteBorderCrossings = MediatorLiveData<List<BorderCrossing>>()
+    val favoriteLocations = MediatorLiveData<List<FavoriteLocation>>()
 
     private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadFavoriteTravelTimes(false)
     private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadFavoriteCameras(false)
     private var ferryScheduleLiveData: LiveData<Resource<List<FerrySchedule>>> = ferriesRepository.loadFavoriteSchedules(false)
     private var mountainPassLiveData: LiveData<Resource<List<MountainPass>>> = mountainPassRepository.loadFavoritePasses(false)
     private var borderCrossingLiveData: LiveData<Resource<List<BorderCrossing>>> = borderCrossingRepository.loadFavoriteCrossings(false)
+    private var favoriteLocationLiveDate: LiveData<Resource<List<FavoriteLocation>>> = favoriteLocationRepository.getFavoriteLocations()
 
     init {
         addSources()
+        favoriteLocations.addSource(favoriteLocationLiveDate) {
+            it?.data?.let { favItems ->
+                favoriteLocations.value = favItems
+            }
+        }
     }
 
     fun updateFavoriteFerrySchedule(routeId: Int, isFavorite: Boolean) {
@@ -60,22 +70,32 @@ class FavoritesListViewModel @Inject constructor(
         borderCrossingRepository.updateFavorite(crossingId, isFavorite)
     }
 
+    fun removeFavoriteLocation(location: FavoriteLocation){
+        favoriteLocationRepository.removeFavoriteLocation(location.creationDate)
+    }
+
+    fun addFavoriteLocation(location: FavoriteLocation) {
+        favoriteLocationRepository.addFavoriteLocation(
+            location.title,
+            location.latitude,
+            location.longitude,
+            location.zoom
+        )
+    }
+
     fun refresh() {
         removeSources()
-
         travelTimeLiveData = travelTimesRepository.loadFavoriteTravelTimes(true)
         cameraLiveData = cameraRepository.loadFavoriteCameras(true)
         ferryScheduleLiveData = ferriesRepository.loadFavoriteSchedules(true)
         mountainPassLiveData = mountainPassRepository.loadFavoritePasses(true)
         borderCrossingLiveData = borderCrossingRepository.loadFavoriteCrossings(true)
-
         addSources()
     }
 
     private fun addSources() {
 
         // Travel Times
-
         favoriteTravelTimes.addSource(travelTimeLiveData) {
             it?.data?.let { favItems ->
                 favoriteTravelTimes.value = favItems
@@ -96,7 +116,6 @@ class FavoritesListViewModel @Inject constructor(
         }
 
         // Cameras
-
         favoriteCameras.addSource(cameraLiveData) {
             it?.data?.let { favItems ->
                 favoriteCameras.value = favItems
@@ -117,7 +136,6 @@ class FavoritesListViewModel @Inject constructor(
         }
 
         // Ferry Schedules
-
         favoriteFerrySchedules.addSource(ferryScheduleLiveData) {
             it?.data?.let { favItems ->
                 favoriteFerrySchedules.value = favItems
@@ -138,7 +156,6 @@ class FavoritesListViewModel @Inject constructor(
         }
 
         // Mountain Passes
-
         favoriteMountainPasses.addSource(mountainPassLiveData) {
             it?.data?.let { favItems ->
                 favoriteMountainPasses.value = favItems
@@ -177,12 +194,9 @@ class FavoritesListViewModel @Inject constructor(
                 }
             }
         }
-
-
     }
 
     private fun removeSources() {
-
         favoriteTravelTimes.removeSource(travelTimeLiveData)
         favoriteCameras.removeSource(cameraLiveData)
         favoriteFerrySchedules.removeSource(ferryScheduleLiveData)
