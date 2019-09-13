@@ -22,6 +22,7 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import androidx.recyclerview.widget.DividerItemDecoration
 
 
 class NewsReleaseFragment : DaggerFragment(), Injectable {
@@ -79,6 +80,10 @@ class NewsReleaseFragment : DaggerFragment(), Injectable {
         val adapter = NewsReleaseListAdapter(dataBindingComponent, appExecutors) { news -> openNewsRelease(news) }
 
         this.adapter = adapter
+
+        val itemDivider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDivider.setDrawable(resources.getDrawable(R.drawable.item_divider, null))
+        binding.newsList.addItemDecoration(itemDivider)
 
         binding.newsList.adapter = adapter
 

@@ -29,7 +29,11 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 
 
 class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryTextListener {
@@ -99,6 +103,10 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
             { travelTimeListViewModel.updateFavorite(travelTimeId = it.travelTimeId, isFavorite = !it.favorite) })
 
         this.adapter = adapter
+
+        val itemDivider = DividerItemDecoration(context, VERTICAL)
+        itemDivider.setDrawable(resources.getDrawable(R.drawable.item_divider, null))
+        binding.travelTimeList.addItemDecoration(itemDivider)
 
         binding.travelTimeList.adapter = adapter
 

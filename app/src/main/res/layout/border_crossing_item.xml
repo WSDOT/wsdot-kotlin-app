@@ -8,11 +8,6 @@
             type="gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing"/>
     </data>
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -117,5 +112,4 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 </layout>

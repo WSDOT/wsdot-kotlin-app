@@ -32,11 +32,6 @@ class TravelTimeListAdapter(
     }
 ) {
 
-    companion object {
-        private const val TYPE_TRAVEL_TIME = 0
-        private const val TYPE_CAMERA = 1
-    }
-
     override fun createBinding(parent: ViewGroup): TravelTimeItemBinding {
 
         val binding = DataBindingUtil.inflate<TravelTimeItemBinding>(

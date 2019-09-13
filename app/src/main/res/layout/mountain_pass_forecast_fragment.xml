@@ -37,7 +37,7 @@
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/alert_list"
+                android:id="@+id/forecast_list"
                 app:layoutManager="LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

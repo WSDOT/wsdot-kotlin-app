@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerriesHomeFragmentBinding
@@ -104,6 +105,10 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
             })
 
         this.adapter = adapter
+
+        val itemDivider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDivider.setDrawable(resources.getDrawable(R.drawable.item_divider, null))
+        binding.scheduleList.addItemDecoration(itemDivider)
 
         binding.scheduleList.adapter = adapter
 

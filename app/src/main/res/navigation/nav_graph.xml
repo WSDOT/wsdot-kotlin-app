@@ -46,7 +46,6 @@
         tools:layout="@layout/favorites_list_fragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
-
     </fragment>
 
     <fragment
@@ -56,7 +55,6 @@
         tools:layout="@layout/tab_layout"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
-
     </fragment>
 
     <fragment
