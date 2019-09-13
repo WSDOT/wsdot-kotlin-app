@@ -26,13 +26,6 @@
             type="gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule"/>
     </data>
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
-        >
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tap_view"
             android:layout_height="wrap_content"
@@ -107,5 +100,5 @@
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+
 </layout>

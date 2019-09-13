@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.BorderCrossingTimesFragmentBinding
@@ -64,6 +65,10 @@ abstract class CrossingTimesFragment : DaggerFragment(), Injectable {
             }
 
         this.adapter = adapter
+
+        val itemDivider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDivider.setDrawable(resources.getDrawable(R.drawable.item_divider, null))
+        binding.crossingList.addItemDecoration(itemDivider)
 
         binding.crossingList.adapter = adapter
 

@@ -516,8 +516,6 @@ class FavoritesListAdapter(
                 locationClickCallback?.invoke(it)
             }
         }
-
         return binding
-
     }
 }
