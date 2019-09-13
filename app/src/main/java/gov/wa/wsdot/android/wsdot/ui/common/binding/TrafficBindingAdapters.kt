@@ -1,7 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -71,7 +70,6 @@ object TrafficBindingAdapters {
     fun bindTweetMedia(imageView: ImageView, tweet: Tweet) {
         imageView.visibility = GONE
         tweet.mediaUrl?.let {
-
             imageView.visibility = VISIBLE
             Picasso.get()
                 .load(it)

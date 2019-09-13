@@ -645,7 +645,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             }
             TravelerMenuItemType.TRAVEL_CHARTS -> {
                 Log.e("debug", "charts")
-
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")

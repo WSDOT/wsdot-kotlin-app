@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.favorites
 
+import android.annotation.SuppressLint
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -35,14 +36,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
+import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_BORDER_CROSSING
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_CAMERA
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_FERRY
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_HEADER
+import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_LOCATION
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_MOUNTAIN_PASS
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
+import gov.wa.wsdot.android.wsdot.util.putDouble
 
 
 class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injectable  {
@@ -115,6 +119,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             },
             { mountainPass ->
                 navigateToMountainPass(mountainPass)
+            },
+            { locationItem ->
+                navigateToLocation(locationItem)
             })
 
         this.adapter = adapter
@@ -161,6 +168,16 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             }
         })
 
+        favoritesListViewModel.favoriteLocations.observe(viewLifecycleOwner, Observer { favItems ->
+            favItems?.let {
+
+                Log.e("debug", "HELLO")
+                Log.e("debug", it.size.toString())
+
+                adapter.setLocations(it)
+            }
+        })
+
     }
 
     override fun onDataSetChanged() {
@@ -176,7 +193,8 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_CAMERA))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
 
         return orderedViewTypes
     }
@@ -253,6 +271,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                 override fun onSwiped(holder: RecyclerView.ViewHolder, swipeDir: Int) {
 
                     val itemId: String?
+                    var location: FavoriteLocation? = null
                     val viewType = adapter.getItemViewType(holder.adapterPosition)
 
                     //get the camera id or tag for the item being removed.
@@ -282,12 +301,16 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             itemId = crossing.crossingId.toString()
                             favoritesListViewModel.updateFavoriteBorderCrossings(crossing.crossingId, false)
                         }
+                        ITEM_TYPE_LOCATION -> {
+                            location = adapter.getItem(holder.adapterPosition) as FavoriteLocation
+                            itemId = location.title
+                            favoritesListViewModel.removeFavoriteLocation(location)
+                        }
 
                         else -> itemId = null
                     }
 
                     // Display snack bar with undo button
-
                     val snackbar = Snackbar.make(recyclerView, "Removed Favorite", Snackbar.LENGTH_LONG)
                     snackbar.setAction("UNDO") {
                         when (viewType) {
@@ -306,15 +329,16 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             ITEM_TYPE_BORDER_CROSSING -> {
                                 favoritesListViewModel.updateFavoriteBorderCrossings(itemId!!.toInt(), true)
                             }
+                            ITEM_TYPE_LOCATION -> {
+                                favoritesListViewModel.addFavoriteLocation(location!!)
+                            }
                         }
-
                     }
                     snackbar.show()
                 }
             }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
     }
 
     private fun navigateToCamera(camera: Camera){
@@ -335,6 +359,19 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         findNavController().navigate(action)
     }
 
+    @SuppressLint("ApplySharedPref")
+    private fun navigateToLocation(location: FavoriteLocation) {
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = settings.edit()
+        editor.putDouble(getString(R.string.user_preference_traffic_map_latitude), location.latitude)
+        editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), location.longitude)
+        editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), location.zoom)
+        editor.commit()
+        val action = NavGraphDirections.actionGlobalNavTrafficMapFragment()
+        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
+        findNavController().navigate(action)
+    }
+
     private fun shouldShowEmptyFavorites(binding: FavoritesListFragmentBinding) {
 
         if (adapter.itemCount == 0) {
@@ -345,5 +382,4 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             binding.favoritesList.visibility = View.VISIBLE
         }
     }
-
 }
