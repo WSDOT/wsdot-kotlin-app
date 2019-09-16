@@ -27,6 +27,8 @@ import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassCameraTypeConverte
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.socialmedia.TweetDao
+import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
+import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTableDao
 import gov.wa.wsdot.android.wsdot.db.traffic.*
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
@@ -50,7 +52,8 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         TravelTime::class,
         FavoriteLocation::class,
         BorderCrossing::class,
-        Tweet::class
+        Tweet::class,
+        TollRateTable::class
     ],
     version = 1,
     exportSchema = false
@@ -85,5 +88,7 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun borderCrossingDao(): BorderCrossingDao
 
     abstract fun tweetDao(): TweetDao
+
+    abstract fun tollRateTableDao(): TollRateTableDao
 
 }
