@@ -154,12 +154,26 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
     override fun onPause() {
         super.onPause()
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = settings.edit()
-        editor.putDouble(getString(R.string.user_preference_traffic_map_latitude), mMap.projection.visibleRegion.latLngBounds.center.latitude)
-        editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
-        editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), mMap.cameraPosition.zoom)
-        editor.apply()
+
+        if (::mMap.isInitialized) {
+
+            val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+            val editor = settings.edit()
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_latitude),
+                mMap.projection.visibleRegion.latLngBounds.center.latitude
+            )
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_longitude),
+                mMap.projection.visibleRegion.latLngBounds.center.longitude
+            )
+            editor.putFloat(
+                getString(R.string.user_preference_traffic_map_zoom),
+                mMap.cameraPosition.zoom
+            )
+            editor.apply()
+
+        }
 
         mapUpdateHandler.removeCallbacks(alertsUpdateTask)
 
