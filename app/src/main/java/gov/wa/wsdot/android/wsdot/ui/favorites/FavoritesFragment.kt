@@ -171,10 +171,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         favoritesListViewModel.favoriteLocations.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-
-                Log.e("debug", "HELLO")
-                Log.e("debug", it.size.toString())
-
                 adapter.setLocations(it)
             }
         })
