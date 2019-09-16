@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.databinding.DataBindingComponent
@@ -419,6 +420,7 @@ class FavoritesListAdapter(
         )
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
 
         return binding
     }
@@ -461,6 +463,7 @@ class FavoritesListAdapter(
         }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
 
         return binding
     }
@@ -482,6 +485,7 @@ class FavoritesListAdapter(
         }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
 
         return binding
     }
@@ -497,6 +501,7 @@ class FavoritesListAdapter(
         )
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
 
         return binding
     }
@@ -516,6 +521,9 @@ class FavoritesListAdapter(
                 locationClickCallback?.invoke(it)
             }
         }
+
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
+
         return binding
     }
 }
