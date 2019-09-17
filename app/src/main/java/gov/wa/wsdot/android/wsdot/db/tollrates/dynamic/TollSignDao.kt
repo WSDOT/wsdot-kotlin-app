@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.db.tollrates.dynamic
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import java.util.*
 
 @Dao
 abstract class TollSignDao {
@@ -31,6 +32,7 @@ abstract class TollSignDao {
                 tollSign.startLatitude,
                 tollSign.startLongitude,
                 tollSign.trips,
+                Date(),
                 tollSign.favorite,
                 false)
         }
@@ -50,12 +52,13 @@ abstract class TollSignDao {
         startLatitude = :startLatitude,
         startLongitude = :startLongitude,
         trips = :trips,
+        localCacheDate = :localCacheDate,
         favorite = :favorite,
         remove = :remove
         WHERE id = :id
     """)
     abstract fun updateTollSign(
-        id: Int,
+        id: String,
         locationName: String,
         stateRoute: Int,
         milepost: Float,
@@ -63,6 +66,7 @@ abstract class TollSignDao {
         startLatitude: Double,
         startLongitude: Double,
         trips: List<TollTrip>,
+        localCacheDate: Date,
         favorite: Boolean,
         remove: Boolean)
 
