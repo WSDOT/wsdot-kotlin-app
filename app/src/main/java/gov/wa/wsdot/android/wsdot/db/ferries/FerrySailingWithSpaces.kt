@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.db.ferries
 
+import androidx.room.Ignore
 import java.util.*
 
 data class FerrySailingWithSpaces(

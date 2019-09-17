@@ -29,6 +29,8 @@ import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.socialmedia.TweetDao
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTableDao
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSignDao
 import gov.wa.wsdot.android.wsdot.db.traffic.*
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
@@ -53,7 +55,8 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         FavoriteLocation::class,
         BorderCrossing::class,
         Tweet::class,
-        TollRateTable::class
+        TollRateTable::class,
+        TollSign::class
     ],
     version = 1,
     exportSchema = false
@@ -90,5 +93,7 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun tweetDao(): TweetDao
 
     abstract fun tollRateTableDao(): TollRateTableDao
+
+    abstract fun tollSignDao(): TollSignDao
 
 }
