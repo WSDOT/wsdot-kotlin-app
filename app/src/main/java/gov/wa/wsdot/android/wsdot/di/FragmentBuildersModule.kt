@@ -39,6 +39,10 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamer
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR16TollTableFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
@@ -120,6 +124,18 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSouthboundCrossingTimesFragment(): SouthboundCrossingTimesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTollRatesFragment(): TollRatesFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSR520TollTableFragment(): SR520TollTableFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSR16TollTableFragment(): SR16TollTableFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSR99TollTableFragment(): SR99TollTableFragment
 
     @ContributesAndroidInjector
     abstract fun contributeTwitterFragment(): TwitterFragment
