@@ -12,13 +12,13 @@ class WsdotTypeConverters {
 
     // TollTrip list to string
     @TypeConverter
-    fun tollTripFromString(value: String): List<TollTrip> {
+    fun tollTripFromString(value: String): MutableList<TollTrip> {
         val rowType = object : TypeToken<List<TollTrip>>() {}.type
-        return Gson().fromJson<List<TollTrip>>(value, rowType)
+        return Gson().fromJson<MutableList<TollTrip>>(value, rowType)
     }
 
     @TypeConverter
-    fun tollTripToString(value: List<TollTrip>): String {
+    fun tollTripToString(value: MutableList<TollTrip>): String {
         return Gson().toJson(value)
     }
 
