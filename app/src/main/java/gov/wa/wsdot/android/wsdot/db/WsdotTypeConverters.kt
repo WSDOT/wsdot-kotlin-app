@@ -4,13 +4,25 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateRow
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
 import java.util.*
 import kotlin.collections.ArrayList
 
 class WsdotTypeConverters {
 
+    // TollTrip list to string
+    @TypeConverter
+    fun tollTripFromString(value: String): List<TollTrip> {
+        val rowType = object : TypeToken<List<TollTrip>>() {}.type
+        return Gson().fromJson<List<TollTrip>>(value, rowType)
+    }
 
-    // TollRateRow to string
+    @TypeConverter
+    fun tollTripToString(value: List<TollTrip>): String {
+        return Gson().toJson(value)
+    }
+
+    // TollRateRow list to string
     @TypeConverter
     fun tollRateRowFromString(value: String): List<TollRateRow> {
         val rowType = object : TypeToken<List<TollRateRow>>() {}.type
@@ -32,7 +44,6 @@ class WsdotTypeConverters {
     fun dateToTimestamp(date: Date?): Long? {
         return date?.time
     }
-
 
     // String to array string
     @TypeConverter
@@ -66,5 +77,4 @@ class WsdotTypeConverters {
         }
         return value
     }
-
 }
