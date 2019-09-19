@@ -10,8 +10,10 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
+import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
-import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
+import gov.wa.wsdot.android.wsdot.util.network.Resource
 
 object TollingBindingAdapters {
 
@@ -21,6 +23,19 @@ object TollingBindingAdapters {
     fun bindTollTrip(textView: TextView, tollTrip: TollTrip?) {
         tollTrip?.let {
             textView.text = String.format("to %s", it.endLocationName)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindTollMessage")
+    fun bindTollMessage(textView: TextView, tollTable: Resource<TollRateTable>) {
+        if (tollTable.data != null){
+            if (tollTable.data.message != "") {
+                textView.text = tollTable.data.message
+                textView.visibility = View.VISIBLE
+            }
+        } else {
+            textView.visibility = View.GONE
         }
     }
 

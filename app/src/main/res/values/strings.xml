@@ -22,6 +22,7 @@
 
     // Toll Rates
     <string name="tolling_disclaimer">Estimated toll rates provided as a courtesy. You\'ll always pay the toll you see on actual road signs when you enter.</string>
+    <string name="action_good_to_go">My Good To Go</string>
 
     // Toolbar
     <string name="action_favorite">Favorite</string>
