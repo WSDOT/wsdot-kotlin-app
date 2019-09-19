@@ -67,12 +67,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         // TODO: Let user set home screen ///////////////////////
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
-        graph.startDestination = R.id.navTrafficMapFragment
+        graph.startDestination = R.id.navTollRatesFragment
         navController.graph = graph
         navView.menu.getItem(0).isChecked = true
+     //   enableAds(resources.getString(R.string.ad_target_traffic))
         /////////////////////////////////////////////////////////
 
-        enableAds(resources.getString(R.string.ad_target_traffic))
 
 
     }
@@ -110,8 +110,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
             R.id.nav_toll_rates -> {
-                enableAds(resources.getString(R.string.ad_target_other))
-                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
+                if (navController.currentDestination?.id != R.id.navTollRatesFragment) {
+                    disableAds()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
+                }
             }
             R.id.nav_border_waits -> {
                 if (navController.currentDestination?.id != R.id.navBorderCrossingsFragment) {

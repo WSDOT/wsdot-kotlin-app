@@ -21,6 +21,7 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])

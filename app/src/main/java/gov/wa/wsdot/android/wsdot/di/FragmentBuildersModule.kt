@@ -40,6 +40,8 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassCo
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR16TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
@@ -136,6 +138,12 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSR99TollTableFragment(): SR99TollTableFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeI405TollSignsFragment(): I405TollSignsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSR167TollSignsFragment(): SR167TollSignsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeTwitterFragment(): TwitterFragment
