@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,9 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
 
         tollRateTableViewModel.tollTable.observe(viewLifecycleOwner, Observer {tableResource ->
             tableResource.data?.let {
+
+                Log.e("debug", it.message)
+
                 adapter.submitList(it.rows)
                 if (it.rows.isEmpty() && tableResource.status != Status.LOADING) {
                     // binding.emptyListView.visibility = View.VISIBLE
