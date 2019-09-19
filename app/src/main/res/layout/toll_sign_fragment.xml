@@ -24,9 +24,11 @@
 
         <LinearLayout
             android:id="@+id/toolbar_grid"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:clipToPadding="false"
             android:background="#fff"
             android:elevation="4dp"
@@ -34,14 +36,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="0dp"
-                android:layout_weight="2"
+            <TextView
+                android:id="@+id/info_button"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:text="Learn how these tolls work"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <LinearLayout
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/info_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:elevation="4dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/input_field_border">
@@ -77,7 +93,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
-                tools:listitem="@layout/toll_sign_item" />
+                tools:listitem="@layout/toll_sign_item"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
