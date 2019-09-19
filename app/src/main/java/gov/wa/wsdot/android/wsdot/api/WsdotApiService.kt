@@ -5,9 +5,9 @@ import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
 import gov.wa.wsdot.android.wsdot.api.response.socialmedia.TwitterResponse
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.http.*
 
 //http://www.wsdot.wa.gov/ferries/api/terminals/rest/terminalsailingspace/" + String(departingId) + "?apiaccesscode=" + ApiKeys.getWSDOTKey()
 
@@ -29,8 +29,9 @@ interface WsdotApiService {
         @Path("accountName") accountName: String
     ): LiveData<ApiResponse<List<TwitterResponse>>>
 
+    @Headers("Content-Type:application/json")
     @GET("traffic/api/api/tolling")
     fun getTollTrips(
-        @Query("apiaccesscode") apiKey: String
+        @Query("accesscode") apiKey: String
     ): LiveData<ApiResponse<List<TollTripResponse>>>
 }

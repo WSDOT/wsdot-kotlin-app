@@ -20,6 +20,9 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_my_route">My Routes</string>
 
+    // Toll Rates
+    <string name="tolling_disclaimer">Estimated toll rates provided as a courtesy. You\'ll always pay the toll you see on actual road signs when you enter.</string>
+
     // Toolbar
     <string name="action_favorite">Favorite</string>
     <string name="action_refresh">Refresh</string>

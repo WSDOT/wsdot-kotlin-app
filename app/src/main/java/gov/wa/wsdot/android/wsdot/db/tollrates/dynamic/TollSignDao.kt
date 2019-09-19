@@ -10,14 +10,17 @@ abstract class TollSignDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertNewTollSigns(tollSigns: List<TollSign>)
 
-    @Query("SELECT * FROM TollSign WHERE stateRoute = :route AND travelDirection = :direction")
+    @Query("""SELECT * FROM TollSign WHERE stateRoute = :route AND travelDirection = :direction 
+        ORDER BY 
+            CASE WHEN :direction = 'N' THEN milepost END ASC, 
+            CASE WHEN :direction = 'S' THen milepost END DESC""")
     abstract fun loadTollSignsOnRouteForDirection(route: Int, direction: String): LiveData<List<TollSign>>
 
     @Query("SELECT * FROM TollSign WHERE favorite = :isFavorite")
     abstract fun loadFavoriteTollSigns(isFavorite: Boolean = true): LiveData<List<TollSign>>
 
     @Query("UPDATE TollSign SET favorite = :isFavorite WHERE id = :id")
-    abstract fun updateFavorite(id: Int, isFavorite: Boolean)
+    abstract fun updateFavorite(id: String, isFavorite: Boolean)
 
     @Transaction
     open fun updateTollSign(tollSigns: List<TollSign>) {
@@ -72,6 +75,5 @@ abstract class TollSignDao {
 
     @Query("DELETE FROM TollSign WHERE remove = 1")
     abstract fun deleteOldTollSigns()
-
 
 }

@@ -21,10 +21,13 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +37,56 @@ import java.util.*
  * Data Binding adapters specific to the app.
  */
 object BindingAdapters {
+
+    // Two-way data Binding functions for a spinner to display Pair<String, String> Objects.
+    // The first string in the pair will display.
+    // The second string can be used as key for a value.
+    @JvmStatic
+    @BindingAdapter(value = ["spinnerPairs", "selectedPair", "selectedPairAttrChanged"], requireAll = false)
+    fun setStringPairs(spinner: Spinner, pairs: List<Pair<String, String>>, selectedPair: Pair<String, String>?, listener: InverseBindingListener) {
+        if (selectedPair == null ) { return }
+        spinner.adapter = SpinnerStringPairAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, pairs)
+        setCurrentSelection(spinner, selectedPair)
+        setSpinnerListener(spinner, listener)
+    }
+
+    @JvmStatic
+    @InverseBindingAdapter(attribute = "selectedPair", event = "selectedPairAttrChanged")
+    fun getSelectedStringPair(spinner: Spinner): Pair<String, String> {
+        return spinner.selectedItem as Pair<String, String>
+    }
+
+    // spinner helpers
+    private fun setSpinnerListener(spinner: Spinner, listener: InverseBindingListener) {
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+            var lastPosition = spinner.selectedItemPosition
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                // do nothing if same item is selected, this prevents infinite loops caused
+                // by the 2-way binding.
+                // https://medium.com/androiddevelopers/android-data-binding-2-way-your-way-ccac20f6313
+                if (lastPosition != position) {
+                    lastPosition = position
+                    listener.onChange()
+                }
+            }
+            override fun onNothingSelected(adapterView: AdapterView<*>) = listener.onChange()
+        }
+    }
+
+    private fun setCurrentSelection(spinner: Spinner, selectedItem: Pair<String, String>) {
+        for (index in 0 until spinner.adapter.count) {
+            val currentItem = spinner.getItemAtPosition(index) as Pair<String, String>
+            if (currentItem.first == selectedItem.first) {
+                spinner.setSelection(index)
+                return
+            }
+        }
+        spinner.setSelection(0)
+    }
+
 
     // General adapters
 

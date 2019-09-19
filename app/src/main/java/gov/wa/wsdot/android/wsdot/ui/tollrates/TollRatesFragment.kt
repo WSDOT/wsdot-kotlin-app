@@ -3,6 +3,8 @@ package gov.wa.wsdot.android.wsdot.ui.tollrates
 import androidx.fragment.app.Fragment
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleTabFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR16TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
@@ -14,8 +16,8 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
         fragments.add(SR16TollTableFragment())
         fragments.add(SR520TollTableFragment())
         fragments.add(SR99TollTableFragment())
-        fragments.add(SR99TollTableFragment())
-        fragments.add(SR99TollTableFragment())
+        fragments.add(SR167TollSignsFragment())
+        fragments.add(I405TollSignsFragment())
         return fragments
     }
 

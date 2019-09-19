@@ -25,6 +25,7 @@ import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterViewModel
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollSignsViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
@@ -161,6 +162,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TollRateTableViewModel::class)
     abstract fun findTollRateTableViewModel(tollRateTableViewModel: TollRateTableViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TollSignsViewModel::class)
+    abstract fun findTollSignsViewModel(tollSignsViewModel: TollSignsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory

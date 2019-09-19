@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
-import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterAccountAdapter
+import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
 
 /**
  * Data Binding adapters specific to the app.
@@ -102,7 +102,11 @@ object TrafficBindingAdapters {
     @BindingAdapter(value = ["twitterAccount", "selectedTwitterAccount", "selectedTwitterAccountAttrChanged"], requireAll = false)
     fun setTwitterAccount(spinner: Spinner, accountNames: List<Pair<String, String>>, selectedAccount: Pair<String, String>?, listener: InverseBindingListener) {
         if (selectedAccount == null ) { return }
-        spinner.adapter = TwitterAccountAdapter(spinner.context, android.R.layout.simple_spinner_dropdown_item, accountNames)
+        spinner.adapter = SpinnerStringPairAdapter(
+            spinner.context,
+            android.R.layout.simple_spinner_dropdown_item,
+            accountNames
+        )
         setCurrentSelection(spinner, selectedAccount)
         setSpinnerListener(spinner, listener)
     }

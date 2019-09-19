@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
@@ -35,7 +36,7 @@ class TollSignRepository @Inject constructor(
                 var update = false
 
                 if (data != null && data.isNotEmpty()) {
-                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 1)) {
                         update = true
                     }
                 } else {
@@ -68,7 +69,7 @@ class TollSignRepository @Inject constructor(
                 var update = false
 
                 if (data != null && data.isNotEmpty()) {
-                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 1)) {
                         update = true
                     }
                 } else {
@@ -89,9 +90,9 @@ class TollSignRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun updateFavorite(cameraId: Int, isFavorite: Boolean) {
+    fun updateFavorite(id: String, isFavorite: Boolean) {
         appExecutors.diskIO().execute {
-            tollSignDao.updateFavorite(cameraId, isFavorite)
+            tollSignDao.updateFavorite(id, isFavorite)
         }
     }
 
@@ -104,20 +105,16 @@ class TollSignRepository @Inject constructor(
 
 
                 var startLocationName = ""
-                var endLocationName = ""
 
                 if (tripItem.stateRoute == 405) {
                     startLocationName = filter405LocationName(tripItem.startLocationName, tripItem.travelDirection)
-                    endLocationName = filter405LocationName(tripItem.startLocationName, tripItem.travelDirection)
                 } else if (tripItem.stateRoute == 167) {
                     startLocationName = filter167LocationName(tripItem.startLocationName, tripItem.travelDirection)
-                    endLocationName = filter167LocationName(tripItem.startLocationName, tripItem.travelDirection)
                 }
-
 
                 val trip = TollTrip(
                     tripName = tripItem.tripName,
-                    endLocationName = endLocationName,
+                    endLocationName = tripItem.endLocationName,
                     currentRate = tripItem.currentToll.toFloat() * .01f, // converts API value to dollar value (ex. 75 -> $0.75)
                     message = tripItem.currentMessage,
                     endMilepost = tripItem.endMilepost,
@@ -157,6 +154,15 @@ class TollSignRepository @Inject constructor(
 
             }
         }
+
+        for (sign in dbSignList) {
+            if (sign.travelDirection == "N") {
+                sign.trips.sortBy { it.endMilepost }
+            } else if (sign.travelDirection == "S") {
+                sign.trips.sortByDescending { it.endMilepost }
+            }
+        }
+
         tollSignDao.updateTollSign(dbSignList)
     }
 

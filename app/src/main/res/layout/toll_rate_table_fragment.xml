@@ -7,7 +7,6 @@
         <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
-        <import type="gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable"/>
         <import type="gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel" />
 
         <variable
@@ -29,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_grid"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:refreshing="@{((Resource) viewModel.tollTable).status == Status.LOADING}"
@@ -44,7 +43,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
-                tools:listitem="@layout/border_crossing_item" />
+                tools:listitem="@layout/toll_row_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
