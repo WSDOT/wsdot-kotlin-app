@@ -40,27 +40,26 @@
                 android:id="@+id/info_button"
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
+                android:gravity="center"
                 android:layout_weight="1"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:text="Learn how these tolls work"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:clickable="true"
+                android:focusable="true"/>
 
             <LinearLayout
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                app:layout_constraintTop_toBottomOf="@id/info_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:elevation="4dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/input_field_border">
+
                 <Spinner
                     android:id="@+id/sailing_spinner"
                     android:layout_width="match_parent"
