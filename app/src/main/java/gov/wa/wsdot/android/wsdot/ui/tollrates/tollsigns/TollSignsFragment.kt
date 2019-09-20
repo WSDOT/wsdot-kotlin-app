@@ -1,10 +1,10 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -20,6 +20,13 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
+import android.net.Uri
+import android.content.Intent
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
+import android.text.style.UnderlineSpan
+import android.text.SpannableString
+import java.util.*
+
 
 abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
@@ -34,6 +41,8 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
     private var adapter by autoCleared<TollSignsListAdapter>()
 
     var binding by autoCleared<TollSignFragmentBinding>()
+
+    lateinit var t: Timer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -50,6 +59,21 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
         )
 
         binding = dataBinding
+
+        ///////////////////////////////
+
+        val content = SpannableString(getInfoLinkText())
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        binding.infoButton.text = content
+
+        binding.infoButton.setTextColor(resources.getColor(R.color.colorPrimary))
+        binding.infoButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.data = Uri.parse(getInfoLinkURL())
+            startActivity(intent)
+        }
+        ///////////////////////////////
 
         binding.viewModel = tollSignsViewModel
         dataBinding.lifecycleOwner = viewLifecycleOwner
@@ -80,7 +104,6 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
         tollSignsViewModel.tollSigns.observe(viewLifecycleOwner, Observer { signResource ->
             signResource.data?.let { it ->
-
                 adapter.submitList(it)
                 if (it.isEmpty() && signResource.status != Status.LOADING) {
                     // binding.emptyListView.visibility = View.VISIBLE
@@ -90,12 +113,34 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
                     binding.tollSignList.visibility = View.VISIBLE
                 }
             }
-
         })
+
+        startTollRatesTask()
 
         return dataBinding.root
     }
 
-    abstract fun getRoute(): Int
+    override fun onPause() {
+        super.onPause()
+        t.cancel()
+    }
 
+    private fun startTollRatesTask() {
+        t = Timer()
+        t.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        tollSignsViewModel.refresh()
+                    }
+                }
+            },
+            30000,
+            120000
+        )
+    }
+
+    abstract fun getRoute(): Int
+    abstract fun getInfoLinkText(): String
+    abstract fun getInfoLinkURL(): String
 }
