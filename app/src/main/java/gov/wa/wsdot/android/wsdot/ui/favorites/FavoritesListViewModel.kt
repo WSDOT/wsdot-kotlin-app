@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
@@ -20,7 +21,8 @@ class FavoritesListViewModel @Inject constructor(
     private val ferriesRepository: FerriesRepository,
     private val mountainPassRepository: MountainPassRepository,
     private val borderCrossingRepository: BorderCrossingRepository,
-    private val favoriteLocationRepository: FavoriteLocationRepository
+    private val favoriteLocationRepository: FavoriteLocationRepository,
+    private val tollSignRepository: TollSignRepository
 ) : ViewModel() {
 
     // mediator handles refresh status. Used by data bound refresh control in layout xml
@@ -33,6 +35,7 @@ class FavoritesListViewModel @Inject constructor(
     val favoriteMountainPasses = MediatorLiveData<List<MountainPass>>()
     val favoriteBorderCrossings = MediatorLiveData<List<BorderCrossing>>()
     val favoriteLocations = MediatorLiveData<List<FavoriteLocation>>()
+    val favoriteTollSigns = MediatorLiveData<List<TollSign>>()
 
     private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadFavoriteTravelTimes(false)
     private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadFavoriteCameras(false)
@@ -40,6 +43,7 @@ class FavoritesListViewModel @Inject constructor(
     private var mountainPassLiveData: LiveData<Resource<List<MountainPass>>> = mountainPassRepository.loadFavoritePasses(false)
     private var borderCrossingLiveData: LiveData<Resource<List<BorderCrossing>>> = borderCrossingRepository.loadFavoriteCrossings(false)
     private var favoriteLocationLiveDate: LiveData<Resource<List<FavoriteLocation>>> = favoriteLocationRepository.getFavoriteLocations()
+    private var tollSignLiveData: LiveData<Resource<List<TollSign>>> = tollSignRepository.loadFavoriteTollSign(false)
 
     init {
         addSources()
@@ -74,6 +78,10 @@ class FavoritesListViewModel @Inject constructor(
         favoriteLocationRepository.removeFavoriteLocation(location.creationDate)
     }
 
+    fun updateFavoriteTollSign(tollSignId: String, isFavorite: Boolean){
+        tollSignRepository.updateFavorite(tollSignId, isFavorite)
+    }
+
     fun addFavoriteLocation(location: FavoriteLocation) {
         favoriteLocationRepository.addFavoriteLocation(
             location.title,
@@ -90,6 +98,7 @@ class FavoritesListViewModel @Inject constructor(
         ferryScheduleLiveData = ferriesRepository.loadFavoriteSchedules(true)
         mountainPassLiveData = mountainPassRepository.loadFavoritePasses(true)
         borderCrossingLiveData = borderCrossingRepository.loadFavoriteCrossings(true)
+        tollSignLiveData = tollSignRepository.loadFavoriteTollSign(true)
         addSources()
     }
 
@@ -194,6 +203,27 @@ class FavoritesListViewModel @Inject constructor(
                 }
             }
         }
+
+        // Border Crossings
+        favoriteTollSigns.addSource(tollSignLiveData) {
+            it?.data.let {favItems ->
+                favoriteTollSigns.value = favItems
+            }
+        }
+
+        favoritesLoadingStatus.addSource(tollSignLiveData) {
+            it?.let {
+                it.data?.let { data ->
+                    when (it.status) {
+                        Status.SUCCESS -> favoritesLoadingStatus.value = Resource.success(TollSignData(data))
+                        Status.LOADING -> favoritesLoadingStatus.value = Resource.loading(TollSignData(data))
+                        Status.ERROR -> favoritesLoadingStatus.value =
+                            Resource.error(it.message!!, TollSignData(data))
+                    }
+                }
+            }
+        }
+
     }
 
     private fun removeSources() {
@@ -202,11 +232,13 @@ class FavoritesListViewModel @Inject constructor(
         favoriteFerrySchedules.removeSource(ferryScheduleLiveData)
         favoriteMountainPasses.removeSource(mountainPassLiveData)
         favoriteBorderCrossings.removeSource(borderCrossingLiveData)
+        favoriteTollSigns.removeSource(tollSignLiveData)
 
         favoritesLoadingStatus.removeSource(travelTimeLiveData)
         favoritesLoadingStatus.removeSource(cameraLiveData)
         favoritesLoadingStatus.removeSource(ferryScheduleLiveData)
         favoritesLoadingStatus.removeSource(mountainPassLiveData)
         favoritesLoadingStatus.removeSource(borderCrossingLiveData)
+        favoritesLoadingStatus.removeSource(tollSignLiveData)
     }
 }

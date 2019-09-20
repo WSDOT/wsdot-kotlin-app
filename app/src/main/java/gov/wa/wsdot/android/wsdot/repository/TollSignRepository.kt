@@ -58,7 +58,7 @@ class TollSignRepository @Inject constructor(
     }
 
 
-    fun loadFavoriteCameras(forceRefresh: Boolean): LiveData<Resource<List<TollSign>>> {
+    fun loadFavoriteTollSign(forceRefresh: Boolean): LiveData<Resource<List<TollSign>>> {
 
         return object : NetworkBoundResource<List<TollSign>, List<TollTripResponse>>(appExecutors) {
 
