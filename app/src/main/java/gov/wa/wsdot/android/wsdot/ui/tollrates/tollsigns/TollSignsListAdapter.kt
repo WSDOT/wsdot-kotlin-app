@@ -42,19 +42,19 @@ class TollSignsListAdapter (
             }
         }
 
-        binding.root.findViewById<TextView>(R.id.trip_two_map).setOnClickListener {
+        binding.root.findViewById<Button>(R.id.trip_two_map).setOnClickListener {
             binding.tollSign?.let {
                 viewMapClickCallback?.invoke(it, 1)
             }
         }
 
-        binding.root.findViewById<TextView>(R.id.trip_three_map).setOnClickListener {
+        binding.root.findViewById<Button>(R.id.trip_three_map).setOnClickListener {
             binding.tollSign?.let {
                 viewMapClickCallback?.invoke(it, 2)
             }
         }
 
-        binding.root.findViewById<TextView>(R.id.trip_four_map).setOnClickListener {
+        binding.root.findViewById<Button>(R.id.trip_four_map).setOnClickListener {
             binding.tollSign?.let {
                 viewMapClickCallback?.invoke(it, 3)
             }

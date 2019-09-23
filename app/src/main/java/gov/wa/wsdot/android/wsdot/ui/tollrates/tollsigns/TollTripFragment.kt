@@ -90,7 +90,5 @@ class TollTripFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
                 .position(LatLng(endLatitude, endLongitude)))
 
-
-
     }
 }
