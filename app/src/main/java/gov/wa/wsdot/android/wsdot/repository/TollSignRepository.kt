@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
@@ -15,7 +14,6 @@ import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 import org.json.JSONException
-import org.json.JSONObject
 import java.util.*
 
 @Singleton
@@ -103,7 +101,6 @@ class TollSignRepository @Inject constructor(
         for (tripItem in tollTripResponse) {
             if (!shouldSkipTrip(tripItem)) {
 
-
                 var startLocationName = ""
 
                 if (tripItem.stateRoute == 405) {
@@ -163,7 +160,7 @@ class TollSignRepository @Inject constructor(
             }
         }
 
-        tollSignDao.updateTollSign(dbSignList)
+        tollSignDao.updateTollSigns(dbSignList)
     }
 
 

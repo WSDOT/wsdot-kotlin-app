@@ -131,7 +131,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                 if (sign.trips.size > index) {
                     navigateToTollMap(
                         LatLng(sign.startLatitude, sign.startLongitude),
-                        LatLng(sign.trips[0].endLatitude, sign.trips[index].endLongitude))
+                        LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
                 }
             })
 
