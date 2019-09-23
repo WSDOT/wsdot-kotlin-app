@@ -64,6 +64,7 @@
         tools:layout="@layout/tab_layout"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
+
     </fragment>
 
     <fragment
@@ -102,6 +103,29 @@
         <argument
             android:name="camera_ids"
             app:argType="integer[]" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navTollTripFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollTripFragment"
+        android:label="{title}"
+        tools:layout="@layout/toll_trip_fragment" >
+        <argument
+            android:name="start_latitude"
+            app:argType="string" />
+        <argument
+            android:name="start_longitude"
+            app:argType="string" />
+        <argument
+            android:name="end_latitude"
+            app:argType="string" />
+        <argument
+            android:name="end_longitude"
+            app:argType="string" />
         <argument
             android:name="title"
             app:argType="string"
@@ -391,6 +415,14 @@
     <action
         android:id="@+id/action_global_navHighwayAlertFragment"
         app:destination="@id/navHighwayAlertFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTollTripFragment"
+        app:destination="@id/navTollTripFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

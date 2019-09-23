@@ -25,6 +25,10 @@ import android.content.Intent
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
+import android.util.Log
+import androidx.navigation.fragment.findNavController
+import com.google.android.gms.maps.model.LatLng
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import java.util.*
 
 
@@ -81,10 +85,17 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
         val adapter =
             TollSignsListAdapter(
                 dataBindingComponent,
-                appExecutors
-            ){ sign ->
-                tollSignsViewModel.updateFavorite(sign.id, !sign.favorite)
-            }
+                appExecutors,
+                { sign ->
+                    tollSignsViewModel.updateFavorite(sign.id, !sign.favorite)
+                },
+                { sign, index ->
+                    if (sign.trips.size > index) {
+                        navigateToMap(
+                            LatLng(sign.startLatitude, sign.startLongitude),
+                            LatLng(sign.trips[0].endLatitude, sign.trips[index].endLongitude))
+                    }
+                })
 
         this.adapter = adapter
 
@@ -138,6 +149,21 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
             30000,
             120000
         )
+    }
+
+    private fun navigateToMap(startLocation: LatLng, endLocation: LatLng){
+
+        Log.e("DEBUG", "clicked")
+
+        val action = NavGraphDirections.actionGlobalNavTollTripFragment(
+            startLatitude = startLocation.latitude.toString(),
+            startLongitude = startLocation.longitude.toString(),
+            endLatitude = endLocation.latitude.toString(),
+            endLongitude = endLocation.longitude.toString(),
+            title = "Toll Trip"
+        )
+        findNavController().navigate(action)
+
     }
 
     abstract fun getRoute(): Int

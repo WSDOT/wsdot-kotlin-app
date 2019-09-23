@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[0]}">
 
             <TextView
@@ -61,6 +62,15 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trip_one_map"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="show on map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trip_one_title"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
@@ -94,6 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[1]}">
 
             <TextView
@@ -106,6 +117,15 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trip_two_map"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="show on map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trip_two_title"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
@@ -140,18 +160,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[2]}">
 
             <TextView
                 android:id="@+id/trip_three_title"
                 style="@style/CardTitleText"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 app:bindTollTrip="@{tollSign.trips[2]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trip_three_map"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="show on map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trip_three_title"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
@@ -185,18 +214,27 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
+            android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[3]}">
 
             <TextView
                 android:id="@+id/trip_four_title"
                 style="@style/CardTitleText"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 app:bindTollTrip="@{tollSign.trips[3]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/trip_four_map"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="show on map"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/trip_four_title"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="100dp"
