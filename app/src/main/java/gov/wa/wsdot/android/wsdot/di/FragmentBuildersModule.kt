@@ -42,6 +42,7 @@ import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment
+import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollTripFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR16TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
@@ -147,5 +148,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTwitterFragment(): TwitterFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTollTripFragment(): TollTripFragment
 
 }
