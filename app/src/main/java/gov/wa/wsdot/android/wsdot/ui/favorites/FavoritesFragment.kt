@@ -35,6 +35,7 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
@@ -125,6 +126,13 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             },
             { locationItem ->
                 navigateToLocation(locationItem)
+            },
+            { sign, index ->
+                if (sign.trips.size > index) {
+                    navigateToTollMap(
+                        LatLng(sign.startLatitude, sign.startLongitude),
+                        LatLng(sign.trips[0].endLatitude, sign.trips[index].endLongitude))
+                }
             })
 
         this.adapter = adapter
@@ -369,6 +377,17 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     private fun navigateToMountainPass(pass: MountainPass) {
         val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(pass.passId, pass.passName)
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToTollMap(startLocation: LatLng, endLocation: LatLng){
+        val action = NavGraphDirections.actionGlobalNavTollTripFragment(
+            startLatitude = startLocation.latitude.toString(),
+            startLongitude = startLocation.longitude.toString(),
+            endLatitude = endLocation.latitude.toString(),
+            endLongitude = endLocation.longitude.toString(),
+            title = "Toll Trip"
+        )
         findNavController().navigate(action)
     }
 

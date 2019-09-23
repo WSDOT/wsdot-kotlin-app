@@ -152,9 +152,6 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
     }
 
     private fun navigateToMap(startLocation: LatLng, endLocation: LatLng){
-
-        Log.e("DEBUG", "clicked")
-
         val action = NavGraphDirections.actionGlobalNavTollTripFragment(
             startLatitude = startLocation.latitude.toString(),
             startLongitude = startLocation.longitude.toString(),
@@ -163,7 +160,6 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
             title = "Toll Trip"
         )
         findNavController().navigate(action)
-
     }
 
     abstract fun getRoute(): Int

@@ -6,7 +6,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -43,7 +45,8 @@ class FavoritesListAdapter(
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
-    private val locationClickCallback: ((FavoriteLocation) -> Unit)?
+    private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
+    private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
@@ -572,6 +575,30 @@ class FavoritesListAdapter(
             false,
             dataBindingComponent
         )
+
+        binding.root.findViewById<Button>(R.id.trip_one_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 0)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_two_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 1)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_three_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 2)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_four_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 3)
+            }
+        }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
