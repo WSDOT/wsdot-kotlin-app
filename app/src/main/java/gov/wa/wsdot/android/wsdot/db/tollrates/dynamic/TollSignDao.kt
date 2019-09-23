@@ -23,7 +23,7 @@ abstract class TollSignDao {
     abstract fun updateFavorite(id: String, isFavorite: Boolean)
 
     @Transaction
-    open fun updateTollSign(tollSigns: List<TollSign>) {
+    open fun updateTollSigns(tollSigns: List<TollSign>) {
         markTollSignsForRemoval()
         for (tollSign in tollSigns) {
             updateTollSign(
@@ -36,7 +36,6 @@ abstract class TollSignDao {
                 tollSign.startLongitude,
                 tollSign.trips,
                 Date(),
-                tollSign.favorite,
                 false)
         }
         deleteOldTollSigns()
@@ -56,7 +55,6 @@ abstract class TollSignDao {
         startLongitude = :startLongitude,
         trips = :trips,
         localCacheDate = :localCacheDate,
-        favorite = :favorite,
         remove = :remove
         WHERE id = :id
     """)
@@ -70,7 +68,6 @@ abstract class TollSignDao {
         startLongitude: Double,
         trips: List<TollTrip>,
         localCacheDate: Date,
-        favorite: Boolean,
         remove: Boolean)
 
     @Query("DELETE FROM TollSign WHERE remove = 1")

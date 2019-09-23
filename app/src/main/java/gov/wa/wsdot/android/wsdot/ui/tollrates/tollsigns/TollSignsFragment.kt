@@ -93,7 +93,7 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
                     if (sign.trips.size > index) {
                         navigateToMap(
                             LatLng(sign.startLatitude, sign.startLongitude),
-                            LatLng(sign.trips[0].endLatitude, sign.trips[index].endLongitude))
+                            LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
                     }
                 })
 
