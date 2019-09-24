@@ -54,6 +54,8 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
             .get(TollSignsViewModel::class.java)
         tollSignsViewModel.setRoute(getRoute(), "N")
 
+        initTravelTimeIds(tollSignsViewModel)
+
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<TollSignFragmentBinding>(
             inflater,
@@ -126,6 +128,12 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
             }
         })
 
+        tollSignsViewModel.tollTravelTimes.observe(viewLifecycleOwner, Observer { travelTimeRes ->
+            travelTimeRes.data?.let {
+                binding.travelTimes.text = String.format("%s: %d min or %d min via ETL", it[0].title, it[0].avgTime, it[1].avgTime)
+            }
+        })
+
         startTollRatesTask()
 
         return dataBinding.root
@@ -165,4 +173,5 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
     abstract fun getRoute(): Int
     abstract fun getInfoLinkText(): String
     abstract fun getInfoLinkURL(): String
+    abstract fun initTravelTimeIds(viewModel: TollSignsViewModel)
 }
