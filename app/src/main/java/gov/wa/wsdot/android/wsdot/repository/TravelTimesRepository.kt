@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.collections.ArrayList
 
 
 @Singleton
@@ -112,6 +113,37 @@ class TravelTimesRepository @Inject constructor(
             }
 
             override fun loadFromDb() = travelTimeDao.loadTravelTime(travelTimeId)
+
+            override fun createCall() = dataWebservice.getTravelTimes()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+    fun loadTravelTimesWithIDs(ids: List<Int>, forceRefresh: Boolean): LiveData<Resource<List<TravelTime>>>  {
+        return object : NetworkBoundResource<List<TravelTime>, List<TravelTimesResponse>>(appExecutors) {
+
+            override fun saveCallResult(items: List<TravelTimesResponse>) = saveTravelTimes(items)
+
+            override fun shouldFetch(data: List<TravelTime>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 5)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = travelTimeDao.loadTravelTimesWithIds(ids)
 
             override fun createCall() = dataWebservice.getTravelTimes()
 

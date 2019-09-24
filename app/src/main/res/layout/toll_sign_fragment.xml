@@ -49,6 +49,14 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
+            <TextView
+                android:id="@+id/travel_times"
+                style="@style/CardSubTitleText"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"/>
+
             <LinearLayout
                 android:layout_height="0dp"
                 android:layout_width="match_parent"

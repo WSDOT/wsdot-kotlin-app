@@ -3,6 +3,16 @@ package gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns
 import gov.wa.wsdot.android.wsdot.R
 
 class SR167TollSignsFragment: TollSignsFragment() {
+
+    override fun initTravelTimeIds(viewModel: TollSignsViewModel) {
+        viewModel.setTravelTimeIds(
+            67,
+            68,
+            70,
+            69
+        )
+    }
+
     override fun getInfoLinkURL(): String {
         return "https://www.wsdot.wa.gov/Tolling/SR167HotLanes/default.htm"
     }
