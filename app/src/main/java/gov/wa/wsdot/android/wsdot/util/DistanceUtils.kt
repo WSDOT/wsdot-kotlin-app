@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.util
 
 import android.util.SparseArray
+import com.google.android.gms.maps.model.LatLng
 import gov.wa.wsdot.android.wsdot.model.FerriesTerminalItem
 import java.lang.Math.pow
 import kotlin.math.*
@@ -29,6 +30,37 @@ object DistanceUtils {
         return (earthRadius * c).roundToInt()
 
     }
+
+    fun getCenterLocation(
+        latitudeA: Double,
+        longitudeA: Double,
+        latitudeB: Double,
+        longitudeB: Double
+    ): LatLng {
+        var latA = latitudeA
+        var longA = longitudeA
+        var latB = latitudeB
+
+        val dLon = Math.toRadians(longitudeB - longA)
+
+        latA = Math.toRadians(latA)
+        latB = Math.toRadians(latB)
+        longA = Math.toRadians(longA)
+
+        val Bx = cos(latB) * cos(dLon)
+        val By = cos(latB) * sin(dLon)
+        val latitudeC = atan2(
+            sin(latA) + sin(latB),
+            sqrt((cos(latA) + Bx) * (cos(latA) + Bx) + By * By)
+        )
+        val longitudeC = longA + atan2(By, cos(latA) + Bx)
+
+        return LatLng(Math.toDegrees(latitudeC), Math.toDegrees(longitudeC))
+
+    }
+
+
+
 
     fun getTerminalLocations(): SparseArray<FerriesTerminalItem> {
 

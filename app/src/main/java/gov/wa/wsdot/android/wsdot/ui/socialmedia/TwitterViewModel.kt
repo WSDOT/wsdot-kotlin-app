@@ -43,6 +43,4 @@ class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository)
         }
     }
 
-
-
 }

@@ -1,6 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes
 
-class NorthboundCrossingTimesFragment : CrossingTimesFragment() {
+class NorthboundCrossingTimesFragment : BaseCrossingTimesFragment() {
     override fun getDirection(): String {
         return "northbound"
     }

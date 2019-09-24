@@ -41,8 +41,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
     lateinit var t: Timer
 
-   // val args: FerriesSailingFragmentArgs by navArgs()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)

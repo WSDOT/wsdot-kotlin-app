@@ -16,6 +16,9 @@ abstract class TravelTimeDao {
     @Query("SELECT * FROM TravelTime WHERE title LIKE ('%'||:query||'%')")
     abstract fun loadTravelTimesWithQueryText(query: String): LiveData<List<TravelTime>>
 
+    @Query("SELECT * FROM TravelTime WHERE travelTimeId IN (:travelTimeIds)")
+    abstract fun loadTravelTimesWithIds(travelTimeIds: List<Int>): LiveData<List<TravelTime>>
+
     @Query("SELECT * FROM TravelTime WHERE travelTimeId = :travelTimeId")
     abstract fun loadTravelTime(travelTimeId: Int): LiveData<TravelTime>
 
