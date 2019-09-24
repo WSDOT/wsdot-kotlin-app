@@ -67,10 +67,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         // TODO: Let user set home screen ///////////////////////
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
-        graph.startDestination = R.id.navTollRatesFragment
+        graph.startDestination = R.id.navTrafficMapFragment
         navController.graph = graph
         navView.menu.getItem(0).isChecked = true
-     //   enableAds(resources.getString(R.string.ad_target_traffic))
+        enableAds(resources.getString(R.string.ad_target_traffic))
         /////////////////////////////////////////////////////////
 
 
