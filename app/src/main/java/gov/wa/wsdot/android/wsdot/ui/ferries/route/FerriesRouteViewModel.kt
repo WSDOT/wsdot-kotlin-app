@@ -28,7 +28,7 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
             ferriesRepository.loadSchedule(routeId.routeId, routeId.needsRefresh)
         }
 
-    // Terminals - Used by spinner
+    // Used by spinner
     val terminals : LiveData<Resource<List<TerminalCombo>>> = Transformations
         .switchMap(_routeId) { routeId ->
             ferriesRepository.loadTerminalCombos(routeId.routeId, routeId.needsRefresh)

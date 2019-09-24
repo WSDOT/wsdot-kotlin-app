@@ -6,7 +6,9 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncDifferConfig
@@ -18,6 +20,7 @@ import gov.wa.wsdot.android.wsdot.databinding.*
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
@@ -42,7 +45,8 @@ class FavoritesListAdapter(
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
-    private val locationClickCallback: ((FavoriteLocation) -> Unit)?
+    private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
+    private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
@@ -117,6 +121,19 @@ class FavoritesListAdapter(
             .build()
     )
 
+    private val tollSignDiffer = AsyncListDiffer<TollSign>(
+        FavoritesListUpdateCallback(
+            this,
+            dataSetChangedListener,
+            ITEM_TYPE_TOLL_SIGN,
+            1
+        ),
+        AsyncDifferConfig.Builder<TollSign>(TollSignDiffCallback())
+            .setBackgroundThreadExecutor(appExecutors.diskIO())
+            .build()
+
+    )
+
 
     // sort order for each view type
     private var orderedViewTypes = viewTypes
@@ -129,6 +146,7 @@ class FavoritesListAdapter(
         const val ITEM_TYPE_MOUNTAIN_PASS = 4
         const val ITEM_TYPE_BORDER_CROSSING = 5
         const val ITEM_TYPE_LOCATION = 6
+        const val ITEM_TYPE_TOLL_SIGN = 7
     }
 
     private var headers = object : LinkedHashMap<Int, String>() {
@@ -139,6 +157,7 @@ class FavoritesListAdapter(
             put(ITEM_TYPE_MOUNTAIN_PASS, "Mountain Passes")
             put(ITEM_TYPE_BORDER_CROSSING, "Border Crossings")
             put(ITEM_TYPE_LOCATION, "Traffic Map Locations")
+            put(ITEM_TYPE_TOLL_SIGN, "Toll Rates")
         }
     }
 
@@ -170,6 +189,10 @@ class FavoritesListAdapter(
         locationDiffer.submitList(data)
     }
 
+    fun setTollSign(data: List<TollSign>) {
+        tollSignDiffer.submitList(data)
+    }
+
     /**
      * Returns the number of items for a given item_type
      */
@@ -181,6 +204,7 @@ class FavoritesListAdapter(
             ITEM_TYPE_MOUNTAIN_PASS -> { getMountainPassesSize() }
             ITEM_TYPE_BORDER_CROSSING -> { getBorderCrossingsSize() }
             ITEM_TYPE_LOCATION -> { getLocationsSize() }
+            ITEM_TYPE_TOLL_SIGN -> { getTollSignSize() }
             else -> 0
         }
     }
@@ -209,6 +233,9 @@ class FavoritesListAdapter(
             ITEM_TYPE_LOCATION -> {
                 return FavoriteViewHolder(createLocationBinding(parent))
             }
+            ITEM_TYPE_TOLL_SIGN -> {
+                return FavoriteViewHolder(createTollSignBinding(parent))
+            }
 
         }
 
@@ -233,6 +260,7 @@ class FavoritesListAdapter(
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
                 ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
                 ITEM_TYPE_LOCATION -> { size = getLocationsSize() }
+                ITEM_TYPE_TOLL_SIGN -> { size = getTollSignSize() }
             }
 
             if (currentPos == 0 && size > 0) return ITEM_TYPE_HEADER
@@ -265,6 +293,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_TRAVEL_TIME -> pos += getTravelTimesSize()
                     ITEM_TYPE_BORDER_CROSSING -> pos += getBorderCrossingsSize()
                     ITEM_TYPE_LOCATION -> pos += getLocationsSize()
+                    ITEM_TYPE_TOLL_SIGN -> pos += getTollSignSize()
                 }
             }
         }
@@ -291,6 +320,7 @@ class FavoritesListAdapter(
                 ITEM_TYPE_MOUNTAIN_PASS -> { size = getMountainPassesSize() }
                 ITEM_TYPE_BORDER_CROSSING -> { size = getBorderCrossingsSize() }
                 ITEM_TYPE_LOCATION -> { size = getLocationsSize() }
+                ITEM_TYPE_TOLL_SIGN -> { size = getTollSignSize() }
             }
 
             if (currentPos == 0 && size > 0) {
@@ -309,6 +339,7 @@ class FavoritesListAdapter(
                     ITEM_TYPE_MOUNTAIN_PASS -> { return mountainPassesDiffer.currentList[currentPos - 1] }
                     ITEM_TYPE_BORDER_CROSSING -> { return borderCrossingDiffer.currentList[currentPos - 1]}
                     ITEM_TYPE_LOCATION -> { return locationDiffer.currentList[currentPos - 1]}
+                    ITEM_TYPE_TOLL_SIGN -> { return tollSignDiffer.currentList[currentPos - 1]}
                 }
             }
 
@@ -329,13 +360,13 @@ class FavoritesListAdapter(
                     getFerrySchedulesSize() +
                     getMountainPassesSize() +
                     getBorderCrossingsSize() +
-                    getLocationsSize())
+                    getLocationsSize() +
+                    getTollSignSize())
     }
 
     override fun onBindViewHolder(holder: FavoriteViewHolder, position: Int) {
 
         when (holder.itemViewType) {
-
             ITEM_TYPE_HEADER -> {
                 holder.headerBinding.title = getItem(position) as String
                 holder.headerBinding.executePendingBindings()
@@ -363,6 +394,10 @@ class FavoritesListAdapter(
             ITEM_TYPE_LOCATION -> {
                 holder.locationItemBinding.locationItem = getItem(position) as FavoriteLocation
                 holder.locationItemBinding.executePendingBindings()
+            }
+            ITEM_TYPE_TOLL_SIGN -> {
+                holder.tollSignItemBinding.tollSign = getItem(position) as TollSign
+                holder.tollSignItemBinding.executePendingBindings()
             }
         }
     }
@@ -393,6 +428,10 @@ class FavoritesListAdapter(
 
     private fun getLocationsSize(): Int {
         return locationDiffer.currentList.size + (if (locationDiffer.currentList.isNotEmpty()) 1 else 0)
+    }
+
+    private fun getTollSignSize(): Int {
+        return tollSignDiffer.currentList.size + (if (tollSignDiffer.currentList.isNotEmpty()) 1 else 0)
     }
 
     // Binding Methods
@@ -526,4 +565,46 @@ class FavoritesListAdapter(
 
         return binding
     }
+
+    private fun createTollSignBinding(parent: ViewGroup): TollSignItemBinding {
+
+        val binding = DataBindingUtil.inflate<TollSignItemBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.toll_sign_item,
+            parent,
+            false,
+            dataBindingComponent
+        )
+
+        binding.root.findViewById<Button>(R.id.trip_one_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 0)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_two_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 1)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_three_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 2)
+            }
+        }
+
+        binding.root.findViewById<Button>(R.id.trip_four_map).setOnClickListener {
+            binding.tollSign?.let {
+                viewMapClickCallback?.invoke(it, 3)
+            }
+        }
+
+        binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
+
+        return binding
+
+    }
+
 }

@@ -35,8 +35,10 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
+import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
@@ -46,6 +48,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_HEADER
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_LOCATION
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_MOUNTAIN_PASS
+import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TOLL_SIGN
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
 import gov.wa.wsdot.android.wsdot.util.putDouble
 
@@ -123,6 +126,13 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             },
             { locationItem ->
                 navigateToLocation(locationItem)
+            },
+            { sign, index ->
+                if (sign.trips.size > index) {
+                    navigateToTollMap(
+                        LatLng(sign.startLatitude, sign.startLongitude),
+                        LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
+                }
             })
 
         this.adapter = adapter
@@ -171,14 +181,15 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         favoritesListViewModel.favoriteLocations.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-
-                Log.e("debug", "HELLO")
-                Log.e("debug", it.size.toString())
-
                 adapter.setLocations(it)
             }
         })
 
+        favoritesListViewModel.favoriteTollSigns.observe(viewLifecycleOwner, Observer { favItems ->
+            favItems?.let {
+                adapter.setTollSign(it)
+            }
+        })
     }
 
     override fun onDataSetChanged() {
@@ -196,6 +207,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
         orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
+        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_seven), ITEM_TYPE_TOLL_SIGN))
 
         return orderedViewTypes
     }
@@ -307,6 +319,11 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             itemId = location.title
                             favoritesListViewModel.removeFavoriteLocation(location)
                         }
+                        ITEM_TYPE_TOLL_SIGN -> {
+                            val sign = adapter.getItem(holder.adapterPosition) as TollSign
+                            itemId = sign.id
+                            favoritesListViewModel.updateFavoriteTollSign(sign.id, false)
+                        }
 
                         else -> itemId = null
                     }
@@ -333,6 +350,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             ITEM_TYPE_LOCATION -> {
                                 favoritesListViewModel.addFavoriteLocation(location!!)
                             }
+                            ITEM_TYPE_TOLL_SIGN -> {
+                                favoritesListViewModel.updateFavoriteTollSign(itemId!!, true)
+                            }
                         }
                     }
                     snackbar.show()
@@ -357,6 +377,17 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     private fun navigateToMountainPass(pass: MountainPass) {
         val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(pass.passId, pass.passName)
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToTollMap(startLocation: LatLng, endLocation: LatLng){
+        val action = NavGraphDirections.actionGlobalNavTollTripFragment(
+            startLatitude = startLocation.latitude.toString(),
+            startLongitude = startLocation.longitude.toString(),
+            endLatitude = endLocation.latitude.toString(),
+            endLongitude = endLocation.longitude.toString(),
+            title = "Toll Trip"
+        )
         findNavController().navigate(action)
     }
 

@@ -21,7 +21,7 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
-abstract class CrossingTimesFragment : DaggerFragment(), Injectable {
+abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory

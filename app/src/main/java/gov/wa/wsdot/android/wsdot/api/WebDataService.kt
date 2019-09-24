@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.response.borderwaits.BorderCrossingResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
+import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.HighwayAlertsResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelTimesResponse
@@ -35,5 +36,8 @@ interface WebDataService {
 
     @GET("BorderCrossings.js")
     fun getBorderCrossingItems(): LiveData<ApiResponse<BorderCrossingResponse>>
+
+    @GET("StaticTollRates.js")
+    fun getTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
 
 }

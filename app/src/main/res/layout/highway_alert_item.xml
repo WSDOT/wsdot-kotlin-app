@@ -24,40 +24,34 @@
             <TextView
                 style="@style/CardTitleText"
                 android:id="@+id/titleView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{alert.category}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="16dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
+                android:layout_marginEnd="@dimen/default_margin"/>
 
             <TextView
                 style="@style/CardSubTitleText"
                 android:id="@+id/subTitleView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindHTML="@{alert.headline}"
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:autoLink="all"
                 android:layout_marginTop="8dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
+                android:layout_marginEnd="@dimen/default_margin"/>
 
             <TextView
                 style="@style/CardFooterText"
                 android:id="@+id/FooterView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindRelativeDate="@{alert.lastUpdatedTime}"
                 tools:text=""
@@ -66,13 +60,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                />
+                android:layout_marginEnd="@dimen/default_margin"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

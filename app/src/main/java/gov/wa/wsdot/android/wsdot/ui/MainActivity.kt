@@ -57,6 +57,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navFerriesHomeFragment,
                 R.id.navMountainPassHomeFragment,
                 R.id.navBorderCrossingsFragment,
+                R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment
             ), drawerLayout)
 
@@ -69,9 +70,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         graph.startDestination = R.id.navTrafficMapFragment
         navController.graph = graph
         navView.menu.getItem(0).isChecked = true
+        enableAds(resources.getString(R.string.ad_target_traffic))
         /////////////////////////////////////////////////////////
 
-        enableAds(resources.getString(R.string.ad_target_traffic))
 
 
     }
@@ -108,11 +109,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
                 }
             }
-            /*
             R.id.nav_toll_rates -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
+                if (navController.currentDestination?.id != R.id.navTollRatesFragment) {
+                    disableAds()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
+                }
             }
-            */
             R.id.nav_border_waits -> {
                 if (navController.currentDestination?.id != R.id.navBorderCrossingsFragment) {
                     enableAds("other")
@@ -123,10 +125,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.nav_amtrak_cascades -> {
                 enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
             }
-            R.id.nav_my_routes -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
-            }
-
              */
             R.id.nav_favorites -> {
                 // Favorites fragment handles its out ad targets

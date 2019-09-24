@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="tollRateRow"
+            type="gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateRow"/>
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/tap_view"
+        android:background="?android:colorBackground"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <TextView android:id="@+id/col_one"
+            style="@style/CardSubTitleText"
+            android:padding="8dp"
+            android:text="@{tollRateRow.values[0]}"
+            app:visibleGone="@{tollRateRow.values[0] != null}"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView android:id="@+id/col_two"
+            style="@style/CardSubTitleText"
+            android:padding="8dp"
+            android:text="@{tollRateRow.values[1]}"
+            app:visibleGone="@{tollRateRow.values[1] != null}"
+            android:gravity="center"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView android:id="@+id/col_three"
+            style="@style/CardSubTitleText"
+            android:padding="8dp"
+            android:text="@{tollRateRow.values[2]}"
+            app:visibleGone="@{tollRateRow.values[2] != null}"
+            android:gravity="center"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <TextView android:id="@+id/col_four"
+            style="@style/CardSubTitleText"
+            android:padding="8dp"
+            android:text="@{tollRateRow.values[3]}"
+            app:visibleGone="@{tollRateRow.values[3] != null}"
+            android:gravity="center"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

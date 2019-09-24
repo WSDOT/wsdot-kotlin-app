@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.socialmedia
+package gov.wa.wsdot.android.wsdot.ui.common
 
 import android.content.Context
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 
-class TwitterAccountAdapter(
+class SpinnerStringPairAdapter(
     context: Context,
     textViewResourceId: Int,
     private val values: List<Pair<String, String>>

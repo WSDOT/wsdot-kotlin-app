@@ -20,6 +20,12 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_my_route">My Routes</string>
 
+    // Toll Rates
+    <string name="tolling_disclaimer">Estimated toll rates provided as a courtesy. You\'ll always pay the toll you see on actual road signs when you enter.</string>
+    <string name="action_good_to_go">My Good To Go</string>
+    <string name="info_450">Learn how I-405 tolls work</string>
+    <string name="info_167">Learn how SR 167 tolls work</string>
+
     // Toolbar
     <string name="action_favorite">Favorite</string>
     <string name="action_refresh">Refresh</string>
@@ -108,6 +114,7 @@
     <string name="no_favorites_text">You can add favorites by tapping hearts found throughout the app</string>
     <string name="favorites_five">FAV_FIVE</string>
     <string name="favorites_six">FAV_SIX</string>
+    <string name="favorites_seven">FAV_SEVEN</string>
 
 
 </resources>
