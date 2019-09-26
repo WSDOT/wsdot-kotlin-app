@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api
 
 import androidx.lifecycle.LiveData
+import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
 import gov.wa.wsdot.android.wsdot.api.response.socialmedia.TwitterResponse
@@ -34,4 +35,15 @@ interface WsdotApiService {
     fun getTollTrips(
         @Query("accesscode") apiKey: String
     ): LiveData<ApiResponse<List<TollTripResponse>>>
+
+    @GET("/traffic/api/amtrak/Schedulerest.svc/GetScheduleAsJson/")
+    fun getAmtrackSchedule(
+        @Query("accesscode") apiKey: String,
+        @Query("StatusDate") statusDate: String,
+        @Query("TrainNumber") trainNumber: String,
+        @Query("FromLocation") fromLocation: String,
+        @Query("ToLocation") toLocation: String
+    ): LiveData<ApiResponse<List<AmtrakScheduleResponse>>>
+
+
 }

@@ -60,8 +60,6 @@ class TwitterRepository @Inject constructor(
 
         for (tweetItem in tweetsResponse) {
 
-            Log.e("debug", tweetItem.user.toString())
-
             val tweet = Tweet(
                 tweetId = tweetItem.id,
                 userId = tweetItem.user.id,
