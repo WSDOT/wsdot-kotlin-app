@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.*
 
-
 class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     lateinit var dayPickerViewModel: SharedDateViewModel
