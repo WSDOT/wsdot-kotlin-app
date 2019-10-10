@@ -7,6 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
+import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
@@ -167,6 +168,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TollSignsViewModel::class)
     abstract fun findTollSignsViewModel(tollSignsViewModel: TollSignsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AmtrakCascadesViewModel::class)
+    abstract fun findAmtrakCascadesViewModel(amtrakCascadesViewModel: AmtrakCascadesViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory

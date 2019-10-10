@@ -36,8 +36,10 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.util.*
 import java.util.Calendar.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class FerriesRouteFragment : DaggerFragment(), Injectable {

@@ -19,6 +19,7 @@ package gov.wa.wsdot.android.wsdot.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.NorthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCrossingTimesFragment
@@ -151,5 +152,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTollTripFragment(): TollTripFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAmtrakCascadesFragment(): AmtrakCascadesFragment
 
 }

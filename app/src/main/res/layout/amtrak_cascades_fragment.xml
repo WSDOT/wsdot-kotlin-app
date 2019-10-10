@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel" />
+
+        <variable
+            name="dateViewModel"
+            type="gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel"/>
+
+        <variable
+            name="datePickerCallback"
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback" />
+
+        <variable
+            name="amtrakCascadesViewModel"
+            type="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/origin_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Origin"/>
+
+        <LinearLayout
+            android:id="@+id/origin_picker_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            app:layout_constraintTop_toBottomOf="@id/origin_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"
+            android:elevation="4dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/input_field_border_accent">
+
+            <Spinner
+                android:id="@+id/origin_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:spinnerPairs="@{amtrakCascadesViewModel.originStations}"
+                app:selectedPair="@={amtrakCascadesViewModel.selectedOrigin}"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/destination_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/origin_picker_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Destination (Optional)"/>
+
+        <LinearLayout
+            android:id="@+id/destination_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            app:layout_constraintTop_toBottomOf="@id/destination_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"
+            android:elevation="4dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/input_field_border_accent">
+
+            <Spinner
+                android:id="@+id/destination_picker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:spinnerPairs="@{amtrakCascadesViewModel.destinationStations}"
+                app:selectedPair="@={amtrakCascadesViewModel.selectedDestination}"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/departure_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/destination_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Departure Date"/>
+
+        <LinearLayout
+            android:id="@+id/departure_layout"
+            android:layout_height="46dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/departure_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="8dp"
+            android:layout_gravity="center_vertical"
+            android:elevation="4dp"
+            android:background="@drawable/input_field_border_accent">
+
+            <EditText
+                android:id="@+id/departure_date_picker"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:background="?android:attr/selectableItemBackground"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                app:bindShortDate="@{dateViewModel.value}"
+                android:focusable="false"
+                android:inputType="date"
+                android:cursorVisible="false"
+                android:onClick="@{(v) -> datePickerCallback.onTap(v)}"
+                android:autofillHints="@string/depature_date_hint"
+                android:hint="@string/depature_date_hint"/>
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/destination_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="8dp"
+            android:text="Check Schedule"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

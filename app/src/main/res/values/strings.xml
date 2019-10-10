@@ -115,6 +115,7 @@
     <string name="favorites_five">FAV_FIVE</string>
     <string name="favorites_six">FAV_SIX</string>
     <string name="favorites_seven">FAV_SEVEN</string>
+    <string name="depature_date_hint">select departure date</string>
 
 
 </resources>
