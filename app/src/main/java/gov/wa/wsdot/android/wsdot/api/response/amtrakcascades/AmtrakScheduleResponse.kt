@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api.response.amtrakcascades
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class AmtrakScheduleResponse (
     @field:SerializedName("ArrivalComment")
@@ -8,17 +9,17 @@ data class AmtrakScheduleResponse (
     @field:SerializedName("ArrivalScheduleType")
     val arrivalScheduleType: String?,
     @field:SerializedName("ArrivalTime")
-    val arrivalTime: String?,
+    val arrivalTime:  Date?,
     @field:SerializedName("DepartureComment")
     val departureComment: String?,
     @field:SerializedName("DepartureScheduleType")
     val departureScheduleType: String?,
     @field:SerializedName("DepartureTime")
-    val departureTime: String?,
+    val departureTime: Date?,
     @field:SerializedName("ScheduledArrivalTime")
-    val scheduledArrivalTime: String?,
+    val scheduledArrivalTime:  Date?,
     @field:SerializedName("ScheduledDepartureTime")
-    val scheduledDepartureTime: String?,
+    val scheduledDepartureTime:  Date?,
     @field:SerializedName("SortOrder")
     val sortOrder: Int,
     @field:SerializedName("StationFullName")
@@ -32,5 +33,5 @@ data class AmtrakScheduleResponse (
     @field:SerializedName("TripNumber")
     val tripNumber: Int,
     @field:SerializedName("UpdateTime")
-    val updateTime: String
+    val updateTime: Date
 )

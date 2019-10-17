@@ -66,7 +66,4 @@ object TollingBindingAdapters {
         view.setBackgroundColor(Color.BLACK)
     }
 
-
-
-
 }

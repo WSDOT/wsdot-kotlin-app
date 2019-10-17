@@ -5,8 +5,12 @@ import java.util.*
 object BindingFunctions {
 
     @JvmStatic
-    fun hasPassed(date: Date): Boolean {
-        return date.before(Date())
+    fun hasPassed(date: Date?): Boolean {
+
+        date?.let { return it.before(Date()) }
+
+        return false
+
     }
 
 }
