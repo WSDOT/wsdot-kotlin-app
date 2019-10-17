@@ -57,6 +57,14 @@
         app:popUpToInclusive="true">
 
         <action
+            android:id="@+id/action_navAmtrakCascadesFragment_to_navAmtrakCascadesScheduleFragment"
+            app:destination="@id/navAmtrakCascadesScheduleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
             android:id="@+id/action_navAmtrakCascadesFragment_to_dayPickerDialogFragment"
             app:destination="@id/dayPickerDialogFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -65,6 +73,12 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/navAmtrakCascadesScheduleFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.amtrakcascadesschedule.AmtrakCascadesScheduleFragment"
+        android:label="Departures"
+        tools:layout="@layout/amtrak_cascades_schedule_fragment"/>
 
     <fragment
         android:id="@+id/navBorderCrossingsFragment"

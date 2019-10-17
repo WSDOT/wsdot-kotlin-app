@@ -5,73 +5,86 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.FerrySailingItemBinding
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
+import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesItemBinding
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
 class AmtrakCascadesScheduleListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors
-) : DataBoundListAdapter<FerrySailingWithSpaces, FerrySailingItemBinding>(
+) : DataBoundListAdapter<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>, AmtrakCascadesItemBinding>(
     appExecutors = appExecutors,
-    diffCallback = object : DiffUtil.ItemCallback<FerrySailingWithSpaces>() {
-        override fun areItemsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
-            return oldItem.route == newItem.route
-                    && oldItem.departingTime == newItem.departingTime
-                    && oldItem.arrivingTime == newItem.arrivingTime
-                    && oldItem.departingTerminalId == newItem.departingTerminalId
-                    && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
-                    && oldItem.spaces == newItem.spaces
-                    && oldItem.maxSpaces == newItem.maxSpaces
-                    && oldItem.spacesCacheDate == oldItem.spacesCacheDate
+    diffCallback = object : DiffUtil.ItemCallback<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>() {
+        override fun areItemsTheSame(
+            oldItem: Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>,
+            newItem: Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>
+        ): Boolean {
+            val firstSame = oldItem.first.tripNumber == newItem.first.tripNumber
+                    && oldItem.first.sortOrder == newItem.first.sortOrder
+
+            var secondSame = true
+
+            if (oldItem.second != null && newItem.second != null) {
+                secondSame = oldItem.second!!.tripNumber == newItem.second!!.tripNumber
+                        && oldItem.second!!.sortOrder == newItem.second!!.sortOrder
+
+            } else if (oldItem.second != newItem.second) {
+                secondSame = false
+            }
+
+            return firstSame && secondSame
+
         }
 
-        override fun areContentsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
-            return oldItem.route == newItem.route
-                    && oldItem.departingTime == newItem.departingTime
-                    && oldItem.arrivingTime == newItem.arrivingTime
-                    && oldItem.departingTerminalId == newItem.departingTerminalId
-                    && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
-                    && oldItem.cacheDate.time == newItem.cacheDate.time
-                    && oldItem.spaces == newItem.spaces
-                    && oldItem.maxSpaces == newItem.maxSpaces
-                    && oldItem.spacesCacheDate == newItem.spacesCacheDate
+        override fun areContentsTheSame(
+            oldItem: Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>,
+            newItem: Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>
+        ): Boolean {
+            val firstSame = oldItem.first.arrivalComment == newItem.first.arrivalComment
+                    && oldItem.first.departureComment == newItem.first.departureComment
+                    && oldItem.first.arrivalTime == newItem.first.arrivalTime
+                    && oldItem.first.departureTime== newItem.first.departureTime
+                    && oldItem.first.scheduledDepartureTime == newItem.first.scheduledDepartureTime
+                    && oldItem.first.updateTime == newItem.first.updateTime
+
+            var secondSame = true
+
+            if (oldItem.second != null && newItem.second != null) {
+                secondSame = oldItem.second!!.arrivalComment == newItem.second!!.arrivalComment
+                        && oldItem.second!!.departureComment == newItem.second!!.departureComment
+                        && oldItem.second!!.arrivalTime == newItem.second!!.arrivalTime
+                        && oldItem.second!!.departureTime== newItem.second!!.departureTime
+                        && oldItem.second!!.scheduledDepartureTime == newItem.second!!.scheduledDepartureTime
+                        && oldItem.second!!.updateTime == newItem.second!!.updateTime
+
+            } else if (oldItem.second != newItem.second) {
+                secondSame = false
+            }
+
+            return firstSame && secondSame
         }
     }
 ) {
 
-    var mObserver: RecyclerView.AdapterDataObserver? = null
-
-    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
-        mObserver = observer
-        super.registerAdapterDataObserver(observer)
-
-    }
-
-    // This lets us add an observer that is dependant on the binding var
-    // in this case we remove our auto scroll observer
-    fun removeObserver() {
-        mObserver?.let {
-            unregisterAdapterDataObserver(it)
-            mObserver = null
-        }
-    }
-
-    override fun createBinding(parent: ViewGroup): FerrySailingItemBinding {
+    override fun createBinding(parent: ViewGroup): AmtrakCascadesItemBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.ferry_sailing_item,
+            R.layout.amtrak_cascades_item,
             parent,
             false,
             dataBindingComponent
         )
     }
 
-    override fun bind(binding: FerrySailingItemBinding, item: FerrySailingWithSpaces, position: Int) {
-        binding.sailing = item
+    override fun bind(
+        binding: AmtrakCascadesItemBinding,
+        item: Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>,
+        position: Int
+    ) {
+        binding.departureItem = item.first
+        binding.arrivalItem = item.second
     }
 
 }

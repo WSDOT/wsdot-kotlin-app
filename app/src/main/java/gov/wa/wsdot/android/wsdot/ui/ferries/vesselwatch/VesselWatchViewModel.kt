@@ -39,13 +39,6 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
         vessels.addSource(vesselsLiveData) { vessels.value = it }
     }
 
-    // TODO: let users bookmark vessel watch
-    /*
-    fun updateFavorite() {
-        vesselRepo.updateFavorite(isFavorite)
-    }
-    */
-
     fun refresh() {
         vessels.removeSource(vesselsLiveData)
         vesselsLiveData = vesselRepo.loadVessels(true)

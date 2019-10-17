@@ -5,12 +5,15 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.android.support.DaggerFragment
@@ -26,7 +29,6 @@ import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class AmtrakCascadesFragment : DaggerFragment(), Injectable {
@@ -50,7 +52,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     override fun onDestroy() {
         super.onDestroy()
         // Clear view models since they are no longer needed
-        viewModelStore.clear()
+       // viewModelStore.clear()
     }
 
     override fun onCreateView(
@@ -59,8 +61,9 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     ): View? {
 
         // set up view models
-        amtrakCascadesViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(AmtrakCascadesViewModel::class.java)
+        amtrakCascadesViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(AmtrakCascadesViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         dayPickerViewModel = activity?.run {
             ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
@@ -74,17 +77,6 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
             container,
             false
         )
-/*
-
-        amtrakCascadesViewModel.selectedOrigin.observe(viewLifecycleOwner, Observer { origin ->
-            amtrackCascadesViewModel.
-        })
-
-
-        amtrackCascadesViewModel.selectedDestination.observe(viewLifecycleOwner, Observer { destination ->
-            amtrackCascadesViewModel.
-        })
-        */
 
         dayPickerViewModel.value.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
             val c = Calendar.getInstance()
@@ -99,6 +91,22 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         })
 
+        amtrakCascadesViewModel.selectedOrigin.observe(viewLifecycleOwner, Observer { origin ->
+            amtrakCascadesViewModel.setDeparturesQuery(origin = origin.second, destination = null)
+        })
+
+        amtrakCascadesViewModel.selectedDestination.observe(viewLifecycleOwner, Observer { destination ->
+            amtrakCascadesViewModel.setDeparturesQuery(origin = null, destination = destination.second)
+        })
+
+        amtrakCascadesViewModel.schedulePairs.observe(viewLifecycleOwner, Observer { pairs ->
+            Log.e("debug PAIRS:", pairs.toString())
+        })
+
+        dataBinding.submitButton.setOnClickListener {
+            val action = AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment()
+            findNavController().navigate(action)
+        }
 
         // bind view models to view
         dataBinding.dateViewModel = dayPickerViewModel
@@ -128,7 +136,6 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                 Handler().postDelayed({ view.isEnabled = true }, 1000)
             }
         }
-
 
         return dataBinding.root
     }
