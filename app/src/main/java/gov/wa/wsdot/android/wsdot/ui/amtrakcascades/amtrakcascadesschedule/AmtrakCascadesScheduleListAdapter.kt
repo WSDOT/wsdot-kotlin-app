@@ -24,7 +24,7 @@ class AmtrakCascadesScheduleListAdapter(
             val firstSame = oldItem.first.tripNumber == newItem.first.tripNumber
                     && oldItem.first.sortOrder == newItem.first.sortOrder
 
-            var secondSame = true
+            var secondSame = false
 
             if (oldItem.second != null && newItem.second != null) {
                 secondSame = oldItem.second!!.tripNumber == newItem.second!!.tripNumber
@@ -45,16 +45,18 @@ class AmtrakCascadesScheduleListAdapter(
             val firstSame = oldItem.first.arrivalComment == newItem.first.arrivalComment
                     && oldItem.first.departureComment == newItem.first.departureComment
                     && oldItem.first.arrivalTime == newItem.first.arrivalTime
+                    && oldItem.first.scheduledArrivalTime == newItem.first.scheduledArrivalTime
                     && oldItem.first.departureTime== newItem.first.departureTime
                     && oldItem.first.scheduledDepartureTime == newItem.first.scheduledDepartureTime
                     && oldItem.first.updateTime == newItem.first.updateTime
 
-            var secondSame = true
+            var secondSame = false
 
             if (oldItem.second != null && newItem.second != null) {
                 secondSame = oldItem.second!!.arrivalComment == newItem.second!!.arrivalComment
                         && oldItem.second!!.departureComment == newItem.second!!.departureComment
                         && oldItem.second!!.arrivalTime == newItem.second!!.arrivalTime
+                        && oldItem.second!!.scheduledArrivalTime == newItem.second!!.scheduledArrivalTime
                         && oldItem.second!!.departureTime== newItem.second!!.departureTime
                         && oldItem.second!!.scheduledDepartureTime == newItem.second!!.scheduledDepartureTime
                         && oldItem.second!!.updateTime == newItem.second!!.updateTime

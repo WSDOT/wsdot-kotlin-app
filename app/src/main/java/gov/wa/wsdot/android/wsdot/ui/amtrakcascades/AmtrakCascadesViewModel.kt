@@ -1,30 +1,30 @@
 package gov.wa.wsdot.android.wsdot.ui.amtrakcascades
 
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
 import gov.wa.wsdot.android.wsdot.repository.AmtrakCascadesRepository
+import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.helpers.AmtrakUtils
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
 class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: AmtrakCascadesRepository) : ViewModel() {
 
-
     private val _departuresQuery: MutableLiveData<DeparturesQuery> = MutableLiveData()
 
-    val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = Transformations
+    private val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = Transformations
         .switchMap(_departuresQuery) { input ->
             input.ifExists { date, fromLocation, toLocation ->
                 amtrakCascadesRepository.getDestinations(statusDate = date, fromLocation = fromLocation, toLocation = toLocation)
             }
         }
 
-    val schedulePairs: MediatorLiveData<List<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>> = MediatorLiveData()
+    val schedulePairs: MediatorLiveData<Resource<List<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>>> = MediatorLiveData()
 
     // Used by spinner
     val originStations : List<Pair<String, String>> = arrayListOf(
@@ -46,10 +46,10 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         Pair("Salem, OR", "SLM"),
         Pair("Albany, OR", "ALY"),
         Pair("Eugene, OR", "EUG")
-
     )
+
     val destinationStations : List<Pair<String, String>> = arrayListOf(
-        Pair("Any", "N/A"),
+        Pair("All", "N/A"),
         Pair("Vancouver, BC", "VAC"),
         Pair("Bellingham, WA", "BEL"),
         Pair("Mount Vernon, WA", "MVW"),
@@ -88,7 +88,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         // !!! Special case to consider is when the destination is not selected. In this case the pairs will have the destination value nil.
         schedulePairs.addSource(departures) {
 
-            var pairs = mutableListOf<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>()
+            val pairs = mutableListOf<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>()
 
             it.data?.let { scheduleItems ->
 
@@ -110,7 +110,13 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
                     currentIndex++
                 }
             }
-            schedulePairs.value = pairs
+
+            when(it.status) {
+                Status.LOADING -> schedulePairs.value = Resource.loading(pairs)
+                Status.ERROR -> schedulePairs.value = Resource.error(it.message?: "error", pairs)
+                Status.SUCCESS -> schedulePairs.value = Resource.success(pairs)
+            }
+
         }
     }
 
@@ -126,11 +132,11 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
 
     fun setDeparturesQuery(origin: String?, destination: String?) {
 
-        var fromLocation = selectedOrigin.value?.second
-        var toLocation = selectedDestination.value?.second
+        var mOrigin = selectedOrigin.value?.second
+        var mDestination = selectedDestination.value?.second
 
-        destination?.let { toLocation = destination }
-        origin?.let { fromLocation = origin }
+        origin?.let { mOrigin = origin }
+        destination?.let { mDestination = destination }
 
         val format = SimpleDateFormat("MM-dd-yyyy")
 
@@ -142,12 +148,16 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
 
         val date = _departuresQuery.value?.date ?: format.format(c.time) // set to current date if null
 
-        if (fromLocation != null && toLocation != null && date != null) {
+        if (mOrigin != null && mDestination != null && date != null) {
+
+            if (mOrigin == mDestination) {
+                mDestination = "N/A"
+            }
 
             val update = DeparturesQuery(
                 date = date,
-                fromLocation = fromLocation!!,
-                toLocation = toLocation!!
+                fromLocation = mOrigin!!,
+                toLocation = mDestination!!
             )
             if (_departuresQuery.value == update) {
                 return
@@ -159,13 +169,17 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     // 09-26-2019
     fun setDeparturesQuery(departureDate: Date) {
 
-        val origin = selectedOrigin.value?.second
-        val destination = selectedDestination.value?.second
+        var origin = selectedOrigin.value?.second
+        var destination = selectedDestination.value?.second
 
         val format = SimpleDateFormat("MM-dd-yyyy")
         format.format(departureDate)
 
         if (origin != null && destination != null) {
+
+            if (origin == destination) {
+                destination = "N/A"
+            }
 
             val update = DeparturesQuery(
                 date = format.format(departureDate),
@@ -180,38 +194,32 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
             _departuresQuery.value = update
         }
     }
-/*
 
-    /*
-     *  Swaps the initial terminal query if the arriving terminal is closer to the user than the departing.
-     */
     fun selectStationNearestTo(location: Location) {
 
-        val stationLocations = DistanceUtils.getStationLocations()
+        val stationLocations = AmtrakUtils.getStationLocations()
 
-        var nearestStation: String? = null
+        var nearestStation: Pair<String, String>? = null
         var winner = Int.MAX_VALUE
 
-        for (station in stationLocations) {
+        for (station in originStations) {
 
-                terminalLocations[terminalCombo.departingTerminalId]?.let {
+            stationLocations[station.second]?.let {
 
                 val contender = DistanceUtils.getDistanceFromPoints(it.latitude, it.longitude, location.latitude, location.longitude)
 
                 if (contender < winner) {
                     winner = contender
-                    nearestTerminalCombo = terminalCombo
+                    nearestStation = station
                 }
             }
         }
 
-        nearestTerminalCombo?.let {termCombo ->
-            _selectedOrigin.value = termCombo
+        nearestStation?.let {station ->
+            _selectedOrigin.value = station
         }
 
     }
-
- */
 
     data class DeparturesQuery(val date: String, val fromLocation: String, val toLocation: String) {
         fun <T> ifExists(f: (String, String, String) -> LiveData<T>): LiveData<T> {

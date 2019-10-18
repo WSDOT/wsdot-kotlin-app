@@ -77,8 +77,15 @@
     <fragment
         android:id="@+id/navAmtrakCascadesScheduleFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.amtrakcascadesschedule.AmtrakCascadesScheduleFragment"
-        android:label="Departures"
-        tools:layout="@layout/amtrak_cascades_schedule_fragment"/>
+        android:label="{title}"
+        tools:layout="@layout/amtrak_cascades_schedule_fragment">
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Departures"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navBorderCrossingsFragment"
