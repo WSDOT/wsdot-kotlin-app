@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.amtrakcascades.amtrakcascadesschedule
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.transition.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
@@ -54,6 +56,12 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
 
         dataBinding.amtrakViewModel = amtrakCascadesViewModel
 
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                amtrakCascadesViewModel.refresh()
+            }
+        }
+
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
         binding = dataBinding
@@ -61,7 +69,6 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
         return dataBinding.root
 
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,9 +90,14 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
             }
 
         amtrakCascadesViewModel.schedulePairs.observe(viewLifecycleOwner, Observer { amtrakScheduleResource ->
-            adapter.submitList(amtrakScheduleResource)
+            if (amtrakScheduleResource.data != null && amtrakScheduleResource.data.isNotEmpty()) {
+                binding.emptyListView.visibility = View.GONE
+                adapter.submitList(amtrakScheduleResource.data)
+            } else if (amtrakScheduleResource.status != Status.LOADING || amtrakScheduleResource.status != Status.ERROR) {
+                binding.emptyListView.visibility = View.VISIBLE
+            } else {
+                binding.emptyListView.visibility = View.GONE
+            }
         })
-
-
     }
 }

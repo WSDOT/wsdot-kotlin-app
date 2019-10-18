@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -39,6 +38,8 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     lateinit var amtrakCascadesViewModel: AmtrakCascadesViewModel
     lateinit var dayPickerViewModel: SharedDateViewModel
 
+    var originString = ""
+    var destinationString = ""
 
     var binding by autoCleared<AmtrakCascadesFragmentBinding>()
 
@@ -52,7 +53,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     override fun onDestroy() {
         super.onDestroy()
         // Clear view models since they are no longer needed
-       // viewModelStore.clear()
+        viewModelStore.clear()
     }
 
     override fun onCreateView(
@@ -93,18 +94,30 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         amtrakCascadesViewModel.selectedOrigin.observe(viewLifecycleOwner, Observer { origin ->
             amtrakCascadesViewModel.setDeparturesQuery(origin = origin.second, destination = null)
+            origin?.let { originString = it.first }
         })
 
         amtrakCascadesViewModel.selectedDestination.observe(viewLifecycleOwner, Observer { destination ->
             amtrakCascadesViewModel.setDeparturesQuery(origin = null, destination = destination.second)
+            destination?.let { destinationString = it.first }
         })
 
-        amtrakCascadesViewModel.schedulePairs.observe(viewLifecycleOwner, Observer { pairs ->
-            Log.e("debug PAIRS:", pairs.toString())
-        })
-
+        // Adjust title based on selection, if user picks same origin destination, set title
+        // to just departures from origin
         dataBinding.submitButton.setOnClickListener {
-            val action = AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment()
+
+            var title = "$originString to $destinationString"
+
+            if (originString == destinationString || destinationString == "All") {
+                title = "$originString Departures"
+            }
+
+            val action = AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment(title)
+            findNavController().navigate(action)
+        }
+
+        dataBinding.buyTicketsButton.setOnClickListener {
+            val action = AmtrakCascadesFragmentDirections.actionGlobalNavWebViewFragment("https://www.amtrakcascades.com/buy-tickets", "Buy Tickets")
             findNavController().navigate(action)
         }
 
@@ -115,7 +128,6 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
-
         // set date range for today to 14 days out
         val c = Calendar.getInstance()
         c.set(Calendar.HOUR_OF_DAY, 0)
@@ -124,7 +136,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
         c.set(Calendar.MILLISECOND, 0)
 
         val startTime = c.time
-        c.add(Calendar.DAY_OF_YEAR, 14)
+        c.add(Calendar.DAY_OF_YEAR, 28) // allow users to check departures up to 28 days out
         val endTime = c.time
 
         binding.datePickerCallback = object : TapCallback {
@@ -136,20 +148,23 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                 Handler().postDelayed({ view.isEnabled = true }, 1000)
             }
         }
-
         return dataBinding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setClosestStationWithPermissionCheck()
+    }
 
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun setClosestTerminal() {
+    fun setClosestStation() {
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
-                        //routeViewModel.selectTerminalNearestTo(it)
+                        amtrakCascadesViewModel.selectStationNearestTo(it)
                     }
                 }
         }
@@ -157,7 +172,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
     @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
     fun showRationaleForLocation(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_terminal_location_rationale, request)
+        showRationaleDialog(R.string.permission_station_location_rationale, request)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {

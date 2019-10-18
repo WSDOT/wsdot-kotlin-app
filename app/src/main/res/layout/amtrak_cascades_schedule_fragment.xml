@@ -11,6 +11,10 @@
             name="amtrakViewModel"
             type="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel"/>
 
+        <variable
+            name="retryCallback"
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,28 +23,52 @@
         android:layout_height="match_parent"
         android:clipToPadding="false">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:refreshing="@{((Resource) amtrakViewModel.departures).status == Status.LOADING}"
-        app:onRefreshListener="@{() -> amtrakViewModel.refresh()}">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/schedule_list"
-            app:layoutManager="LinearLayoutManager"
-            android:layout_width="0dp"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
-            tools:listitem="@layout/amtrak_cascades_item" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:refreshing="@{((Resource) amtrakViewModel.schedulePairs).status == Status.LOADING}"
+            app:onRefreshListener="@{() -> amtrakViewModel.refresh()}">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/schedule_list"
+                app:layoutManager="LinearLayoutManager"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                tools:listitem="@layout/amtrak_cascades_item" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/empty_list_view"
+            style="@style/CardTitleText"
+            android:text="No Departures"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/loading_error_state"
+            app:resource="@{(Resource) amtrakViewModel.schedulePairs}"
+            app:callback="@{() -> retryCallback.retry()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

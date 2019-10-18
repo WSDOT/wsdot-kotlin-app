@@ -1,14 +1,63 @@
-package gov.wa.wsdot.android.wsdot.ui.common.binding
+package gov.wa.wsdot.android.wsdot.ui.amtrakcascades.binding
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
+import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingAdapters
 
 
 object AmtrakCascadesBindingAdapters {
 
     @JvmStatic
+    @BindingAdapter("bindDepartureDateHour")
+    fun bindDepartureDateHour(textView: TextView, departureItem: AmtrakScheduleResponse?) {
+        departureItem?.let {
+            it.arrivalTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.scheduledArrivalTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.departureTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.scheduledDepartureTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindArrivalDateHour")
+    fun bindArrivalDateHour(textView: TextView, arrivalItem: AmtrakScheduleResponse?) {
+
+        arrivalItem?.let {
+            it.departureTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.scheduledDepartureTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.arrivalTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+            it.scheduledArrivalTime?.let { date ->
+                textView.text =
+                    BindingAdapters.getHourString(date)
+            }
+        }
+    }
+
+    @JvmStatic
     @BindingAdapter("bindTrainStationName")
-    fun bindTrainStationName(textView: TextView, station: String) {
+    fun bindTrainStationName(textView: TextView, station: String?) {
         textView.text = when(station) {
             "VAC" -> "Vancouver, BC"
             "BEL" -> "Bellingham, WA"
@@ -60,7 +109,7 @@ object AmtrakCascadesBindingAdapters {
             517 -> "517 Amtrak Cascades Train"
             518 -> "518 Amtrak Cascades Train"
             519 -> "519 Amtrak Cascades Train"
-            else -> String.format("%d Service", trainNumber)
+            else -> String.format("%d Bus Service", trainNumber)
         }
     }
 }

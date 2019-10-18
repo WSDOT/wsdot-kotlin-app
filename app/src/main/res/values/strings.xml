@@ -74,7 +74,7 @@
     <string name="retry">Retry</string>
 
     // Permissions
-
+    <string name="permission_station_location_rationale">Allows WSDOT to select the departing station closest to you.</string>
     <string name="permission_terminal_location_rationale">Allows WSDOT to select the departing terminal closest to you.</string>
     <string name="permission_location_denied">location permission denied</string>
     <string name="permission_location_never_ask_again">location permission denied. Please go to permission settings to allow WSDOT to use your location</string>
