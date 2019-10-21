@@ -90,14 +90,16 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
             }
 
         amtrakCascadesViewModel.schedulePairs.observe(viewLifecycleOwner, Observer { amtrakScheduleResource ->
-            if (amtrakScheduleResource.data != null && amtrakScheduleResource.data.isNotEmpty()) {
-                binding.emptyListView.visibility = View.GONE
-                adapter.submitList(amtrakScheduleResource.data)
-            } else if (amtrakScheduleResource.status != Status.LOADING || amtrakScheduleResource.status != Status.ERROR) {
-                binding.emptyListView.visibility = View.VISIBLE
-            } else {
-                binding.emptyListView.visibility = View.GONE
+            binding.emptyListView.visibility = View.GONE
+            amtrakScheduleResource.data?.let {
+                if(it.isNotEmpty() && amtrakScheduleResource.status == Status.SUCCESS) {
+                    adapter.submitList(amtrakScheduleResource.data)
+                } else if (it.isEmpty() && amtrakScheduleResource.status != Status.LOADING) {
+                    binding.emptyListView.visibility = View.VISIBLE
+                }
             }
+
+
         })
     }
 }
