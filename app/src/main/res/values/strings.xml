@@ -62,6 +62,10 @@
     <string name="rest_area_milepost_text">%d</string>
     <string name="rest_area_amenities_header">Amenities:</string>
 
+    // Amtrak
+    <string name="train_comment">Estimated %s</string>
+    <string name="amtrak_trip_header">Trip %s</string>
+
     // Social
     <string name="twitter_status_url">https://twitter.com/%s/status/%s</string>
 
@@ -70,7 +74,7 @@
     <string name="retry">Retry</string>
 
     // Permissions
-
+    <string name="permission_station_location_rationale">Allows WSDOT to select the departing station closest to you.</string>
     <string name="permission_terminal_location_rationale">Allows WSDOT to select the departing terminal closest to you.</string>
     <string name="permission_location_denied">location permission denied</string>
     <string name="permission_location_never_ask_again">location permission denied. Please go to permission settings to allow WSDOT to use your location</string>
@@ -115,6 +119,7 @@
     <string name="favorites_five">FAV_FIVE</string>
     <string name="favorites_six">FAV_SIX</string>
     <string name="favorites_seven">FAV_SEVEN</string>
+    <string name="depature_date_hint">select departure date</string>
 
 
 </resources>

@@ -49,6 +49,45 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navAmtrakCascadesFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesFragment"
+        android:label="Amtrak Cascades"
+        tools:layout="@layout/amtrak_cascades_fragment"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true">
+
+        <action
+            android:id="@+id/action_navAmtrakCascadesFragment_to_navAmtrakCascadesScheduleFragment"
+            app:destination="@id/navAmtrakCascadesScheduleFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_navAmtrakCascadesFragment_to_dayPickerDialogFragment"
+            app:destination="@id/dayPickerDialogFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navAmtrakCascadesScheduleFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.amtrakcascades.amtrakcascadesschedule.AmtrakCascadesScheduleFragment"
+        android:label="{title}"
+        tools:layout="@layout/amtrak_cascades_schedule_fragment">
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Departures"/>
+
+    </fragment>
+
+    <fragment
         android:id="@+id/navBorderCrossingsFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment"
         android:label="Border Waits"
@@ -423,6 +462,14 @@
     <action
         android:id="@+id/action_global_navTollTripFragment"
         app:destination="@id/navTollTripFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navAmtrakCascadesFragment"
+        app:destination="@id/navAmtrakCascadesFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
