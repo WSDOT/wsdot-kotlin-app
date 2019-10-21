@@ -58,7 +58,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navMountainPassHomeFragment,
                 R.id.navBorderCrossingsFragment,
                 R.id.navTollRatesFragment,
-                R.id.navFavoritesFragment
+                R.id.navFavoritesFragment,
+                R.id.navAmtrakCascadesFragment
             ), drawerLayout)
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
@@ -121,11 +122,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
                 }
             }
-            /*
             R.id.nav_amtrak_cascades -> {
-                enableAds(drawerLayout, resources.getString(R.string.ad_target_other))
+                if (navController.currentDestination?.id != R.id.navAmtrakCascadesFragment) {
+                    enableAds("other")
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAmtrakCascadesFragment)
+                }
             }
-             */
             R.id.nav_favorites -> {
                 // Favorites fragment handles its out ad targets
                 if (navController.currentDestination?.id != R.id.navFavoritesFragment) {

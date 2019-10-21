@@ -39,6 +39,8 @@ sealed class ApiResponse<T> {
 
                 Log.e("ApiResponse debug", response.toString())
 
+
+
                 val body = response.body()
                 if (body == null || response.code() == 204) {
                     Log.e("ApiResponse debug", "empty")
