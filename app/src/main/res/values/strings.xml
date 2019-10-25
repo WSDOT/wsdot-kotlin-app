@@ -121,5 +121,14 @@
     <string name="favorites_seven">FAV_SEVEN</string>
     <string name="depature_date_hint">select departure date</string>
 
+    // about
+    <string name="about_text" formatted="true">
+        The Washington State Department of Transportation provides and supports safe, reliable and
+        cost-effective transportation options to improve livablecommunities and economic vitality
+        for people and businesses.\n\nThe WSDOT mobile app was created to make it easier for you to
+        know the latest about Washington\'s transportation system.
+    </string>
+
+
 
 </resources>

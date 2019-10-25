@@ -59,7 +59,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navBorderCrossingsFragment,
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
-                R.id.navAmtrakCascadesFragment
+                R.id.navAmtrakCascadesFragment,
+                R.id.navAboutFragment
             ), drawerLayout)
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
@@ -73,7 +74,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         navView.menu.getItem(0).isChecked = true
         enableAds(resources.getString(R.string.ad_target_traffic))
         /////////////////////////////////////////////////////////
-
 
 
     }
@@ -134,8 +134,14 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
                 }
             }
-
+            R.id.nav_about -> {
+                if(navController.currentDestination?.id != R.id.navAboutFragment) {
+                    disableAds()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAboutFragment)
+                }
+            }
         }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
