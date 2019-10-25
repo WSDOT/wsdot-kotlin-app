@@ -603,6 +603,7 @@ class FavoritesListAdapter(
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
 
+
         return binding
 
     }

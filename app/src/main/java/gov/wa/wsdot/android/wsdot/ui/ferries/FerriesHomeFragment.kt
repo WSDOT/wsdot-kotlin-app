@@ -27,7 +27,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var ferriesViewModel: FerriesViewModel
-    // lateinit var sailingViewModel: FerriesSailingViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
