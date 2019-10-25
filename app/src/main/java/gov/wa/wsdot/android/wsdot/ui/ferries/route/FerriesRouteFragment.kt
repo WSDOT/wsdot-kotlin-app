@@ -71,7 +71,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     override fun onDestroy() {
         super.onDestroy()
         // Clear view models since they are no longer needed
-        viewModelStore.clear()
+        activity?.viewModelStore?.clear()
     }
 
     override fun onCreateView(
@@ -140,7 +140,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             c.set(SECOND, 0)
             c.set(MILLISECOND, 0)
             sailingViewModel.setSailingQuery(c.time)
-
         })
 
         // bind view models to view
