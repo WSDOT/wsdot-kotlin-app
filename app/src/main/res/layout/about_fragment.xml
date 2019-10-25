@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/about_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="?android:attr/selectableItemBackground">
+
+            <TextView
+                style="@style/CardTitleText"
+                android:id="@+id/infoView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/about_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/careers_button"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/infoView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Careers At WSDOT"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/hero_button"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/careers_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Report an HOV/HOT lane violator"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/app_bug_report_button"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/hero_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="Report an issue with app"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/app_feedback_button"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/app_bug_report_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/ferries_feedback_button"
+                android:text="App Feedback"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ferries_feedback_button"
+                android:layout_width="0dp"
+                android:layout_height="58dp"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintTop_toBottomOf="@id/app_bug_report_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/app_feedback_button"
+                android:text="Ferries Feedback"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
