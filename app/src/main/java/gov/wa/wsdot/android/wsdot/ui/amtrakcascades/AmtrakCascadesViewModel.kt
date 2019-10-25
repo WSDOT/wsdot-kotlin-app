@@ -17,6 +17,8 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
 
     private val _departuresQuery: MutableLiveData<DeparturesQuery> = MutableLiveData()
 
+    private var didFindNearestStation = false
+
     private val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = Transformations
         .switchMap(_departuresQuery) { input ->
             input.ifExists { date, fromLocation, toLocation ->
@@ -196,6 +198,10 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     }
 
     fun selectStationNearestTo(location: Location) {
+
+        // Only use GPS to find nearest station once per view model lifecycle
+        if (didFindNearestStation) { return }
+        didFindNearestStation = true
 
         val stationLocations = AmtrakUtils.getStationLocations()
 
