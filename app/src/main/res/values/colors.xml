@@ -6,6 +6,8 @@
     <color name="transparentPrimary">#cc007B5F</color>
     <color name="white">#FFFFFF</color>
 
+    <color name="go_orange">#FF6A13</color>
+
     <color name="amtrak">#007FA3</color>
 
     <color name="shadowStart">#FF333333</color>

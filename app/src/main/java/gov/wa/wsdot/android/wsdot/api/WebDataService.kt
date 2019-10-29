@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api
 
 import androidx.lifecycle.LiveData
+import gov.wa.wsdot.android.wsdot.api.response.EventStatusResponse
 import gov.wa.wsdot.android.wsdot.api.response.borderwaits.BorderCrossingResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
@@ -39,5 +40,8 @@ interface WebDataService {
 
     @GET("StaticTollRates.js")
     fun getTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
+
+    @GET("EventStatusTEST.js")
+    fun getEventStatus(): LiveData<ApiResponse<EventStatusResponse>>
 
 }

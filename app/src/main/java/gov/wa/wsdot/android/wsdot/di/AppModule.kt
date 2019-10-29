@@ -36,6 +36,7 @@ class AppModule {
 
         val gson = GsonBuilder()
             .registerTypeAdapter(Date::class.java, JsonDateDeserializer())
+            //.registerTypeAdapter(Date::class.java, DateStringDeserializer())
 
         return Retrofit.Builder()
             .baseUrl("https://data.wsdot.wa.gov/mobile/")

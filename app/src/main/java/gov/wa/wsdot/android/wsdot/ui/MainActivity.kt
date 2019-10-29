@@ -1,6 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -8,9 +11,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavGraph
 import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
@@ -26,6 +33,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.di.Injectable
 import javax.inject.Inject
 
 
@@ -34,6 +42,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var viewModel: MainViewModel
 
     lateinit var drawerLayout: DrawerLayout
 
@@ -71,12 +83,29 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         val graph = navInflater.inflate(R.navigation.nav_graph)
         graph.startDestination = R.id.navTrafficMapFragment
         navController.graph = graph
-        navView.menu.getItem(0).isChecked = true
+
+        navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+
         enableAds(resources.getString(R.string.ad_target_traffic))
-        /////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel.eventStatus.observe(this, Observer { eventResponse ->
+            eventResponse.data?.let {
 
 
+                navView.menu.setGroupVisible(R.id.event_banner_group, true)
+                navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
+                Log.e("debug", it.toString())
+
+
+
+            }
+
+        })
+        
     }
+
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -139,6 +168,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     disableAds()
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAboutFragment)
                 }
+            }
+            R.id.event_banner -> {
+                Log.e("debug", "tapped the event banner!")
             }
         }
 

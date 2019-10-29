@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:showIn="navigation_view" android:checkableBehavior="single">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="navigation_view"
+    android:checkableBehavior="single">
+
+    <group android:id="@+id/event_banner_group" android:visible="false">
+        <item
+            android:id="@+id/event_banner"
+            android:title="@null"
+            app:actionLayout="@layout/event_banner_layout"/>
+    </group>
 
     <group android:id="@+id/main" android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_traffic_map"
             android:icon="@drawable/ic_traffic_map_home"
