@@ -3,8 +3,6 @@
     <color name="wsdotGreen">#007B5F</color>
     <color name="wsdotGreenDark">#005151</color>
     <color name="wsdotGreenAccent">#33957F</color>
-
-    <color name="wsdotGreenTransparent">#cc007B5F</color>
     <color name="white">#FFFFFF</color>
 
     <color name="wsdotOrange">#FF6A13</color>
@@ -13,12 +11,17 @@
 
     <color name="amtrak">#007FA3</color>
 
+    <color name="black">#000000</color>
+
     <color name="shadowStart">#FF333333</color>
     <color name="shadowEnd">#33000000</color>
 
     <color name="divider">#1A000000</color>
 
+    <color name="favoritePink">#FFFF94C2</color>
+
     <color name="gray">#9e9e9e</color>
     <color name="darkGray">#6d6d6d</color>
+    <color name="lightGray">#1A000000</color>
 
 </resources>

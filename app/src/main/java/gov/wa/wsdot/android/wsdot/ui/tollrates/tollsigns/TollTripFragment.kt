@@ -87,12 +87,6 @@ class TollTripFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
                 .position(LatLng(startLatitude, startLongitude)))
 
-        Log.e("Debug", args.endLatitude)
-        Log.e("Debug", args.endLongitude)
-
-        Log.e("Debug", endLatitude.toString())
-        Log.e("Debug", endLongitude.toString())
-
         mMap.addMarker(
             MarkerOptions()
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))

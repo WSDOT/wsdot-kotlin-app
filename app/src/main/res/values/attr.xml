@@ -6,5 +6,8 @@
     <attr name="themeColorAccent" format="reference"/>
     <attr name="themeColorTransparent" format="reference"/>
     <attr name="themeColorGray" format="reference"/>
+    <attr name="themeColorLightGray" format="reference"/>
+
+    <attr name="themeColorTollRateCard" format="reference"/>
 
 </resources>

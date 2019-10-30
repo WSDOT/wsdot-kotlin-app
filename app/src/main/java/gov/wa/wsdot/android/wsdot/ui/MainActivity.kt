@@ -12,6 +12,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -33,6 +36,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.di.AppComponent
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import javax.inject.Inject
 
@@ -51,9 +55,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
@@ -75,35 +82,27 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navAboutFragment
             ), drawerLayout)
 
-        NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
-        NavigationUI.setupActionBarWithNavController(this, navController, config)
-
         // TODO: Let user set home screen ///////////////////////
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
         graph.startDestination = R.id.navTrafficMapFragment
         navController.graph = graph
 
+        NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
+        NavigationUI.setupActionBarWithNavController(this, navController, config)
+
         navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
 
         enableAds(resources.getString(R.string.ad_target_traffic))
-        ////////////////////////////////////////////////////////
 
+        // handle event banner
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
-
-
                 navView.menu.setGroupVisible(R.id.event_banner_group, true)
                 navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
-                Log.e("debug", it.toString())
-
-
-
             }
-
         })
-        
     }
 
 
@@ -226,6 +225,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdViewBox.visibility = GONE
         mAdView.visibility = GONE
         mAdView.pause()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+
+        super.onConfigurationChanged(newConfig)
     }
 
 }

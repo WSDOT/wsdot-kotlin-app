@@ -31,10 +31,10 @@ import gov.wa.wsdot.android.wsdot.WsdotApp
  * Helper class to automatically inject fragments if they implement [Injectable].
  */
 object AppInjector {
-    fun init(githubApp: WsdotApp) {
-        DaggerAppComponent.builder().application(githubApp)
-            .build().inject(githubApp)
-        githubApp
+    fun init(wsdotApp: WsdotApp) {
+        DaggerAppComponent.builder().application(wsdotApp)
+            .build().inject(wsdotApp)
+        wsdotApp
             .registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                     handleActivity(activity)

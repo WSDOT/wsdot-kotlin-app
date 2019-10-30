@@ -7,15 +7,27 @@
         <item name="colorPrimaryDark">?themeColorDark</item>
         <item name="colorAccent">?themeColorAccent</item>
 
+        <item name="themeColorGray">@color/gray</item>
+        <item name="themeColorLightGray">@color/lightGray</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Light" parent="AppTheme">
+        <!-- your light theme attributes -->
+        <item name="themeColorTollRateCard">@color/black</item>
+    </style>
+
+    <style name="AppTheme.Night" parent="AppTheme">
+        <!-- your light theme attributes -->
+        <item name="themeColorTollRateCard">@color/lightGray</item>
     </style>
 
     <style name="ThemeWSDOTGreen" parent="AppTheme">
         <item name="themeColorPrimary">@color/wsdotGreen</item>
         <item name="themeColorDark">@color/wsdotGreenDark</item>
         <item name="themeColorAccent">@color/wsdotGreenAccent</item>
-        <item name="themeColorGray">@color/darkGray</item>
     </style>
 
     <style name="ThemeWSDOTOrange" parent="AppTheme">
@@ -23,7 +35,6 @@
         <item name="themeColorPrimary">@color/wsdotOrange</item>
         <item name="themeColorDark">@color/wsdotOrangeDark</item>
         <item name="themeColorAccent">@color/wsdotOrangeAccent</item>
-        <item name="themeColorGray">@color/darkGray</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

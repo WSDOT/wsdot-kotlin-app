@@ -16,6 +16,8 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -119,6 +121,13 @@ object BindingAdapters {
     @BindingAdapter("setFavoriteIcon")
     fun bindFavoriteIcon(button: ImageButton, favorite: Boolean) {
         button.setImageResource(if (favorite) R.drawable.ic_menu_favorite_pink else R.drawable.ic_menu_favorite_gray)
+
+        if (favorite) {
+            button.imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFF94C2"))
+        } else {
+            button.imageTintList = ColorStateList.valueOf(Color.parseColor("#FF9e9e9e"))
+        }
+
     }
 
     @JvmStatic

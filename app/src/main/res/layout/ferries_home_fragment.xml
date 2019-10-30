@@ -50,7 +50,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="#fff"
             android:elevation="4dp">
 
             <LinearLayout
@@ -64,6 +63,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/reservation_button"
                     android:backgroundTint="?themeColorPrimary"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
                     android:layout_margin="8dp"
@@ -75,6 +75,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buy_tickets_button"
                     android:backgroundTint="?themeColorPrimary"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
                     android:layout_margin="8dp"
@@ -96,6 +97,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/vessel_watch_button"
                     android:backgroundTint="?themeColorPrimary"
+                    android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
                     android:layout_marginBottom="8dp"

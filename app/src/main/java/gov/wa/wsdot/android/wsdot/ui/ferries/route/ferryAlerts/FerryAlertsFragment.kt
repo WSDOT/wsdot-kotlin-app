@@ -18,6 +18,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class FerryAlertsFragment : DaggerFragment(), Injectable {
@@ -88,7 +89,18 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
 
         ferryAlertsViewModel.ferryAlerts.observe(viewLifecycleOwner, Observer { alertsResource ->
             if (alertsResource?.data != null) {
-                adapter.submitList(alertsResource.data)
+                if (alertsResource.status != Status.ERROR && alertsResource.status != Status.LOADING) {
+
+                    if (alertsResource.data.isEmpty()) {
+                        binding.emptyListView.visibility = View.VISIBLE
+                    } else {
+                        binding.emptyListView.visibility = View.GONE
+                    }
+
+                    adapter.submitList(alertsResource.data)
+
+                }
+
             } else {
                 adapter.submitList(emptyList())
             }
