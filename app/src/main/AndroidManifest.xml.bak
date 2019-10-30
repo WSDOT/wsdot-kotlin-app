@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/WSDOTTheme">
+        android:theme="@style/ThemeWSDOTOrange">
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -34,8 +34,7 @@
 
         <activity
                 android:name=".ui.MainActivity"
-                android:label="@string/app_name"
-                android:theme="@style/WSDOTTheme.NoActionBar">
+                android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

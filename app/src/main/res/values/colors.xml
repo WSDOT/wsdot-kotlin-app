@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#007B5F</color>
-    <color name="colorPrimaryDark">#005151</color>
-    <color name="colorAccent">#33957F</color>
-    <color name="transparentPrimary">#cc007B5F</color>
+    <color name="wsdotGreen">#007B5F</color>
+    <color name="wsdotGreenDark">#005151</color>
+    <color name="wsdotGreenAccent">#33957F</color>
+
+    <color name="wsdotGreenTransparent">#cc007B5F</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="go_orange">#FF6A13</color>
+    <color name="wsdotOrange">#FF6A13</color>
+    <color name="wsdotOrangeDark">#c43b00</color>
+    <color name="wsdotOrangeAccent">#bc5100</color>
 
     <color name="amtrak">#007FA3</color>
 

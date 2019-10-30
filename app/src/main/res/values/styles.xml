@@ -1,51 +1,32 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="WSDOTTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="WSDOTTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
     <style name="HeaderTitleText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">?themeColorPrimary</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CardTitleText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#000000</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CardSubTitleText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#000000</item>
         <item name="android:textSize">16sp</item>
     </style>
 
     <style name="BannerText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#000000</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CardFooterText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#606060</item>
+        <item name="android:textColor">?themeColorGray</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TimeStampText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">#606060</item>
+        <item name="android:textColor">?themeColorGray</item>
         <item name="android:textSize">10sp</item>
     </style>
 

@@ -18,8 +18,8 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
-                app:tabSelectedTextColor="@color/colorPrimary"
-                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabSelectedTextColor="?colorPrimary"
+                app:tabIndicatorColor="?colorPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabMaxWidth="0dp"

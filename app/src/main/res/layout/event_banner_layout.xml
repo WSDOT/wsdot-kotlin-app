@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/go_orange"
+        android:textColor="@color/wsdotOrange"
         style="@style/BannerText"
         android:ellipsize="end"
         android:maxLines="2"/>

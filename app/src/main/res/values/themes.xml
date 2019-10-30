@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- your light theme attributes -->
+        <item name="colorPrimary">?themeColorPrimary</item>
+        <item name="colorPrimaryDark">?themeColorDark</item>
+        <item name="colorAccent">?themeColorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="ThemeWSDOTGreen" parent="AppTheme">
+        <item name="themeColorPrimary">@color/wsdotGreen</item>
+        <item name="themeColorDark">@color/wsdotGreenDark</item>
+        <item name="themeColorAccent">@color/wsdotGreenAccent</item>
+        <item name="themeColorGray">@color/darkGray</item>
+    </style>
+
+    <style name="ThemeWSDOTOrange" parent="AppTheme">
+
+        <item name="themeColorPrimary">@color/wsdotOrange</item>
+        <item name="themeColorDark">@color/wsdotOrangeDark</item>
+        <item name="themeColorAccent">@color/wsdotOrangeAccent</item>
+        <item name="themeColorGray">@color/darkGray</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+</resources>

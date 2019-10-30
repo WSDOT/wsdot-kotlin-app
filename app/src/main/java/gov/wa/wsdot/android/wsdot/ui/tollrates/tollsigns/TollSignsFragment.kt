@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -22,10 +21,8 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 import android.net.Uri
 import android.content.Intent
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
-import android.util.Log
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -72,7 +69,7 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         binding.infoButton.text = content
 
-        binding.infoButton.setTextColor(resources.getColor(R.color.colorPrimary))
+        binding.infoButton.setTextColor(resources.getColor(R.color.wsdotGreen))
         binding.infoButton.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
