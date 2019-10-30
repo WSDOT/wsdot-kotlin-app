@@ -3,7 +3,7 @@
     <item android:bottom="3px">
         <shape>
             <padding android:bottom="5dp"/>
-            <solid android:color="@color/colorAccent"/>
+            <solid android:color="?themeColorPrimary"/>
             <corners
                 android:radius="5dp"/>
             <padding

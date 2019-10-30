@@ -88,7 +88,7 @@
                  app:layout_constrainedWidth="false"
                  android:layout_height="wrap_content"
 
-                 android:background="@{BindingFunctions.hasPassed(sailing.departingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_green }"
+                 android:background="@{BindingFunctions.hasPassed(sailing.departingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_primary }"
 
                  app:layout_constraintVertical_chainStyle="spread"
 

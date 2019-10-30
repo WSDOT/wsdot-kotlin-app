@@ -2,23 +2,19 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.DialogInterface
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Vibrator
 import android.preference.PreferenceManager
 import android.text.InputType
 import android.util.Log
+import android.util.TypedValue
 import android.view.*
-import android.view.HapticFeedbackConstants.VIRTUAL_KEY
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -430,7 +426,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
 
-        var actionColor = resources.getColor(R.color.colorPrimary)
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
         var icon = R.drawable.ic_layers
 
         if (!showCameras) {
@@ -451,7 +454,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
 
-        var actionColor = resources.getColor(R.color.colorPrimary)
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
         var icon = R.drawable.ic_layers
 
         if (!showCameras) {
@@ -471,7 +481,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
 
         val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
-        var actionColor = resources.getColor(R.color.colorPrimary)
+
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
         var icon = R.drawable.ic_layers
 
         if (!showCameras) {
@@ -491,7 +509,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
 
         val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
-        var actionColor = resources.getColor(R.color.colorPrimary)
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
         var icon = R.drawable.ic_done
 
         if (!showCameras) {
