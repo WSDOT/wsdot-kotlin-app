@@ -1,6 +1,8 @@
 package gov.wa.wsdot.android.wsdot.util
 
 import java.util.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 object TimeUtils {
 
@@ -82,6 +84,31 @@ object TimeUtils {
         } else cal.get(Calendar.MONTH) == Calendar.SEPTEMBER
                 && cal.get(Calendar.DAY_OF_WEEK_IN_MONTH) == 1
                 && cal.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY
+
+    }
+
+    fun currentDateInRange(startDateString: String, endDateString: String, dateFormat: String): Boolean {
+
+        val df = SimpleDateFormat(dateFormat, Locale.US)
+
+        var startDate: Date?
+        var endDate: Date?
+
+        try {
+            startDate = df.parse(startDateString)
+            endDate = df.parse(endDateString)
+        } catch (e: ParseException) {
+            val cal = Calendar.getInstance()
+            cal.timeInMillis = 0
+            cal.set(1997, 1, 1, 0, 0, 0)
+            startDate = cal.time
+            endDate = cal.time
+            e.printStackTrace()
+        }
+
+        val today = Date()
+
+        return !(today.before(startDate) || today.after(endDate))
 
     }
 

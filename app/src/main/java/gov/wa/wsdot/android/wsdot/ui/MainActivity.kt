@@ -1,28 +1,20 @@
 package gov.wa.wsdot.android.wsdot.ui
 
-import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavGraph
-import androidx.navigation.NavInflater
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,8 +28,7 @@ import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.di.AppComponent
-import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import javax.inject.Inject
 
 
@@ -99,8 +90,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
         viewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
-                navView.menu.setGroupVisible(R.id.event_banner_group, true)
-                navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
+
+                if (TimeUtils.currentDateInRange(it.startDate, it.endDate, "yyyy-MM-dd")) {
+                    navView.menu.setGroupVisible(R.id.event_banner_group, true)
+                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
+
+
+                } else {
+                    navView.menu.setGroupVisible(R.id.event_banner_group, false)
+                }
             }
         })
     }
