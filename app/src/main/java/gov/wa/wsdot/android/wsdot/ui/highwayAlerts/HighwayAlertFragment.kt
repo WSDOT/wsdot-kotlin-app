@@ -1,6 +1,8 @@
 package gov.wa.wsdot.android.wsdot.ui.highwayAlerts
 
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +17,13 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.HighwayAlertFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
@@ -69,6 +73,25 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
+
+        context?.let {
+            if (NightModeConfig.nightModeOn(it)) {
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                            it, R.raw.map_night_style))
+
+                } catch (e: Resources.NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
+
+            } else {
+                mMap.setMapStyle(null)
+            }
+        }
+
         mMap.uiSettings.isMapToolbarEnabled = false
 
 
