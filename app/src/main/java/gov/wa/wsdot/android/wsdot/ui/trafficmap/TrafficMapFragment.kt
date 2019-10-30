@@ -2,6 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
@@ -15,6 +17,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -416,6 +419,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
         mFab.addActionItem(getRestAreasVisibilityAction(), 3)
 
+        mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
+
         mFab.setOnActionSelectedListener(this)
 
     }
@@ -443,8 +448,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_highway_alert_visibility_action, icon)
             .setLabel(R.string.fab_highway_alerts_label)
+            .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
+
 
     }
 
@@ -471,6 +478,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_rest_area_visibility_action, icon)
             .setLabel(R.string.fab_rest_areas_label)
+            .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
 
@@ -499,6 +507,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_camera_visibility_action, icon)
             .setLabel(R.string.fab_camera_label)
+            .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
 
@@ -525,6 +534,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_camera_cluster_action, icon)
             .setLabel(R.string.fab_camera_Clusters_label)
+            .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
 
@@ -604,11 +614,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
 
     // bottom bar setup
-
     private fun initBottomBar(view: View){
         val bottomBar = view.findViewById<BottomAppBar>(R.id.bottom_app_bar)
         bottomBar.replaceMenu(R.menu.traffic_map_bottom_appbar_menu)
         bottomBar.setOnMenuItemClickListener(this)
+        bottomBar.elevation = 0F
+        val filler = view.findViewById<BottomAppBar>(R.id.filler)
+        filler.elevation = 0F
     }
 
     // For bottom menu

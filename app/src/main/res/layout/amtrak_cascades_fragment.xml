@@ -26,6 +26,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/buy_tickets_button"
             android:backgroundTint="?themeColorPrimary"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,7 +41,7 @@
             app:layout_constraintTop_toBottomOf="@id/buy_tickets_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="#c0c0c0"/>
+            android:background="?themeColorGray"/>
 
         <TextView
             android:id="@+id/header"
@@ -172,6 +173,7 @@
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:backgroundTint="@color/amtrak"
             app:layout_constraintTop_toBottomOf="@+id/destination_layout"
             app:layout_constraintBottom_toBottomOf="parent"

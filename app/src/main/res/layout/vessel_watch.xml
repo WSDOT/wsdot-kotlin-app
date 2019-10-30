@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:tint="@color/white"
+            app:backgroundTint="?themeColorAccent"
             app:setCameraIconForFab="@{vesselViewModel.showCameras}"
             android:layout_gravity="bottom|end"/>
 

@@ -49,6 +49,15 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <TextView
+            android:id="@+id/empty_list_view"
+            style="@style/CardTitleText"
+            android:text="No Posted Bulletins"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
         <include
             layout="@layout/loading_error_state"
             app:resource="@{(Resource) viewModel.ferryAlerts}"

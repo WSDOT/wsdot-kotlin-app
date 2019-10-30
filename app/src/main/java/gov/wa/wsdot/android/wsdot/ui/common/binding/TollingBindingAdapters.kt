@@ -63,7 +63,8 @@ object TollingBindingAdapters {
     @JvmStatic
     @BindingAdapter("bindTripColor")
     fun bindTripColor(view: CardView, tollTrip: TollTrip?) {
-        view.setBackgroundColor(Color.BLACK)
+        view.setBackgroundColor(Color.DKGRAY)
+
     }
 
 }

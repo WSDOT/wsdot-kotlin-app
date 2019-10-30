@@ -127,7 +127,14 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
         tollSignsViewModel.tollTravelTimes.observe(viewLifecycleOwner, Observer { travelTimeRes ->
             travelTimeRes.data?.let {
-                binding.travelTimes.text = String.format("%s: %d min or %d min via ETL", it[0].title, it[0].avgTime, it[1].avgTime)
+                if (it.isNotEmpty()) {
+                    binding.travelTimes.text = String.format(
+                        "%s: %d min or %d min via ETL",
+                        it[0].title,
+                        it[0].avgTime,
+                        it[1].avgTime
+                    )
+                }
             }
         })
 
