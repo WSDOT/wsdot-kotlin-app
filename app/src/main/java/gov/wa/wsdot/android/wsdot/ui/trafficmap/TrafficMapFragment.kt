@@ -3,6 +3,7 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -50,6 +51,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.Travel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
@@ -181,6 +183,24 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
+
+        context?.let {
+            if (NightModeConfig.nightModeOn(it)) {
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    mMap.setMapStyle(
+                            MapStyleOptions.loadRawResourceStyle(
+                                it, R.raw.map_night_style))
+
+                } catch (e: Resources.NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
+
+            } else {
+                mMap.setMapStyle(null)
+            }
+        }
 
         mMap.clear()
 
@@ -776,6 +796,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             dialog.show()
         }
     }
+
+
 
 }
 
