@@ -1,7 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -22,6 +24,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.preference.PreferenceManager
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
@@ -30,6 +33,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import javax.inject.Inject
@@ -37,7 +41,6 @@ import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector, SharedPreferences.OnSharedPreferenceChangeListener {
-
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -47,6 +50,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     lateinit var viewModel: MainViewModel
 
     lateinit var drawerLayout: DrawerLayout
+
+    private var eventTitle = "WSDOT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +83,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navSettingsFragment
             ), drawerLayout)
 
+
         // TODO: Let user set home screen ///////////////////////
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
@@ -96,16 +102,43 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         viewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
 
+                val settings = PreferenceManager.getDefaultSharedPreferences(this)
+                val editor = settings.edit()
+
                 if (TimeUtils.currentDateInRange(it.startDate, it.endDate, "yyyy-MM-dd")) {
+
+                    eventTitle = it.title
                     navView.menu.setGroupVisible(R.id.event_banner_group, true)
                     navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
 
+                    editor.putInt(getString(R.string.pref_key_theme), it.themeId)
+                    editor.apply()
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
+
+                    editor.putInt(getString(R.string.pref_key_theme), 0)
+                    editor.apply()
                 }
             }
         })
+
+    }
+
+    override fun getTheme(): Resources.Theme {
+
+        val theme = super.getTheme()
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+        val themeId = settings.getInt(getString(R.string.pref_key_theme), 0)
+
+        if (themeId == 1) {
+            theme.applyStyle(R.style.ThemeWSDOTOrange, true)
+        } else {
+            theme.applyStyle(R.style.ThemeWSDOTGreen, true)
+        }
+
+        return theme
     }
 
 
@@ -178,7 +211,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
             R.id.event_banner -> {
-                Log.e("debug", "tapped the event banner!")
+                if(navController.currentDestination?.id != R.id.navEventDetailsFragment) {
+                    disableAds()
+                    val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
+                    findNavController(R.id.nav_host_fragment).navigate(action)
+                }
             }
         }
 
@@ -266,16 +303,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     }
                 }
             }
-
-            //
-
-
         }
-
-
-
-
-
     }
-
 }

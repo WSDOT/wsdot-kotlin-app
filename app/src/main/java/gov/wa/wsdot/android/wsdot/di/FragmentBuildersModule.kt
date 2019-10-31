@@ -27,6 +27,7 @@ import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.NorthboundCro
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragment
+import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
@@ -163,5 +164,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeAboutFragment(): AboutFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeEventDetailsFragment(): EventDetailsFragment
 
 }
