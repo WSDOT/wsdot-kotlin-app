@@ -9,7 +9,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.text.InputType
 import android.util.Log
 import android.util.TypedValue

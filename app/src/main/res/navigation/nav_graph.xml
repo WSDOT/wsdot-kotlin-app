@@ -23,6 +23,18 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navEventDetailsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.eventbanner.EventDetailsFragment"
+        android:label="{title}"
+        app:popUpTo="@+id/nav_graph"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navTrafficMapFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment"
         android:label="Traffic Map"
@@ -503,6 +515,14 @@
     <action
         android:id="@+id/action_global_navSettingsFragment"
         app:destination="@id/navSettingsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navEventDetailsFragment"
+        app:destination="@id/navEventDetailsFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
