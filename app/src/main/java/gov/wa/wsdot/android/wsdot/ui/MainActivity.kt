@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -33,7 +36,8 @@ import javax.inject.Inject
 
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    HasSupportFragmentInjector {
+    HasSupportFragmentInjector, SharedPreferences.OnSharedPreferenceChangeListener {
+
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -70,7 +74,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
                 R.id.navAmtrakCascadesFragment,
-                R.id.navAboutFragment
+                R.id.navAboutFragment,
+                R.id.navSettingsFragment
             ), drawerLayout)
 
         // TODO: Let user set home screen ///////////////////////
@@ -160,6 +165,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
                 }
             }
+            R.id.nav_settings -> {
+                if(navController.currentDestination?.id != R.id.navSettingsFragment) {
+                    disableAds()
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navSettingsFragment)
+                }
+            }
             R.id.nav_about -> {
                 if(navController.currentDestination?.id != R.id.navAboutFragment) {
                     disableAds()
@@ -225,9 +236,46 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdView.pause()
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
+    // Pref change listener
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
 
-        super.onConfigurationChanged(newConfig)
+        sharedPreferences?.let { prefs ->
+
+
+            Log.e("debug", "pref $prefKey was changed...")
+
+            if (prefKey == resources.getString(R.string.key_darkmode)) {
+                val darkmode: Boolean = prefs.getBoolean(prefKey, false)
+
+                if (darkmode) {
+                    setDefaultNightMode(MODE_NIGHT_YES)
+                } else {
+                    setDefaultNightMode(MODE_NIGHT_NO)
+                }
+
+            } else if (prefKey == resources.getString(R.string.key_darkmodesystem)) {
+                val useSystem = prefs.getBoolean(prefKey, true)
+
+                if (useSystem) {
+                    setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+                } else {
+                    if (prefs.getBoolean(resources.getString(R.string.key_darkmode), false)) {
+                        setDefaultNightMode(MODE_NIGHT_YES)
+                    } else {
+                        setDefaultNightMode(MODE_NIGHT_NO)
+                    }
+                }
+            }
+
+            //
+
+
+        }
+
+
+
+
+
     }
 
 }

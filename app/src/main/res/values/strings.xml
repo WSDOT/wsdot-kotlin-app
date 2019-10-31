@@ -128,7 +128,8 @@
         for people and businesses.\n\nThe WSDOT mobile app was created to make it easier for you to
         know the latest about Washington\'s transportation system.
     </string>
-
+    <string name="key_darkmode">KEY_DARK_MODE</string>
+    <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
 
 
 </resources>
