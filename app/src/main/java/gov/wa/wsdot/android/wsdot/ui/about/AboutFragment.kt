@@ -15,6 +15,7 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import android.content.Intent
 import android.net.Uri
 import gov.wa.wsdot.android.wsdot.BuildConfig
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 
 class AboutFragment: DaggerFragment(), Injectable {
@@ -23,6 +24,8 @@ class AboutFragment: DaggerFragment(), Injectable {
     val args: HighwayAlertFragmentArgs by navArgs()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        (activity as MainActivity).disableAds()
 
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<AboutFragmentBinding>(

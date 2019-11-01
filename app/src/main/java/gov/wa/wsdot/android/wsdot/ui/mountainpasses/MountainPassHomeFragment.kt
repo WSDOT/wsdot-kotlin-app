@@ -16,6 +16,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MountainPassHomeFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
@@ -46,6 +47,8 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
 
         passViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)

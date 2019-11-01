@@ -19,6 +19,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
@@ -48,6 +49,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        (activity as MainActivity).enableAds("other")
     }
 
     override fun onDestroy() {

@@ -44,6 +44,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
@@ -116,6 +117,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
 
         // Inflate the layout for this fragment
         val rootView = inflater.inflate(R.layout.map_fragment, container, false)

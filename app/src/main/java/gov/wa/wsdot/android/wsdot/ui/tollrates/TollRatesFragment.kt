@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleTabFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment
@@ -21,6 +22,9 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
+        (activity as MainActivity).disableAds()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
