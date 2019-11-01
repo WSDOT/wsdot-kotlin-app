@@ -83,20 +83,16 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
                 val cameraIds = pass.data.cameras.map { it.id }
                 cameraListViewModel.setCamerasQuery(cameraIds)
 
-                // Only set up the tabs if the pager hasn't been initialized yet
-                // OR if it has been init and has nothing in it. (The case where we come back from a camera detail)
+                viewPager = dataBinding.root.findViewById(R.id.pager)
+
+                // only add the adapter if the view pager doesn't have one
                 // This prevents tabs from resetting when forecasts and favorite is updated
-                if (!this::viewPager.isInitialized) {
-                    viewPager = dataBinding.root.findViewById(R.id.pager)
+                if (viewPager.adapter == null) {
                     setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
-                    val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
-                    tabLayout.setupWithViewPager(viewPager)
-                } else if (viewPager.size == 0) {
-                    viewPager = dataBinding.root.findViewById(R.id.pager)
-                    setupViewPager(viewPager, cameraIds.isNotEmpty(), pass.data.forecasts.isNotEmpty())
-                    val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
-                    tabLayout.setupWithViewPager(viewPager)
                 }
+
+                val tabLayout: TabLayout = dataBinding.root.findViewById(R.id.tab_layout)
+                tabLayout.setupWithViewPager(viewPager)
 
             }
         })
