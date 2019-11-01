@@ -12,7 +12,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -58,6 +57,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setDarkMode(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.key_darkmodesystem))
 
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -143,6 +144,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         } else {
             theme.applyStyle(R.style.ThemeWSDOTGreen, true)
         }
+
+
 
         return theme
     }
@@ -282,8 +285,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
 
-        sharedPreferences?.let { prefs ->
+        setDarkMode(sharedPreferences, prefKey)
 
+    }
+
+    private fun setDarkMode(sharedPreferences: SharedPreferences?, prefKey: String?) {
+
+        sharedPreferences?.let { prefs ->
 
             Log.e("debug", "pref $prefKey was changed...")
 
@@ -300,6 +308,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 val useSystem = prefs.getBoolean(prefKey, true)
 
                 if (useSystem) {
+
+                    Log.e("debug", "follow system")
+
                     setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
                 } else {
                     if (prefs.getBoolean(resources.getString(R.string.key_darkmode), false)) {
@@ -310,5 +321,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
         }
+
     }
+
 }
