@@ -132,6 +132,7 @@
     <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
     <string name="key_specialtheme">KEY_SPECIAL_THEMES</string>
     <string name="pref_key_theme">CURRENT_THEME_KEY</string>
+    <string name="action_travel_charts">Travel Charts</string>
 
 
 </resources>

@@ -19,8 +19,9 @@ class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener:
         val view = inflater.inflate(R.layout.simple_bottom_sheet_list, container, false)
 
         val listItems = mutableListOf<TravelerInfoMenuEventItem>()
+
         listItems.add(
-            TravelerInfoMenuEventItem("Favorite Location", TravelerMenuItemType.NEW_FAVORITE_LOCATION)
+            TravelerInfoMenuEventItem("Travel Times", TravelerMenuItemType.TRAVEL_TIMES)
         )
 
         listItems.add(
@@ -38,12 +39,6 @@ class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener:
         listItems.add(
             TravelerInfoMenuEventItem("Commercial Vehicle Restrictions", TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS)
         )
-
-        /*
-        listItems.add(
-            TravelerInfoMenuEventItem("Travel Charts", TravelerMenuItemType.TRAVEL_CHARTS)
-        )
-        */
 
         val listHeader = view.findViewById<TextView>(R.id.list_header)
         listHeader.text = "Traveler Information"

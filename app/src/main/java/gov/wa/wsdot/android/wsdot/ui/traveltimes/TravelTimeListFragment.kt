@@ -99,7 +99,6 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
 
         // pass function to be called on adapter item tap and favorite
         val adapter = TravelTimeListAdapter(dataBindingComponent, appExecutors,
-            { travelTime -> navigateToTravelTime(travelTime) },
             { travelTimeListViewModel.updateFavorite(travelTimeId = it.travelTimeId, isFavorite = !it.favorite) })
 
         this.adapter = adapter
@@ -157,9 +156,4 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         return true
     }
 
-    // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToTravelTime(travelTime: TravelTime){
-      //  val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(travelTime.travelTimeId, travelTime.title)
-      //  findNavController().navigate(action)
-    }
 }

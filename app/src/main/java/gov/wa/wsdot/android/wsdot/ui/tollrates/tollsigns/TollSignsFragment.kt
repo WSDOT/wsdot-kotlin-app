@@ -28,7 +28,6 @@ import com.google.android.gms.maps.model.LatLng
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import java.util.*
 
-
 abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -63,20 +62,18 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
-        ///////////////////////////////
-
         val content = SpannableString(getInfoLinkText())
         content.setSpan(UnderlineSpan(), 0, content.length, 0)
         binding.infoButton.text = content
 
         binding.infoButton.setTextColor(resources.getColor(R.color.wsdotGreen))
+
         binding.infoButton.setOnClickListener {
             val intent = Intent()
             intent.action = Intent.ACTION_VIEW
             intent.data = Uri.parse(getInfoLinkURL())
             startActivity(intent)
         }
-        ///////////////////////////////
 
         binding.viewModel = tollSignsViewModel
         dataBinding.lifecycleOwner = viewLifecycleOwner
