@@ -674,11 +674,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     findNavController().navigate(action)
                 }
 
-                R.id.action_travel_times -> {
-                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
-                    findNavController().navigate(action)
-                }
-
                 R.id.action_more -> {
                     fragmentManager?.let { fragmentManagerValue ->
                         if (fragmentManagerValue.findFragmentByTag("traveler_info_bottom_sheet") == null) {
@@ -688,6 +683,16 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                         }
                     }
                 }
+
+                R.id.action_travel_charts -> {
+                  //  val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                    //findNavController().navigate(action)
+                }
+
+                R.id.action_favorite -> {
+                    showAddFavoriteDialog()
+                }
+
                 else -> return true
             }
         }
@@ -702,9 +707,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     // Traveler Info Menu Listener
     override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
-            TravelerMenuItemType.NEW_FAVORITE_LOCATION -> {
-                showAddFavoriteDialog()
-            }
             TravelerMenuItemType.NEWS_ITEMS -> {
                 val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
                 findNavController().navigate(action)
@@ -717,8 +719,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 val action = NavGraphDirections.actionGlobalNavTwitterFragment()
                 findNavController().navigate(action)
             }
-            TravelerMenuItemType.TRAVEL_CHARTS -> {
-                Log.e("debug", "charts")
+            TravelerMenuItemType.TRAVEL_TIMES -> {
+                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                findNavController().navigate(action)
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")
