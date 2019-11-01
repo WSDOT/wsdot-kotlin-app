@@ -17,12 +17,19 @@ object BorderCrossingBindingAdapters {
 
         textView.setTextColor(Color.parseColor("#FFFFFF"))
 
-        if (wait != -1) {
-            textView.text = String.format("%s min", wait)
-            textView.setTextColor(Color.WHITE)
-        } else {
-            textView.text = "N/A"
-            textView.setTextColor(Color.BLACK)
+        when {
+            wait == -1 -> {
+                textView.text = "N/A"
+                textView.setTextColor(Color.BLACK)
+            }
+            wait < 5 -> {
+                textView.text = String.format("< 5 min", wait)
+                textView.setTextColor(Color.WHITE)
+            }
+            else -> {
+                textView.text = String.format("%s min", wait)
+                textView.setTextColor(Color.WHITE)
+            }
         }
     }
 
