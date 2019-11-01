@@ -12,6 +12,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
+
+        (activity as MainActivity).disableAds()
+
         // Set up a listener whenever a key changes
         preferenceScreen.sharedPreferences
             .registerOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)

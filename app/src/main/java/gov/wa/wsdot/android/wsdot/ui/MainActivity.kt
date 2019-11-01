@@ -145,8 +145,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             theme.applyStyle(R.style.ThemeWSDOTGreen, true)
         }
 
-
-
         return theme
     }
 
@@ -167,61 +165,51 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         when (item.itemId) {
             R.id.nav_traffic_map -> {
                 if (navController.currentDestination?.id != R.id.navTrafficMapFragment) {
-                    enableAds(resources.getString(R.string.ad_target_traffic))
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
                 }
             }
             R.id.nav_ferries -> {
                 if (navController.currentDestination?.id != R.id.navFerriesHomeFragment) {
-                    enableAds(resources.getString(R.string.ad_target_ferries))
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
                 }
             }
             R.id.nav_mountain_passes -> {
                 if (navController.currentDestination?.id != R.id.navMountainPassHomeFragment) {
-                    enableAds(resources.getString(R.string.ad_target_passes))
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
                 }
             }
             R.id.nav_toll_rates -> {
                 if (navController.currentDestination?.id != R.id.navTollRatesFragment) {
-                    disableAds()
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
                 }
             }
             R.id.nav_border_waits -> {
                 if (navController.currentDestination?.id != R.id.navBorderCrossingsFragment) {
-                    enableAds("other")
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
                 }
             }
             R.id.nav_amtrak_cascades -> {
                 if (navController.currentDestination?.id != R.id.navAmtrakCascadesFragment) {
-                    enableAds("other")
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAmtrakCascadesFragment)
                 }
             }
             R.id.nav_favorites -> {
-                // Favorites fragment handles its out ad targets
                 if (navController.currentDestination?.id != R.id.navFavoritesFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
                 }
             }
             R.id.nav_settings -> {
                 if(navController.currentDestination?.id != R.id.navSettingsFragment) {
-                    disableAds()
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navSettingsFragment)
                 }
             }
             R.id.nav_about -> {
                 if(navController.currentDestination?.id != R.id.navAboutFragment) {
-                    disableAds()
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAboutFragment)
                 }
             }
             R.id.event_banner -> {
                 if(navController.currentDestination?.id != R.id.navEventDetailsFragment) {
-                    disableAds()
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }

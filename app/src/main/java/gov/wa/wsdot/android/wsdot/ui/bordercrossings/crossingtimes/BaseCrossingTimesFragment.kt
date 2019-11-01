@@ -14,6 +14,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.BorderCrossingTimesFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
@@ -36,6 +37,8 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<BorderCrossingTimesFragmentBinding>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        (activity as MainActivity).enableAds("other")
 
         borderCrossingViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(BorderCrossingViewModel::class.java)

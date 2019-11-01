@@ -12,6 +12,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.EventDetailsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.MainViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
@@ -25,6 +26,8 @@ class EventDetailsFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<EventDetailsFragmentBinding>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        (activity as MainActivity).disableAds()
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MainViewModel::class.java)
