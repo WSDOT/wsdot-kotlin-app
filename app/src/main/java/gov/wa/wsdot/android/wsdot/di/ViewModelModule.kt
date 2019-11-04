@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
-import gov.wa.wsdot.android.wsdot.ui.MainViewModel
+import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
@@ -34,6 +34,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
 
 @Suppress("unused")
@@ -177,8 +178,13 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MainViewModel::class)
-    abstract fun findMainViewModel(mainViewModel: MainViewModel): ViewModel
+    @ViewModelKey(EventBannerViewModel::class)
+    abstract fun findEventBannerViewModel(mainViewModel: EventBannerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TravelChartsViewModel::class)
+    abstract fun findTravelChartsViewModel(travelChartsViewModel: TravelChartsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory

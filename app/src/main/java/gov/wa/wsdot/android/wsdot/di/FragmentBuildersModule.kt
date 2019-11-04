@@ -54,6 +54,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsFragment
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListFragment
 
 @Suppress("unused")
@@ -167,5 +168,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeEventDetailsFragment(): EventDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTravelChartsFragment(): TravelChartsFragment
 
 }

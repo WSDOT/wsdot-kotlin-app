@@ -35,6 +35,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navTravelChartsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsFragment"
+        tools:layout="@layout/travel_charts_fragment"
+        android:label="Travel Charts">
+    </fragment>
+
+    <fragment
         android:id="@+id/navTrafficMapFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment"
         android:label="Traffic Map"
@@ -523,6 +530,14 @@
     <action
         android:id="@+id/action_global_navEventDetailsFragment"
         app:destination="@id/navEventDetailsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTravelChartsFragment"
+        app:destination="@id/navTravelChartsFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
