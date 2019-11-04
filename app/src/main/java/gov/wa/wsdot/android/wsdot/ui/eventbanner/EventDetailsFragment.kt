@@ -13,7 +13,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.EventDetailsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.ui.MainViewModel
+import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class EventDetailsFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var mainViewModel: MainViewModel
+    lateinit var mainViewModel: EventBannerViewModel
 
     var binding by autoCleared<EventDetailsFragmentBinding>()
 
@@ -30,7 +30,7 @@ class EventDetailsFragment : DaggerFragment(), Injectable {
         (activity as MainActivity).disableAds()
 
         mainViewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MainViewModel::class.java)
+            .get(EventBannerViewModel::class.java)
 
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<EventDetailsFragmentBinding>(

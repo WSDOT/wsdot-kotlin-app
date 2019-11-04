@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:gravity="center"
+        android:drawable="@drawable/ic_menu_travel_charts"/>
+    <item android:gravity="center|top"
+        android:drawable="@drawable/ic_travel_charts_alert"/>
+</layer-list>
