@@ -164,8 +164,8 @@
                 android:inputType="date"
                 android:cursorVisible="false"
                 android:onClick="@{(v) -> datePickerCallback.onTap(v)}"
-                android:autofillHints="@string/depature_date_hint"
-                android:hint="@string/depature_date_hint"/>
+                android:autofillHints="@string/departure_date_hint"
+                android:hint="@string/departure_date_hint"/>
         </LinearLayout>
 
 

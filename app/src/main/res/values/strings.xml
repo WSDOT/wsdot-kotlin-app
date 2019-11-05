@@ -10,6 +10,8 @@
     <string name="action_about">About</string>
     <string name="action_settings">Settings</string>
     <string name="action_feedback">feedback</string>
+    <string name="action_travel_charts">Travel Charts</string>
+    <string name="action_travel_times">Travel Times</string>
 
     <string name="menu_traffic_map">Traffic Map</string>
     <string name="menu_ferries">Ferries</string>
@@ -94,6 +96,12 @@
     <string name="user_preference_traffic_map_cluster_cameras">USER_PREF_KEY_TRAFFIC_MAP_CLUSTER_CAMERAS</string>
     <string name="user_preference_traffic_map_show_rest_areas">USER_PREF_KEY_TRAFFIC_MAP_SHOW_REST_AREAS</string>
 
+    // pref list keys
+    <string name="key_darkmode">KEY_DARK_MODE</string>
+    <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
+    <string name="key_specialtheme">KEY_SPECIAL_THEMES</string>
+    <string name="pref_key_theme">CURRENT_THEME_KEY</string>
+
     // FAB labels
     <string name="fab_highway_alerts_label">Highway Alerts</string>
     <string name="fab_camera_label">Cameras</string>
@@ -108,31 +116,28 @@
     <string name="ad_target_ferries">ferries</string>
     <string name="ad_target_passes">passes</string>
     <string name="ad_target_other">other</string>
+
+
     <string name="no_alerts_string">No Alerts Reported In This Location</string>
     <string name="favorites_one">FAV_ONE</string>
     <string name="favorites_two">FAV_TWO</string>
     <string name="favorites_three">FAV_THREE</string>
     <string name="favorites_four">FAV_FOUR</string>
-    <string name="action_travel_times">Travel Times</string>
     <string name="no_favorites_title">No Favorites</string>
     <string name="no_favorites_text">You can add favorites by tapping hearts found throughout the app</string>
     <string name="favorites_five">FAV_FIVE</string>
     <string name="favorites_six">FAV_SIX</string>
     <string name="favorites_seven">FAV_SEVEN</string>
-    <string name="depature_date_hint">select departure date</string>
+    <string name="departure_date_hint">select departure date</string>
 
     // about
     <string name="about_text" formatted="true">
         The Washington State Department of Transportation provides and supports safe, reliable and
-        cost-effective transportation options to improve livablecommunities and economic vitality
+        cost-effective transportation options to improve livable communities and economic vitality
         for people and businesses.\n\nThe WSDOT mobile app was created to make it easier for you to
         know the latest about Washington\'s transportation system.
     </string>
-    <string name="key_darkmode">KEY_DARK_MODE</string>
-    <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
-    <string name="key_specialtheme">KEY_SPECIAL_THEMES</string>
-    <string name="pref_key_theme">CURRENT_THEME_KEY</string>
-    <string name="action_travel_charts">Travel Charts</string>
+    <string name="loading_error_message">Error Loading</string>
 
 
 </resources>

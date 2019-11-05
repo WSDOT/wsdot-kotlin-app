@@ -3,6 +3,7 @@ package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -104,7 +105,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.favorite_menu, menu)
+        inflater.inflate(R.menu.pass_menu, menu)
         setFavoriteMenuIcon(menu.findItem(R.id.action_favorite))
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -113,6 +114,11 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
         when (item.itemId) {
             R.id.action_favorite -> {
                 passReportViewModel.updateFavorite(args.passId)
+                return false
+            }
+            R.id.action_refresh -> {
+                passReportViewModel.refresh()
+                Toast.makeText(context, "refreshing report...", Toast.LENGTH_SHORT).show()
                 return false
             }
             else -> {}
