@@ -15,10 +15,12 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -39,6 +41,7 @@ import com.leinardi.android.speeddial.SpeedDialView
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.databinding.BorderCrossingTimesFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
@@ -52,6 +55,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.Travel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -79,6 +83,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     lateinit var mapCamerasViewModel: MapCamerasViewModel
     lateinit var restAreaViewModel: RestAreaViewModel
     lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
+    lateinit var travelChartsViewModel: TravelChartsViewModel
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
@@ -139,6 +144,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         favoriteLocationViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FavoriteLocationViewModel::class.java)
 
+        travelChartsViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(TravelChartsViewModel::class.java)
+
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
@@ -147,6 +155,16 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
         mapFragment.getMapAsync(this)
 
         initSettingsFAB(rootView)
+
+        // Check for travel charts
+        travelChartsViewModel.travelCharts.observe(viewLifecycleOwner, Observer { chartsResource ->
+            chartsResource.data?.let {
+                if (it.available) {
+                    val bottomAppBar = rootView.findViewById<BottomAppBar>(R.id.bottom_app_bar)
+                    bottomAppBar.menu.setGroupVisible(R.id.travel_charts_group, true)
+                }
+            }
+        })
 
         return rootView
     }
@@ -674,11 +692,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                     findNavController().navigate(action)
                 }
 
-                R.id.action_travel_times -> {
-                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
-                    findNavController().navigate(action)
-                }
-
                 R.id.action_more -> {
                     fragmentManager?.let { fragmentManagerValue ->
                         if (fragmentManagerValue.findFragmentByTag("traveler_info_bottom_sheet") == null) {
@@ -688,6 +701,16 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                         }
                     }
                 }
+
+                R.id.action_travel_charts -> {
+                    val action = NavGraphDirections.actionGlobalNavTravelChartsFragment()
+                    findNavController().navigate(action)
+                }
+
+                R.id.action_favorite -> {
+                    showAddFavoriteDialog()
+                }
+
                 else -> return true
             }
         }
@@ -702,9 +725,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
     // Traveler Info Menu Listener
     override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
-            TravelerMenuItemType.NEW_FAVORITE_LOCATION -> {
-                showAddFavoriteDialog()
-            }
             TravelerMenuItemType.NEWS_ITEMS -> {
                 val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
                 findNavController().navigate(action)
@@ -717,8 +737,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
                 val action = NavGraphDirections.actionGlobalNavTwitterFragment()
                 findNavController().navigate(action)
             }
-            TravelerMenuItemType.TRAVEL_CHARTS -> {
-                Log.e("debug", "charts")
+            TravelerMenuItemType.TRAVEL_TIMES -> {
+                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                findNavController().navigate(action)
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")

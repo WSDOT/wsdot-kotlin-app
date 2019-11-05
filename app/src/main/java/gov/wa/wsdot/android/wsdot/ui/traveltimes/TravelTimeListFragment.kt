@@ -2,24 +2,18 @@ package gov.wa.wsdot.android.wsdot.ui.traveltimes
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.widget.SearchView
-import androidx.core.internal.view.SupportMenuItem.SHOW_AS_ACTION_ALWAYS
-import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
-import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.TravelTimeListFragmentBinding
-import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
@@ -29,15 +23,12 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 
 
 class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryTextListener {
-
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -98,9 +89,9 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = TravelTimeListAdapter(dataBindingComponent, appExecutors,
-            { travelTime -> navigateToTravelTime(travelTime) },
-            { travelTimeListViewModel.updateFavorite(travelTimeId = it.travelTimeId, isFavorite = !it.favorite) })
+        val adapter = TravelTimeListAdapter(dataBindingComponent, appExecutors) {
+            travelTimeListViewModel.updateFavorite(travelTimeId = it.travelTimeId, isFavorite = !it.favorite)
+        }
 
         this.adapter = adapter
 
@@ -157,9 +148,4 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         return true
     }
 
-    // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToTravelTime(travelTime: TravelTime){
-      //  val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(travelTime.travelTimeId, travelTime.title)
-      //  findNavController().navigate(action)
-    }
 }

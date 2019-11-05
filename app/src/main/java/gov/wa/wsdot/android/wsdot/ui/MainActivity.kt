@@ -1,8 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui
 
-import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -47,7 +45,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: EventBannerViewModel
 
     lateinit var drawerLayout: DrawerLayout
 
@@ -105,7 +103,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         enableAds(resources.getString(R.string.ad_target_traffic))
 
         // handle event banner
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EventBannerViewModel::class.java)
         viewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
 

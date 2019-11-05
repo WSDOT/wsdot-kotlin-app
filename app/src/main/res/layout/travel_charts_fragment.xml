@@ -8,11 +8,11 @@
         <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
-        <import type="gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterViewModel" />
+        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel" />
 
         <variable
             name="viewModel"
-            type="TwitterViewModel"/>
+            type="TravelChartsViewModel"/>
 
         <variable
             name="retryCallback"
@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false">
+
 
         <LinearLayout
             android:id="@+id/toolbar_grid"
@@ -50,18 +51,19 @@
                 android:background="@drawable/input_field_border_primary">
 
                 <Spinner
-                    android:id="@+id/sailing_spinner"
+                    android:id="@+id/chart_route_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:twitterAccount="@{viewModel.twitterAccounts}"
-                    app:selectedTwitterAccount="@={viewModel.selectedTwitterAccount}"/>
+                    app:spinnerPairs="@{viewModel.chartRoutes}"
+                    app:selectedPair="@={viewModel.selectedChartRoute}"/>
             </LinearLayout>
 
         </LinearLayout>
+
 
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -71,25 +73,35 @@
             app:layout_constraintTop_toBottomOf="@id/toolbar_grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:refreshing="@{((Resource) viewModel.tweets).status == Status.LOADING}"
+            app:refreshing="@{((Resource) viewModel.travelCharts).status == Status.LOADING}"
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/camera_list"
+                android:id="@+id/travel_chart_list"
                 app:layoutManager="LinearLayoutManager"
+                android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
-                tools:listitem="@layout/tweet_item" />
+                tools:listitem="@layout/travel_chart_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+        <TextView
+            android:id="@+id/empty_list_view"
+            style="@style/CardTitleText"
+            android:text="No Travel Charts"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
         <include
             layout="@layout/loading_error_state"
-            app:resource="@{(Resource) viewModel.tweets}"
+            app:resource="@{(Resource) viewModel.travelCharts}"
             app:callback="@{() -> retryCallback.retry()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,4 +116,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</layout> 
+</layout>

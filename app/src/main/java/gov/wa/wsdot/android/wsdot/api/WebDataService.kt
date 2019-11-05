@@ -8,6 +8,7 @@ import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.HighwayAlertsResponse
+import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelChartsStatusResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelTimesResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
 import retrofit2.http.GET
@@ -43,5 +44,8 @@ interface WebDataService {
 
     @GET("EventStatusTEST.js")
     fun getEventStatus(): LiveData<ApiResponse<EventStatusResponse>>
+
+    @GET("TravelCharts.js")
+    fun getTravelChartsStatus(): LiveData<ApiResponse<TravelChartsStatusResponse>>
 
 }
