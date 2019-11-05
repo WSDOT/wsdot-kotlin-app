@@ -20,7 +20,6 @@
     <data>
 
         <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
-
         <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
 
         <variable
@@ -47,11 +46,5 @@
             android:onClick="@{() -> callback.retry()}"
             app:visibleGone="@{resource.status == Status.ERROR}" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/error_msg"
-            android:text="@{resource.message ?? @string/unknown_error}"
-            app:visibleGone="@{resource.status == Status.ERROR}" />
     </LinearLayout>
 </layout>
