@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import gov.wa.wsdot.android.wsdot.databinding.MountainPassConditionsFragmentBind
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class PassConditionsFragment : DaggerFragment(), Injectable {
@@ -43,6 +45,9 @@ class PassConditionsFragment : DaggerFragment(), Injectable {
         passReportViewModel.pass.observe(viewLifecycleOwner, Observer { pass ->
             if (pass.data != null) {
                 binding.pass = pass.data
+            }
+            if (pass.status == Status.ERROR) {
+                Toast.makeText(context, getString(R.string.loading_error_message), Toast.LENGTH_SHORT).show()
             }
         })
 

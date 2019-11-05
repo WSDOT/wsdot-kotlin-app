@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -94,12 +95,20 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
             amtrakScheduleResource.data?.let {
                 if(it.isNotEmpty() && amtrakScheduleResource.status == Status.SUCCESS) {
                     adapter.submitList(amtrakScheduleResource.data)
-                } else if (it.isEmpty() && amtrakScheduleResource.status != Status.LOADING) {
+                    binding.emptyListView.visibility = View.GONE
+                } else if (it.isEmpty() && amtrakScheduleResource.status != Status.LOADING || amtrakScheduleResource.status != Status.ERROR) {
                     binding.emptyListView.visibility = View.VISIBLE
                 }
             }
 
-
+            if (amtrakScheduleResource.status == Status.ERROR) {
+                binding.emptyListView.visibility = View.GONE
+                Toast.makeText(
+                    context,
+                    getString(R.string.loading_error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         })
     }
 }

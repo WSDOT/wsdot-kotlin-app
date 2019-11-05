@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.lifecycle.Observer
@@ -23,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class PassCamerasListFragment : DaggerFragment(), Injectable {
@@ -101,6 +103,9 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
                 adapter.submitList(cameras.data)
             }
             // TODO: show no cameras message
+            if (cameras.status == Status.ERROR) {
+                Toast.makeText(context, getString(R.string.loading_error_message), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
