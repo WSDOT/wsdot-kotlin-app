@@ -16,7 +16,6 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 class TravelTimeListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val travelTimeClickCallback: ((TravelTime) -> Unit)?, // ClickCallback for item in the adapter
     private val favoriteClickCallback: ((TravelTime) -> Unit)?
 ) : DataBoundListAdapter<TravelTime, TravelTimeItemBinding>(
     appExecutors = appExecutors,
@@ -41,12 +40,6 @@ class TravelTimeListAdapter(
             false,
             dataBindingComponent
         )
-
-        binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
-            binding.travelTime?.let {
-                travelTimeClickCallback?.invoke(it)
-            }
-        }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).setOnClickListener {
             binding.travelTime?.let {

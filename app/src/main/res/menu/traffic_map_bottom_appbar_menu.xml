@@ -20,11 +20,23 @@
         android:icon="@drawable/ic_menu_alert"
         app:showAsAction="always"/>
 
-    <item android:id="@+id/action_travel_times"
-        android:title="@string/action_travel_times"
+    <item android:id="@+id/action_favorite"
+        android:title="@string/action_favorite"
         android:orderInCategory="100"
-        android:icon="@drawable/ic_menu_travel_times"
+        android:icon="@drawable/ic_menu_favorite_outline"
         app:showAsAction="always"/>
+
+    <group android:id="@+id/travel_charts_group"
+        android:visible="false">
+
+        <item android:id="@+id/action_travel_charts"
+            android:title="@string/action_travel_charts"
+            android:orderInCategory="100"
+            android:icon="@drawable/travel_chart_layered_icon"
+            app:showAsAction="always"/>
+
+    </group>
+
 
     <item android:id="@+id/action_more"
         android:title="@string/action_more"

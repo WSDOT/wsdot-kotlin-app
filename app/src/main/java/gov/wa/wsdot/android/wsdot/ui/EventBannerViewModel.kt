@@ -7,6 +7,6 @@ import gov.wa.wsdot.android.wsdot.repository.EventBannerRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(eventBannerRepository: EventBannerRepository) : ViewModel() {
+class EventBannerViewModel @Inject constructor(eventBannerRepository: EventBannerRepository) : ViewModel() {
     val eventStatus: LiveData<Resource<EventStatusResponse>> = eventBannerRepository.getEventStatus()
 }
