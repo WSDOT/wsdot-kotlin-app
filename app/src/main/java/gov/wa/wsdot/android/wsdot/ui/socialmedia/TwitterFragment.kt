@@ -92,10 +92,8 @@ class TwitterFragment : DaggerFragment(), Injectable {
             }
 
         tweetViewModel.tweets.observe(viewLifecycleOwner, Observer { tweetResource ->
-
             if (tweetResource.data != null) {
                 adapter.submitList(tweetResource.data)
-                Log.e("debug", tweetResource.data.size.toString())
             } else {
                 adapter.submitList(emptyList())
             }
@@ -103,12 +101,6 @@ class TwitterFragment : DaggerFragment(), Injectable {
     }
 
     private fun openTweetLink(tweet: Tweet){
-
-
-        Log.e("debug", getString(
-            R.string.twitter_status_url,
-            tweet.userId,
-            tweet.tweetId))
 
         val intent = Intent(
             Intent.ACTION_VIEW,

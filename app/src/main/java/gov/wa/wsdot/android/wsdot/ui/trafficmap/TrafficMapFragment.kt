@@ -156,7 +156,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
 
         initSettingsFAB(rootView)
 
-        travelChartsViewModel.travelChartsStatus.observe(viewLifecycleOwner, Observer { chartsResource ->
+        // Check for travel charts
+        travelChartsViewModel.travelCharts.observe(viewLifecycleOwner, Observer { chartsResource ->
             chartsResource.data?.let {
                 if (it.available) {
                     val bottomAppBar = rootView.findViewById<BottomAppBar>(R.id.bottom_app_bar)

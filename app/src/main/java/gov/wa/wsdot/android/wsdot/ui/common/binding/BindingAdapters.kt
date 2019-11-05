@@ -41,8 +41,8 @@ import java.util.*
 object BindingAdapters {
 
     // Two-way data Binding functions for a spinner to display Pair<String, String> Objects.
-    // The first string in the pair will display.
-    // The second string can be used as key for a value.
+    // The first name in the pair will display.
+    // The second name can be used as key for a value.
     @JvmStatic
     @BindingAdapter(value = ["spinnerPairs", "selectedPair", "selectedPairAttrChanged"], requireAll = false)
     fun setStringPairs(spinner: Spinner, pairs: List<Pair<String, String>>, selectedPair: Pair<String, String>?, listener: InverseBindingListener) {

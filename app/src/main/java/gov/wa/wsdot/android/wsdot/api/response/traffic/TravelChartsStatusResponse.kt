@@ -10,7 +10,7 @@ data class TravelChartsStatusResponse (
 ) {
     data class ChartRoute(
         @field:SerializedName("name")
-        val string: String,
+        val name: String,
         @field:SerializedName("charts")
         val charts: List<TravelChart>
     ) {
