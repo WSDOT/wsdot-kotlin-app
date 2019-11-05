@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -94,6 +95,10 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
                         binding.crossingList.visibility = View.VISIBLE
                     }
                 }
+
+            if (crossingsResource.status == Status.ERROR) {
+                Toast.makeText(context, getString(R.string.loading_error_message), Toast.LENGTH_SHORT).show()
+            }
 
         })
 

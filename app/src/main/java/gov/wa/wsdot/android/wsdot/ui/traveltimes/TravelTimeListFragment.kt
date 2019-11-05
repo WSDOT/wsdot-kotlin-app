@@ -24,6 +24,7 @@ import javax.inject.Inject
 import android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 
@@ -120,6 +121,16 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
                     binding.travelTimeList.visibility = VISIBLE
                 }
             }
+
+            if (travelTimesResourse.status == Status.ERROR) {
+                binding.emptyListView.visibility = View.GONE
+                Toast.makeText(
+                    context,
+                    getString(R.string.loading_error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         })
     }
 

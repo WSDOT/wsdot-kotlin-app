@@ -23,6 +23,8 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
+import gov.wa.wsdot.android.wsdot.util.network.Status
 
 class TwitterFragment : DaggerFragment(), Injectable {
 
@@ -97,6 +99,15 @@ class TwitterFragment : DaggerFragment(), Injectable {
             } else {
                 adapter.submitList(emptyList())
             }
+
+            if (tweetResource.status == Status.ERROR) {
+                Toast.makeText(
+                    context,
+                    getString(R.string.loading_error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
         })
     }
 

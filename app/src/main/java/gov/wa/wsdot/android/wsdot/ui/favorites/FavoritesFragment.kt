@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -50,6 +51,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_MOUNTAIN_PASS
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TOLL_SIGN
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import gov.wa.wsdot.android.wsdot.util.putDouble
 
 
@@ -188,6 +190,17 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         favoritesListViewModel.favoriteTollSigns.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
                 adapter.setTollSign(it)
+            }
+        })
+
+        favoritesListViewModel.favoritesLoadingStatus.observe(viewLifecycleOwner, Observer { status ->
+            if (status.status == Status.ERROR) {
+                binding.emptyListView.visibility = View.GONE
+                Toast.makeText(
+                    context,
+                    getString(R.string.loading_error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
