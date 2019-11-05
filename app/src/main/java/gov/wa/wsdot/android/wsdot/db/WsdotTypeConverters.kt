@@ -10,7 +10,7 @@ import kotlin.collections.ArrayList
 
 class WsdotTypeConverters {
 
-    // TollTrip list to string
+    // TollTrip list to name
     @TypeConverter
     fun tollTripFromString(value: String): MutableList<TollTrip> {
         val rowType = object : TypeToken<List<TollTrip>>() {}.type
@@ -22,7 +22,7 @@ class WsdotTypeConverters {
         return Gson().toJson(value)
     }
 
-    // TollRateRow list to string
+    // TollRateRow list to name
     @TypeConverter
     fun tollRateRowFromString(value: String): List<TollRateRow> {
         val rowType = object : TypeToken<List<TollRateRow>>() {}.type
@@ -45,7 +45,7 @@ class WsdotTypeConverters {
         return date?.time
     }
 
-    // String to array string
+    // String to array name
     @TypeConverter
     fun fromString(value: String?): List<String>? {
 

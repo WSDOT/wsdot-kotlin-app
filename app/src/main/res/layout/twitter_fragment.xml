@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:clipToPadding="false"
-            android:background="#fff"
             android:elevation="4dp"
+            android:background="?colorSurface"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
