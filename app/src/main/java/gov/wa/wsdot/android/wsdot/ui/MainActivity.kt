@@ -270,9 +270,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
-
         setDarkMode(sharedPreferences, prefKey)
-
     }
 
     private fun setDarkMode(sharedPreferences: SharedPreferences?, prefKey: String?) {
@@ -291,7 +289,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
 
             } else if (prefKey == resources.getString(R.string.key_darkmodesystem)) {
-                val useSystem = prefs.getBoolean(prefKey, true)
+                val useSystem = prefs.getBoolean(prefKey, false)
 
                 if (useSystem) {
 
