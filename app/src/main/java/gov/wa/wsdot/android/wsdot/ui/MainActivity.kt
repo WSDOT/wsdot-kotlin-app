@@ -268,6 +268,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdView.pause()
     }
 
+    fun setScreenName(screenName: String) {
+        firebaseAnalytics.setCurrentScreen(this, screenName, null)
+    }
+
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
         setDarkMode(sharedPreferences, prefKey)
@@ -276,9 +280,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     private fun setDarkMode(sharedPreferences: SharedPreferences?, prefKey: String?) {
 
         sharedPreferences?.let { prefs ->
-
-            Log.e("debug", "pref $prefKey was changed...")
-
             if (prefKey == resources.getString(R.string.key_darkmode)) {
                 val darkmode: Boolean = prefs.getBoolean(prefKey, false)
 
@@ -289,12 +290,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
 
             } else if (prefKey == resources.getString(R.string.key_darkmodesystem)) {
-                val useSystem = prefs.getBoolean(prefKey, false)
-
+                val useSystem = prefs.getBoolean(prefKey, true)
                 if (useSystem) {
-
-                    Log.e("debug", "follow system")
-
                     setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
                 } else {
                     if (prefs.getBoolean(resources.getString(R.string.key_darkmode), false)) {
@@ -305,7 +302,5 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
         }
-
     }
-
 }

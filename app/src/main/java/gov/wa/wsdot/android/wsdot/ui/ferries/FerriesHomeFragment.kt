@@ -39,6 +39,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     private var adapter by autoCleared<FerryScheduleListAdapter>()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         // Clear view models since they are no longer needed

@@ -10,8 +10,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener: GoToLocationMenuEventListener) : BottomSheetDialogFragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

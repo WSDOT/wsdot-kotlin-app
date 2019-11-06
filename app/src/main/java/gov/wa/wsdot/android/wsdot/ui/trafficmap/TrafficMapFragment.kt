@@ -33,6 +33,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.maps.android.MarkerManager
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -68,14 +69,13 @@ import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
 @RuntimePermissions
-class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
+class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
     ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
     ClusterManager.OnClusterClickListener<CameraClusterItem>,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
     SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
     GoToLocationMenuEventListener, TravelerInfoMenuEventListener {
-
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -114,10 +114,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable , OnMapReadyCallback,
             mapUpdateHandler.postDelayed(this, 300000)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mapUpdateHandler = Handler(Looper.getMainLooper())
-
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

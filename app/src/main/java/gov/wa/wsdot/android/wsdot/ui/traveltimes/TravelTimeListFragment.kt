@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 
 class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryTextListener {
@@ -46,6 +47,7 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(
