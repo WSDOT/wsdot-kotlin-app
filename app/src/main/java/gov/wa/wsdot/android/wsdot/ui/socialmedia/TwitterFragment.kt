@@ -24,6 +24,7 @@ import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.network.Status
 
 class TwitterFragment : DaggerFragment(), Injectable {
@@ -39,6 +40,11 @@ class TwitterFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<TwitterFragmentBinding>()
 
     private var adapter by autoCleared<TwitterListAdapter>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

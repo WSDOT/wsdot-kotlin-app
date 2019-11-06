@@ -22,9 +22,8 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
         (activity as MainActivity).disableAds()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

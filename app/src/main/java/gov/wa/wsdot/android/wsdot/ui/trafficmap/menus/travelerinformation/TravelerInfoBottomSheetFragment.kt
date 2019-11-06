@@ -9,9 +9,14 @@ import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.model.eventItems.TravelerInfoMenuEventItem
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 class TravelerInfoBottomSheetFragment(private val travelerInfoMenuEventListener: TravelerInfoMenuEventListener) : BottomSheetDialogFragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {

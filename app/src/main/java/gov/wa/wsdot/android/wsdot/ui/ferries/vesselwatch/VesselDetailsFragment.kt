@@ -12,6 +12,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.VesselDetailsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import javax.inject.Inject
 
 class VesselDetailsFragment : DaggerFragment(), Injectable {
@@ -21,6 +22,11 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
     lateinit var vesselDetailsViewModel: VesselDetailsViewModel
 
     val args: VesselDetailsFragmentArgs by navArgs()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

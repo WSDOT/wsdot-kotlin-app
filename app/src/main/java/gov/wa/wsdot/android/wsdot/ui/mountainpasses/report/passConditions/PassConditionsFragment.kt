@@ -13,6 +13,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MountainPassConditionsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
@@ -25,6 +26,11 @@ class PassConditionsFragment : DaggerFragment(), Injectable {
     lateinit var passReportViewModel: MountainPassReportViewModel
 
     var binding by autoCleared<MountainPassConditionsFragmentBinding>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 

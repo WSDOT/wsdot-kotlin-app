@@ -16,6 +16,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MountainPassForecastFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
@@ -37,6 +38,11 @@ class PassForecastListFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<MountainPassForecastFragmentBinding>()
 
     private var adapter by autoCleared<PassForecastListAdapter>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

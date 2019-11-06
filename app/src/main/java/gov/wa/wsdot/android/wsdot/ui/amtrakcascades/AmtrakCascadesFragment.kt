@@ -50,6 +50,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         (activity as MainActivity).enableAds("other")
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onDestroy() {

@@ -33,6 +33,7 @@ import gov.wa.wsdot.android.wsdot.databinding.VesselWatchBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
@@ -75,6 +76,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vesselUpdateHandler = Handler(Looper.getMainLooper())
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(

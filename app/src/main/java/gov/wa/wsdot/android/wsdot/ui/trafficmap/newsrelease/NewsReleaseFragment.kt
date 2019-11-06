@@ -24,6 +24,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.network.Status
 
 
@@ -40,6 +41,11 @@ class NewsReleaseFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<NewsReleaseFragmentBinding>()
 
     private var adapter by autoCleared<NewsReleaseListAdapter>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

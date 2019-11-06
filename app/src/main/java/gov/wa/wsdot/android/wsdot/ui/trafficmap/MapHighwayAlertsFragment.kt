@@ -19,6 +19,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MapHighwayAlertsFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertListAdapter
@@ -39,6 +40,11 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<MapHighwayAlertsFragmentBinding>()
 
     private var adapter by autoCleared<HighwayAlertListAdapter>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

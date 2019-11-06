@@ -23,6 +23,7 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
@@ -66,6 +67,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onDestroy() {
