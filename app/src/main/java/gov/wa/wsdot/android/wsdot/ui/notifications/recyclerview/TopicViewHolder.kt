@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.notifications
+package gov.wa.wsdot.android.wsdot.ui.notifications.recyclerview
 
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.databinding.*
