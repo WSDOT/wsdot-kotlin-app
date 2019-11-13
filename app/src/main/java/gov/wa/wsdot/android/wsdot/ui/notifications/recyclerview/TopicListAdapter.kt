@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.notifications
+package gov.wa.wsdot.android.wsdot.ui.notifications.recyclerview
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,10 +33,14 @@ class TopicListAdapter(
 
         when (viewType) {
             ITEM_TYPE_HEADER -> {
-                return TopicViewHolder(createHeaderBinding(parent))
+                return TopicViewHolder(
+                    createHeaderBinding(parent)
+                )
             }
             ITEM_TYPE_TOPIC -> {
-                return TopicViewHolder(createTopicBinding(parent))
+                return TopicViewHolder(
+                    createTopicBinding(parent)
+                )
             }
         }
 
