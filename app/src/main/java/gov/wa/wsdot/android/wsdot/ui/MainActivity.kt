@@ -85,7 +85,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navFavoritesFragment,
                 R.id.navAmtrakCascadesFragment,
                 R.id.navAboutFragment,
-                R.id.navSettingsFragment
+                R.id.navSettingsFragment,
+                R.id.navNotificationsFragment
             ), drawerLayout)
 
 
@@ -209,6 +210,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.event_banner -> {
                 if(navController.currentDestination?.id != R.id.navEventDetailsFragment) {
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
+                    findNavController(R.id.nav_host_fragment).navigate(action)
+                }
+            }
+            R.id.nav_notifications -> {
+                if(navController.currentDestination?.id != R.id.navNotificationsFragment) {
+                    val action = NavGraphDirections.actionGlobalNavNotificationsFragment()
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
             }

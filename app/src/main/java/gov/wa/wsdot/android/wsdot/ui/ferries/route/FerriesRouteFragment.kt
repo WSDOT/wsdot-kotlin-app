@@ -213,7 +213,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val titles = ArrayList<String>()
         titles.add("sailings")
         titles.add("cameras")
-        titles.add("bulletins")
+        titles.add("alerts")
 
         fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
 
