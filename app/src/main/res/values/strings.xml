@@ -138,6 +138,11 @@
         know the latest about Washington\'s transportation system.
     </string>
     <string name="loading_error_message">Error Loading</string>
+    <string name="menu_notifications">Notifications</string>
+    <string name="msg_subscribed">subscribed to topic</string>
+    <string name="msg_subscribe_failed">subscribe failed</string>
+    <string name="msg_unsubscribed">unsubscribed</string>
+    <string name="msg_unsubscribe_failed">unsubscribed failed</string>
 
 
 </resources>

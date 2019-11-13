@@ -5,12 +5,15 @@ import gov.wa.wsdot.android.wsdot.api.response.EventStatusResponse
 import gov.wa.wsdot.android.wsdot.api.response.borderwaits.BorderCrossingResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
+import gov.wa.wsdot.android.wsdot.api.response.notifications.NotificationTopicResponse
+import gov.wa.wsdot.android.wsdot.api.response.notifications.NotificationVersionResponse
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.CamerasResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.HighwayAlertsResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelChartsStatusResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelTimesResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
+import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
 import retrofit2.http.GET
 
 interface WebDataService {
@@ -47,5 +50,11 @@ interface WebDataService {
 
     @GET("TravelCharts.js")
     fun getTravelChartsStatus(): LiveData<ApiResponse<TravelChartsStatusResponse>>
+
+    @GET("NotificationTopics.js")
+    fun getNotificationTopics(): LiveData<ApiResponse<NotificationTopicResponse>>
+
+    @GET("NotificationTopicsVersion.js")
+    fun getNotificationTopicVersion(): LiveData<ApiResponse<NotificationVersionResponse>>
 
 }
