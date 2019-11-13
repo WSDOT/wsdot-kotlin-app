@@ -157,10 +157,13 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("bindCameraMilepost")
-    fun bindCameraMilepost(textView: TextView, camera: Resource<Camera>) {
-        if (camera.data != null) {
-            textView.text = String.format("Near milepost %d", camera.data.milepost)
+    @BindingAdapter("bindCameraDirection")
+    fun bindCameraDirection(textView: TextView, camera: Resource<Camera>) {
+        if (camera.data?.direction != null) {
+            textView.text = String.format("Camera faces %s", camera.data.direction)
+            textView.visibility = View.VISIBLE
+        } else {
+            textView.visibility = View.GONE
         }
     }
 

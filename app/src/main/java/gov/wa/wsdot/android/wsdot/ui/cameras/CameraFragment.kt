@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.cameras
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,14 +9,23 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import javax.inject.Inject
 
-class CameraFragment : DaggerFragment(), Injectable {
+class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -24,6 +34,9 @@ class CameraFragment : DaggerFragment(), Injectable {
     val args: CameraFragmentArgs by navArgs()
 
     private var isFavorite: Boolean = false
+
+    private lateinit var mapFragment: SupportMapFragment
+    private lateinit var mMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +69,51 @@ class CameraFragment : DaggerFragment(), Injectable {
         dataBinding.lifecycleOwner = viewLifecycleOwner
         dataBinding.cameraViewModel = cameraViewModel
 
+        mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
         return dataBinding.root
     }
+
+    override fun onMapReady(map: GoogleMap?) {
+
+        mMap = map as GoogleMap
+
+        context?.let {
+            if (NightModeConfig.nightModeOn(it)) {
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                            it, R.raw.map_night_style))
+
+                } catch (e: Resources.NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
+
+            } else {
+                mMap.setMapStyle(null)
+            }
+        }
+
+        mMap.uiSettings.isMapToolbarEnabled = false
+
+        cameraViewModel.camera.observe(viewLifecycleOwner, Observer { cameraResponse ->
+            if (cameraResponse.data != null) {
+
+                val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera)
+                val cameraLocation = LatLng(cameraResponse.data.latitude, cameraResponse.data.longitude)
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 14.0f))
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(cameraLocation)
+                        .icon(icon))
+            }
+        })
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.camera_menu, menu)
