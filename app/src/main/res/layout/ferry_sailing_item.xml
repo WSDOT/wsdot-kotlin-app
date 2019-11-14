@@ -20,11 +20,101 @@
         android:layout_marginStart="8dp"
         app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="false"
-        >
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
+
+            <LinearLayout
+                android:id="@+id/departure_time_view"
+                android:layout_width="120dp"
+                android:orientation="vertical"
+                app:layout_constrainedWidth="false"
+                android:layout_height="wrap_content"
+                android:background="@{BindingFunctions.hasPassed(sailing.departingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_primary }"
+                app:layout_constraintVertical_chainStyle="spread"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="start"
+                android:elevation="4dp">
+
+                <TextView
+                    style="@style/CardMiniHeading"
+                    android:id="@+id/departureTimeLabel"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DEPARTURE"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/departureTimeTextView"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindDateHour="@{sailing.departingTime}"
+                    app:layout_constraintTop_toBottomOf="@id/departureTimeLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/arrival_time_view"
+                android:layout_width="120dp"
+                app:layout_constrainedWidth="false"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:background="@{BindingFunctions.hasPassed(sailing.arrivingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_primary }"
+                app:visibleGone="@{sailing.arrivingTime != null}"
+                app:layout_constraintVertical_chainStyle="spread"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="end"
+                android:elevation="4dp">
+
+                <TextView
+                    style="@style/CardMiniHeading"
+                    android:id="@+id/arrivalTimeLabel"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ARRIVAL"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/arrivalTimeTextView"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindDateHour="@{sailing.arrivingTime}"
+                    app:layout_constraintTop_toBottomOf="@id/arrivalTimeLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </LinearLayout>
+
 
             <FrameLayout
                 android:id="@+id/spaces_view"
@@ -34,7 +124,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:paddingTop="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/arrival_time_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:visibleGone="@{sailing.maxSpaces != null &amp;&amp; !BindingFunctions.hasPassed(sailing.departingTime)}">
 
@@ -76,75 +166,12 @@
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:paddingBottom="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/spaces_view"
                 android:gravity="center"
                 android:text="DRIVE UP"
                 app:visibleGone="@{sailing.maxSpaces != null &amp;&amp; !BindingFunctions.hasPassed(sailing.departingTime)}"/>
-
-             <LinearLayout
-                 android:id="@+id/timesTextView"
-                 android:layout_width="220dp"
-                 app:layout_constrainedWidth="false"
-                 android:layout_height="wrap_content"
-
-                 android:background="@{BindingFunctions.hasPassed(sailing.departingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_primary }"
-
-                 app:layout_constraintVertical_chainStyle="spread"
-
-                 app:layout_constraintTop_toTopOf="parent"
-                 app:layout_constraintStart_toStartOf="parent"
-
-                 android:layout_marginBottom="8dp"
-                 android:layout_marginEnd="8dp"
-
-                 android:paddingTop="8dp"
-                 android:paddingBottom="8dp"
-                 android:paddingStart="16dp"
-                 android:paddingEnd="16dp"
-
-                 android:gravity="start"
-                 android:elevation="4dp">
-
-
-                <TextView
-                    style="@style/CardTitleText"
-                    android:id="@+id/departingTimeTextView"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:bindDateHour="@{sailing.departingTime}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    />
-
-                <TextView
-                    style="@style/CardTitleText"
-                    android:id="@+id/dash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" - "
-                    android:textColor="@color/white"
-                    app:visibleGone="@{sailing.arrivingTime != null}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/departingTimeTextView"/>
-
-                <TextView
-                    style="@style/CardTitleText"
-                    android:id="@+id/arrivingTimeTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    app:bindDateHour="@{sailing.arrivingTime}"
-                    app:visibleGone="@{sailing.arrivingTime != null}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/dash"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
-             </LinearLayout>
 
             <TextView
                 style="@style/CardSubTitleText"
@@ -153,7 +180,7 @@
                 android:layout_height="wrap_content"
                 app:bindStringArray="@{sailing.annotations}"
                 app:visibleGone="@{sailing.annotations.size > 0}"
-                app:layout_constraintTop_toBottomOf="@+id/timesTextView"
+                app:layout_constraintTop_toBottomOf="@+id/departure_time_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/spaces_view"
                 app:layout_constraintBottom_toTopOf="@id/spaces_disclaimer"
