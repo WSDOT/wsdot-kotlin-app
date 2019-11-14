@@ -47,6 +47,7 @@
                 <LinearLayout
                     android:id="@+id/departure_time_view"
                     android:layout_width="120dp"
+                    android:orientation="vertical"
                     app:layout_constrainedWidth="false"
                     android:layout_height="wrap_content"
                     android:background="@drawable/card_title_background_amtrak_blue"
@@ -63,43 +64,23 @@
                     android:elevation="4dp">
 
                     <TextView
+                        style="@style/CardMiniHeading"
+                        android:id="@+id/departureTimeLabel"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DEPARTURE"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <TextView
                         style="@style/CardTitleText"
                         android:id="@+id/departingTimeTextView"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:bindDepartureDateHour="@{departureItem}"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/travel_time_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintVertical_chainStyle="spread"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/departure_time_view"
-                    app:layout_constraintEnd_toStartOf="@+id/arrival_time_view"
-                    app:visibleGone="@{arrivalItem.scheduledArrivalTime != null || arrivalItem.arrivalTime != null || arrivalItem.scheduledDepartureTime != null || arrivalItem.departureTime != null}"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="16dp"
-                    android:gravity="center"
-                    android:elevation="4dp">
-
-                    <ImageView
-                        style="@style/CardTitleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_arrow_right_thin"
-                        android:tint="@color/amtrak"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/departureTimeLabel"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -109,6 +90,7 @@
                     android:id="@+id/arrival_time_view"
                     android:layout_width="120dp"
                     app:layout_constrainedWidth="false"
+                    android:orientation="vertical"
                     android:layout_height="wrap_content"
                     app:visibleGone="@{arrivalItem.scheduledArrivalTime != null || arrivalItem.arrivalTime != null || arrivalItem.scheduledDepartureTime != null || arrivalItem.departureTime != null}"
                     android:background="@drawable/card_title_background_amtrak_blue"
@@ -125,13 +107,24 @@
                     android:elevation="4dp">
 
                     <TextView
+                        style="@style/CardMiniHeading"
+                        android:id="@+id/arrivalTimeLabel"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ARRIVAL"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
                         style="@style/CardTitleText"
                         android:id="@+id/arrivalTimeTextView"
                         android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:bindArrivalDateHour="@{arrivalItem}"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/arrivalTimeLabel"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent" />
 
