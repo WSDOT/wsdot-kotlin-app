@@ -145,4 +145,10 @@
     <string name="msg_unsubscribe_failed">unsubscribed failed</string>
 
 
+    // shortcuts / notifications
+    <string name="traffic_alert">traffic_alert_key</string>
+    <string name="traffic_alert_id">traffic_alert_id_key</string>
+
+    <string name="ferry_alert">ferry_alert_key</string>
+
 </resources>

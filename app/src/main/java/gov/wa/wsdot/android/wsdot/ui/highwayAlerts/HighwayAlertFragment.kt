@@ -65,8 +65,10 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         binding = dataBinding
 
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
-            if (alert.data != null) {
+            if (alert?.data != null) {
                 binding.highwayAlert = alert.data
+            } else {
+                binding.alertTitle.text = "Alert Unavailable"
             }
         })
 
@@ -100,10 +102,9 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
         mMap.uiSettings.isMapToolbarEnabled = false
 
-
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
-            if (alert.data != null) {
-
+            if (alert?.data != null) {
+                mapFragment.view?.visibility = View.VISIBLE
                 var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
 
                 val construction = arrayOf("construction", "maintenance")
@@ -136,6 +137,8 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     MarkerOptions()
                         .position(LatLng(alert.data.startLatitude, alert.data.startLongitude))
                         .icon(alertIcon))
+            } else {
+                mapFragment.view?.visibility = View.GONE
             }
         })
     }

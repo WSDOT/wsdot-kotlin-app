@@ -57,9 +57,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 val title = remoteMessage.data["title"]
                 val message = remoteMessage.data["message"]
+                val type = remoteMessage.data["type"]
 
-                if (title != null && message != null) {
-                    sendNotification(alert_id, title, message)
+                if (title != null && message != null && type != null) {
+                    sendNotification(alert_id, title, message, getNotificationIntent(remoteMessage.data))
+                } else {
+                    Log.e("debug", "something was null")
                 }
 
             }
@@ -72,6 +75,33 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
     // [END receive_message]
+
+    private fun getNotificationIntent(data: MutableMap<String, String>): PendingIntent {
+
+        val type = data["type"]
+
+        val intent = Intent(this, MainActivity::class.java)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+        if (type == "highway_alert") {
+            intent.putExtra(getString(R.string.traffic_alert), true)
+            val alertId = data["alert_id"]
+            intent.putExtra(getString(R.string.traffic_alert_id), alertId)
+
+            Log.e("debug", "built intent")
+            Log.e("debug", alertId.toString())
+
+        } else if (type == "ferry_alert") {
+            intent.putExtra(getString(R.string.ferry_alert), true)
+
+        }
+
+        return PendingIntent.getActivity(this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+    }
 
     // [START on_new_token]
     /**
@@ -89,13 +119,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(notificationId: Int, title: String, messageBody: String) {
-
-        val intent = Intent(this, MainActivity::class.java)
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+    private fun sendNotification(notificationId: Int, title: String, messageBody: String, pendingIntent: PendingIntent) {
 
         val channelId = MyNotificationManager.ALERT_CHANNEL_ID
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

@@ -1,7 +1,14 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +18,7 @@ import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate.*
+import androidx.core.app.NotificationCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -19,6 +27,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
@@ -33,6 +42,8 @@ import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.service.MyFirebaseMessagingService
+import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import javax.inject.Inject
 
@@ -129,8 +140,36 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
+        sendTestNotification(1, "test", "its a test")
+
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        Log.e("debug", "got a new intent!")
+        intent?.extras?.let { handlePushNotifications(it) }
+    }
+
+    private fun handlePushNotifications(extras: Bundle) {
+        if (extras.getBoolean(getString(R.string.traffic_alert), false)) {
+            Log.e("debug", "got a traffic alert")
+
+
+            val alertId = extras.getInt(getString(R.string.traffic_alert_id), 0)
+            Log.e("debug","handling push alert")
+            Log.e("debug", alertId.toString())
+
+            val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
+            findNavController(R.id.nav_host_fragment).navigate(action)
+        } else if (extras.getBoolean(getString(R.string.ferry_alert), false)) {
+            Log.e("debug", "got a ferry alert")
+
+
+        }
+    }
+
+    
     override fun getTheme(): Resources.Theme {
 
         val theme = super.getTheme()
@@ -310,4 +349,52 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
     }
+
+
+    ////////////////
+
+
+    private fun sendTestNotification(notificationId: Int, title: String, messageBody: String) {
+
+        val intent = Intent(this, MainActivity::class.java)
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+        intent.putExtra(getString(R.string.traffic_alert), true)
+        val alertId = 376839
+        intent.putExtra(getString(R.string.traffic_alert_id), alertId)
+
+        Log.e("debug", "built intent")
+        Log.e("debug", alertId.toString())
+
+        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val channelId = MyNotificationManager.ALERT_CHANNEL_ID
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_list_wsdot)
+            .setContentTitle(title)
+            .setContentText(messageBody)
+            .setAutoCancel(true)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(messageBody))
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId,
+                "WSDOT Alerts",
+                NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(notificationId, notificationBuilder.build())
+    }
+
+
 }
