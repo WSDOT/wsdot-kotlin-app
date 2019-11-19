@@ -83,7 +83,14 @@ class NotificationsFragment : DaggerFragment(), Injectable {
             dataBindingComponent
         )
         { topicItem, isChecked ->
+
             if (isChecked != topicItem.subscribed) {
+
+                notificationsViewModel.updateSubscription(
+                    topicItem.topic,
+                    isChecked
+                )
+
                 (activity as MainActivity).updateTopicSub(topicItem.topic, isChecked)
             }
         }
