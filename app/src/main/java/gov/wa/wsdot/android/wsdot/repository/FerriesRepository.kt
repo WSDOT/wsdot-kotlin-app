@@ -198,6 +198,26 @@ class FerriesRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun loadFerryAlert(alertId: Int): LiveData<Resource<FerryAlert>> {
+
+        return object : NetworkBoundResource<FerryAlert, List<FerryScheduleResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+
+            override fun shouldFetch(data: FerryAlert?): Boolean {
+                return true
+            }
+
+            override fun loadFromDb() = ferryAlertDao.loadAlertById(alertId)
+
+            override fun createCall() = dataWebservice.getFerrySchedules()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
 
     fun loadFavoriteSchedules(forceRefresh: Boolean): LiveData<Resource<List<FerrySchedule>>> {
 
