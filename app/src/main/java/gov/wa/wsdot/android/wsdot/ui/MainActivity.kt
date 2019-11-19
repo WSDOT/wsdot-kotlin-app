@@ -1,7 +1,14 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -11,6 +18,7 @@ import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate.*
+import androidx.core.app.NotificationCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -33,7 +41,10 @@ import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
+import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.putDouble
 import javax.inject.Inject
 
 
@@ -85,7 +96,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navFavoritesFragment,
                 R.id.navAmtrakCascadesFragment,
                 R.id.navAboutFragment,
-                R.id.navSettingsFragment
+                R.id.navSettingsFragment,
+                R.id.navNotificationsFragment
             ), drawerLayout)
 
 
@@ -128,8 +140,74 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
+        // sendTestNotification(1, "test", "its a test")
+
+        intent?.extras?.let { handlePushNotifications(it) }
+
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.extras?.let { handlePushNotifications(it) }
+    }
+
+    private fun handlePushNotifications(extras: Bundle) {
+        if (extras.getBoolean(getString(R.string.push_alert_traffic_alert), false)) {
+
+            val settings = PreferenceManager.getDefaultSharedPreferences(this)
+
+            val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
+            val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+
+            val lat = extras.getDouble(getString(R.string.push_alert_traffic_alert_latitude), latitude)
+            val lng = extras.getDouble(getString(R.string.push_alert_traffic_alert_longitude), longitude)
+
+            val editor = settings.edit()
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_latitude),
+                lat
+            )
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_longitude),
+                lng
+            )
+            editor.putFloat(
+                getString(R.string.user_preference_traffic_map_zoom),
+                12.0f
+            )
+            editor.apply()
+
+            val alertId = extras.getInt(getString(R.string.push_alert_traffic_alert_id), 0)
+
+            // reset navigation to the traffic map
+            findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
+            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navTrafficMapFragment, false)
+
+            val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
+            findNavController(R.id.nav_host_fragment).navigate(action)
+
+
+        } else if (extras.getBoolean(getString(R.string.push_alert_ferry_alert), false)) {
+            Log.e("debug", "got a ferry alert")
+            // TODO
+
+            val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
+            val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
+            val routeTitle = extras.getString(getString(R.string.push_alert_ferry_route_title), "")
+
+            findNavController(R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
+            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navFerriesHomeFragment, false)
+
+            val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(routeId, routeTitle)
+            findNavController(R.id.nav_host_fragment).navigate(actionOne)
+
+            val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
+            findNavController(R.id.nav_host_fragment).navigate(actionTwo)
+
+
+        }
+    }
+    
     override fun getTheme(): Resources.Theme {
 
         val theme = super.getTheme()
@@ -209,6 +287,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.event_banner -> {
                 if(navController.currentDestination?.id != R.id.navEventDetailsFragment) {
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
+                    findNavController(R.id.nav_host_fragment).navigate(action)
+                }
+            }
+            R.id.nav_notifications -> {
+                if(navController.currentDestination?.id != R.id.navNotificationsFragment) {
+                    val action = NavGraphDirections.actionGlobalNavNotificationsFragment()
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
             }
@@ -303,4 +387,5 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
     }
+
 }

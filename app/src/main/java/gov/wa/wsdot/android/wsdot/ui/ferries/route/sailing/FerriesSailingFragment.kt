@@ -116,7 +116,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                         currentSailingIndex = i
                     }
                 }
-
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())

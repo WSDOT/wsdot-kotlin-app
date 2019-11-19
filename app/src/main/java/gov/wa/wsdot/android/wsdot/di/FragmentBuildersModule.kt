@@ -31,6 +31,7 @@ import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
@@ -42,6 +43,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFra
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
+import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsFragment
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
@@ -99,6 +101,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFerryAlertsFragment(): FerryAlertsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFerryAlertDetailsFragment(): FerryAlertDetailsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeMountainPassHomeFragment(): MountainPassHomeFragment
@@ -171,5 +176,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTravelChartsFragment(): TravelChartsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNotificationsFragment(): NotificationsFragment
 
 }

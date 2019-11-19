@@ -26,6 +26,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
 class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
@@ -64,9 +65,13 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         dataBinding.lifecycleOwner = viewLifecycleOwner
         binding = dataBinding
 
+        binding.viewModel = alertViewModel
+
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
-            if (alert.data != null) {
+            if (alert?.data != null) {
                 binding.highwayAlert = alert.data
+            } else if (alert.status != Status.LOADING){
+                binding.alertTitle.text = getString(R.string.no_alert_string)
             }
         })
 
@@ -100,10 +105,9 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
         mMap.uiSettings.isMapToolbarEnabled = false
 
-
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
-            if (alert.data != null) {
-
+            if (alert?.data != null) {
+                mapFragment.view?.visibility = View.VISIBLE
                 var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
 
                 val construction = arrayOf("construction", "maintenance")
@@ -136,6 +140,8 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     MarkerOptions()
                         .position(LatLng(alert.data.startLatitude, alert.data.startLongitude))
                         .icon(alertIcon))
+            } else {
+                mapFragment.view?.visibility = View.GONE
             }
         })
     }
