@@ -97,12 +97,14 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
             }
 
         amtrakCascadesViewModel.schedulePairs.observe(viewLifecycleOwner, Observer { amtrakScheduleResource ->
+
             binding.emptyListView.visibility = View.GONE
+
             amtrakScheduleResource.data?.let {
                 if(it.isNotEmpty() && amtrakScheduleResource.status == Status.SUCCESS) {
                     adapter.submitList(amtrakScheduleResource.data)
                     binding.emptyListView.visibility = View.GONE
-                } else if (it.isEmpty() && amtrakScheduleResource.status != Status.LOADING || amtrakScheduleResource.status != Status.ERROR) {
+                } else if (it.isEmpty() && amtrakScheduleResource.status != Status.LOADING) {
                     binding.emptyListView.visibility = View.VISIBLE
                 }
             }
