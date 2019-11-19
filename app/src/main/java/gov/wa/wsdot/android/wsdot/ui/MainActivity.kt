@@ -1,14 +1,8 @@
 package gov.wa.wsdot.android.wsdot.ui
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.media.RingtoneManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -18,7 +12,6 @@ import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate.*
-import androidx.core.app.NotificationCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -36,12 +29,13 @@ import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
+import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
@@ -56,7 +50,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var viewModel: EventBannerViewModel
+    lateinit var eventViewModel: EventBannerViewModel
+    lateinit var notificationsViewModel: NotificationsViewModel
 
     lateinit var drawerLayout: DrawerLayout
 
@@ -115,8 +110,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         enableAds(resources.getString(R.string.ad_target_traffic))
 
         // handle event banner
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(EventBannerViewModel::class.java)
-        viewModel.eventStatus.observe(this, Observer { eventResponse ->
+        eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventBannerViewModel::class.java)
+        eventViewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
 
                 val settings = PreferenceManager.getDefaultSharedPreferences(this)
@@ -140,7 +135,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
-        // sendTestNotification(1, "test", "its a test")
+        notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
+
 
         intent?.extras?.let { handlePushNotifications(it) }
 
@@ -204,8 +200,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
             findNavController(R.id.nav_host_fragment).navigate(actionTwo)
 
-
         }
+
+        // resent intent so we don't reuse it on config changes.
+        intent.replaceExtras(Bundle())
+        intent.action = ""
+        intent.data = null
+        intent.flags = 0
+
+
     }
     
     override fun getTheme(): Resources.Theme {
@@ -356,6 +359,29 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         firebaseAnalytics.setCurrentScreen(this, screenName, null)
     }
 
+    fun updateTopicSub(topic: String, isSubbed: Boolean) {
+
+        notificationsViewModel.updateSubscription(
+            topic,
+            isSubbed
+        )
+
+        // undo sub if network request fails
+        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+            .addOnCompleteListener { task ->
+
+                var msg = getString(R.string.msg_unsubscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.msg_unsubscribe_failed)
+                    notificationsViewModel.updateSubscription(
+                        topic,
+                        !isSubbed
+                    )
+                }
+                Log.d("debug", msg)
+            }
+    }
+
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
         setDarkMode(sharedPreferences, prefKey)
@@ -374,7 +400,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
 
             } else if (prefKey == resources.getString(R.string.key_darkmodesystem)) {
-                val useSystem = prefs.getBoolean(prefKey, true)
+                val useSystem = prefs.getBoolean(prefKey, false)
                 if (useSystem) {
                     setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
                 } else {
