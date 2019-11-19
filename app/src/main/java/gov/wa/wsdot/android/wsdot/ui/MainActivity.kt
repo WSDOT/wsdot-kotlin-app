@@ -96,10 +96,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             ), drawerLayout)
 
 
-        // TODO: Let user set home screen ///////////////////////
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
-        graph.startDestination = R.id.navTrafficMapFragment
         navController.graph = graph
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
@@ -184,8 +182,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
 
         } else if (extras.getBoolean(getString(R.string.push_alert_ferry_alert), false)) {
-            Log.e("debug", "got a ferry alert")
-            // TODO
 
             val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
             val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
