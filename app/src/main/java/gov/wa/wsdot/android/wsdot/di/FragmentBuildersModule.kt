@@ -31,6 +31,7 @@ import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
@@ -100,6 +101,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFerryAlertsFragment(): FerryAlertsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeFerryAlertDetailsFragment(): FerryAlertDetailsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeMountainPassHomeFragment(): MountainPassHomeFragment
