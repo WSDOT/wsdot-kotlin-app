@@ -156,5 +156,6 @@
     <string name="push_alert_ferry_alert_id">ferry_alert_id_push_key</string>
     <string name="push_alert_ferry_route_id">ferry_alert_route_id_push_key</string>
     <string name="push_alert_ferry_route_title">ferry_alert_route_title_push_key</string>
+    <string name="app_version_text">Version %s</string>
 
 </resources>
