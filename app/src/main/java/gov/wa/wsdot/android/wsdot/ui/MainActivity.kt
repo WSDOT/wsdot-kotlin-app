@@ -27,7 +27,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
@@ -42,9 +41,10 @@ import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.service.MyFirebaseMessagingService
 import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
+import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.putDouble
 import javax.inject.Inject
 
 
@@ -140,35 +140,73 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
-        sendTestNotification(1, "test", "its a test")
+        // sendTestNotification(1, "test", "its a test")
+
+        intent?.extras?.let { handlePushNotifications(it) }
 
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-
-        Log.e("debug", "got a new intent!")
         intent?.extras?.let { handlePushNotifications(it) }
     }
 
     private fun handlePushNotifications(extras: Bundle) {
-        if (extras.getBoolean(getString(R.string.traffic_alert), false)) {
-            Log.e("debug", "got a traffic alert")
+        if (extras.getBoolean(getString(R.string.push_alert_traffic_alert), false)) {
 
+            val settings = PreferenceManager.getDefaultSharedPreferences(this)
 
-            val alertId = extras.getInt(getString(R.string.traffic_alert_id), 0)
-            Log.e("debug","handling push alert")
-            Log.e("debug", alertId.toString())
+            val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
+            val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+
+            val lat = extras.getDouble(getString(R.string.push_alert_traffic_alert_latitude), latitude)
+            val lng = extras.getDouble(getString(R.string.push_alert_traffic_alert_longitude), longitude)
+
+            val editor = settings.edit()
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_latitude),
+                lat
+            )
+            editor.putDouble(
+                getString(R.string.user_preference_traffic_map_longitude),
+                lng
+            )
+            editor.putFloat(
+                getString(R.string.user_preference_traffic_map_zoom),
+                12.0f
+            )
+            editor.apply()
+
+            val alertId = extras.getInt(getString(R.string.push_alert_traffic_alert_id), 0)
+
+            // reset navigation to the traffic map
+            findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
+            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navTrafficMapFragment, false)
 
             val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
             findNavController(R.id.nav_host_fragment).navigate(action)
-        } else if (extras.getBoolean(getString(R.string.ferry_alert), false)) {
+
+
+        } else if (extras.getBoolean(getString(R.string.push_alert_ferry_alert), false)) {
             Log.e("debug", "got a ferry alert")
+            // TODO
+
+            val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
+            val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
+            val routeTitle = extras.getString(getString(R.string.push_alert_ferry_route_title), "")
+
+            findNavController(R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
+            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navFerriesHomeFragment, false)
+
+            val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(routeId, routeTitle)
+            findNavController(R.id.nav_host_fragment).navigate(actionOne)
+
+            val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
+            findNavController(R.id.nav_host_fragment).navigate(actionTwo)
 
 
         }
     }
-
     
     override fun getTheme(): Resources.Theme {
 
@@ -349,52 +387,5 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
     }
-
-
-    ////////////////
-
-
-    private fun sendTestNotification(notificationId: Int, title: String, messageBody: String) {
-
-        val intent = Intent(this, MainActivity::class.java)
-
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-        intent.putExtra(getString(R.string.traffic_alert), true)
-        val alertId = 376839
-        intent.putExtra(getString(R.string.traffic_alert_id), alertId)
-
-        Log.e("debug", "built intent")
-        Log.e("debug", alertId.toString())
-
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
-
-        val channelId = MyNotificationManager.ALERT_CHANNEL_ID
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.ic_list_wsdot)
-            .setContentTitle(title)
-            .setContentText(messageBody)
-            .setAutoCancel(true)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(messageBody))
-            .setSound(defaultSoundUri)
-            .setContentIntent(pendingIntent)
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                "WSDOT Alerts",
-                NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        notificationManager.notify(notificationId, notificationBuilder.build())
-    }
-
 
 }

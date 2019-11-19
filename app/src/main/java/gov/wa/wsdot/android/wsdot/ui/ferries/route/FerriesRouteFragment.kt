@@ -37,7 +37,6 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
-import java.util.*
 import java.util.Calendar.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -98,7 +97,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         ferryAlertsViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
-        ferryAlertsViewModel.setFerryAlertQuery(args.routeId)
+        ferryAlertsViewModel.setFerryAlertsRouteQuery(args.routeId)
 
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<FerriesRouteFragmentBinding>(

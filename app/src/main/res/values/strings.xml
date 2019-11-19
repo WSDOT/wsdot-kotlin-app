@@ -38,6 +38,7 @@
     // Traffic Map
     <string name="highway_alert_marker_collection_id">HIGHWAY_ALERT_MARKERS</string>
     <string name="rest_area_marker_collection_id">REST_AREA_MARKERS</string>
+    <string name="no_alert_string">Alert unavailable</string>
 
     // Travel Times
     <string name="via_text">Via %s</string>
@@ -146,9 +147,14 @@
 
 
     // shortcuts / notifications
-    <string name="traffic_alert">traffic_alert_key</string>
-    <string name="traffic_alert_id">traffic_alert_id_key</string>
+    <string name="push_alert_traffic_alert">traffic_alert_push_key</string>
+    <string name="push_alert_traffic_alert_id">traffic_alert_id_push_key</string>
+    <string name="push_alert_traffic_alert_latitude">traffic_alert_lat_push_key</string>
+    <string name="push_alert_traffic_alert_longitude">traffic_alert_lng_push_key</string>
 
-    <string name="ferry_alert">ferry_alert_key</string>
+    <string name="push_alert_ferry_alert">ferry_alert_push_key</string>
+    <string name="push_alert_ferry_alert_id">ferry_alert_id_push_key</string>
+    <string name="push_alert_ferry_route_id">ferry_alert_route_id_push_key</string>
+    <string name="push_alert_ferry_route_title">ferry_alert_route_title_push_key</string>
 
 </resources>

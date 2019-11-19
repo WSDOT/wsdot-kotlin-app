@@ -17,6 +17,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesListViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.FerriesViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.FerriesRouteViewModel
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertDetailsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasViewModel
@@ -191,6 +192,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NotificationsViewModel::class)
     abstract fun findNotificationsViewModel(notificationsViewModel: NotificationsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FerryAlertDetailsViewModel::class)
+    abstract fun findFerryAlertDetailsViewModel(ferryAlertDetailsViewModel: FerryAlertDetailsViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory

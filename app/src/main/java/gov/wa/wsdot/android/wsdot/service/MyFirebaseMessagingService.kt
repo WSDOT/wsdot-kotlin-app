@@ -14,9 +14,6 @@ import com.google.firebase.messaging.RemoteMessage
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import android.content.SharedPreferences
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.navigation.Navigation
 import androidx.preference.PreferenceManager
 import gov.wa.wsdot.android.wsdot.util.Utils
 
@@ -79,27 +76,36 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun getNotificationIntent(data: MutableMap<String, String>): PendingIntent {
 
         val type = data["type"]
+        val alertId = data["alert_id"]
 
         val intent = Intent(this, MainActivity::class.java)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
         if (type == "highway_alert") {
-            intent.putExtra(getString(R.string.traffic_alert), true)
-            val alertId = data["alert_id"]
-            intent.putExtra(getString(R.string.traffic_alert_id), alertId)
 
-            Log.e("debug", "built intent")
-            Log.e("debug", alertId.toString())
+            val lat = data["lat"]
+            val lng = data["long"]
+
+            intent.putExtra(getString(R.string.push_alert_traffic_alert), true)
+            intent.putExtra(getString(R.string.push_alert_traffic_alert_id), alertId?.toInt())
+            intent.putExtra(getString(R.string.push_alert_traffic_alert_latitude), lat?.toDouble())
+            intent.putExtra(getString(R.string.push_alert_traffic_alert_longitude), lng?.toDouble())
 
         } else if (type == "ferry_alert") {
-            intent.putExtra(getString(R.string.ferry_alert), true)
+
+            val routeId = data["route_id"]
+            val routeTitle = data["route_title"]
+
+            intent.putExtra(getString(R.string.push_alert_ferry_alert), true)
+            intent.putExtra(getString(R.string.push_alert_ferry_alert_id), alertId?.toInt())
+            intent.putExtra(getString(R.string.push_alert_ferry_route_id), routeId?.toInt())
+            intent.putExtra(getString(R.string.push_alert_ferry_route_title), routeTitle.toString())
 
         }
 
-        return PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        return PendingIntent.getActivity(this, alertId?.toInt() ?: 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
-
 
     }
 
