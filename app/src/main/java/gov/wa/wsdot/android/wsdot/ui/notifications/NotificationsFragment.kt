@@ -83,46 +83,8 @@ class NotificationsFragment : DaggerFragment(), Injectable {
             dataBindingComponent
         )
         { topicItem, isChecked ->
-
             if (isChecked != topicItem.subscribed) {
-
-                notificationsViewModel.updateSubscription(
-                    topicItem.topic,
-                    isChecked
-                )
-
-                if (isChecked) {
-
-                    FirebaseMessaging.getInstance().subscribeToTopic(topicItem.topic)
-                        .addOnCompleteListener { task ->
-                            var msg = getString(R.string.msg_subscribed)
-                            if (!task.isSuccessful) {
-                                msg = getString(R.string.msg_subscribe_failed)
-                                notificationsViewModel.updateSubscription(
-                                    topicItem.topic,
-                                    !isChecked
-                                )
-                            }
-
-                            Log.d("debug", msg)
-                        }
-
-                } else if (!isChecked) {
-
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic(topicItem.topic)
-                        .addOnCompleteListener { task ->
-
-                            var msg = getString(R.string.msg_unsubscribed)
-                            if (!task.isSuccessful) {
-                                msg = getString(R.string.msg_unsubscribe_failed)
-                                notificationsViewModel.updateSubscription(
-                                    topicItem.topic,
-                                    !isChecked
-                                )
-                            }
-                            Log.d("debug", msg)
-                        }
-                }
+                (activity as MainActivity).updateTopicSub(topicItem.topic, isChecked)
             }
         }
 
