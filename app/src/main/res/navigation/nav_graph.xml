@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/navTrafficMapFragment"
     android:id="@+id/nav_graph">
 
     <fragment
@@ -380,7 +381,6 @@
             android:name="title"
             app:argType="string"
             android:defaultValue="Route Details"/>
-
     </fragment>
 
     <fragment
@@ -404,7 +404,6 @@
             android:defaultValue="WSDOT"/>
     </fragment>
 
-
     <!-- Dialog -->
     <dialog
         android:id="@+id/dayPickerDialogFragment"
@@ -421,37 +420,48 @@
             app:argType="long" />
     </dialog>
 
-
     <!-- Global nav actions -->
     <action android:id="@+id/action_global_navTrafficMapFragment"
         app:destination="@id/navTrafficMapFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@+id/nav_graph"/>
 
     <action android:id="@+id/action_global_navFerriesHomeFragment"
         app:destination="@id/navFerriesHomeFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/navTrafficMapFragment"/>
 
     <action android:id="@+id/action_global_navMountainPassHomeFragment"
         app:destination="@id/navMountainPassHomeFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/navTrafficMapFragment"/>
 
     <action android:id="@+id/action_global_navBorderCrossingsFragment"
         app:destination="@id/navBorderCrossingsFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/navTrafficMapFragment"/>
+
     <action android:id="@+id/action_global_navTollRatesFragment"
         app:destination="@id/navTollRatesFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/navTrafficMapFragment"/>
 
+    <action
+        android:id="@+id/action_global_navAmtrakCascadesFragment"
+        app:destination="@id/navAmtrakCascadesFragment"
+        app:popUpTo="@id/navTrafficMapFragment"/>
 
     <action android:id="@+id/action_global_navFavoritesFragment"
         app:destination="@id/navFavoritesFragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true"/>
+        app:popUpTo="@id/navTrafficMapFragment"/>
+
+    <action
+        android:id="@+id/action_global_navAboutFragment"
+        app:destination="@id/navAboutFragment"/>
+
+    <action
+        android:id="@+id/action_global_navSettingsFragment"
+        app:destination="@id/navSettingsFragment"/>
+
+    <action
+        android:id="@+id/action_global_navEventDetailsFragment"
+        app:destination="@id/navEventDetailsFragment"/>
+
 
     <action
         android:id="@+id/action_global_navFerriesRouteFragment"
@@ -520,38 +530,6 @@
     <action
         android:id="@+id/action_global_navTollTripFragment"
         app:destination="@id/navTollTripFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    <action
-        android:id="@+id/action_global_navAmtrakCascadesFragment"
-        app:destination="@id/navAmtrakCascadesFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    <action
-        android:id="@+id/action_global_navAboutFragment"
-        app:destination="@id/navAboutFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    <action
-        android:id="@+id/action_global_navSettingsFragment"
-        app:destination="@id/navSettingsFragment"
-        app:enterAnim="@anim/nav_default_enter_anim"
-        app:exitAnim="@anim/nav_default_exit_anim"
-        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-    <action
-        android:id="@+id/action_global_navEventDetailsFragment"
-        app:destination="@id/navEventDetailsFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
