@@ -360,26 +360,36 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     fun updateTopicSub(topic: String, isSubbed: Boolean) {
-
-        notificationsViewModel.updateSubscription(
-            topic,
-            isSubbed
-        )
-
-        // undo sub if network request fails
-        FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
-            .addOnCompleteListener { task ->
-
-                var msg = getString(R.string.msg_unsubscribed)
-                if (!task.isSuccessful) {
-                    msg = getString(R.string.msg_unsubscribe_failed)
-                    notificationsViewModel.updateSubscription(
-                        topic,
-                        !isSubbed
-                    )
+        if (isSubbed) {
+            // undo sub if network request fails
+            FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                .addOnCompleteListener { task ->
+                    var msg = getString(R.string.msg_subscribed)
+                    if (!task.isSuccessful) {
+                        msg = getString(R.string.msg_subscribe_failed)
+                        notificationsViewModel.updateSubscription(
+                            topic,
+                            !isSubbed
+                        )
+                    }
+                    Log.d("debug", msg)
                 }
-                Log.d("debug", msg)
-            }
+        } else {
+            // undo sub if network request fails
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+                .addOnCompleteListener { task ->
+
+                    var msg = getString(R.string.msg_unsubscribed)
+                    if (!task.isSuccessful) {
+                        msg = getString(R.string.msg_unsubscribe_failed)
+                        notificationsViewModel.updateSubscription(
+                            topic,
+                            !isSubbed
+                        )
+                    }
+                    Log.d("debug", msg)
+                }
+        }
     }
 
     // Pref change listener
