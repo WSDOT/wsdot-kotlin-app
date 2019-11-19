@@ -90,6 +90,8 @@ class AboutFragment: DaggerFragment(), Injectable {
 
         }
 
+        binding.versionText.text = getString(R.string.app_version_text, BuildConfig.VERSION_NAME)
+
         return dataBinding.root
     }
 
