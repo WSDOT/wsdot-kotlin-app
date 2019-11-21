@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="ferries"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher_ferries"
+        android:shortcutShortLabel="@string/ferries_shortcut_short_label"
+        android:shortcutLongLabel="@string/ferries_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.wa.wsdot.android.wsdot"
+            android:targetClass="gov.wa.wsdot.android.wsdot.ui.MainActivity"
+            android:data="wsdot://ferries">
+
+            <extra android:name="shortcut_id" android:value="ferries" />
+
+        </intent>
+    </shortcut>
+
+    <!-- Specify more shortcuts here. -->
+    <shortcut
+        android:shortcutId="mountain_passes"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher_passes"
+        android:shortcutShortLabel="@string/passes_shortcut_short_label"
+        android:shortcutLongLabel="@string/passes_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.wa.wsdot.android.wsdot"
+            android:targetClass="gov.wa.wsdot.android.wsdot.ui.MainActivity"
+            android:data="wsdot://mountainpasses">
+
+            <extra android:name="shortcut_id" android:value="mountain_passes" />
+
+        </intent>
+
+    </shortcut>
+
+
+
+</shortcuts>

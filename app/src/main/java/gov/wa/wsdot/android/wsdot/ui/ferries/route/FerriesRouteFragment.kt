@@ -167,6 +167,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         viewPager = view.findViewById(R.id.pager)
         setupViewPager(viewPager)
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)

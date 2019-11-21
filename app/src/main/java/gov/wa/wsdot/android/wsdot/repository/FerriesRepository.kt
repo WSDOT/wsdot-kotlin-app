@@ -34,7 +34,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<FerrySchedule>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
 
@@ -67,7 +67,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<FerrySchedule, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: FerrySchedule?): Boolean {
 
@@ -100,7 +100,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<FerrySailingWithSpaces>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
                 return forceRefresh || data?.isEmpty() ?: true
@@ -158,7 +158,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<TerminalCombo>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: List<TerminalCombo>?): Boolean {
                 return forceRefresh
@@ -180,7 +180,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<FerryAlert>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: List<FerryAlert>?): Boolean {
 
@@ -202,7 +202,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<FerryAlert, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveAlerts(item)
 
             override fun shouldFetch(data: FerryAlert?): Boolean {
                 return true
@@ -223,7 +223,7 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<FerrySchedule>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveFullSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
             override fun shouldFetch(data: List<FerrySchedule>?): Boolean {
 
@@ -258,11 +258,10 @@ class FerriesRepository @Inject constructor(
         }
     }
 
-    private fun saveFullSchedule(schedulesResponse: List<FerryScheduleResponse>) {
+    private fun saveSchedule(schedulesResponse: List<FerryScheduleResponse>) {
 
-        var dbSchedulesList = arrayListOf<FerrySchedule>()
-        var dbSailingsList = arrayListOf<FerrySailing>()
-        var dbAlertList = arrayListOf<FerryAlert>()
+        val dbSchedulesList = arrayListOf<FerrySchedule>()
+        val dbSailingsList = arrayListOf<FerrySailing>()
 
         for (scheduleResponse in schedulesResponse) {
 
@@ -285,7 +284,6 @@ class FerriesRepository @Inject constructor(
                 remove = false
             )
             dbSchedulesList.add(schedule)
-
 
             for (routeSchedules in scheduleResponse.schedules) {
                 for (sailing in routeSchedules.sailings) {
@@ -322,13 +320,27 @@ class FerriesRepository @Inject constructor(
                     }
                 }
             }
+        }
 
+        ferryScheduleDao.updateSchedules(dbSchedulesList)
+        ferrySailingDao.updateSailings(dbSailingsList.distinct())
+
+    }
+
+
+    private fun saveAlerts(schedulesResponse: List<FerryScheduleResponse>) {
+
+        val dbAlertList = arrayListOf<FerryAlert>()
+
+        for (scheduleResponse in schedulesResponse) {
+
+            val apiSailingDateFormat = SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.ENGLISH)
 
             for (scheduleAlertResponse in scheduleResponse.alerts) {
                 var alert = FerryAlert(
                     scheduleAlertResponse.alertId,
                     scheduleAlertResponse.fullTitle,
-                    schedule.routeId,
+                    scheduleResponse.routeId,
                     scheduleAlertResponse.description,
                     scheduleAlertResponse.fullText,
                     apiSailingDateFormat.parse(scheduleAlertResponse.publishDate)
@@ -337,8 +349,6 @@ class FerriesRepository @Inject constructor(
             }
         }
 
-        ferryScheduleDao.updateSchedules(dbSchedulesList)
-        ferrySailingDao.updateSailings(dbSailingsList.distinct())
         ferryAlertDao.insertAlerts(dbAlertList.distinct())
 
     }

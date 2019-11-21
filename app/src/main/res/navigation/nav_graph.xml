@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:startDestination="@id/navTrafficMapFragment"
     android:id="@+id/nav_graph">
 
     <fragment
@@ -256,6 +255,8 @@
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
 
+        <deepLink app:uri="wsdot://ferries" />
+
         <action
             android:id="@+id/action_navFerriesHomeFragment_to_navFerriesRouteFragment"
             app:destination="@id/navFerriesRouteFragment"
@@ -357,6 +358,8 @@
         tools:layout="@layout/mountain_pass_home_fragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
+
+        <deepLink app:uri="wsdot://mountainpasses" />
 
         <action
             android:id="@+id/action_navMountainPassHomeFragment_to_navMountainPassReportFragment"

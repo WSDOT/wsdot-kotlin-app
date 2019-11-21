@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import gov.wa.wsdot.android.wsdot.R
@@ -103,6 +104,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(getString(R.string.push_alert_ferry_route_title), routeTitle.toString())
 
         }
+
 
         return PendingIntent.getActivity(this, alertId?.toInt() ?: 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)

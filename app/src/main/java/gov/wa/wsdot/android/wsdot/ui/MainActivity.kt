@@ -3,6 +3,7 @@ package gov.wa.wsdot.android.wsdot.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,6 +37,7 @@ import dagger.android.support.DaggerAppCompatActivity
 import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
@@ -61,8 +64,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setDarkMode(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.key_darkmodesystem))
 
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -98,14 +99,20 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
+
+
+        val startDestination = getStartDestination(intent?.extras)
+
+        graph.startDestination = startDestination
+
         navController.graph = graph
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
 
-        navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
-
-        enableAds(resources.getString(R.string.ad_target_traffic))
+        intent?.extras?.let {
+            handleExtras(it)
+        }
 
         // handle event banner
         eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventBannerViewModel::class.java)
@@ -135,70 +142,123 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
 
-
-        intent?.extras?.let { handlePushNotifications(it) }
-
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        intent?.extras?.let { handlePushNotifications(it) }
+        intent?.extras?.let { handleExtras(it) }
     }
 
-    private fun handlePushNotifications(extras: Bundle) {
-        if (extras.getBoolean(getString(R.string.push_alert_traffic_alert), false)) {
+    private fun getStartDestination(extras: Bundle?): Int {
 
-            val settings = PreferenceManager.getDefaultSharedPreferences(this)
+        val navView: NavigationView = findViewById(R.id.drawer_nav_view)
 
-            val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
-            val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+        return if (extras != null) {
+            when {
 
-            val lat = extras.getDouble(getString(R.string.push_alert_traffic_alert_latitude), latitude)
-            val lng = extras.getDouble(getString(R.string.push_alert_traffic_alert_longitude), longitude)
+                extras.getString("shortcut_id") == "ferries" -> {
+                    navView.menu.findItem(R.id.nav_ferries).isChecked = true
+                    enableAds(resources.getString(R.string.ad_target_ferries))
 
-            val editor = settings.edit()
-            editor.putDouble(
-                getString(R.string.user_preference_traffic_map_latitude),
-                lat
-            )
-            editor.putDouble(
-                getString(R.string.user_preference_traffic_map_longitude),
-                lng
-            )
-            editor.putFloat(
-                getString(R.string.user_preference_traffic_map_zoom),
-                12.0f
-            )
-            editor.apply()
+                    R.id.navFerriesHomeFragment
+                }
 
-            val alertId = extras.getInt(getString(R.string.push_alert_traffic_alert_id), 0)
+                extras.getString("shortcut_id") == "mountain_passes" -> {
+                    navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
+                    enableAds(resources.getString(R.string.ad_target_passes))
+                    R.id.navMountainPassHomeFragment
+                }
+                else -> {
+                    navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+                    enableAds(resources.getString(R.string.ad_target_traffic))
+                    R.id.navTrafficMapFragment
+                }
+            }
+        } else {
+            navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+            enableAds(resources.getString(R.string.ad_target_traffic))
+            R.id.navTrafficMapFragment
+        }
+    }
 
-            // reset navigation to the traffic map
-            findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
-            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navTrafficMapFragment, false)
+    private fun handleExtras(extras: Bundle) {
+        when {
+            extras.getBoolean(getString(R.string.push_alert_traffic_alert), false) -> {
 
-            val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
-            findNavController(R.id.nav_host_fragment).navigate(action)
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+
+                val settings = PreferenceManager.getDefaultSharedPreferences(this)
+
+                val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
+                val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+
+                val lat = extras.getDouble(getString(R.string.push_alert_traffic_alert_latitude), latitude)
+                val lng = extras.getDouble(getString(R.string.push_alert_traffic_alert_longitude), longitude)
+
+                val editor = settings.edit()
+                editor.putDouble(
+                    getString(R.string.user_preference_traffic_map_latitude),
+                    lat
+                )
+                editor.putDouble(
+                    getString(R.string.user_preference_traffic_map_longitude),
+                    lng
+                )
+                editor.putFloat(
+                    getString(R.string.user_preference_traffic_map_zoom),
+                    12.0f
+                )
+                editor.apply()
+
+                val alertId = extras.getInt(getString(R.string.push_alert_traffic_alert_id), 0)
+
+                // reset navigation to the traffic map
+                findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
+                findNavController(R.id.nav_host_fragment).popBackStack(R.id.navTrafficMapFragment, false)
+
+                val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
+                findNavController(R.id.nav_host_fragment).navigate(action)
 
 
-        } else if (extras.getBoolean(getString(R.string.push_alert_ferry_alert), false)) {
+            }
 
-            val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
-            val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
-            val routeTitle = extras.getString(getString(R.string.push_alert_ferry_route_title), "")
+            extras.getBoolean(getString(R.string.push_alert_ferry_alert), false) -> {
 
-            findNavController(R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
-            findNavController(R.id.nav_host_fragment).popBackStack(R.id.navFerriesHomeFragment, false)
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_ferries).isChecked = true
 
-            val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(routeId, routeTitle)
-            findNavController(R.id.nav_host_fragment).navigate(actionOne)
+                val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
+                val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
+                val routeTitle = extras.getString(getString(R.string.push_alert_ferry_route_title), "")
 
-            val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
-            findNavController(R.id.nav_host_fragment).navigate(actionTwo)
+                findNavController(R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
+                findNavController(R.id.nav_host_fragment).popBackStack(R.id.navFerriesHomeFragment, false)
+
+                val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(routeId, routeTitle)
+                findNavController(R.id.nav_host_fragment).navigate(actionOne)
+
+                val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
+                findNavController(R.id.nav_host_fragment).navigate(actionTwo)
+
+            }
 
         }
 
-        // resent intent so we don't reuse it on config changes.
+        when {
+            extras.getString("shortcut_id") == "ferries" -> {
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_ferries).isChecked = true
+                enableAds(resources.getString(R.string.ad_target_ferries))
+            }
+
+            extras.getString("shortcut_id") == "mountain_passes" -> {
+
+            }
+        }
+
+
+        // reset intent so we don't reuse it on config changes.
         intent.replaceExtras(Bundle())
         intent.action = ""
         intent.data = null
@@ -390,34 +450,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
-        setDarkMode(sharedPreferences, prefKey)
-    }
-
-    private fun setDarkMode(sharedPreferences: SharedPreferences?, prefKey: String?) {
-
-        sharedPreferences?.let { prefs ->
-            if (prefKey == resources.getString(R.string.key_darkmode)) {
-                val darkmode: Boolean = prefs.getBoolean(prefKey, false)
-
-                if (darkmode) {
-                    setDefaultNightMode(MODE_NIGHT_YES)
-                } else {
-                    setDefaultNightMode(MODE_NIGHT_NO)
-                }
-
-            } else if (prefKey == resources.getString(R.string.key_darkmodesystem)) {
-                val useSystem = prefs.getBoolean(prefKey, false)
-                if (useSystem) {
-                    setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-                } else {
-                    if (prefs.getBoolean(resources.getString(R.string.key_darkmode), false)) {
-                        setDefaultNightMode(MODE_NIGHT_YES)
-                    } else {
-                        setDefaultNightMode(MODE_NIGHT_NO)
-                    }
-                }
-            }
-        }
+        (application as WsdotApp).setDarkMode(sharedPreferences, prefKey)
     }
 
 }
