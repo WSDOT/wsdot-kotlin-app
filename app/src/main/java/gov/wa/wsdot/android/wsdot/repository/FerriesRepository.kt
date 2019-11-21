@@ -180,10 +180,9 @@ class FerriesRepository @Inject constructor(
 
         return object : NetworkBoundResource<List<FerryAlert>, List<FerryScheduleResponse>>(appExecutors) {
 
-            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
+            override fun saveCallResult(item: List<FerryScheduleResponse>) = saveAlerts(item)
 
             override fun shouldFetch(data: List<FerryAlert>?): Boolean {
-
                 return true
             }
 
@@ -327,25 +326,22 @@ class FerriesRepository @Inject constructor(
 
     }
 
-
     private fun saveAlerts(schedulesResponse: List<FerryScheduleResponse>) {
 
         val dbAlertList = arrayListOf<FerryAlert>()
 
+        val apiSailingDateFormat = SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.ENGLISH)
+
         for (scheduleResponse in schedulesResponse) {
-
-            val apiSailingDateFormat = SimpleDateFormat("yyyy-MM-dd h:mm a", Locale.ENGLISH)
-
             for (scheduleAlertResponse in scheduleResponse.alerts) {
-                var alert = FerryAlert(
+                dbAlertList.add(FerryAlert(
                     scheduleAlertResponse.alertId,
                     scheduleAlertResponse.fullTitle,
                     scheduleResponse.routeId,
                     scheduleAlertResponse.description,
                     scheduleAlertResponse.fullText,
-                    apiSailingDateFormat.parse(scheduleAlertResponse.publishDate)
-                )
-                dbAlertList.add(alert)
+                    apiSailingDateFormat.parse(scheduleAlertResponse.publishDate)!!
+                ))
             }
         }
 
