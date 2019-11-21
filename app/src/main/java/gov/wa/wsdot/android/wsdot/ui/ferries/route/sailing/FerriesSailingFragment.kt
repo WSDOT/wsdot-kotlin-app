@@ -72,6 +72,10 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
 
+        // pass function to be called on adapter item tap
+        val adapter = FerrySailingListAdapter(dataBindingComponent, appExecutors)
+        this.adapter = adapter
+
         return dataBinding.root
 
     }
@@ -84,22 +88,20 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         t.cancel()
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // pass function to be called on adapter item tap
-        val adapter = FerrySailingListAdapter(dataBindingComponent, appExecutors)
-
-        this.adapter = adapter
-
-        binding.scheduleList.adapter = adapter
-
+    override fun onResume() {
+        super.onResume()
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
             }
         })
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.scheduleList.adapter = adapter
 
         postponeEnterTransition()
         binding.scheduleList.viewTreeObserver

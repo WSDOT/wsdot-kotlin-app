@@ -158,4 +158,10 @@
     <string name="push_alert_ferry_route_title">ferry_alert_route_title_push_key</string>
     <string name="app_version_text">Version %s</string>
 
+    <string name="ferries_shortcut_short_label">Ferries</string>
+    <string name="ferries_shortcut_long_label">Ferry Schedules</string>
+
+    <string name="passes_shortcut_short_label">Passes</string>
+    <string name="passes_shortcut_long_label">Mountain Passes</string>
+
 </resources>
