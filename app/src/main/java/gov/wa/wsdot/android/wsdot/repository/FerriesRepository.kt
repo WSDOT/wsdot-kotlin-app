@@ -367,15 +367,21 @@ class FerriesRepository @Inject constructor(
 
             for (arrivalSpaces in departingSpaces.spaceForArrivalTerminals) {
 
+                val displayRes = arrivalSpaces.displayReservableSpace
+                val displayDriveUp = arrivalSpaces.displayDriveUpSpace
+
                 val resSpaces = arrivalSpaces.reservableSpaceCount
                 val resColor = arrivalSpaces.reservableSpaceHexColor
 
                 val spaces = arrivalSpaces.driveUpSpaceCount
                 val color = arrivalSpaces.driveUpSpaceHexColor
 
+
                 var spacesItem = FerrySpace(
                     departingTerminalId,
                     arrivalSpaces.terminalId,
+                    displayDriveUp,
+                    displayRes,
                     maxSpaces,
                     spaces,
                     resSpaces,
@@ -396,6 +402,8 @@ class FerriesRepository @Inject constructor(
                             spacesItem = FerrySpace(
                                 departingTerminalId,
                                 arrivalTerminal,
+                                displayDriveUp,
+                                displayRes,
                                 maxSpaces,
                                 spaces,
                                 resSpaces,
@@ -406,14 +414,11 @@ class FerriesRepository @Inject constructor(
                             )
 
                             dbSpacesList.add(spacesItem)
-
                         }
                     }
                 }
             }
         }
-
         ferrySpaceDao.updateSpaces(dbSpacesList)
-
     }
 }

@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
@@ -27,6 +28,23 @@ object FerriesBindingAdapters {
             return
         }
         textView.text = "Vessel Name Unavailable"
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindReservations")
+    fun bindReservations(textView: TextView, sailing: FerrySailingWithSpaces) {
+
+        textView.text = ""
+
+        if (sailing.showResSpaces) {
+            sailing.reserveSpaces?.let {
+                if (it == 1) {
+                    textView.text = String.format("%d RESERVATION SPACE", it)
+                } else {
+                    textView.text = String.format("%d RESERVATION SPACES", it)
+                }
+            }
+        }
     }
 
     @JvmStatic

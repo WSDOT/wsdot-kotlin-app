@@ -12,6 +12,8 @@ data class FerrySpace(
 
     val departingTerminalId: Int,
     val arrivingTerminalId: Int,
+    val showDriveUpSpaces: Boolean,
+    val showResSpaces: Boolean,
     val maxSpacesCount: Int,
     val currentSpacesCount: Int?,
     val reservableSpacesCount: Int?,

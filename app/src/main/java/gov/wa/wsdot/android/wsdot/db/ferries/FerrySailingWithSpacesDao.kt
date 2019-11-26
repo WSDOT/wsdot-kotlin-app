@@ -10,9 +10,11 @@ abstract class FerrySailingWithSpacesDao {
 
     @Query("""
         SELECT FerrySailing.*,
+        FerrySpace.showDriveUpSpaces,
+        FerrySpace.showResSpaces,
         FerrySpace.maxSpacesCount AS maxSpaces,
         FerrySpace.currentSpacesCount AS spaces,
-        FerrySpace.reservableSpacesCount,
+        FerrySpace.reservableSpacesCount AS reserveSpaces,
         FerrySpace.localCacheDate AS spacesCacheDate
         FROM FerrySailing LEFT OUTER JOIN FerrySpace
         ON FerrySailing.departingTerminalId = FerrySpace.departingTerminalId
