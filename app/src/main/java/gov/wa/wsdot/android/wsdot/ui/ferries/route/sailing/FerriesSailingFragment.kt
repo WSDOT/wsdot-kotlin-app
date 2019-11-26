@@ -2,6 +2,7 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -118,6 +119,18 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                         currentSailingIndex = i
                     }
                 }
+
+                for (sailing in sailingResource.data) {
+
+
+
+                    Log.e("debug", sailing.showResSpaces.toString())
+                    Log.e("debug", sailing.reserveSpaces.toString())
+
+
+                }
+
+
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())

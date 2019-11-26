@@ -134,7 +134,6 @@ class FavoritesListAdapter(
 
     )
 
-
     // sort order for each view type
     private var orderedViewTypes = viewTypes
 

@@ -49,6 +49,7 @@
     <string name="ferry_vessel_watch">vessel watch</string>
     <string name="ferry_buy_tickets">buy tickets</string>
     <string name="sailing_hint">select sailing date</string>
+    <string name="reservation_spaces_label">%d RESERVATION SPACES</string>
 
     // Mountain Passes
     <string name="restriction_header_text">Restrictions %s:</string>
@@ -117,7 +118,6 @@
     <string name="ad_target_ferries">ferries</string>
     <string name="ad_target_passes">passes</string>
     <string name="ad_target_other">other</string>
-
 
     <string name="no_alerts_string">No Alerts Reported In This Location</string>
     <string name="favorites_one">FAV_ONE</string>
