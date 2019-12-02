@@ -102,6 +102,10 @@
     <string name="key_darkmode">KEY_DARK_MODE</string>
     <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
     <string name="key_specialtheme">KEY_SPECIAL_THEMES</string>
+
+    <string name="pref_key_current_event">KEY_CURRENT_EVENT</string>
+    <string name="pref_key_last_seen_event">KEY_SEEN_EVENT</string>
+
     <string name="pref_key_theme">CURRENT_THEME_KEY</string>
 
     // FAB labels
@@ -163,5 +167,6 @@
 
     <string name="passes_shortcut_short_label">Passes</string>
     <string name="passes_shortcut_long_label">Mountain Passes</string>
+
 
 </resources>
