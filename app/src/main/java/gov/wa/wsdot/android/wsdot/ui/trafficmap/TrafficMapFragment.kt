@@ -15,12 +15,9 @@ import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -33,7 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.maps.android.MarkerManager
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -42,7 +38,6 @@ import com.leinardi.android.speeddial.SpeedDialView
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.BorderCrossingTimesFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
@@ -56,6 +51,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.Travel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
@@ -691,7 +687,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_alerts -> {
-                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavMapHighwayAlertsFragment()
+                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavHighwayAlertTabFragment()
                     findNavController().navigate(action)
                 }
 

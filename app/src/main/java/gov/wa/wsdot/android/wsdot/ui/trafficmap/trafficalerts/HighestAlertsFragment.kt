@@ -1,11 +1,10 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts
 
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -16,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.MapHighwayAlertsFragmentBinding
+import gov.wa.wsdot.android.wsdot.databinding.HighwayAlertsHighestImpactFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
@@ -27,17 +26,17 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
-class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
+class HighestAlertsFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
+    lateinit var highestImpactAlertsViewModel: HighestImpactAlertsViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
-    var binding by autoCleared<MapHighwayAlertsFragmentBinding>()
+    var binding by autoCleared<HighwayAlertsHighestImpactFragmentBinding>()
 
     private var adapter by autoCleared<HighwayAlertListAdapter>()
 
@@ -51,24 +50,25 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        mapHighwayAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        highestImpactAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(HighestImpactAlertsViewModel::class.java)
 
-        val dataBinding = DataBindingUtil.inflate<MapHighwayAlertsFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<HighwayAlertsHighestImpactFragmentBinding>(
             inflater,
-            R.layout.map_highway_alerts_fragment,
+            R.layout.highway_alerts_highest_impact_fragment,
             container,
             false
         )
 
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                mapHighwayAlertsViewModel.refresh()
+                highestImpactAlertsViewModel.refresh()
             }
         }
 
-        dataBinding.viewModel = mapHighwayAlertsViewModel
+        dataBinding.viewModel
+
+        dataBinding.viewModel = highestImpactAlertsViewModel
 
         binding = dataBinding
 
@@ -86,33 +86,37 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
 
         // pass function to be called on adapter item tap and favorite
         val adapter = HighwayAlertListAdapter(dataBindingComponent, appExecutors)
-            { alert -> navigateToAlert(alert) }
+        { alert -> navigateToAlert(alert) }
 
         this.adapter = adapter
 
-        binding.cameraList.adapter = adapter
+        binding.alertList.adapter = adapter
 
         // animations
         postponeEnterTransition()
-        binding.cameraList.viewTreeObserver
+        binding.alertList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
                 true
             }
 
-        mapHighwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alertResource ->
+        highestImpactAlertsViewModel.highestImpactAlerts.observe(viewLifecycleOwner, Observer { alertResource ->
 
             if (alertResource.data != null) {
 
-                binding.cameraList.visibility = VISIBLE
-                binding.emptyListView.visibility = GONE
+                binding.alertList.visibility = View.VISIBLE
+                binding.emptyListView.visibility = View.GONE
 
                 adapter.submitList(alertResource.data)
 
+                for (alert in alertResource.data) {
+                    Log.e("debug", alert.toString())
+                }
+
                 if (alertResource.data.isEmpty()) {
-                    binding.emptyListView.text = getString(R.string.no_alerts_string)
-                    binding.cameraList.visibility = GONE
-                    binding.emptyListView.visibility = VISIBLE
+                    binding.emptyListView.text = getString(R.string.no_highest_alerts_string)
+                    binding.alertList.visibility = View.GONE
+                    binding.emptyListView.visibility = View.VISIBLE
                 }
 
             } else {

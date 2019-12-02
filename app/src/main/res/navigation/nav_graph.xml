@@ -74,6 +74,14 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
         <action
+            android:id="@+id/action_navTrafficMapFragment_to_navHighwayAlertTabFragment"
+            app:destination="@id/navHighwayAlertTabFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
             android:id="@+id/action_navTrafficMapFragment_to_navTravelTimeListFragment"
             app:destination="@id/navTravelTimeListFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -151,8 +159,15 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navHighwayAlertTabFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighwayAlertTabFragment"
+        android:label="Traffic Alerts"
+        tools:layout="@layout/tab_layout" >
+    </fragment>
+
+    <fragment
         android:id="@+id/navMapHighwayAlertsFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsFragment"
         android:label="Alerts In This Area"
         tools:layout="@layout/map_highway_alerts_fragment" >
     </fragment>

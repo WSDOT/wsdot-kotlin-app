@@ -167,6 +167,7 @@
 
     <string name="passes_shortcut_short_label">Passes</string>
     <string name="passes_shortcut_long_label">Mountain Passes</string>
+    <string name="no_highest_alerts_string">No highest impact alerts</string>
 
 
 </resources>
