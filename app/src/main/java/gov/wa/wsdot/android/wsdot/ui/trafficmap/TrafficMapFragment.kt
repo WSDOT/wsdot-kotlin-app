@@ -57,6 +57,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.Travel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
+import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
@@ -163,6 +164,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 if (it.available) {
                     val bottomAppBar = rootView.findViewById<BottomAppBar>(R.id.bottom_app_bar)
                     bottomAppBar.menu.setGroupVisible(R.id.travel_charts_group, true)
+                    bottomAppBar.menu.findItem(R.id.action_travel_charts).icon = BadgeDrawable.getMenuBadge(context!!, R.drawable.ic_menu_travel_charts, "!")
                 }
             }
         })

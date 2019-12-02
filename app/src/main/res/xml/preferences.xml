@@ -5,15 +5,15 @@
     <PreferenceCategory
         app:title="Dark Mode">
 
-    <SwitchPreferenceCompat
-        app:key="@string/key_darkmode"
-        app:title="Dark mode"
-        android:dependency="@string/key_darkmodesystem"/>
+        <SwitchPreferenceCompat
+            app:key="@string/key_darkmode"
+            app:title="Dark mode"
+            android:dependency="@string/key_darkmodesystem"/>
 
-    <SwitchPreferenceCompat
-        app:key="@string/key_darkmodesystem"
-        app:title="Use device settings"
-        android:disableDependentsState="true"/>
+        <SwitchPreferenceCompat
+            app:key="@string/key_darkmodesystem"
+            app:title="Use device settings"
+            android:disableDependentsState="true"/>
 
     </PreferenceCategory>
 

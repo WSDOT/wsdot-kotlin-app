@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.EventDetailsFragmentBinding
@@ -50,6 +51,16 @@ class EventDetailsFragment : DaggerFragment(), Injectable {
 
         mainViewModel.eventStatus.observe(viewLifecycleOwner, Observer { eventResponse ->
             binding.event = eventResponse.data
+
+            // mark current event as seen
+            eventResponse.data?.let {event ->
+                context?.let {context ->
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val editor = settings.edit()
+                    editor.putString(getString(R.string.pref_key_last_seen_event), event.title)
+                    editor.apply()
+                }
+            }
         })
 
         return dataBinding.root

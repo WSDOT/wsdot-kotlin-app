@@ -45,7 +45,7 @@ interface WebDataService {
     @GET("StaticTollRates.js")
     fun getTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
 
-    @GET("EventStatusTEST.js")
+    @GET("EventStatus.js")
     fun getEventStatus(): LiveData<ApiResponse<EventStatusResponse>>
 
     @GET("TravelCharts.js")

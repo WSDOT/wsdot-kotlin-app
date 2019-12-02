@@ -32,7 +32,7 @@
         <item android:id="@+id/action_travel_charts"
             android:title="@string/action_travel_charts"
             android:orderInCategory="100"
-            android:icon="@drawable/travel_chart_layered_icon"
+            android:icon="@drawable/ic_menu_travel_charts"
             app:showAsAction="always"/>
 
     </group>

@@ -50,11 +50,11 @@ class FerryAlertDetailsFragment : DaggerFragment(), Injectable {
         binding = dataBinding
 
         ferryAlertDetailsViewModel.ferryAlert.observe(viewLifecycleOwner, Observer { alert ->
-            if (alert.data != null) {
+            if (alert?.data != null) {
                 binding.alert = alert.data
             } else {
                 binding.titleView.text = "Alert Unavailable"
-        }
+            }
         })
 
         return dataBinding.root

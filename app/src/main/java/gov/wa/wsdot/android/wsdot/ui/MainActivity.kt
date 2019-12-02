@@ -3,23 +3,21 @@ package gov.wa.wsdot.android.wsdot.ui
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -39,6 +37,7 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
+import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
@@ -129,11 +128,16 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
 
                     editor.putInt(getString(R.string.pref_key_theme), it.themeId)
-                    editor.apply()
+                    editor.putString(getString(R.string.pref_key_current_event), it.title)
+                    editor.commit()
+
+                    addMenuBadgeIfNeeded()
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
 
+                    editor.putString(getString(R.string.pref_key_last_seen_event), "")
+                    editor.putString(getString(R.string.pref_key_current_event), "")
                     editor.putInt(getString(R.string.pref_key_theme), 0)
                     editor.apply()
                 }
@@ -142,6 +146,23 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        addMenuBadgeIfNeeded()
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun addMenuBadgeIfNeeded() {
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val lastSeenEvent = settings.getString(getString(R.string.pref_key_last_seen_event), "")
+        val currentEvent = settings.getString(getString(R.string.pref_key_current_event), "")
+
+        if (lastSeenEvent != currentEvent) {
+            val actionbar = supportActionBar
+            actionbar?.setHomeAsUpIndicator(BadgeDrawable.getMenuBadge(this, R.drawable.ic_menu, "!"))
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -452,5 +473,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
         (application as WsdotApp).setDarkMode(sharedPreferences, prefKey)
     }
+
 
 }
