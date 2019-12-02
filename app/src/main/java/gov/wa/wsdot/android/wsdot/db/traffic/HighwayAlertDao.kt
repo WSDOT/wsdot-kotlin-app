@@ -12,6 +12,9 @@ abstract class HighwayAlertDao {
     @Query("SELECT * FROM HighwayAlert")
     abstract fun loadHighwayAlerts(): LiveData<List<HighwayAlert>>
 
+    @Query("SELECT * FROM HighwayAlert WHERE priority = \"Highest\"")
+    abstract fun loadHighestImpactAlerts(): LiveData<List<HighwayAlert>>
+
     @Query("SELECT * FROM HighwayAlert WHERE alertId = :alertId")
     abstract fun loadHighwayAlert(alertId: Int): LiveData<HighwayAlert>
 

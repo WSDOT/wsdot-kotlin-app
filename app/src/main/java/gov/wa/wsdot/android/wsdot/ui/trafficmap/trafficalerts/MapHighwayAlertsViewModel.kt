@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.LatLngBoundQuery
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 

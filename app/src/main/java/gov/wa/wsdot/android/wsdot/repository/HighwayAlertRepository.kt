@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.api.WebDataService
@@ -40,13 +39,44 @@ class HighwayAlertRepository @Inject constructor(
                     update = true
                 }
 
-                Log.e("debug", update.toString())
-                Log.e("debug", forceRefresh.toString())
 
                 return forceRefresh || update
             }
 
             override fun loadFromDb() = highwayAlertDao.loadHighwayAlerts()
+
+            override fun createCall() = dataWebservice.getHighwayAlerts()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+    fun loadHighestImpactHighwayAlerts(forceRefresh: Boolean): LiveData<Resource<List<HighwayAlert>>> {
+
+        return object : NetworkBoundResource<List<HighwayAlert>, HighwayAlertsResponse>(appExecutors) {
+
+            override fun saveCallResult(item: HighwayAlertsResponse) = saveHighwayAlerts(item)
+
+            override fun shouldFetch(data: List<HighwayAlert>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 5)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = highwayAlertDao.loadHighestImpactAlerts()
 
             override fun createCall() = dataWebservice.getHighwayAlerts()
 

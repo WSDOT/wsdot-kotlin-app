@@ -32,10 +32,11 @@ import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollSignsViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapHighwayAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighestImpactAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
 
@@ -82,6 +83,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MapHighwayAlertsViewModel::class)
     abstract fun bindMapHighwayAlertsViewModel(mapHighwayAlertsViewModel: MapHighwayAlertsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HighestImpactAlertsViewModel::class)
+    abstract fun bindStatewideAlertsViewModel(statewideAlertsViewModel: HighestImpactAlertsViewModel): ViewModel
 
     @Binds
     @IntoMap
