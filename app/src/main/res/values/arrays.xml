@@ -5,4 +5,18 @@
         <item>item2</item>
         <item>item3</item>
     </array>
+
+    <array name="dark_mode_options">
+        <item>Use System</item>
+        <item>Dark</item>
+        <item>Light</item>
+    </array>
+
+    <array name="dark_mode_option_values">
+        <item>@string/key_value_system_theme</item>
+        <item>@string/key_value_dark_theme</item>
+        <item>@string/key_value_light_theme</item>
+
+    </array>
+
 </resources>

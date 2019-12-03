@@ -1,9 +1,17 @@
-package gov.wa.wsdot.android.wsdot.ui
+package gov.wa.wsdot.android.wsdot.ui.settings
 
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import gov.wa.wsdot.android.wsdot.R
 import android.content.SharedPreferences
+import android.util.Log
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.preference.Preference
+import gov.wa.wsdot.android.wsdot.NavGraphDirections
+import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -14,6 +22,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+        val favSortPref = findPreference<Preference>(resources.getString(R.string.pref_key_favorites_sort_order))
+        favSortPref?.let {
+            it.setOnPreferenceClickListener {
+                navigateToFavSortSetting()
+                true
+            }
+        }
     }
 
     override fun onResume() {
@@ -30,5 +45,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         preferenceScreen.sharedPreferences
             .unregisterOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)
     }
+
+    private fun navigateToFavSortSetting(){
+        val action = NavGraphDirections.actionGlobalNavFavoritesSortSettingFragment()
+        findNavController().navigate(action)
+    }
+
 
 }
