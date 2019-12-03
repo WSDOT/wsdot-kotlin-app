@@ -114,6 +114,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         mapUpdateHandler = Handler(Looper.getMainLooper())
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
@@ -200,6 +201,21 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.traffic_map_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_my_location -> {
+                enableMyLocationWithPermissionCheck()
+            }
+            else -> {}
+        }
+        return false
+    }
+
     override fun onMapReady(map: GoogleMap?) {
 
         mMap = map as GoogleMap
@@ -225,9 +241,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMap.clear()
 
         mMap.uiSettings.isCompassEnabled = true
+        mMap.uiSettings.isMyLocationButtonEnabled = false
+
         mMap.isTrafficEnabled = true
 
-        enableMyLocationWithPermissionCheck()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
@@ -793,6 +810,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
                         mMap.isMyLocationEnabled = true
+                        goToUsersLocation(location)
                     }
                 }
         }
@@ -820,7 +838,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
     }
 
-
+    private fun goToUsersLocation(location: Location) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14.0f))
+    }
 
 }
 
