@@ -72,6 +72,9 @@ dependencies {
     implementation "androidx.room:room-runtime:2.2.1"
     kapt "androidx.room:room-compiler:2.2.1"
 
+    // drag and drop list
+    implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
+
     // Ads
     implementation 'com.google.android.gms:play-services-ads:18.3.0'
 

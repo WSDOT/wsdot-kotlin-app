@@ -146,19 +146,20 @@ class FavoritesListAdapter(
         const val ITEM_TYPE_BORDER_CROSSING = 5
         const val ITEM_TYPE_LOCATION = 6
         const val ITEM_TYPE_TOLL_SIGN = 7
-    }
 
-    private var headers = object : LinkedHashMap<Int, String>() {
-        init {
-            put(ITEM_TYPE_CAMERA, "Cameras")
-            put(ITEM_TYPE_TRAVEL_TIME, "Travel Times")
-            put(ITEM_TYPE_FERRY, "Ferry Schedules")
-            put(ITEM_TYPE_MOUNTAIN_PASS, "Mountain Passes")
-            put(ITEM_TYPE_BORDER_CROSSING, "Border Crossings")
-            put(ITEM_TYPE_LOCATION, "Traffic Map Locations")
-            put(ITEM_TYPE_TOLL_SIGN, "Toll Rates")
+        var headers = object : LinkedHashMap<Int, String>() {
+            init {
+                put(ITEM_TYPE_CAMERA, "Cameras")
+                put(ITEM_TYPE_TRAVEL_TIME, "Travel Times")
+                put(ITEM_TYPE_FERRY, "Ferry Schedules")
+                put(ITEM_TYPE_MOUNTAIN_PASS, "Mountain Passes")
+                put(ITEM_TYPE_BORDER_CROSSING, "Border Crossings")
+                put(ITEM_TYPE_LOCATION, "Traffic Map Locations")
+                put(ITEM_TYPE_TOLL_SIGN, "Toll Rates")
+            }
         }
     }
+
 
     fun setOrderedViewTypes(newOrderedViewTypes: List<Int>){
         this.orderedViewTypes = newOrderedViewTypes

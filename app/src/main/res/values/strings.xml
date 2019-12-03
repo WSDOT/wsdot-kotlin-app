@@ -99,9 +99,13 @@
     <string name="user_preference_traffic_map_show_rest_areas">USER_PREF_KEY_TRAFFIC_MAP_SHOW_REST_AREAS</string>
 
     // pref list keys
-    <string name="key_darkmode">KEY_DARK_MODE</string>
-    <string name="key_darkmodesystem">KEY_DARK_MODE_SYSTEM</string>
-    <string name="key_specialtheme">KEY_SPECIAL_THEMES</string>
+
+    <string name="key_value_dark_theme">KEY_DARK_THEME</string>
+    <string name="key_value_light_theme">KEY_LIGHT_THEME</string>
+    <string name="key_value_system_theme">KEY_SYSTEM_THEME</string>
+    <string name="pref_key_user_theme">CURRENT_USER_THEME_KEY</string>
+
+    <string name="pref_key_favorites_sort_order">KEY_FAV_SORT_ORDER</string>
 
     <string name="pref_key_current_event">KEY_CURRENT_EVENT</string>
     <string name="pref_key_last_seen_event">KEY_SEEN_EVENT</string>

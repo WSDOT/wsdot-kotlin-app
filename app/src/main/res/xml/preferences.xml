@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <PreferenceCategory
-        app:title="Dark Mode">
+        app:title="Display">
 
-        <SwitchPreferenceCompat
-            app:key="@string/key_darkmode"
-            app:title="Dark mode"
-            android:dependency="@string/key_darkmodesystem"/>
-
-        <SwitchPreferenceCompat
-            app:key="@string/key_darkmodesystem"
-            app:title="Use device settings"
-            android:disableDependentsState="true"/>
+        <ListPreference
+            app:title="Theme"
+            android:summary="%s"
+            app:key="@string/pref_key_user_theme"
+            android:entries="@array/dark_mode_options"
+            android:entryValues="@array/dark_mode_option_values"
+            android:defaultValue="0" />
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:title="Favorites">
 
+        <Preference
+            android:title="Adjust Display Order"
+            android:key="@string/pref_key_favorites_sort_order"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

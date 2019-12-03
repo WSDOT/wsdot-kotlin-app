@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/navSettingsFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.SettingsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.settings.SettingsFragment"
         android:label="Settings"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
@@ -98,6 +98,13 @@
         tools:layout="@layout/favorites_list_fragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
+    </fragment>
+
+    <fragment
+        android:id="@+id/navFavoritesSortSettingFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.settings.FavoritesSortSettingFragment"
+        android:label="Favorites Order"
+        tools:layout="@layout/favorites_sort_setting_fragment">
     </fragment>
 
     <fragment
@@ -572,6 +579,14 @@
     <action
         android:id="@+id/action_global_navFerryAlertDetailsFragment"
         app:destination="@id/navFerryAlertDetailsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navFavoritesSortSettingFragment"
+        app:destination="@id/navFavoritesSortSettingFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

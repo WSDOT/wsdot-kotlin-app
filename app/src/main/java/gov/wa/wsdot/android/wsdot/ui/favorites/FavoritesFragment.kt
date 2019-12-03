@@ -1,6 +1,8 @@
 package gov.wa.wsdot.android.wsdot.ui.favorites
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -119,7 +121,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             dataBindingComponent,
             appExecutors,
             this,
-            getOrderedViewTypes(),
+            getOrderedViewTypes(context, resources),
             { camera ->
                 navigateToCamera(camera)
             },
@@ -212,21 +214,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         shouldShowEmptyFavorites(binding)
     }
 
-    private fun getOrderedViewTypes(): List<Int> {
 
-        val orderedViewTypes = mutableListOf<Int>()
-
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
-        orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_seven), ITEM_TYPE_TOLL_SIGN))
-
-        return orderedViewTypes
-    }
 
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
 
@@ -428,6 +416,40 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         } else {
             binding.emptyListView.visibility = View.GONE
             binding.favoritesList.visibility = View.VISIBLE
+        }
+    }
+
+    companion object {
+
+        fun getOrderedViewTypes(context: Context?, resources: Resources): List<Int> {
+
+            val orderedViewTypes = mutableListOf<Int>()
+
+            val settings = PreferenceManager.getDefaultSharedPreferences(context)
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
+            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_seven), ITEM_TYPE_TOLL_SIGN))
+
+            return orderedViewTypes
+        }
+
+        fun setOrderedViewTypes(context: Context?, resources: Resources, orderedViewTypes: IntArray) {
+            if(orderedViewTypes.size == 7) {
+                val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                val editor = settings.edit()
+                editor.putInt(resources.getString(R.string.favorites_one), orderedViewTypes[0])
+                editor.putInt(resources.getString(R.string.favorites_two), orderedViewTypes[1])
+                editor.putInt(resources.getString(R.string.favorites_three), orderedViewTypes[2])
+                editor.putInt(resources.getString(R.string.favorites_four), orderedViewTypes[3])
+                editor.putInt(resources.getString(R.string.favorites_five), orderedViewTypes[4])
+                editor.putInt(resources.getString(R.string.favorites_six), orderedViewTypes[5])
+                editor.putInt(resources.getString(R.string.favorites_seven), orderedViewTypes[6])
+                editor.apply()
+            }
         }
     }
 }
