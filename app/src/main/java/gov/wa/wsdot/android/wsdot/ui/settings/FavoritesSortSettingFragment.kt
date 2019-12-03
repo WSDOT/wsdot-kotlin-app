@@ -70,15 +70,11 @@ class FavoritesSortSettingFragment : DaggerFragment(), Injectable, OnItemDragLis
         return dataBinding.root
     }
 
-
     override fun onItemDragged(previousPosition: Int, newPosition: Int, item: String) {}
 
     override fun onItemDropped(initialPosition: Int, finalPosition: Int, item: String) {
         // Handle action of item dropped
-
         val headers = FavoritesListAdapter.headers
-        Log.e("debug", adapter.dataSet.toString())
-
         FavoritesFragment.setOrderedViewTypes(context, resources, mutableListOf(
             headers.keys.first { headers[it] == adapter.dataSet[0]},
             headers.keys.first { headers[it] == adapter.dataSet[1]},
@@ -90,6 +86,5 @@ class FavoritesSortSettingFragment : DaggerFragment(), Injectable, OnItemDragLis
         ).toIntArray())
 
     }
-
 
 }
