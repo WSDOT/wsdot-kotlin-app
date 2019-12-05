@@ -214,8 +214,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         shouldShowEmptyFavorites(binding)
     }
 
-
-
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
 
         // Add swipe dismiss to favorites list items.
