@@ -120,17 +120,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                     }
                 }
 
-                for (sailing in sailingResource.data) {
-
-
-
-                    Log.e("debug", sailing.showResSpaces.toString())
-                    Log.e("debug", sailing.reserveSpaces.toString())
-
-
-                }
-
-
                 adapter.submitList(sailingResource.data)
             } else {
                 adapter.submitList(emptyList())

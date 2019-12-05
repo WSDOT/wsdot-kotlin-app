@@ -80,8 +80,6 @@ class WebViewFragment: Fragment() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 
-                Log.e("debug", Uri.parse(url).host)
-
                 if (Uri.parse(url).host == "www.wsdot.com"
                     || Uri.parse(url).host == "www.wsdot.wa.gov"
                     || Uri.parse(url).host == "www.secureapps.wsdot.wa.gov"
