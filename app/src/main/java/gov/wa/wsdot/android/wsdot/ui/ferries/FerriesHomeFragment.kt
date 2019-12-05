@@ -1,5 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
@@ -81,8 +83,8 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
-            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://wave2go.wsdot.com/webstore/landingPage&CG=21&C=76", "Tickets")
-            findNavController().navigate(action)
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wave2go.wsdot.com/webstore/landingPage?cg=21&c=76"))
+            startActivity(browserIntent)
         }
 
         dataBinding.vesselWatchButton.setOnClickListener {
