@@ -166,7 +166,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                         val marker = mMap.addMarker(MarkerOptions()
                             .position(LatLng(vessel.latitude, vessel.longitude))
                             .rotation(if (stopped) 0f else vessel.heading.toFloat())
-                            .icon(BitmapDescriptorFactory.fromResource(if (stopped) R.drawable.stopped else R.drawable.ferry_0)))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0)))
                         vesselMarkers[marker] = vessel
 
                     }
