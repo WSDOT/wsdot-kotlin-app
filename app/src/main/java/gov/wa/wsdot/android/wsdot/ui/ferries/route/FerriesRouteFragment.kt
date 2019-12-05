@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -32,7 +33,9 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsViewMo
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
@@ -67,6 +70,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        setVesselWatchView(args.routeId)
     }
 
     override fun onDestroy() {
@@ -209,11 +213,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         fragments.add(FerriesSailingFragment())
         fragments.add(TerminalCamerasListFragment())
         fragments.add(FerryAlertsFragment())
+        fragments.add(VesselWatchFragment())
 
         val titles = ArrayList<String>()
         titles.add("sailings")
         titles.add("cameras")
         titles.add("alerts")
+        titles.add("vessel watch")
 
         fragmentPagerAdapter = SimpleFragmentPagerAdapter(childFragmentManager, fragments, titles)
 
@@ -256,5 +262,70 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
+    }
+
+    private fun setVesselWatchView(routeId: Int){
+
+        var latitude = 47.583571
+        var longitude = -122.473468
+        var zoom = 10f
+
+        when (routeId) {
+            // Ana-SJ-Sid
+            272, 9, 10 -> {
+                latitude = 48.550921
+                longitude = -122.840836
+                zoom = 10f
+            }
+            // Ed-King
+            6 -> {
+                latitude = 47.803096
+                longitude = -122.438718
+                zoom = 12f
+            }
+            // F-S-V
+            13, 14, 15 -> {
+                latitude = 47.513625
+                longitude = -122.450820
+                zoom = 12f
+            }
+            // Muk-Cl
+            7 -> {
+                latitude = 47.963857
+                longitude = -122.327721
+                zoom = 12f
+            }
+            // Pt-Key
+            8 -> {
+                latitude = 48.135562
+                longitude = -122.714449
+                zoom = 12f
+            }
+            // Pd-Tal
+            1 -> {
+                latitude = 47.319040
+                longitude = -122.510890
+                zoom = 13f
+            }
+            // Sea-Bi
+            5 -> {
+                latitude = 47.600325
+                longitude = -122.437249
+                zoom = 11f
+            }
+            // Sea-Br
+            3 -> {
+                latitude = 47.565125
+                longitude = -122.480508
+                zoom = 10f
+            }
+        }
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val editor = settings.edit()
+        editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), latitude)
+        editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), longitude)
+        editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), zoom)
+        editor.commit()
     }
 }
