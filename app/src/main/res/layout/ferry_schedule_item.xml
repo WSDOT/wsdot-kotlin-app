@@ -17,8 +17,7 @@
 
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -37,11 +36,12 @@
             <TextView
                 style="@style/CardTitleText"
                 android:id="@+id/titleView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{schedule.description}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/favorite_button"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:layout_marginStart="@dimen/default_margin"

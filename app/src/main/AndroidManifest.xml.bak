@@ -7,7 +7,7 @@
 
     <application
         android:name=".WsdotApp"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -20,13 +20,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value=""/>
+            android:value="AIzaSyBfeBLDQdt0QV7qwHZrZQBuBMzNmm_LsP0"/>
 
         <meta-data
             android:name="com.google.android.gms.ads.AD_MANAGER_APP"
             android:value="true"/>
-
-
 
         <service
             android:name=".service.MyFirebaseMessagingService"

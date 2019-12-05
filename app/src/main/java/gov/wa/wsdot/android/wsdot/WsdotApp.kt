@@ -19,7 +19,6 @@ class WsdotApp : Application(), HasActivityInjector {
         setDarkMode(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.pref_key_user_theme))
         super.onCreate()
         AppInjector.init(this)
-
     }
 
     override fun activityInjector(): AndroidInjector<Activity> = activityInjector
