@@ -450,7 +450,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                             !isSubbed
                         )
                     }
-                    Log.d("debug", msg)
                 }
         } else {
             // undo sub if network request fails
@@ -465,7 +464,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                             !isSubbed
                         )
                     }
-                    Log.d("debug", msg)
                 }
         }
     }

@@ -124,7 +124,6 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                Log.e("debug", "added favorite")
                 cameraViewModel.updateFavorite(args.cameraId)
                 return false
             }

@@ -120,8 +120,6 @@ class MountainPassRepository @Inject constructor(
 
     private fun savePasses(passResponse: MountainPassResponse) {
 
-        Log.e("debug", "saving passes...")
-
         var dbPassList = arrayListOf<MountainPass>()
 
         for (passItem in passResponse.passConditions.items) {

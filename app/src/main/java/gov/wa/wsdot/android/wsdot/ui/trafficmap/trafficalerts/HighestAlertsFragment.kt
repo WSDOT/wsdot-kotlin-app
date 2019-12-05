@@ -109,10 +109,6 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
 
                 adapter.submitList(alertResource.data)
 
-                for (alert in alertResource.data) {
-                    Log.e("debug", alert.toString())
-                }
-
                 if (alertResource.data.isEmpty()) {
                     binding.emptyListView.text = getString(R.string.no_highest_alerts_string)
                     binding.alertList.visibility = View.GONE

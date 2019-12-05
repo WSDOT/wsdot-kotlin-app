@@ -59,8 +59,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 if (title != null && message != null && type != null) {
                     sendNotification(alert_id, title, message, getNotificationIntent(remoteMessage.data))
-                } else {
-                    Log.e("debug", "something was null")
                 }
 
             }
