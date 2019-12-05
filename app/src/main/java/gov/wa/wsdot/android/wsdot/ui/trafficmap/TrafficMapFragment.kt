@@ -766,7 +766,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun showAddFavoriteDialog(){
 
-        context?.let{
+        context?.let {
 
             val builder = AlertDialog.Builder(it)
             builder.setTitle("New Favorite Location")

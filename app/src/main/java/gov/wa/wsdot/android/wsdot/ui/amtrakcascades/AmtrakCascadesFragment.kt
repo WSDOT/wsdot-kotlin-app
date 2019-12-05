@@ -47,10 +47,9 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (activity as MainActivity).enableAds("other")
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onDestroy() {
@@ -63,6 +62,8 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as MainActivity).enableAds("other")
 
         // set up view models
         amtrakCascadesViewModel = activity?.run {

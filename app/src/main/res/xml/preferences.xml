@@ -10,7 +10,7 @@
             app:key="@string/pref_key_user_theme"
             android:entries="@array/dark_mode_options"
             android:entryValues="@array/dark_mode_option_values"
-            android:defaultValue="0" />
+            android:defaultValue="@string/key_value_system_theme" />
 
     </PreferenceCategory>
 
