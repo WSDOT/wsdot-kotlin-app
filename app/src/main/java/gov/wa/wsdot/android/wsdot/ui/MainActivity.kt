@@ -12,6 +12,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -89,10 +91,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navBorderCrossingsFragment,
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
-                R.id.navAmtrakCascadesFragment,
-                R.id.navAboutFragment,
-                R.id.navSettingsFragment,
-                R.id.navNotificationsFragment
+                R.id.navAmtrakCascadesFragment
             ), drawerLayout)
 
 
@@ -105,6 +104,21 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         graph.startDestination = startDestination
 
         navController.graph = graph
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when(destination.id) {
+                R.id.navTrafficMapFragment -> navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+                R.id.navFerriesHomeFragment -> navView.menu.findItem(R.id.nav_ferries).isChecked = true
+                R.id.navMountainPassHomeFragment -> navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
+                R.id.navTollRatesFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked = true
+                R.id.navBorderCrossingsFragment -> navView.menu.findItem(R.id.nav_border_waits).isChecked = true
+                R.id.navAmtrakCascadesFragment -> navView.menu.findItem(R.id.nav_amtrak_cascades).isChecked = true
+                R.id.navFavoritesFragment -> navView.menu.findItem(R.id.nav_favorites).isChecked = true
+                R.id.navSettingsFragment -> navView.menu.findItem(R.id.nav_settings).isChecked = true
+                R.id.navAboutFragment -> navView.menu.findItem(R.id.nav_about).isChecked = true
+                R.id.navNotificationsFragment -> navView.menu.findItem(R.id.nav_notifications).isChecked = true
+            }
+        }
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
@@ -180,7 +194,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 extras.getString("shortcut_id") == "ferries" -> {
                     navView.menu.findItem(R.id.nav_ferries).isChecked = true
                     enableAds(resources.getString(R.string.ad_target_ferries))
-
                     R.id.navFerriesHomeFragment
                 }
 
@@ -189,6 +202,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     enableAds(resources.getString(R.string.ad_target_passes))
                     R.id.navMountainPassHomeFragment
                 }
+
+                extras.getString("shortcut_id") == "favorites" -> {
+                    navView.menu.findItem(R.id.nav_favorites).isChecked = true
+                    R.id.navFavoritesFragment
+                }
+
                 else -> {
                     navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
                     enableAds(resources.getString(R.string.ad_target_traffic))
@@ -274,8 +293,16 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
 
             extras.getString("shortcut_id") == "mountain_passes" -> {
-
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
+                enableAds(resources.getString(R.string.ad_target_passes))
             }
+
+            extras.getString("shortcut_id") == "favorites" -> {
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_favorites).isChecked = true
+            }
+
         }
 
 
@@ -311,8 +338,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
+
         }
     }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
@@ -472,6 +501,5 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
         (application as WsdotApp).setDarkMode(sharedPreferences, prefKey)
     }
-
 
 }

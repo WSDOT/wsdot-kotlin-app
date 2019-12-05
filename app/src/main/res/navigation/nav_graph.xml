@@ -57,6 +57,8 @@
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
 
+        <deepLink app:uri="wsdot://trafficmap" />
+
         <action
             android:id="@+id/action_navTrafficMapFragment_to_navNewsReleaseFragment"
             app:destination="@id/navNewsReleaseFragment"
@@ -98,6 +100,9 @@
         tools:layout="@layout/favorites_list_fragment"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
+
+        <deepLink app:uri="wsdot://favorites" />
+
     </fragment>
 
     <fragment
@@ -377,9 +382,7 @@
         android:id="@+id/navMountainPassHomeFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassHomeFragment"
         android:label="Mountain Passes"
-        tools:layout="@layout/mountain_pass_home_fragment"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true">
+        tools:layout="@layout/mountain_pass_home_fragment">
 
         <deepLink app:uri="wsdot://mountainpasses" />
 
@@ -454,31 +457,31 @@
     <action
         android:id="@+id/action_global_navFerriesHomeFragment"
         app:destination="@id/navFerriesHomeFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action
         android:id="@+id/action_global_navMountainPassHomeFragment"
         app:destination="@id/navMountainPassHomeFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action
         android:id="@+id/action_global_navBorderCrossingsFragment"
         app:destination="@id/navBorderCrossingsFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action
         android:id="@+id/action_global_navTollRatesFragment"
         app:destination="@id/navTollRatesFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action
         android:id="@+id/action_global_navAmtrakCascadesFragment"
         app:destination="@id/navAmtrakCascadesFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action android:id="@+id/action_global_navFavoritesFragment"
         app:destination="@id/navFavoritesFragment"
-        app:popUpTo="@id/navTrafficMapFragment"/>
+        app:popUpTo="@id/nav_graph"/>
 
     <action
         android:id="@+id/action_global_navAboutFragment"
@@ -490,8 +493,7 @@
 
     <action
         android:id="@+id/action_global_navEventDetailsFragment"
-        app:destination="@id/navEventDetailsFragment"/>
-
+        app:destination="@id/navEventDetailsFragment" />
 
     <action
         android:id="@+id/action_global_navFerriesRouteFragment"

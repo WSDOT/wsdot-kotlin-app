@@ -37,6 +37,23 @@
 
     </shortcut>
 
+    <!-- Specify more shortcuts here. -->
+    <shortcut
+        android:shortcutId="favorites"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher_favorites"
+        android:shortcutShortLabel="@string/favorites_shortcut_short_label"
+        android:shortcutLongLabel="@string/favorites_shortcut_long_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.wa.wsdot.android.wsdot"
+            android:targetClass="gov.wa.wsdot.android.wsdot.ui.MainActivity"
+            android:data="wsdot://favorites">
 
+            <extra android:name="shortcut_id" android:value="favorites" />
+
+        </intent>
+
+    </shortcut>
 
 </shortcuts>
