@@ -81,7 +81,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
-            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://wave2go.wsdot.com/webstore/landingPage", "Tickets")
+            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://wave2go.wsdot.com/webstore/landingPage&CG=21&C=76", "Tickets")
             findNavController().navigate(action)
         }
 

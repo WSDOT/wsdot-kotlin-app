@@ -446,23 +446,28 @@
     </dialog>
 
     <!-- Global nav actions -->
-    <action android:id="@+id/action_global_navTrafficMapFragment"
+    <action
+        android:id="@+id/action_global_navTrafficMapFragment"
         app:destination="@id/navTrafficMapFragment"
         app:popUpTo="@+id/nav_graph"/>
 
-    <action android:id="@+id/action_global_navFerriesHomeFragment"
+    <action
+        android:id="@+id/action_global_navFerriesHomeFragment"
         app:destination="@id/navFerriesHomeFragment"
         app:popUpTo="@id/navTrafficMapFragment"/>
 
-    <action android:id="@+id/action_global_navMountainPassHomeFragment"
+    <action
+        android:id="@+id/action_global_navMountainPassHomeFragment"
         app:destination="@id/navMountainPassHomeFragment"
         app:popUpTo="@id/navTrafficMapFragment"/>
 
-    <action android:id="@+id/action_global_navBorderCrossingsFragment"
+    <action
+        android:id="@+id/action_global_navBorderCrossingsFragment"
         app:destination="@id/navBorderCrossingsFragment"
         app:popUpTo="@id/navTrafficMapFragment"/>
 
-    <action android:id="@+id/action_global_navTollRatesFragment"
+    <action
+        android:id="@+id/action_global_navTollRatesFragment"
         app:destination="@id/navTollRatesFragment"
         app:popUpTo="@id/navTrafficMapFragment"/>
 
