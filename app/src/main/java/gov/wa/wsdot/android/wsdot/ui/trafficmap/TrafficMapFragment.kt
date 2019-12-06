@@ -22,8 +22,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -808,10 +807,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
-                    location?.let {
-                        mMap.isMyLocationEnabled = true
-                        goToUsersLocation(location)
-                    }
+                    mMap.isMyLocationEnabled = true
+
+                   // location?.let {
+                   //     goToUsersLocation(location)
+                  //  }
+
+                   // if (location == null) {
+                       // Toast.makeText(context, "cant find location data", Toast.LENGTH_SHORT).show()
+                        requestLocationUpdate()
+                  //  }
+
                 }
         }
     }
@@ -839,7 +845,26 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     }
 
     private fun goToUsersLocation(location: Location) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 14.0f))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15.0f))
+    }
+
+    private fun requestLocationUpdate() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    goToUsersLocation(location)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
     }
 
 }
