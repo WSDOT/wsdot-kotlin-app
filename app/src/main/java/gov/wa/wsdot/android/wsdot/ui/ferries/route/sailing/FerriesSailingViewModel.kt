@@ -2,13 +2,15 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
+import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.util.*
 import javax.inject.Inject
 
-class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
+class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepository, vesselRepository: VesselRepository) : ViewModel() {
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
 
@@ -26,11 +28,19 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
             }
         }
 
+    private val vessels: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
+        .switchMap(_sailingQuery) { input ->
+            input.ifExists { routeId, departingId, arrivingId, sailingDate ->
+                vesselRepository.loadSailingWithVessels(routeId, departingId, arrivingId, sailingDate, true)
+            }
+        }
+
     val sailingsWithSpaces: MediatorLiveData<Resource<List<FerrySailingWithSpaces>>> = MediatorLiveData()
 
     init {
         sailingsWithSpaces.addSource(sailings) { sailingsWithSpaces.value = it }
         sailingsWithSpaces.addSource(spaces) { sailingsWithSpaces.value = it }
+        sailingsWithSpaces.addSource(vessels) { sailingsWithSpaces.value = it }
     }
 
     fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int) {

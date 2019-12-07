@@ -19,5 +19,13 @@ data class FerrySailingWithSpaces(
     val maxSpaces: Int?,
     val spaces: Int?,
     val reserveSpaces: Int?,
-    val spacesCacheDate: Date?
+    val spacesCacheDate: Date?,
+
+    // Vessel Data
+    val vesselId: Int?,
+    val vesselEta: Date?,
+    val vesselLeftDock: Date?,
+    val vesselAtDock: Boolean?,
+    val vesselScheduledDeparture: Date?
+
 )
