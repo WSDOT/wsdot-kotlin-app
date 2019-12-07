@@ -5,6 +5,7 @@ import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
+import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors

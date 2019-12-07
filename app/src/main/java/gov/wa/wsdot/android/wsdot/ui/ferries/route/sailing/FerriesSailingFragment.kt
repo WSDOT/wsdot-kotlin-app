@@ -113,6 +113,11 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
+
+                for (sailing in sailingResource.data ) {
+                    Log.e("debug", sailing.toString())
+                }
+
                 currentSailingIndex = 0
                 for ((i, sailing) in sailingResource.data.withIndex()) {
                     if (BindingFunctions.hasPassed(sailing.departingTime)) {

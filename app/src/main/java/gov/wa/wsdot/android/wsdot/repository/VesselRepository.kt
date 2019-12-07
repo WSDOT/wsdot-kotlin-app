@@ -3,6 +3,8 @@ package gov.wa.wsdot.android.wsdot.repository
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpacesDao
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.ferries.VesselDao
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
@@ -18,7 +20,8 @@ import javax.inject.Singleton
 class VesselRepository @Inject constructor(
     private val wsdotWebservice: WsdotApiService,
     private val appExecutors: AppExecutors,
-    private val vesselDao: VesselDao
+    private val vesselDao: VesselDao,
+    private val ferrySailingWithSpacesDao: FerrySailingWithSpacesDao
 ) {
 
     fun loadVessels(forceRefresh: Boolean): LiveData<Resource<List<Vessel>>> {
@@ -53,6 +56,42 @@ class VesselRepository @Inject constructor(
 
         }.asLiveData()
     }
+
+
+    fun loadSailingWithVessels(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithSpaces>>> {
+
+        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, List<VesselResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<VesselResponse>) = saveVessels(item)
+
+            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
+                var update = false
+
+                if (data != null) {
+                    if (data.isNotEmpty()) {
+                        if (TimeUtils.isOverXMinOld(data[0].cacheDate, x = 3)) {
+                            update = true
+                        }
+                    }
+                } else {
+                    update = true
+                }
+
+                return update || forceRefresh
+            }
+
+            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
+
+            override fun createCall() = wsdotWebservice.getFerryVessels(ApiKeys.WSDOT_KEY)
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+
+    }
+
 
     fun loadVessel(vesselId: Int): LiveData<Resource<Vessel>> {
 

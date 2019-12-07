@@ -9,19 +9,34 @@ import java.util.*
 abstract class FerrySailingWithSpacesDao {
 
     @Query("""
-        SELECT FerrySailing.*,
+        SELECT DISTINCT FerrySailing.*,
         FerrySpace.showDriveUpSpaces,
         FerrySpace.showResSpaces,
         FerrySpace.maxSpacesCount AS maxSpaces,
         FerrySpace.currentSpacesCount AS spaces,
         FerrySpace.reservableSpacesCount AS reserveSpaces,
-        FerrySpace.localCacheDate AS spacesCacheDate
-        FROM FerrySailing LEFT OUTER JOIN FerrySpace
+        FerrySpace.localCacheDate AS spacesCacheDate,
+        Vessel.eta AS vesselEta,
+        Vessel.leftDock AS vesselLeftDock,
+        Vessel.atDock AS vesselAtDock,
+        Vessel.scheduledDeparture AS vesselScheduledDeparture,
+        Vessel.vesselId
+        FROM FerrySailing
+        
+        LEFT OUTER JOIN FerrySpace
         ON FerrySailing.departingTerminalId = FerrySpace.departingTerminalId
         AND FerrySailing.arrivingTerminalId = FerrySpace.arrivingTerminalId
         AND FerrySailing.departingTime = FerrySpace.departureTime
-        WHERE FerrySailing.route = (:routeId) AND FerrySailing.departingTerminalId = (:departingId)
-        AND FerrySailing.arrivingTerminalId = (:arrivingId) AND FerrySailing.sailingDate = (:sailingDate)
+        
+        LEFT OUTER JOIN Vessel
+        ON FerrySailing.departingTerminalId = Vessel.departingTerminalId
+        AND FerrySailing.arrivingTerminalId = Vessel.arrivingTerminalId
+        AND FerrySailing.departingTime = Vessel.scheduledDeparture
+        
+        WHERE FerrySailing.route = (:routeId) 
+        AND FerrySailing.departingTerminalId = (:departingId)
+        AND FerrySailing.arrivingTerminalId = (:arrivingId) 
+        AND FerrySailing.sailingDate = (:sailingDate)
     """)
     abstract fun loadSailingsWithSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<List<FerrySailingWithSpaces>>
 

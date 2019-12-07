@@ -59,6 +59,50 @@
                     app:bindDateHour="@{sailing.departingTime}"
                     app:layout_constraintTop_toBottomOf="@id/departureTimeLabel"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/actual_departure_time_view"
+                android:layout_width="10dp"
+                android:orientation="vertical"
+                app:layout_constrainedWidth="false"
+                android:layout_height="wrap_content"
+                android:background="@{BindingFunctions.hasPassed(sailing.departingTime) ? @drawable/card_title_background_gray : @drawable/card_title_background_primary }"
+                app:layout_constraintVertical_chainStyle="spread"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/departure_time_view"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="start"
+                android:elevation="4dp"
+                app:visibleGone="@{sailing.vesselLeftDock != null}">
+
+                <TextView
+                    style="@style/CardMiniHeading"
+                    android:id="@+id/actualDepartureTimeLabel"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ACTUAL DEPARTURE"
+                    app:layout_constraintTop_toBottomOf="@id/departureTimeTextView"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    style="@style/CardTitleText"
+                    android:id="@+id/vesselDepartureTimeTextView"
+                    android:textColor="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindDateHour="@{sailing.vesselLeftDock}"
+                    app:layout_constraintTop_toBottomOf="@id/actualDepartureTimeLabel"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
             </LinearLayout>
