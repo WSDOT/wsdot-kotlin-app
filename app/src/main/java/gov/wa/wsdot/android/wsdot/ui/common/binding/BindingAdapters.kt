@@ -120,7 +120,7 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("setFavoriteIcon")
     fun bindFavoriteIcon(button: ImageButton, favorite: Boolean) {
-        button.setImageResource(if (favorite) R.drawable.ic_menu_favorite_pink else R.drawable.ic_menu_favorite_gray)
+        button.setImageResource(if (favorite) R.drawable.ic_menu_favorite_pink else R.drawable.ic_menu_favorite_outline)
 
         if (favorite) {
             button.imageTintList = ColorStateList.valueOf(Color.parseColor("#FFFF94C2"))

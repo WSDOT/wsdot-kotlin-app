@@ -202,7 +202,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         if (isFavorite) {
             menuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_pink, null)
         } else {
-            menuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_gray, null)
+            menuItem.icon = resources.getDrawable(R.drawable.ic_menu_favorite_outline, null)
         }
     }
 

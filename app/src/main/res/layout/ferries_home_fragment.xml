@@ -54,12 +54,37 @@
             android:elevation="4dp">
 
             <LinearLayout
-                android:id="@+id/link_buttons"
+                android:id="@+id/vessel_watch_button_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/vessel_watch_button"
+                    android:backgroundTint="?themeColorPrimary"
+                    android:textColor="@color/white"
+                    android:layout_width="0dp"
+                    android:layout_height="58dp"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="@string/ferry_vessel_watch"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/link_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/vessel_watch_button_layout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/reservation_button"
@@ -67,7 +92,9 @@
                     android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
-                    android:layout_margin="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -79,28 +106,6 @@
                     android:textColor="@color/white"
                     android:layout_width="0dp"
                     android:layout_height="58dp"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="@string/ferry_buy_tickets"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/link_buttons"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/vessel_watch_button"
-                    android:backgroundTint="?themeColorPrimary"
-                    android:textColor="@color/white"
-                    android:layout_width="0dp"
-                    android:layout_height="58dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
@@ -108,9 +113,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:text="@string/ferry_vessel_watch"/>
-
+                    android:text="@string/ferry_buy_tickets"/>
             </LinearLayout>
 
         </LinearLayout>

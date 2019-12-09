@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 app:backgroundTint="@color/white"
                 android:background="@color/white"
-                android:src="@drawable/ic_menu_favorite_gray"
+                android:src="@drawable/ic_menu_favorite_outline"
                 app:setFavoriteIcon="@{camera.favorite}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

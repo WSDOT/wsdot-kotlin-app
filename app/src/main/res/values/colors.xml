@@ -24,4 +24,6 @@
     <color name="darkGray">#6d6d6d</color>
     <color name="lightGray">#1A000000</color>
 
+    <color name="cardLightGray">#7b7b7b</color>
+
 </resources>
