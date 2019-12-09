@@ -353,14 +353,6 @@
         android:label="Vessel Watch"
         tools:layout="@layout/vessel_watch" >
 
-        <action
-            android:id="@+id/action_navVesselWatchFragment_to_navVesselDetailsFragment"
-            app:destination="@id/navVesselDetailsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
     </fragment>
 
     <fragment
@@ -594,6 +586,14 @@
     <action
         android:id="@+id/action_global_navFavoritesSortSettingFragment"
         app:destination="@id/navFavoritesSortSettingFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navVesselDetailsFragment"
+        app:destination="@id/navVesselDetailsFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
