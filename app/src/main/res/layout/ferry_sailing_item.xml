@@ -186,17 +186,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
 
-
-
             </LinearLayout>
 
             <TextView
                 style="@style/CardFooterText"
+                android:textStyle="bold"
                 android:id="@+id/sailing_reservation_spaces_label_text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/arrival_time_view"

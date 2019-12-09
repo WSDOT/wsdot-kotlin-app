@@ -93,7 +93,10 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         super.onResume()
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing at start
+                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing ONCE
+                if(currentSailingIndex != 0) {
+                    adapter.removeObserver()
+                }
             }
         })
     }
@@ -113,10 +116,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
-
-                for (sailing in sailingResource.data ) {
-                    Log.e("debug", sailing.toString())
-                }
 
                 currentSailingIndex = 0
                 for ((i, sailing) in sailingResource.data.withIndex()) {
