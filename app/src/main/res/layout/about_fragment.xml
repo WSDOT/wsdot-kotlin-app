@@ -8,8 +8,6 @@
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true">
 
-
-
         <ScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
