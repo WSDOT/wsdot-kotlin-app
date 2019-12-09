@@ -87,7 +87,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/arrival_time_view"
+                    android:id="@+id/left_dock_view"
                     android:layout_width="120dp"
                     app:layout_constrainedWidth="false"
                     android:orientation="vertical"
@@ -150,7 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:bindTrainStationName="@{arrivalItem.stationName}"
-                    app:layout_constraintTop_toBottomOf="@+id/arrival_time_view"
+                    app:layout_constraintTop_toBottomOf="@+id/left_dock_view"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
