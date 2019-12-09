@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -13,8 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesFragmentBinding
@@ -170,6 +170,9 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                     location?.let {
                         amtrakCascadesViewModel.selectStationNearestTo(it)
                     }
+                    if (location == null) {
+                        requestLocationUpdate()
+                    }
                 }
         }
     }
@@ -196,4 +199,24 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
             dialog.show()
         }
     }
+
+    private fun requestLocationUpdate() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                locationResult.locations.first()?.let {
+                    amtrakCascadesViewModel.selectStationNearestTo(it)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
+
 }

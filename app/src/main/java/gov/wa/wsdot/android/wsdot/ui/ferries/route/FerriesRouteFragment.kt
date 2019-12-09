@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -17,8 +18,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
 import androidx.viewpager.widget.ViewPager
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -237,6 +237,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
                     location?.let {
                         routeViewModel.selectTerminalNearestTo(it)
                     }
+                    if (location == null) {
+                        requestLocationUpdate()
+                    }
                 }
         }
     }
@@ -262,6 +265,25 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             val dialog: AlertDialog = builder.create()
             dialog.show()
         }
+    }
+
+    private fun requestLocationUpdate() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                locationResult.locations.first()?.let {
+                    routeViewModel.selectTerminalNearestTo(it)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
     }
 
     private fun setVesselWatchView(routeId: Int){
