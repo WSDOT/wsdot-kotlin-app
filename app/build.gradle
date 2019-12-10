@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: "io.fabric"
 
 android {
     compileSdkVersion 29
@@ -12,8 +13,8 @@ android {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21060002
-        versionName "6.0.0-beta-02"
+        versionCode 21060005
+        versionName "6.0.0-beta-05"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         kotlinOptions {
@@ -46,15 +47,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
-    implementation "androidx.activity:activity-ktx:1.1.0-rc02"
-    implementation "androidx.fragment:fragment-ktx:1.2.0-rc02"
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc02'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc02"
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation "androidx.activity:activity-ktx:1.1.0-rc03"
+    implementation "androidx.fragment:fragment-ktx:1.2.0-rc03"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-rc03'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0-rc03"
 
     implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
-    implementation 'com.google.firebase:firebase-messaging:20.0.1'
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
@@ -69,8 +71,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:2.1.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
 
-    implementation "androidx.room:room-runtime:2.2.1"
-    kapt "androidx.room:room-compiler:2.2.1"
+    implementation "androidx.room:room-runtime:2.2.2"
+    kapt "androidx.room:room-compiler:2.2.2"
 
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
@@ -118,7 +120,7 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.12'
-    testImplementation "androidx.room:room-testing:2.2.1"
+    testImplementation "androidx.room:room-testing:2.2.2"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
