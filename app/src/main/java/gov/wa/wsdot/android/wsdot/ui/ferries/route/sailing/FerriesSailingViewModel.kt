@@ -87,8 +87,6 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     }
 
-
-
     fun refresh() {
         val routeId = _sailingQuery.value?.routeId
         val departingId = _sailingQuery.value?.departingId

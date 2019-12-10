@@ -43,6 +43,9 @@ class FerrySailingListAdapter(
                     && oldItem.spaces == newItem.spaces
                     && oldItem.maxSpaces == newItem.maxSpaces
                     && oldItem.spacesCacheDate == newItem.spacesCacheDate
+                    && oldItem.vesselAtDock == newItem.vesselAtDock
+                    && oldItem.vesselEta == newItem.vesselEta
+                    && oldItem.vesselLeftDock == newItem.vesselLeftDock
         }
     }
 ) {
