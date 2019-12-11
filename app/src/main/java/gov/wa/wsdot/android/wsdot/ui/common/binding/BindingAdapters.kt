@@ -274,7 +274,7 @@ object BindingAdapters {
 
     // Creates an updated timestamp from date object
     private fun getDateTimeStamp(date: Date): String {
-        val displayDateFormat = SimpleDateFormat("MMMM d, YYYY h:mm a", Locale.ENGLISH)
+        val displayDateFormat = SimpleDateFormat("MMMM d, yyyy h:mm a", Locale.ENGLISH)
         return try {
             displayDateFormat.format(date)
         } catch (e: Exception) {
