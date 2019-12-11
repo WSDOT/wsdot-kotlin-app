@@ -1,9 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -23,7 +21,15 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         (activity as MainActivity).disableAds()
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
