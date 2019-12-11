@@ -45,7 +45,6 @@ import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import javax.inject.Inject
 
-
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     HasSupportFragmentInjector, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -416,6 +415,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     /**
      * Initialize and display ads.
+     * WARNING: don't call in onCreate
      */
      fun enableAds(target: String) {
 
@@ -453,6 +453,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     /**
      * Remove the ad so it doesn't take up any space.
+     *  WARNING: don't call in onCreate
      */
     fun disableAds() {
         val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
