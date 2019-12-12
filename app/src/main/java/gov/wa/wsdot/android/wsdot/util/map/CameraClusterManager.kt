@@ -7,7 +7,4 @@ import com.google.maps.android.clustering.ClusterManager
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 
 class CameraClusterManager(context: Context?, map: GoogleMap?, markerManager: MarkerManager?) :
-    ClusterManager<CameraClusterItem>(context, map, markerManager) {
-
-
-}
+    ClusterManager<CameraClusterItem>(context, map, markerManager)

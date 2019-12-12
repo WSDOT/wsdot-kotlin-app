@@ -261,6 +261,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mCameraClusterManager.renderer = CameraRenderer(context, mMap, mCameraClusterManager)
         mCameraClusterManager.renderer.setAnimation(false)
 
+
         mCameraClusterManager.setOnClusterItemClickListener(this)
         mCameraClusterManager.setOnClusterClickListener(this)
 
@@ -515,7 +516,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+        val showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -527,7 +528,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showCameras) {
+        if (!showRestAreas) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -645,14 +646,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     val cluster = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
                     val editor = settings.edit()
                     editor.putBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), !cluster)
-                    editor.apply()
-
-                    mCameraClusterManager.markerCollection?.markers?.let{ markers ->
-                        for (marker in markers) { marker.remove() }
-                    }
-                    mCameraClusterManager.clusterMarkerCollection?.markers?.let{markers ->
-                        for (marker in markers) { marker.remove() }
-                    }
+                    editor.commit()
 
                     mCameraClusterManager.clearItems()
                     mCameraClusterManager.addItems(cameraClusterItems)
@@ -809,14 +803,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 .addOnSuccessListener { location : Location? ->
                     mMap.isMyLocationEnabled = true
 
-                   // location?.let {
-                   //     goToUsersLocation(location)
-                  //  }
+                    location?.let {
+                        goToUsersLocation(location)
+                    }
 
-                   // if (location == null) {
-                       // Toast.makeText(context, "cant find location data", Toast.LENGTH_SHORT).show()
+                    if (location == null) {
                         requestLocationUpdate()
-                  //  }
+                    }
 
                 }
         }
