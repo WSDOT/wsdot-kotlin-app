@@ -55,7 +55,7 @@ class AboutFragment: DaggerFragment(), Injectable {
 
         binding.appBugReportButton.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SEND)
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("webfeedback@wsdot.wa.go"))
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("webfeedback@wsdot.wa.gov"))
             emailIntent.type = "message/rfc822"
             val versionName = BuildConfig.VERSION_NAME
 
@@ -69,7 +69,7 @@ class AboutFragment: DaggerFragment(), Injectable {
 
         binding.appFeedbackButton.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SEND)
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("webfeedback@wsdot.wa.go"))
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("webfeedback@wsdot.wa.gov"))
             emailIntent.type = "message/rfc822"
             val versionName = BuildConfig.VERSION_NAME
 

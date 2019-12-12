@@ -18,6 +18,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -29,6 +30,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
 import com.google.maps.android.MarkerManager
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -37,12 +41,14 @@ import com.leinardi.android.speeddial.SpeedDialView
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
@@ -52,12 +58,10 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.Travel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
-import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
-import gov.wa.wsdot.android.wsdot.util.NightModeConfig
-import gov.wa.wsdot.android.wsdot.util.getDouble
+import gov.wa.wsdot.android.wsdot.util.*
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
-import gov.wa.wsdot.android.wsdot.util.putDouble
+import kotlinx.android.synthetic.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
@@ -77,6 +81,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
     lateinit var mapCamerasViewModel: MapCamerasViewModel
+    lateinit var cameraViewModel: CameraViewModel
     lateinit var restAreaViewModel: RestAreaViewModel
     lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
     lateinit var travelChartsViewModel: TravelChartsViewModel
@@ -85,6 +90,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
     private val restAreaMarkers = HashMap<Marker, RestAreaItem>()
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
+
+    private var selectedCameraMarker: Marker? = null
 
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
@@ -98,6 +105,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // Clusters
     private lateinit var mCameraClusterManager: CameraClusterManager
     private lateinit var mMarkerManager: MarkerManager
+
+    var binding by autoCleared<MapFragmentBinding>()
 
     // FAB
     private lateinit var mFab: SpeedDialView
@@ -124,9 +133,18 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
 
         // Inflate the layout for this fragment
-        val rootView = inflater.inflate(R.layout.map_fragment, container, false)
 
-        initBottomBar(rootView)
+        // create the data binding
+        val dataBinding = DataBindingUtil.inflate<MapFragmentBinding>(
+            inflater,
+            R.layout.map_fragment,
+            container,
+            false
+        )
+
+        dataBinding.lifecycleOwner = viewLifecycleOwner
+
+        initBottomBar(dataBinding.root)
 
         // get it from the Activity so it can be shared with the Map Alerts Fragment
         mapHighwayAlertsViewModel = activity?.run {
@@ -152,20 +170,27 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        initSettingsFAB(rootView)
+        initSettingsFAB(dataBinding.root)
 
         // Check for travel charts
         travelChartsViewModel.travelCharts.observe(viewLifecycleOwner, Observer { chartsResource ->
             chartsResource.data?.let {
                 if (it.available) {
-                    val bottomAppBar = rootView.findViewById<BottomAppBar>(R.id.bottom_app_bar)
+                    val bottomAppBar = dataBinding.root.findViewById<BottomAppBar>(R.id.bottom_app_bar)
                     bottomAppBar.menu.setGroupVisible(R.id.travel_charts_group, true)
                     bottomAppBar.menu.findItem(R.id.action_travel_charts).icon = BadgeDrawable.getMenuBadge(context!!, R.drawable.ic_menu_travel_charts, "!")
                 }
             }
         })
 
-        return rootView
+        binding = dataBinding
+
+        initBottomSheets()
+
+        binding.cameraViewModel = cameraViewModel
+
+
+        return dataBinding.root
     }
 
     override fun onResume() {
@@ -175,6 +200,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     override fun onPause() {
         super.onPause()
+
+        BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_COLLAPSED
 
         if (::mMap.isInitialized) {
 
@@ -397,12 +424,48 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             findNavController().navigate(action)
             return true
         }
-
+        
         return true
     }
 
 
-    // functions to manager non-clustered marker collections
+    // functions to handle bottom sheet logic
+    private fun initBottomSheets() {
+
+        // Camera Bottom Sheet
+        cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(CameraViewModel::class.java)
+        cameraViewModel.setCameraQuery(-1)
+
+        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+
+        var bottomSheetBehaviorCallback =
+            object : BottomSheetBehavior.BottomSheetCallback() {
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == STATE_COLLAPSED) {
+                        selectedCameraMarker?.remove()
+                    }
+                }
+            }
+        behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
+
+        binding.favoriteButton.setOnClickListener(null)
+        binding.favoriteButton.setOnClickListener {
+            cameraViewModel.updateFavorite(-1)
+        }
+
+        binding.closeButton.setOnClickListener {
+            val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+            behavior.state = STATE_COLLAPSED
+        }
+
+    }
+
+    // functions to manage non-clustered marker collections
 
     private fun setHighwayAlertMarkerVisibility(visibility: Boolean){
         val collection = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id))
@@ -436,9 +499,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     // Called when a clusterable marker is clicked
     override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
-        p0?.let {
-            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.mCamera.cameraId, it.mCamera.title)
-            findNavController().navigate(action)
+        p0?.let { cameraClusterItem ->
+
+            selectedCameraMarker?.remove()
+            val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
+            selectedCameraMarker = mMap.addMarker(MarkerOptions()
+                .zIndex(100f)
+                .position(LatLng(cameraClusterItem.mCamera.latitude, cameraClusterItem.mCamera.longitude))
+                .visible(true)
+                .icon(icon))
+
+            cameraViewModel.setCameraQuery(cameraClusterItem.mCamera.cameraId)
+
+            binding.favoriteButton.setOnClickListener {
+                cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
+            }
+
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_EXPANDED
         }
         return true
     }
@@ -861,4 +938,5 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     }
 
 }
+
 
