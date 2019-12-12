@@ -91,6 +91,10 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navTrafficCameraBottomSheet"
+            app:destination="@id/navTrafficCameraBottomSheet"/>
+
     </fragment>
 
     <fragment
@@ -150,6 +154,10 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navTrafficCameraBottomSheet"
+            app:destination="@id/navTrafficCameraBottomSheet"/>
 
     </fragment>
 
@@ -456,6 +464,17 @@
         android:name="gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment"
         android:label="Twitter"
         tools:layout="@layout/twitter_fragment" />
+
+    <dialog
+        android:id="@+id/navTrafficCameraBottomSheet"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.cameras.TrafficCameraBottomSheetFragment"
+        tools:layout="@layout/camera_fragment">
+
+        <argument
+            android:name="camera_id"
+            app:argType="integer" />
+
+    </dialog>
 
     <fragment
         android:id="@+id/navWebViewFragment"
