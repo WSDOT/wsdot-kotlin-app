@@ -46,6 +46,7 @@ class FavoritesListAdapter(
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
     private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
+    private val locationLongClickCallback: ((FavoriteLocation) -> Unit)?,
     private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
@@ -559,6 +560,13 @@ class FavoritesListAdapter(
             binding.locationItem?.let {
                 locationClickCallback?.invoke(it)
             }
+        }
+
+        binding.root.findViewById<View>(R.id.tap_view).setOnLongClickListener {
+            binding.locationItem?.let {
+                locationLongClickCallback?.invoke(it)
+            }
+            true
         }
 
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE

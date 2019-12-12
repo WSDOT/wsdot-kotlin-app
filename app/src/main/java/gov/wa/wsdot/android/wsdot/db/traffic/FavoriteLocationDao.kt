@@ -13,6 +13,9 @@ abstract class FavoriteLocationDao {
     @Query("SELECT * FROM FavoriteLocation")
     abstract fun loadFavoriteLocations(): LiveData<List<FavoriteLocation>>
 
+    @Query("UPDATE FavoriteLocation SET title = :title WHERE creationDate = :creationDate")
+    abstract fun updateFavoriteLocationTitle(creationDate: Date, title: String)
+
     @Query("DELETE FROM FavoriteLocation WHERE creationDate = :creationDate")
     abstract fun deleteFavoriteLocation(creationDate: Date)
 

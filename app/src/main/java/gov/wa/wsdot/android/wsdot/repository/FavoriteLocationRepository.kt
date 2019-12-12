@@ -29,6 +29,12 @@ class FavoriteLocationRepository @Inject constructor(
         }
     }
 
+    fun updateLocationTitle(location: FavoriteLocation, title: String) {
+        appExecutors.diskIO().execute{
+            favoriteLocationDao.updateFavoriteLocationTitle(location.creationDate, title)
+        }
+    }
+
     fun removeFavoriteLocation(creationDate: Date){
         appExecutors.diskIO().execute {
             favoriteLocationDao.deleteFavoriteLocation(creationDate)
