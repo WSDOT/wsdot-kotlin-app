@@ -91,6 +91,10 @@ class FavoritesListViewModel @Inject constructor(
         )
     }
 
+    fun updateFavoriteLocationTitle(location: FavoriteLocation, title: String) {
+        favoriteLocationRepository.updateLocationTitle(location, title)
+    }
+
     fun refresh() {
         removeSources()
         travelTimeLiveData = travelTimesRepository.loadFavoriteTravelTimes(true)

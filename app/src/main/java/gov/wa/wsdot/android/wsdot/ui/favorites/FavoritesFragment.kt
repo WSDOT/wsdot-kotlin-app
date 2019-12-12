@@ -7,12 +7,16 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputType
 import androidx.preference.PreferenceManager
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -35,6 +39,7 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchUIUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
@@ -134,6 +139,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             { locationItem ->
                 navigateToLocation(locationItem)
             },
+            { locationItem ->
+                editLocationItem(locationItem)
+            },
             { sign, index ->
                 if (sign.trips.size > index) {
                     navigateToTollMap(
@@ -215,6 +223,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
+
+
+
 
         // Add swipe dismiss to favorites list items.
         val simpleItemTouchCallback =
@@ -362,6 +373,43 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             }
         val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun editLocationItem(location: FavoriteLocation){
+        showEditFavoriteLocationDialog(location)
+    }
+
+    private fun showEditFavoriteLocationDialog(location: FavoriteLocation) {
+
+        context?.let {
+
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Edit Location Name")
+
+            val input = EditText(it)
+            input.inputType = InputType.TYPE_CLASS_TEXT
+            input.hint = location.title
+
+            builder.setView(input)
+
+            val scale = resources.displayMetrics.density
+            val sixteenDP = (16 * scale + 0.5f).toInt()
+            val eightDP = (8 * scale + 0.5f).toInt()
+
+            input.setPaddingRelative(sixteenDP, eightDP, sixteenDP, eightDP)
+
+            builder.setPositiveButton("OK") {_, _ ->
+                val inputText = input.text.toString()
+                if (inputText.isNotBlank()) {
+                    favoritesListViewModel.updateFavoriteLocationTitle(location, inputText)
+                }
+            }
+
+            builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
+            builder.show()
+
+        }
     }
 
     private fun navigateToCamera(camera: Camera){
