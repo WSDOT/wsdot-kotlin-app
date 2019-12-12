@@ -39,7 +39,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
     private var adapter by autoCleared<FerrySailingListAdapter>()
 
-    private var currentSailingIndex = 0
+    private var currentSailingIndex = -1
 
     lateinit var t: Timer
 
@@ -93,14 +93,17 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         super.onResume()
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex) // scroll to current sailing ONCE
-                if(currentSailingIndex != 0) {
-                    adapter.removeObserver()
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (currentSailingIndex != -1) {
+                    if (itemCount != 0) {
+                       binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
+                       adapter.removeObserver()
+                    }
                 }
             }
+
         })
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -117,7 +120,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
             if (sailingResource?.data != null) {
 
-                currentSailingIndex = 0
                 for ((i, sailing) in sailingResource.data.withIndex()) {
                     if (BindingFunctions.hasPassed(sailing.departingTime)) {
                         currentSailingIndex = i
@@ -125,8 +127,6 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 }
 
                 adapter.submitList(sailingResource.data)
-            } else {
-                adapter.submitList(emptyList())
             }
         })
 
@@ -144,8 +144,8 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                     }
                 }
             },
-            30000,
-            120000
+            60000,
+            1200000
         )
     }
 }

@@ -23,14 +23,8 @@ class FerrySailingListAdapter(
     appExecutors = appExecutors,
     diffCallback = object : DiffUtil.ItemCallback<FerrySailingWithSpaces>() {
         override fun areItemsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
-            return oldItem.route == newItem.route
-                    && oldItem.departingTime == newItem.departingTime
-                    && oldItem.arrivingTime == newItem.arrivingTime
+            return oldItem.departingTime == newItem.departingTime
                     && oldItem.departingTerminalId == newItem.departingTerminalId
-                    && oldItem.arrivingTerminalId == newItem.arrivingTerminalId
-                    && oldItem.spaces == newItem.spaces
-                    && oldItem.maxSpaces == newItem.maxSpaces
-                    && oldItem.spacesCacheDate == oldItem.spacesCacheDate
         }
 
         override fun areContentsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
