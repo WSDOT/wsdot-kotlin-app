@@ -401,7 +401,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), location.longitude)
         editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), location.zoom)
         editor.commit()
-        val action = NavGraphDirections.actionGlobalNavTrafficMapFragment()
+
+        val action = FavoritesFragmentDirections.actionNavFavoritesFragmentToNavFavoriteTrafficMapFragment()
+
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
         findNavController().navigate(action)
     }
