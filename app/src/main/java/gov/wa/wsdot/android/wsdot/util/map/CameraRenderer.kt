@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+import android.util.Log
 import androidx.preference.PreferenceManager
 import android.util.SparseArray
 import android.view.View
@@ -49,10 +50,34 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
     }
 
     override fun onBeforeClusterItemRendered(item: CameraClusterItem?, markerOptions: MarkerOptions?) {
-        BitmapDescriptorFactory.fromResource(R.drawable.camera).let { icon ->
-            markerOptions?.let {
-                it.icon(icon)
-                it.visible(isVisible())
+
+        if (item != null) {
+
+            Log.e("debug", item.isSelected.toString())
+
+            if (item.isSelected) {
+                BitmapDescriptorFactory.fromResource(R.drawable.ic_list_wsdot_snoqualmie_pass)
+                    .let { icon ->
+                        markerOptions?.let {
+                            it.icon(icon)
+                            it.visible(isVisible())
+                        }
+                    }
+                item.isSelected = false
+            } else {
+                BitmapDescriptorFactory.fromResource(R.drawable.camera).let { icon ->
+                    markerOptions?.let {
+                        it.icon(icon)
+                        it.visible(isVisible())
+                    }
+                }
+            }
+        } else {
+            BitmapDescriptorFactory.fromResource(R.drawable.camera).let { icon ->
+                markerOptions?.let {
+                    it.icon(icon)
+                    it.visible(isVisible())
+                }
             }
         }
     }

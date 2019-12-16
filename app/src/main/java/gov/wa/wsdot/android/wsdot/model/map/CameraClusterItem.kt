@@ -9,6 +9,7 @@ class CameraClusterItem : ClusterItem {
     private var mTitle: String
     private var mSnippet: String
 
+    var isSelected: Boolean = false
     val mCamera: Camera
 
     constructor(lat: Double, lng: Double, camera: Camera) {
@@ -36,4 +37,5 @@ class CameraClusterItem : ClusterItem {
     override fun getSnippet(): String {
         return mSnippet
     }
+
 }
