@@ -57,7 +57,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     var binding by autoCleared<VesselWatchBinding>()
 
-    private lateinit var mMap: GoogleMap
+    private var mMap: GoogleMap? = null
 
     private lateinit var mapFragment: SupportMapFragment
 
@@ -128,7 +128,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 try {
                     // Customise the styling of the base map using a JSON object defined
                     // in a raw resource file.
-                    mMap.setMapStyle(
+                    mMap?.setMapStyle(
                         MapStyleOptions.loadRawResourceStyle(
                             it, R.raw.map_night_style))
 
@@ -137,7 +137,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 }
 
             } else {
-                mMap.setMapStyle(null)
+                mMap?.setMapStyle(null)
             }
         }
 
@@ -151,8 +151,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         val startLocation = LatLng(latitude, longitude)
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, zoom))
-        mMap.setOnMarkerClickListener(this)
+        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, zoom))
+        mMap?.setOnMarkerClickListener(this)
 
         vesselViewModel.vessels.observe(viewLifecycleOwner, Observer { vessels ->
             if (vessels.data != null) {
@@ -169,12 +169,13 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
                     if (vessel.inService) {
                         val stopped = vessel.speed < 0.5
-                        val marker = mMap.addMarker(MarkerOptions()
+                        val marker = mMap?.addMarker(MarkerOptions()
                             .position(LatLng(vessel.latitude, vessel.longitude))
                             .rotation(if (stopped) 0f else vessel.heading.toFloat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0)))
-                        vesselMarkers[marker] = vessel
-
+                        marker?.let {
+                            vesselMarkers[it] = vessel
+                        }
                     }
                 }
             }
@@ -201,11 +202,13 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 }
 
                 for (camera in cameras.data) {
-                    val marker = mMap.addMarker(MarkerOptions()
+                    val marker = mMap?.addMarker(MarkerOptions()
                         .position(LatLng(camera.latitude, camera.longitude))
                         .visible(showCameras)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
-                    cameraMarkers[marker] = camera
+                    marker?.let {
+                        cameraMarkers[it] = camera
+                    }
 
                 }
             }
@@ -233,16 +236,18 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     }
 
     override fun onPause() {
-        super.onPause()
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = settings.edit()
-        editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), mMap.projection.visibleRegion.latLngBounds.center.latitude)
-        editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), mMap.projection.visibleRegion.latLngBounds.center.longitude)
-        editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), mMap.cameraPosition.zoom)
-        editor.apply()
+
+        mMap?.let { map ->
+            val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+            val editor = settings.edit()
+            editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), map.projection.visibleRegion.latLngBounds.center.latitude)
+            editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), map.projection.visibleRegion.latLngBounds.center.longitude)
+            editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), map.cameraPosition.zoom)
+            editor.apply()
+        }
 
         vesselUpdateHandler.removeCallbacks(vesselUpdateTask)
-
+        super.onPause()
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -258,7 +263,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             selectedCameraMarker?.remove()
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
 
-            selectedCameraMarker = mMap.addMarker(MarkerOptions()
+            selectedCameraMarker = mMap?.addMarker(MarkerOptions()
                 .zIndex(100f)
                 .position(LatLng(camera .latitude, camera .longitude))
                 .visible(true)
@@ -326,7 +331,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
-                        mMap.isMyLocationEnabled = true
+                        mMap?.isMyLocationEnabled = true
                     }
                 }
         }
