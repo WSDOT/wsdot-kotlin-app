@@ -13,8 +13,8 @@ android {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21060005
-        versionName "6.0.0-beta-05"
+        versionCode 21060006
+        versionName "6.0.0-beta-06"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         kotlinOptions {
