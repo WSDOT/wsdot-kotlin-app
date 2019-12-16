@@ -297,6 +297,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMap.setOnMarkerClickListener(mMarkerManager)
 
 
+        // init collection for selected camera
+        mMarkerManager.newCollection(getString(R.string.selected_camera_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.selected_camera_marker_collection_id)).setOnMarkerClickListener(this)
+
+
         // init a new collection for alert markers
         mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
         mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
@@ -503,7 +508,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             selectedCameraMarker?.remove()
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
-            selectedCameraMarker = mMap.addMarker(MarkerOptions()
+
+            selectedCameraMarker = mMarkerManager.getCollection(getString(R.string.selected_camera_marker_collection_id))
+                .addMarker(MarkerOptions()
                 .zIndex(100f)
                 .position(LatLng(cameraClusterItem.mCamera.latitude, cameraClusterItem.mCamera.longitude))
                 .visible(true)
