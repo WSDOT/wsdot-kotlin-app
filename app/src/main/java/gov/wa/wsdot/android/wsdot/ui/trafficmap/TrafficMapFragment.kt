@@ -464,8 +464,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         binding.closeButton.setOnClickListener {
-            val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
-            behavior.state = STATE_COLLAPSED
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_COLLAPSED
         }
 
     }

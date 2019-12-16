@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
@@ -34,6 +35,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
@@ -51,6 +53,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var vesselViewModel: VesselWatchViewModel
+    lateinit var cameraViewModel: CameraViewModel
 
     var binding by autoCleared<VesselWatchBinding>()
 
@@ -64,6 +67,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var showCameras: Boolean = true
+    private var selectedCameraMarker: Marker? = null
 
     private lateinit var vesselUpdateHandler: Handler
     private val vesselUpdateTask = object: Runnable {
@@ -108,6 +112,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         dataBinding.lifecycleOwner = this
 
         binding = dataBinding
+
+        initBottomSheets()
 
         return dataBinding.root
     }
@@ -247,14 +253,69 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             return true
         }
 
-        cameraMarkers[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavCameraFragment(it.cameraId, it.title)
-            findNavController().navigate(action)
+        cameraMarkers[marker]?.let { camera ->
+
+            selectedCameraMarker?.remove()
+            val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
+
+            selectedCameraMarker = mMap.addMarker(MarkerOptions()
+                .zIndex(100f)
+                .position(LatLng(camera .latitude, camera .longitude))
+                .visible(true)
+                .icon(icon))
+
+            cameraViewModel.setCameraQuery(camera.cameraId)
+
+            binding.favoriteButton.setOnClickListener {
+                cameraViewModel.updateFavorite(camera .cameraId)
+            }
+
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state =
+                BottomSheetBehavior.STATE_EXPANDED
+
             return true
         }
 
         return true
     }
+
+    // functions to handle bottom sheet logic
+    private fun initBottomSheets() {
+
+        // Camera Bottom Sheet
+        cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(CameraViewModel::class.java)
+        cameraViewModel.setCameraQuery(-1)
+
+        binding.cameraViewModel = cameraViewModel
+
+        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+
+        val bottomSheetBehaviorCallback =
+            object : BottomSheetBehavior.BottomSheetCallback() {
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                        selectedCameraMarker?.remove()
+                    }
+                }
+            }
+        behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
+
+        binding.favoriteButton.setOnClickListener(null)
+        binding.favoriteButton.setOnClickListener {
+            cameraViewModel.updateFavorite(-1)
+        }
+
+        binding.closeButton.setOnClickListener {
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+    }
+
 
     // Location Permission
     @SuppressLint("MissingPermission")
