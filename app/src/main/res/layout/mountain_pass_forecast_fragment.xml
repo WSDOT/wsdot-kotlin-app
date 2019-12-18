@@ -45,7 +45,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
-                tools:listitem="@layout/mountain_pass_forecast_item" />
+                tools:listitem="@layout/mountain_pass_forecast_item"
+                android:paddingStart="@dimen/content_padding"
+                android:paddingEnd="@dimen/content_padding"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

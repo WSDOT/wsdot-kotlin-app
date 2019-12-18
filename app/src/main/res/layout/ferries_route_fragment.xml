@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clipToPadding="false"
-                android:background="?colorSurface"
                 android:elevation="4dp"
+                android:background="?attr/colorSurface"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
@@ -93,15 +93,13 @@
                 </LinearLayout>
             </LinearLayout>
 
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/toolbar_grid"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"

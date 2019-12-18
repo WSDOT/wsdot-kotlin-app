@@ -14,7 +14,6 @@
   ~ limitations under the License.
   -->
 
-
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -51,7 +50,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:elevation="4dp">
+            android:elevation="4dp"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingEnd="@dimen/content_padding">
 
             <LinearLayout
                 android:id="@+id/vessel_watch_button_layout"
@@ -132,6 +133,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/schedule_list"
+                android:paddingStart="@dimen/content_padding"
+                android:paddingEnd="@dimen/content_padding"
                 app:layoutManager="LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

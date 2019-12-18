@@ -16,7 +16,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingEnd="@dimen/content_padding">
 
             <TextView
                 android:id="@+id/timestamp"
