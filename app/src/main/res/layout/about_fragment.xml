@@ -6,7 +6,9 @@
         android:id="@+id/about_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        android:paddingStart="@dimen/content_padding"
+        android:paddingEnd="@dimen/content_padding">
 
         <ScrollView
             android:id="@+id/scrollView"
