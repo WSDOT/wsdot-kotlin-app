@@ -187,8 +187,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         initBottomSheets()
 
-        binding.cameraViewModel = cameraViewModel
-
+        binding.includedCameraBottomSheet.cameraViewModel = cameraViewModel
 
         return dataBinding.root
     }
@@ -201,7 +200,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onPause() {
         super.onPause()
 
-        BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_COLLAPSED
+        BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = STATE_COLLAPSED
 
         if (::mMap.isInitialized) {
 
@@ -353,8 +352,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
                     highwayAlertMarkers[marker] = alert
                 }
-
-
             }
         })
 
@@ -442,7 +439,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
-        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+        val behavior = BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet)
 
         var bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
@@ -458,13 +455,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
         behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
 
-        binding.favoriteButton.setOnClickListener(null)
-        binding.favoriteButton.setOnClickListener {
+        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener(null)
+        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
             cameraViewModel.updateFavorite(-1)
         }
 
-        binding.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_COLLAPSED
+        binding.includedCameraBottomSheet.closeButton.setOnClickListener {
+            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = STATE_COLLAPSED
         }
 
     }
@@ -517,11 +514,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             cameraViewModel.setCameraQuery(cameraClusterItem.mCamera.cameraId)
 
-            binding.favoriteButton.setOnClickListener {
+            binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
                 cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
             }
 
-            BottomSheetBehavior.from(binding.cameraBottomSheet).state = STATE_EXPANDED
+            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = STATE_EXPANDED
         }
         return true
     }
