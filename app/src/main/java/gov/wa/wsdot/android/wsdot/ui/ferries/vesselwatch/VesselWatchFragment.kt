@@ -271,11 +271,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
             cameraViewModel.setCameraQuery(camera.cameraId)
 
-            binding.favoriteButton.setOnClickListener {
+            binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
                 cameraViewModel.updateFavorite(camera .cameraId)
             }
 
-            BottomSheetBehavior.from(binding.cameraBottomSheet).state =
+            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state =
                 BottomSheetBehavior.STATE_EXPANDED
 
             return true
@@ -292,9 +292,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
-        binding.cameraViewModel = cameraViewModel
+        binding.includedCameraBottomSheet.cameraViewModel = cameraViewModel
 
-        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+        val behavior = BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet)
 
         val bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
@@ -310,13 +310,13 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
         behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
 
-        binding.favoriteButton.setOnClickListener(null)
-        binding.favoriteButton.setOnClickListener {
+        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener(null)
+        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
             cameraViewModel.updateFavorite(-1)
         }
 
-        binding.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+        binding.includedCameraBottomSheet.closeButton.setOnClickListener {
+            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
     }
