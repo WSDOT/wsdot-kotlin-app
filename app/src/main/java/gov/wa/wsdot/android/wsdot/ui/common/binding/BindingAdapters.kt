@@ -26,6 +26,8 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
@@ -135,10 +137,12 @@ object BindingAdapters {
     fun bindCameraImage(imageView: ImageView, camera: Resource<Camera>) {
         if (camera.data != null) {
             Picasso.get()
-                .load(camera.data.url)
+                .load(camera.data.url + String.format("?%d", Date().time))
                 .placeholder(R.drawable.image_progress_animation)
                 .error(R.drawable.camera_offline)
                 .fit()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .networkPolicy(NetworkPolicy.NO_CACHE)
                 .centerInside()
                 .into(imageView)
         }
@@ -148,10 +152,12 @@ object BindingAdapters {
     @BindingAdapter("bindCameraImage")
     fun bindCameraImage(imageView: ImageView, camera: Camera) {
         Picasso.get()
-            .load(camera.url)
+            .load(camera.url + String.format("?%d", Date().time))
             .placeholder(R.drawable.image_progress_animation)
             .error(R.drawable.camera_offline)
             .fit()
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .networkPolicy(NetworkPolicy.NO_CACHE)
             .centerInside()
             .into(imageView)
     }

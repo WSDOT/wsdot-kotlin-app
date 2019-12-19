@@ -145,7 +145,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 }
             },
             60000,
-            1200000
+            120000
         )
     }
 }
