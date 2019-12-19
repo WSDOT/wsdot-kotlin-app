@@ -10,6 +10,11 @@
             type="gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass"/>
     </data>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tap_view"
             android:layout_height="wrap_content"
@@ -31,8 +36,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                />
+                android:layout_marginRight="@dimen/default_margin" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/forecast_view"
@@ -75,6 +79,72 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
+
+            <TextView
+                style="@style/CardTitleText"
+                android:id="@+id/restrictionsOneHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pass.restrictionOneDirection}"
+                app:layout_constraintTop_toBottomOf="@id/forecast_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:visibleGone='@{!pass.restrictionOneText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin" />
+
+            <TextView
+                style="@style/CardSubTitleText"
+                android:id="@+id/restrictionsOneText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pass.restrictionOneText}"
+                app:layout_constraintTop_toBottomOf="@id/restrictionsOneHeader"
+                app:layout_constraintStart_toStartOf="parent"
+                app:visibleGone='@{!pass.restrictionOneText.toLowerCase().equals("no restrictions")}'
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin" />
+
+            <TextView
+                style="@style/CardTitleText"
+                android:id="@+id/restrictionsTwoHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pass.restrictionTwoDirection}"
+                app:layout_constraintTop_toBottomOf="@id/restrictionsOneText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:visibleGone='@{!pass.restrictionTwoText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin" />
+
+            <TextView
+                style="@style/CardSubTitleText"
+                android:id="@+id/restrictionsTwoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{pass.restrictionTwoText}"
+                app:visibleGone='@{!pass.restrictionTwoText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
+                app:layout_constraintTop_toBottomOf="@id/restrictionsTwoHeader"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginBottom="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin" />
+
+
             <TextView
                 style="@style/CardFooterText"
                 android:id="@+id/FooterView"
@@ -82,7 +152,7 @@
                 android:layout_height="wrap_content"
                 app:bindRelativeDate="@{pass.serverCacheDate}"
                 tools:text=""
-                app:layout_constraintTop_toBottomOf="@id/forecast_view"
+                app:layout_constraintTop_toBottomOf="@id/restrictionsTwoText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/default_margin"
@@ -102,8 +172,7 @@
                 app:setFavoriteIcon="@{pass.favorite}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp"
-                />
+                android:layout_margin="16dp" />
 
             <View
                 android:id="@+id/divider"
@@ -116,4 +185,5 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>

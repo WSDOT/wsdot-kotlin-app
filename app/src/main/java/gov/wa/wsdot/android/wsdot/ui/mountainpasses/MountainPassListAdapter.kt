@@ -48,6 +48,7 @@ class MountainPassListAdapter(
             dataBindingComponent
         )
 
+
         binding.root.findViewById<View>(R.id.tap_view).setOnClickListener {
             binding.pass?.let {
                 passClickCallback?.invoke(it)
