@@ -118,7 +118,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     var binding by autoCleared<MapFragmentBinding>()
 
     // Camera update task timer
-    lateinit var t: Timer
+    var t: Timer? = null
 
     // FAB
     private lateinit var mFab: SpeedDialView
@@ -236,7 +236,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mapUpdateHandler.removeCallbacks(alertsUpdateTask)
 
-        t.cancel()
+        t?.cancel()
 
     }
 
@@ -463,7 +463,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     when(newState) {
                         STATE_EXPANDED -> {
                             t = Timer()
-                            t.scheduleAtFixedRate(
+                            t?.scheduleAtFixedRate(
                                 object : TimerTask() {
                                     override fun run() {
                                         appExecutors.mainThread().execute {
@@ -477,7 +477,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         }
                         STATE_COLLAPSED -> {
                             selectedCameraMarker?.remove()
-                            t.cancel()
+                            t?.cancel()
                         }
                         BottomSheetBehavior.STATE_DRAGGING -> {}
                         BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
