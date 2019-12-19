@@ -38,6 +38,7 @@ import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
+import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
@@ -66,7 +67,9 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 
 @RuntimePermissions
 class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
@@ -77,14 +80,20 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
     GoToLocationMenuEventListener, TravelerInfoMenuEventListener {
 
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     lateinit var mapHighwayAlertsViewModel: MapHighwayAlertsViewModel
     lateinit var mapCamerasViewModel: MapCamerasViewModel
     lateinit var cameraViewModel: CameraViewModel
     lateinit var restAreaViewModel: RestAreaViewModel
     lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
     lateinit var travelChartsViewModel: TravelChartsViewModel
+
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
@@ -107,6 +116,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private lateinit var mMarkerManager: MarkerManager
 
     var binding by autoCleared<MapFragmentBinding>()
+
+    // Camera update task timer
+    lateinit var t: Timer
 
     // FAB
     private lateinit var mFab: SpeedDialView
@@ -223,6 +235,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         mapUpdateHandler.removeCallbacks(alertsUpdateTask)
+
+        t.cancel()
 
     }
 
@@ -439,17 +453,36 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
+
         val behavior = BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet)
 
-        var bottomSheetBehaviorCallback =
+        val bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
-
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
-
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == STATE_COLLAPSED) {
-                        selectedCameraMarker?.remove()
+                    when(newState) {
+                        STATE_EXPANDED -> {
+                            t = Timer()
+                            t.scheduleAtFixedRate(
+                                object : TimerTask() {
+                                    override fun run() {
+                                        appExecutors.mainThread().execute {
+                                            binding.includedCameraBottomSheet.invalidateAll()
+                                        }
+                                    }
+                                },
+                                60000,
+                                120000
+                            )
+                        }
+                        STATE_COLLAPSED -> {
+                            selectedCameraMarker?.remove()
+                            t.cancel()
+                        }
+                        BottomSheetBehavior.STATE_DRAGGING -> {}
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
+                        BottomSheetBehavior.STATE_HIDDEN -> {}
+                        BottomSheetBehavior.STATE_SETTLING -> {}
                     }
                 }
             }
