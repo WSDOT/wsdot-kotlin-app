@@ -21,7 +21,7 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera WHERE roadName = :roadName")
     abstract fun loadCamerasOnRoad(roadName: String): LiveData<List<Camera>>
 
-    @Query("SELECT * FROM Camera WHERE cameraId IN (:ids)")
+    @Query("SELECT * FROM Camera WHERE cameraId IN (:ids) ORDER BY longitude ASC")
     abstract fun loadCamerasWithIds(ids: List<Int>): LiveData<List<Camera>>
 
     @Query("SELECT * FROM Camera WHERE (latitude BETWEEN :minLat AND :maxLat) AND (longitude BETWEEN :minLng AND :maxLng)")
