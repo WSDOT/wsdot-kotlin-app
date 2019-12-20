@@ -60,6 +60,8 @@ class TwitterRepository @Inject constructor(
 
         for (tweetItem in tweetsResponse) {
 
+            Log.e("debug", tweetItem.createdAt)
+            
             val tweet = Tweet(
                 tweetId = tweetItem.id,
                 userId = tweetItem.user.id,
@@ -69,6 +71,9 @@ class TwitterRepository @Inject constructor(
                 createdAt = parseTwitterDate(tweetItem.createdAt),
                 localCacheDate = Date()
             )
+
+            Log.e("debug", tweet.createdAt.toString())
+
             dbTweetList.add(tweet)
         }
 
@@ -76,9 +81,9 @@ class TwitterRepository @Inject constructor(
     }
 
 
-    private fun parseTwitterDate(newsDate: String): Date {
-        val parseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'") //e.g. "2019-09-11T16:42:31.000Z"
-        parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
-        return parseDateFormat.parse(newsDate)
+    private fun parseTwitterDate(tweetDate: String): Date {
+        val parseDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH) //e.g. "2019-09-11T16:42:31.000Z"
+        parseDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        return parseDateFormat.parse(tweetDate) ?: Date()
     }
 }
