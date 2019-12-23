@@ -20,12 +20,19 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraFragmentBinding
+import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
+import gov.wa.wsdot.android.wsdot.util.autoCleared
+import java.util.*
 import javax.inject.Inject
 
 class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -37,6 +44,11 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var mMap: GoogleMap
+
+    var binding by autoCleared<CameraFragmentBinding>()
+
+    // Camera update task timer
+    var t: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +84,33 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+
+        binding = dataBinding
+
         return dataBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        t = Timer()
+        t?.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        binding.invalidateAll()
+                    }
+                }
+            },
+            60000,
+            120000
+        )
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        t?.cancel()
     }
 
     override fun onMapReady(map: GoogleMap?) {
