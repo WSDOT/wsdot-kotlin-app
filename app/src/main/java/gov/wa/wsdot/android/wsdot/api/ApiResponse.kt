@@ -29,21 +29,13 @@ import java.util.regex.Pattern
 sealed class ApiResponse<T> {
     companion object {
         fun <T> create(error: Throwable): ApiErrorResponse<T> {
-            Log.e("ApiResponse debug", "unknown error")
-            Log.e("ApiResponse debug", error.toString())
             return ApiErrorResponse(error.message ?: "unknown error")
         }
 
         fun <T> create(response: Response<T>): ApiResponse<T> {
             return if (response.isSuccessful) {
-
-                Log.e("ApiResponse debug", response.toString())
-
-
-
                 val body = response.body()
                 if (body == null || response.code() == 204) {
-                    Log.e("ApiResponse debug", "empty")
                     ApiEmptyResponse()
                 } else {
                     ApiSuccessResponse(
@@ -54,13 +46,10 @@ sealed class ApiResponse<T> {
             } else {
                 val msg = response.errorBody()?.string()
                 val errorMsg = if (msg.isNullOrEmpty()) {
-                    Log.e("ApiResponse debug", response.message())
                     response.message()
                 } else {
-                    Log.e("ApiResponse debug", msg)
                     msg
                 }
-                Log.e("ApiResponse debug", "unknown error")
                 ApiErrorResponse(errorMsg ?: "unknown error")
             }
         }
