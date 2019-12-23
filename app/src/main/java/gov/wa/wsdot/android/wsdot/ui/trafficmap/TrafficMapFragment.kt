@@ -38,7 +38,6 @@ import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
-import com.squareup.picasso.Picasso
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
@@ -79,7 +78,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
     SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
     GoToLocationMenuEventListener, TravelerInfoMenuEventListener {
-
 
     @Inject
     lateinit var appExecutors: AppExecutors
