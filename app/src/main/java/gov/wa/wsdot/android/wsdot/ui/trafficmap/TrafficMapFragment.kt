@@ -890,7 +890,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             builder.setPositiveButton("OK") {_, _ ->
                 val inputText = input.text.toString()
-                Log.e("debug", inputText)
 
                 favoriteLocationViewModel.addFavoriteLocation(
                     inputText,

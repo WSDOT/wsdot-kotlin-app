@@ -60,8 +60,6 @@ class TwitterRepository @Inject constructor(
 
         for (tweetItem in tweetsResponse) {
 
-            Log.e("debug", tweetItem.createdAt)
-            
             val tweet = Tweet(
                 tweetId = tweetItem.id,
                 userId = tweetItem.user.id,
@@ -71,8 +69,6 @@ class TwitterRepository @Inject constructor(
                 createdAt = parseTwitterDate(tweetItem.createdAt),
                 localCacheDate = Date()
             )
-
-            Log.e("debug", tweet.createdAt.toString())
 
             dbTweetList.add(tweet)
         }

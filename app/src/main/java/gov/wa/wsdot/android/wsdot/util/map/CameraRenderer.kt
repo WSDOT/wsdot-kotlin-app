@@ -53,8 +53,6 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
 
         if (item != null) {
 
-            Log.e("debug", item.isSelected.toString())
-
             if (item.isSelected) {
                 BitmapDescriptorFactory.fromResource(R.drawable.ic_list_wsdot_snoqualmie_pass)
                     .let { icon ->
