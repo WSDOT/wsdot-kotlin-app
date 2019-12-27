@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -60,7 +59,9 @@
         <include
             android:id="@+id/included_camera_bottom_sheet"
             layout="@layout/camera_bottom_sheet"/>
+        <include
+            android:id="@+id/included_highway_alert_bottom_sheet"
+            layout="@layout/highway_alert_bottom_sheet"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 </layout>
