@@ -100,6 +100,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
 
     private var selectedCameraMarker: Marker? = null
+    private var selectedAlertMarker: Marker? = null
 
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
@@ -306,8 +307,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMap.setOnMarkerClickListener(mMarkerManager)
 
         // init collection for selected camera
-        mMarkerManager.newCollection(getString(R.string.selected_camera_marker_collection_id))
-        mMarkerManager.getCollection(getString(R.string.selected_camera_marker_collection_id)).setOnMarkerClickListener(this)
+        mMarkerManager.newCollection(getString(R.string.selected_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id)).setOnMarkerClickListener(this)
 
         // init a new collection for alert markers
         mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
@@ -421,13 +422,31 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     override fun onMarkerClick(marker: Marker): Boolean {
 
-        highwayAlertMarkers[marker]?.let {
+        highwayAlertMarkers[marker]?.let { alert ->
+
+            selectedAlertMarker?.remove()
+
+            var icon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highlight)
+            val closure = arrayOf("closed", "closure")
+
+            if (closure.any { alert.category.contains(it, ignoreCase = true) }) {
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.closed_highlight)
+            }
+
+            selectedAlertMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
+                .addMarker(MarkerOptions()
+                    .zIndex(-5f)
+                    .anchor(0.5f, 0.95f)
+                    .position(LatLng(alert .startLatitude, alert .startLongitude))
+                    .visible(true)
+                    .icon(icon))
 
             // val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(it.alertId, it.category)
             // findNavController().navigate(action)
             BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = STATE_COLLAPSED
 
-            highwayAlertViewModel.setAlertQuery(it.alertId)
+            highwayAlertViewModel.setAlertQuery(alert .alertId)
+            binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet.requestLayout()
             BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_EXPANDED
 
             return true
@@ -503,6 +522,27 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             .get(HighwayAlertViewModel::class.java)
         highwayAlertViewModel.setAlertQuery(-1)
 
+        val alertSheetBehavior = BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet)
+
+        val alertBottomSheetBehaviorCallback =
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    when(newState) {
+                        STATE_EXPANDED -> { }
+                        STATE_COLLAPSED -> {
+                            selectedAlertMarker?.remove()
+                        }
+                        BottomSheetBehavior.STATE_DRAGGING -> {}
+                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
+                        BottomSheetBehavior.STATE_HIDDEN -> {}
+                        BottomSheetBehavior.STATE_SETTLING -> {}
+                    }
+                }
+            }
+
+        alertSheetBehavior.addBottomSheetCallback(alertBottomSheetBehaviorCallback)
+
         binding.includedHighwayAlertBottomSheet.closeButton.setOnClickListener {
             BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_COLLAPSED
         }
@@ -547,12 +587,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
         p0?.let { cameraClusterItem ->
 
+            Log.e("DEBUG", cameraClusterItem.mCamera.url)
+
             BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_COLLAPSED
 
             selectedCameraMarker?.remove()
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
 
-            selectedCameraMarker = mMarkerManager.getCollection(getString(R.string.selected_camera_marker_collection_id))
+            selectedCameraMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
                 .addMarker(MarkerOptions()
                 .zIndex(100f)
                 .position(LatLng(cameraClusterItem.mCamera.latitude, cameraClusterItem.mCamera.longitude))

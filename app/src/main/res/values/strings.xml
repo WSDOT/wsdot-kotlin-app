@@ -38,7 +38,7 @@
     // Traffic Map
     <string name="highway_alert_marker_collection_id">HIGHWAY_ALERT_MARKERS</string>
     <string name="rest_area_marker_collection_id">REST_AREA_MARKERS</string>
-    <string name="selected_camera_marker_collection_id">SELECTED_CAMERA_MARKER</string>
+    <string name="selected_marker_collection_id">SELECTED_CAMERA_MARKER</string>
 
     <string name="no_alert_string">Alert unavailable</string>
 
