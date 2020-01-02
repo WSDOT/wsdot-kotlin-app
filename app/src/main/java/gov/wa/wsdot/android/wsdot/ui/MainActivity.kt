@@ -159,6 +159,16 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
 
+        notificationsViewModel.topics.observe(this, Observer { topics ->
+            topics.data?.let {
+                for (topic in it) {
+                    notificationsViewModel.updateSubscription(
+                        topic.topic,
+                        topic.subscribed
+                    )
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
