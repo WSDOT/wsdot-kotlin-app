@@ -435,8 +435,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             selectedAlertMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
                 .addMarker(MarkerOptions()
-                    .zIndex(-5f)
-                    .anchor(0.5f, 0.95f)
+                    .zIndex(100f)
                     .position(LatLng(alert .startLatitude, alert .startLongitude))
                     .visible(true)
                     .icon(icon))
@@ -586,8 +585,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // Called when a clusterable marker is clicked
     override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
         p0?.let { cameraClusterItem ->
-
-            Log.e("DEBUG", cameraClusterItem.mCamera.url)
 
             BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_COLLAPSED
 
