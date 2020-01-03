@@ -62,6 +62,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewMod
 import gov.wa.wsdot.android.wsdot.util.*
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
+import kotlinx.android.synthetic.main.rest_area_fragment.view.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
@@ -615,9 +616,28 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         p0?.let { clusterItems ->
 
             // Open if cluster has 10 or less items?
-            if (clusterItems.size <= 5) {
-                val action = NavGraphDirections.actionGlobalNavCameraListFragment(clusterItems.items.map { it.mCamera.cameraId }.toIntArray(), "Traffic Cameras")
-                findNavController().navigate(action)
+            if (clusterItems.size <= 10) {
+
+                val locations = clusterItems.items.map { LatLng(it.mCamera.latitude, it.mCamera.longitude)  }.toTypedArray()
+                val latitude = locations[0].latitude
+                val longitude = locations[0].longitude
+
+                if  (locations.any{ it.latitude != latitude && it.longitude != longitude }) {
+
+                    val builder = LatLngBounds.builder()
+                    for (item in clusterItems.items) {
+                        builder.include(item.position)
+                    }
+
+                    val bounds = builder.build()
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+
+                } else {
+
+                    val action = NavGraphDirections.actionGlobalNavCameraListFragment(clusterItems.items.map { it.mCamera.cameraId }.toIntArray(), "Traffic Cameras")
+                    findNavController().navigate(action)
+                }
+
             } else {
                 val builder = LatLngBounds.builder()
                 for (item in clusterItems.items) {
