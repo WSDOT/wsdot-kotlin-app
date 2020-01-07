@@ -13,8 +13,8 @@ android {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21060009
-        versionName "6.0.9"
+        versionCode 21060010
+        versionName "6.0.10"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         kotlinOptions {
@@ -73,6 +73,9 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
+
+    // tap target
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
 
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
