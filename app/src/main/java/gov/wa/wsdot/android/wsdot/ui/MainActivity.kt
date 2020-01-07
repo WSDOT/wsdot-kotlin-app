@@ -1,20 +1,28 @@
 package gov.wa.wsdot.android.wsdot.ui
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -25,6 +33,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
@@ -169,6 +179,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showMenuPrompt()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -513,4 +528,43 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         (application as WsdotApp).setDarkMode(sharedPreferences, prefKey)
     }
 
+    // tap target for new users
+    private fun showMenuPrompt() {
+        try {
+            val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
+            if (!prefManager.getBoolean("didShowPrompt", false)) {
+                TapTargetView.showFor(this,
+                    TapTarget.forView(
+                        getNavButtonView(),
+                        "Know Before You Go!",
+                        "Tap here for Ferry Schedules, Mountain Pass Reports and more."
+                    ),
+                    object : TapTargetView.Listener() {
+                        override fun onTargetDismissed(
+                            view: TapTargetView?,
+                            userInitiated: Boolean
+                        ) {
+                            val prefEditor = prefManager.edit()
+                            prefEditor.putBoolean("didShowPrompt", true)
+                            prefEditor.apply()
+                            super.onTargetDismissed(view, userInitiated)
+                        }
+
+                    }
+                )
+            }
+        } catch (e: NullPointerException) {
+            return
+        }
+    }
+
+    private fun getNavButtonView(): View? {
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        for (x in 0..toolbar.childCount) {
+            if (toolbar.getChildAt(x).id != R.id.action_my_location && toolbar.getChildAt(x) is ImageButton) {
+                return toolbar.getChildAt(x)
+            }
+        }
+        return null
+    }
 }
