@@ -302,20 +302,26 @@ class FerriesRepository @Inject constructor(
                             annotations.add(sailing.annotations[annotationIndex])
                         }
 
-                        val sailingItem = FerrySailing(
-                            scheduleResponse.routeId,
-                            apiScheduleDateFormat.parse(routeSchedules.date),
-                            sailing.departingTerminalID,
-                            sailing.departingTerminalName,
-                            sailing.arrivingTerminalID,
-                            sailing.arrivingTerminalName,
-                            annotations,
-                            apiSailingDateFormat.parse(sailingTime.departingTime),
-                            arrivingTime,
-                            cacheDate
-                        )
+                        val sailingDate = apiScheduleDateFormat.parse(routeSchedules.date)
+                        val departTime = apiSailingDateFormat.parse(sailingTime.departingTime)
 
-                        dbSailingsList.add(sailingItem)
+                        if (sailingDate != null && departTime != null) {
+
+                            val sailingItem = FerrySailing(
+                                scheduleResponse.routeId,
+                                sailingDate,
+                                sailing.departingTerminalID,
+                                sailing.departingTerminalName,
+                                sailing.arrivingTerminalID,
+                                sailing.arrivingTerminalName,
+                                annotations,
+                                departTime,
+                                arrivingTime,
+                                cacheDate
+                            )
+
+                            dbSailingsList.add(sailingItem)
+                        }
 
                     }
                 }

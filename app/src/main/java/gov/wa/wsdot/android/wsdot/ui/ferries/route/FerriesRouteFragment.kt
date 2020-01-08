@@ -114,7 +114,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         // obverse all available terminal combos for the route ONCE.
         // this allows us to set the initial value for the two-way bound data.
         routeViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
-            if (terminals.data != null) {
+            if (terminals.data != null && terminals.data.isNotEmpty()) {
                 routeViewModel.selectedTerminalCombo.value = terminals.data[0]
                 routeViewModel.terminals.removeObservers(viewLifecycleOwner)
             }
@@ -128,6 +128,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             }
 
         })
+
         // observe terminal combo changes. the terminalCombo is two way data bound to the UI selector
         routeViewModel.selectedTerminalCombo.observe(viewLifecycleOwner, Observer { terminalCombo ->
             sailingViewModel.setSailingQuery(args.routeId, terminalCombo.departingTerminalId, terminalCombo.arrivingTerminalId)
