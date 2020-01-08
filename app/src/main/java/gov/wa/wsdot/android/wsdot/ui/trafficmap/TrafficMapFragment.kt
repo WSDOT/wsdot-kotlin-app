@@ -478,13 +478,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     when(newState) {
                         STATE_EXPANDED -> {
                             BottomSheetBehavior.from(binding.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_COLLAPSED
-
+                            t?.cancel()
                             t = Timer()
                             t?.scheduleAtFixedRate(
                                 object : TimerTask() {
                                     override fun run() {
                                         appExecutors.mainThread().execute {
-                                            binding.includedCameraBottomSheet.invalidateAll()
+                                            binding.includedCameraBottomSheet?.invalidateAll()
                                         }
                                     }
                                 },
