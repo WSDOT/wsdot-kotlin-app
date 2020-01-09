@@ -57,8 +57,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 val message = remoteMessage.data["message"]
                 val type = remoteMessage.data["type"]
 
-                if (title != null && message != null && type != null) {
-                    sendNotification(alert_id, title, message, getNotificationIntent(remoteMessage.data))
+                if (!receivedAlerts.contains(alert_id)) {
+                    if (title != null && message != null && type != null) {
+
+                        receivedAlerts.add(alert_id)
+                        Utils.saveOrderedIntList(receivedAlerts,"KEY_RECEIVED_ALERTS", settings)
+
+                        sendNotification(
+                            alert_id,
+                            title,
+                            message,
+                            getNotificationIntent(remoteMessage.data)
+                        )
+                    }
                 }
 
             }
