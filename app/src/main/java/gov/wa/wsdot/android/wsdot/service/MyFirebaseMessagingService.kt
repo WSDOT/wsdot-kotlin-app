@@ -49,7 +49,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
             remoteMessage.data["push_alert_id"]?.toInt()?.let { alert_id ->
 
-                // TODO: Dont show alerts we've already received
+                // TODO: Don't show alerts we've already received
                 val settings = PreferenceManager.getDefaultSharedPreferences(this)
                 val receivedAlerts = Utils.loadOrderedIntList("KEY_RECEIVED_ALERTS", settings)
 
@@ -128,7 +128,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun sendNotification(notificationId: Int, title: String, messageBody: String, pendingIntent: PendingIntent) {
 
         val channelId = MyNotificationManager.ALERT_CHANNEL_ID
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_list_wsdot)
             .setContentTitle(title)
@@ -136,7 +135,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setStyle(NotificationCompat.BigTextStyle()
                 .bigText(messageBody))
-            .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
