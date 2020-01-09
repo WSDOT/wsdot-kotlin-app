@@ -1,9 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.traveltimes
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.TravelTimesRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
@@ -16,22 +13,33 @@ class TravelTimeListViewModel @Inject constructor(travelTimesRepository: TravelT
     private val _travelTimeQuery: MutableLiveData<TravelTimeQuery> = MutableLiveData()
 
     // used for loading & display status
-    val travelTimes: LiveData<Resource<List<TravelTime>>> = Transformations
+    private var travelTimesLiveDate: LiveData<Resource<List<TravelTime>>> = Transformations
         .switchMap(_travelTimeQuery) { input ->
             input.ifExists { queryText ->
                 repo.loadTravelTimesWithQuery(queryText, false)
             }
         }
 
+    // mediator handles resubscribe on refresh
+    val travelTimes = MediatorLiveData<Resource<List<TravelTime>>>()
+
+    init {
+        travelTimes.addSource(travelTimesLiveDate) { travelTimes.value = it }
+    }
+
     fun updateFavorite(travelTimeId: Int, isFavorite: Boolean) {
         repo.updateFavorite(travelTimeId, isFavorite)
     }
 
     fun refresh() {
-        val query = _travelTimeQuery.value?.queryText
-        if (query != null) {
-            _travelTimeQuery.value = TravelTimeQuery(query)
-        }
+        travelTimes.removeSource(travelTimesLiveDate)
+        travelTimesLiveDate = Transformations
+            .switchMap(_travelTimeQuery) { input ->
+                input.ifExists { queryText ->
+                    repo.loadTravelTimesWithQuery(queryText, true)
+                }
+            }
+        travelTimes.addSource(travelTimesLiveDate) { travelTimes.value = it }
     }
 
     fun setTravelTimeQuery(queryText: String) {
