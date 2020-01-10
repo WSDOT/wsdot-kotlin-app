@@ -1,18 +1,39 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
+import javax.inject.Inject
 
-class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener: GoToLocationMenuEventListener) : BottomSheetDialogFragment() {
+class GoToLocationBottomSheetFragment : BottomSheetDialogFragment(),
+    GoToLocationMenuEventListener, Injectable {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var mapLocationViewModel: MapLocationViewModel
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
@@ -23,6 +44,10 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
                               savedInstanceState: Bundle?): View {
 
         val view = inflater.inflate(R.layout.simple_bottom_sheet_list, container, false)
+
+        mapLocationViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         val listItems = mutableListOf<GoToLocationMenuEventItem>()
         listItems.add(
@@ -154,7 +179,7 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
                 it,
                 this,
                 listItems,
-                goToLocationMenuEventListener
+                this
             )
             listView.adapter = adapter
         }
@@ -162,4 +187,13 @@ class GoToLocationBottomSheetFragment(private val goToLocationMenuEventListener:
         return view
     }
 
+    // GoToLocationListener
+    override fun goToLocation(goToLocationItem: GoToLocationMenuEventItem) {
+        mapLocationViewModel.updateLocation(
+            MapLocationItem(
+                goToLocationItem.location,
+                goToLocationItem.zoom
+            )
+        )
+    }
 }

@@ -60,12 +60,8 @@
         <deepLink app:uri="wsdot://trafficmap" />
 
         <action
-            android:id="@+id/action_navTrafficMapFragment_to_navNewsReleaseFragment"
-            app:destination="@id/navNewsReleaseFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            android:id="@+id/action_navTrafficMapFragment_to_navTravelerInfoBottomSheetDialog"
+            app:destination="@id/navTravelerInfoBottomSheetDialog"/>
 
         <action
             android:id="@+id/action_navTrafficMapFragment_to_navMapHighwayAlertsFragment"
@@ -83,17 +79,6 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
-        <action
-            android:id="@+id/action_navTrafficMapFragment_to_navTravelTimeListFragment"
-            app:destination="@id/navTravelTimeListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-        <action
-            android:id="@+id/action_navTrafficMapFragment_to_navTrafficCameraBottomSheet"
-            app:destination="@id/navTrafficCameraBottomSheet"/>
 
     </fragment>
 
@@ -154,10 +139,6 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-
-        <action
-            android:id="@+id/action_navTrafficMapFragment_to_navTrafficCameraBottomSheet"
-            app:destination="@id/navTrafficCameraBottomSheet"/>
 
     </fragment>
 
@@ -465,17 +446,6 @@
         android:label="Twitter"
         tools:layout="@layout/twitter_fragment" />
 
-    <dialog
-        android:id="@+id/navTrafficCameraBottomSheet"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.cameras.TrafficCameraBottomSheetFragment"
-        tools:layout="@layout/camera_fragment">
-
-        <argument
-            android:name="camera_id"
-            app:argType="integer" />
-
-    </dialog>
-
     <fragment
         android:id="@+id/navWebViewFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.common.WebViewFragment"
@@ -505,6 +475,32 @@
         <argument
             android:name="end_time"
             app:argType="long" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/navTravelerInfoBottomSheetDialog"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment">
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navTravelerInfoBottomSheetDialog"
+            app:destination="@id/navTravelerInfoBottomSheetDialog"/>
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navNewsReleaseFragment"
+            app:destination="@id/navNewsReleaseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navTravelTimeListFragment"
+            app:destination="@id/navTravelTimeListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     </dialog>
 
     <!-- Global nav actions -->
@@ -665,5 +661,9 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTravelerInfoBottomSheetDialog"
+        app:destination="@id/navTravelerInfoBottomSheetDialog"/>
 
 </navigation>
