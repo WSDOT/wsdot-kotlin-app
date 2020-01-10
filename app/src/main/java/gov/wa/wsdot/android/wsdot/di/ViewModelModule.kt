@@ -32,6 +32,7 @@ import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollSignsViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
@@ -203,6 +204,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FerryAlertDetailsViewModel::class)
     abstract fun findFerryAlertDetailsViewModel(ferryAlertDetailsViewModel: FerryAlertDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MapLocationViewModel::class)
+    abstract fun findMapLocationViewModel(mapLocationViewModel: MapLocationViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory
