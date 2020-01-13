@@ -1,11 +1,13 @@
 package gov.wa.wsdot.android.wsdot.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.api.JsonDateDeserializer
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
@@ -30,6 +32,12 @@ import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
 class AppModule {
+
+    @Singleton
+    @Provides
+    fun provideApplicationContext(app: Application): Context {
+        return app
+    }
 
     @Singleton
     @Provides
