@@ -60,10 +60,6 @@
         <deepLink app:uri="wsdot://trafficmap" />
 
         <action
-            android:id="@+id/action_navTrafficMapFragment_to_navTravelerInfoBottomSheetDialog"
-            app:destination="@id/navTravelerInfoBottomSheetDialog"/>
-
-        <action
             android:id="@+id/action_navTrafficMapFragment_to_navMapHighwayAlertsFragment"
             app:destination="@id/navMapHighwayAlertsFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -503,6 +499,10 @@
 
     </dialog>
 
+    <dialog
+        android:id="@+id/navGoToLocationBottomSheetDialog"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment"/>
+
     <!-- Global nav actions -->
     <action
         android:id="@+id/action_global_navTrafficMapFragment"
@@ -665,5 +665,9 @@
     <action
         android:id="@+id/action_global_navTravelerInfoBottomSheetDialog"
         app:destination="@id/navTravelerInfoBottomSheetDialog"/>
+
+    <action
+        android:id="@+id/action_global_navGoToLocationBottomSheetDialog"
+        app:destination="@id/navGoToLocationBottomSheetDialog"/>
 
 </navigation>

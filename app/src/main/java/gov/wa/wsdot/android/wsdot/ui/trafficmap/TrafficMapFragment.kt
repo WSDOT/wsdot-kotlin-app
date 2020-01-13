@@ -864,13 +864,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_go_to_location -> {
-                    fragmentManager?.let { fragmentManagerValue ->
-                        if (fragmentManagerValue.findFragmentByTag("go_to_location_bottom_sheet") == null) {
-                            val goToLocationBottomSheet =
-                                GoToLocationBottomSheetFragment()
-                            goToLocationBottomSheet.show(fragmentManagerValue, "go_to_location_bottom_sheet")
-                        }
-                    }
+                    val action = NavGraphDirections.actionGlobalNavGoToLocationBottomSheetDialog()
+                    findNavController().navigate(action)
                 }
 
                 R.id.action_alerts -> {
@@ -879,20 +874,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_more -> {
-
                     val action = NavGraphDirections.actionGlobalNavTravelerInfoBottomSheetDialog()
                     findNavController().navigate(action)
-
-                    /*
-                    fragmentManager?.let { fragmentManagerValue ->
-                        if (fragmentManagerValue.findFragmentByTag("traveler_info_bottom_sheet") == null) {
-                            val travelerInfoBottomSheetFragment =
-                                TravelerInfoBottomSheetFragment(this)
-                            travelerInfoBottomSheetFragment.show(fragmentManagerValue, "traveler_info_bottom_sheet")
-                        }
-                    }
-                    */
-
                 }
 
                 R.id.action_travel_charts -> {
