@@ -44,6 +44,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
@@ -53,7 +54,6 @@ import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
@@ -62,7 +62,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewMod
 import gov.wa.wsdot.android.wsdot.util.*
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
-import kotlinx.android.synthetic.main.rest_area_fragment.view.*
+import kotlinx.android.parcel.Parcelize
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
@@ -78,8 +78,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
     ClusterManager.OnClusterClickListener<CameraClusterItem>,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
-    SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener,
-    GoToLocationMenuEventListener, TravelerInfoMenuEventListener {
+    SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener {
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -94,6 +93,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     lateinit var restAreaViewModel: RestAreaViewModel
     lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
     lateinit var travelChartsViewModel: TravelChartsViewModel
+    lateinit var mapLocationViewModel: MapLocationViewModel
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
@@ -163,6 +163,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             ViewModelProviders.of(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        mapLocationViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         mapCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MapCamerasViewModel::class.java)
 
@@ -215,21 +219,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         if (::mMap.isInitialized) {
 
-            val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-            val editor = settings.edit()
-            editor.putDouble(
-                getString(R.string.user_preference_traffic_map_latitude),
-                mMap.projection.visibleRegion.latLngBounds.center.latitude
-            )
-            editor.putDouble(
-                getString(R.string.user_preference_traffic_map_longitude),
-                mMap.projection.visibleRegion.latLngBounds.center.longitude
-            )
-            editor.putFloat(
-                getString(R.string.user_preference_traffic_map_zoom),
+            val location = MapLocationItem(
+                LatLng(
+                    mMap.projection.visibleRegion.latLngBounds.center.latitude,
+                    mMap.projection.visibleRegion.latLngBounds.center.longitude
+                ),
                 mMap.cameraPosition.zoom
             )
-            editor.apply()
+
+            mapLocationViewModel.updateLocation(location)
+
+
 
         }
 
@@ -283,13 +283,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mMap.isTrafficEnabled = true
 
-
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
-        val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
-        val zoom = settings.getFloat(getString(R.string.user_preference_traffic_map_zoom), 12.0f)
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoom))
+        mapLocationViewModel.mapLocation.observe(viewLifecycleOwner, Observer {location ->
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.location, location.zoom))
+        })
 
         // init a marker manager that will handle clusters and regular map markers
         mMarkerManager = MarkerManager(mMap)
@@ -441,8 +437,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     .visible(true)
                     .icon(icon))
 
-            // val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(it.alertId, it.category)
-            // findNavController().navigate(action)
             BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = STATE_COLLAPSED
 
             highwayAlertViewModel.setAlertQuery(alert .alertId)
@@ -870,13 +864,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_go_to_location -> {
-                    fragmentManager?.let { fragmentManagerValue ->
-                        if (fragmentManagerValue.findFragmentByTag("go_to_location_bottom_sheet") == null) {
-                            val goToLocationBottomSheet =
-                                GoToLocationBottomSheetFragment(this)
-                            goToLocationBottomSheet.show(fragmentManagerValue, "go_to_location_bottom_sheet")
-                        }
-                    }
+                    val action = NavGraphDirections.actionGlobalNavGoToLocationBottomSheetDialog()
+                    findNavController().navigate(action)
                 }
 
                 R.id.action_alerts -> {
@@ -885,13 +874,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_more -> {
-                    fragmentManager?.let { fragmentManagerValue ->
-                        if (fragmentManagerValue.findFragmentByTag("traveler_info_bottom_sheet") == null) {
-                            val travelerInfoBottomSheetFragment =
-                                TravelerInfoBottomSheetFragment(this)
-                            travelerInfoBottomSheetFragment.show(fragmentManagerValue, "traveler_info_bottom_sheet")
-                        }
-                    }
+                    val action = NavGraphDirections.actionGlobalNavTravelerInfoBottomSheetDialog()
+                    findNavController().navigate(action)
                 }
 
                 R.id.action_travel_charts -> {
@@ -907,37 +891,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
         }
         return false
-    }
-     
-    // GoToLocationListener
-    override fun goToLocation(goToLocationItem: GoToLocationMenuEventItem) {
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(goToLocationItem.location, goToLocationItem.zoom))
-    }
-
-    // Traveler Info Menu Listener
-    override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
-        when (eventType) {
-            TravelerMenuItemType.NEWS_ITEMS -> {
-                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
-                findNavController().navigate(action)
-            }
-            TravelerMenuItemType.EXPRESS_LANES -> {
-                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.wa.gov/travel/operations-services/express-lanes/home", "Express Lanes")
-                findNavController().navigate(action)
-            }
-            TravelerMenuItemType.SOCIAL_MEDIA -> {
-                val action = NavGraphDirections.actionGlobalNavTwitterFragment()
-                findNavController().navigate(action)
-            }
-            TravelerMenuItemType.TRAVEL_TIMES -> {
-                val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
-                findNavController().navigate(action)
-            }
-            TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
-                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")
-                findNavController().navigate(action)
-            }
-        }
     }
 
     private fun showAddFavoriteDialog(){

@@ -18,6 +18,7 @@ class WsdotApp : Application(), HasActivityInjector {
     override fun onCreate() {
         setDarkMode(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.pref_key_user_theme))
         super.onCreate()
+
         AppInjector.init(this)
     }
 
