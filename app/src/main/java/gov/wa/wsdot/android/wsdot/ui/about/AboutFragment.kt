@@ -23,9 +23,9 @@ class AboutFragment: DaggerFragment(), Injectable {
     var binding by autoCleared<AboutFragmentBinding>()
     val args: HighwayAlertFragmentArgs by navArgs()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -27,7 +27,6 @@ abstract class SimpleTabFragment : DaggerFragment(), Injectable {
 
     var binding by autoCleared<TabLayoutBinding>()
 
-
     override fun onDestroy() {
         super.onDestroy()
         //Clear view models since they are no longer needed

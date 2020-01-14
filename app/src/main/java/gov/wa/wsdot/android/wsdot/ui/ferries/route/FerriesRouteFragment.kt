@@ -66,10 +66,14 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
         setVesselWatchView(args.routeId)
     }
 
