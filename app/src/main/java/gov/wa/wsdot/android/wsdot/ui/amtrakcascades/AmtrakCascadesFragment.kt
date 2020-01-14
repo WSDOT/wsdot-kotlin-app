@@ -46,9 +46,13 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
         super.onCreate(savedInstanceState)
     }
 

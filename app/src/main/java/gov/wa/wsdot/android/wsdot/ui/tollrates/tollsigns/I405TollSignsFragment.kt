@@ -5,9 +5,9 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
 class I405TollSignsFragment: TollSignsFragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
-        super.onCreate(savedInstanceState)
     }
     override fun initTravelTimeIds(viewModel: TollSignsViewModel) {
         viewModel.setTravelTimeIds(

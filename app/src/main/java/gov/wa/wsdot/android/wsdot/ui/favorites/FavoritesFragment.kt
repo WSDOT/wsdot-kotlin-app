@@ -74,9 +74,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
     private var adapter by autoCleared<FavoritesListAdapter>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(

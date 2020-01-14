@@ -77,10 +77,14 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vesselUpdateHandler = Handler(Looper.getMainLooper())
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(

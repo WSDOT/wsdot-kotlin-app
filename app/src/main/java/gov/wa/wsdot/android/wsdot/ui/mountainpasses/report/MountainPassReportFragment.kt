@@ -43,10 +43,14 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     val args: MountainPassReportFragmentArgs by navArgs()
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onDestroy() {

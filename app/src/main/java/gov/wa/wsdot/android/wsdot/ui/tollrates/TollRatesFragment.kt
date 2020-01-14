@@ -17,10 +17,14 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
 
 class TollRatesFragment: SimpleTabFragment(), Injectable {
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(

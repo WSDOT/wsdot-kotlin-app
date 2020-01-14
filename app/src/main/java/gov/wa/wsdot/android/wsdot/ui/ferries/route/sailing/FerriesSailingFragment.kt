@@ -43,10 +43,14 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
 
     lateinit var t: Timer
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
     override fun onCreateView(
