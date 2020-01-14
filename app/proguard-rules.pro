@@ -19,3 +19,17 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-dontobfuscate
+
+-keepclassmembers class gov.wa.wsdot.android.wsdot.** {
+  *;
+}
+
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
