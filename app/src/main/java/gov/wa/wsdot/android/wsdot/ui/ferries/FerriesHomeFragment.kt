@@ -78,8 +78,10 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = ferriesViewModel
 
         dataBinding.reservationButton.setOnClickListener {
-            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx", "Reservations")
-            findNavController().navigate(action)
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx"))
+            startActivity(browserIntent)
+            //val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx", "Reservations")
+            //findNavController().navigate(action)
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
