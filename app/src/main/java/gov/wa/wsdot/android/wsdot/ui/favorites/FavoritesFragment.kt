@@ -207,14 +207,26 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         })
 
         favoritesListViewModel.favoritesLoadingStatus.observe(viewLifecycleOwner, Observer { status ->
-            if (status.status == Status.ERROR) {
-                binding.emptyListView.visibility = View.GONE
-                Toast.makeText(
-                    context,
-                    getString(R.string.loading_error_message),
-                    Toast.LENGTH_SHORT
-                ).show()
+
+            when (status.status) {
+                Status.LOADING -> {
+                    binding.emptyListView.visibility = View.GONE
+                    binding.favoritesList.visibility = View.VISIBLE
+                }
+                Status.ERROR -> {
+                    binding.emptyListView.visibility = View.GONE
+                    Toast.makeText(
+                        context,
+                        getString(R.string.loading_error_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                Status.SUCCESS -> {
+                    shouldShowEmptyFavorites(binding)
+                }
+
             }
+
         })
     }
 
@@ -223,8 +235,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
-
-
 
 
         // Add swipe dismiss to favorites list items.
