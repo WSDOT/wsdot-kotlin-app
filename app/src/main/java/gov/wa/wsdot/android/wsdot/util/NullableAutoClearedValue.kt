@@ -1,0 +1,41 @@
+package gov.wa.wsdot.android.wsdot.util
+
+import android.util.Log
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
+
+/**
+ * A lazy property that gets cleaned up when the fragment is destroyed.
+ *
+ * Accessing this variable in a destroyed fragment will throw NPE.
+ */
+class NullableAutoClearedValue<T : Any>(val fragment: Fragment) : ReadWriteProperty<Fragment, T?> {
+    private var _value: T? = null
+
+    init {
+        fragment.lifecycle.addObserver(object : LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+            fun onDestroy() {
+                Log.e("debug", "destroying binding")
+                _value = null
+            }
+        })
+    }
+
+    override fun getValue(thisRef: Fragment, property: KProperty<*>): T? {
+        return _value
+    }
+
+    override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T?) {
+        _value = value
+    }
+}
+
+/**
+ * Creates an [AutoClearedValue] associated with this fragment.
+ */
+fun <T : Any> Fragment.nullableAutoCleared() = NullableAutoClearedValue<T>(this)
