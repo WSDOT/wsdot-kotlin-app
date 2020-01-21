@@ -48,6 +48,27 @@ object FerriesBindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindVesselDepartingTerminal")
+    fun bindVesselDepartingTerminal(textView: TextView, vessel: Resource<Vessel>) {
+        if (vessel.data != null) {
+            textView.text = vessel.data.departingTerminalName
+            return
+        }
+        textView.text = "unavailable"
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindVesselArrivingTerminal")
+    fun bindVesselArrivingTerminal(textView: TextView, vessel: Resource<Vessel>) {
+        if (vessel.data != null) {
+            textView.text = vessel.data.arrivingTerminalName
+            return
+        }
+        textView.text = "unavailable"
+    }
+
+
+    @JvmStatic
     @BindingAdapter("bindVesselSchDeparture")
     fun bindVesselSchDeparture(textView: TextView, vessel: Resource<Vessel>) {
         if (vessel.data != null) {
