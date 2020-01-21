@@ -114,6 +114,17 @@
 
     <string name="pref_key_theme">CURRENT_THEME_KEY</string>
 
+    // nav pref keys
+    <string name="pref_key_last_nav_location">KEY_LAST_NAVIGATION_SCREEN</string>
+
+    <string name="key_value_traffic_nav">KEY_TRAFFIC_NAV</string>
+    <string name="key_value_ferries_nav">KEY_FERRIES_NAV</string>
+    <string name="key_value_mountain_passes_nav">KEY_PASSES_NAV</string>
+    <string name="key_value_toll_rates_nav">KEY_TOLL_RATES_NAV</string>
+    <string name="key_value_border_waits_nav">KEY_BORDER_WAITS_NAV</string>
+    <string name="key_value_amtrak_nav">KEY_AMTRAK_NAV</string>
+    <string name="key_value_favorites_nav">KEY_FAVORITES_NAV</string>
+
     // FAB labels
     <string name="fab_highway_alerts_label">Highway Alerts</string>
     <string name="fab_camera_label">Cameras</string>
