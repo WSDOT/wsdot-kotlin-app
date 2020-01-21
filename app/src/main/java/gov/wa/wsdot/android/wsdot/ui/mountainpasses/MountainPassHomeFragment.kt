@@ -100,6 +100,10 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
 
         this.adapter = adapter
 
+        val itemDivider = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        itemDivider.setDrawable(resources.getDrawable(R.drawable.item_divider, null))
+        binding.passList.addItemDecoration(itemDivider)
+
         binding.passList.adapter = adapter
 
         // animations
