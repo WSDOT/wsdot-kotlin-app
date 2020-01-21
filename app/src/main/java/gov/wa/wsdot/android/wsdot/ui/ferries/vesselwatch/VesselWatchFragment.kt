@@ -172,10 +172,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 for (vessel in vessels.data) {
 
                     if (vessel.inService) {
-                        val stopped = vessel.speed < 0.5
                         val marker = mMap?.addMarker(MarkerOptions()
                             .position(LatLng(vessel.latitude, vessel.longitude))
-                            .rotation(if (stopped) 0f else vessel.heading.toFloat())
+                            .rotation(vessel.heading.toFloat())
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0)))
                         marker?.let {
                             vesselMarkers[it] = vessel
