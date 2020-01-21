@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -85,6 +86,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vesselUpdateHandler = Handler(Looper.getMainLooper())
+
     }
 
     override fun onCreateView(
@@ -301,7 +303,6 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
         val bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
-
                 override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 }
 
@@ -321,6 +322,23 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         binding.includedCameraBottomSheet.closeButton.setOnClickListener {
             BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
+        // if a bottom sheet is open override back button to close sheet
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    binding.let {
+                        if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state =
+                                BottomSheetBehavior.STATE_COLLAPSED
+                            return
+                        }
+                    }
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            })
 
     }
 
