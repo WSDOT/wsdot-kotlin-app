@@ -347,7 +347,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             itemId = sign.id
                             favoritesListViewModel.updateFavoriteTollSign(sign.id, false)
                         }
-
                         else -> itemId = null
                     }
 
@@ -416,7 +415,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             }
 
             builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
-
             builder.show()
 
         }
@@ -467,7 +465,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     private fun shouldShowEmptyFavorites(binding: FavoritesListFragmentBinding) {
-
         if (adapter.itemCount == 0) {
             binding.emptyListView.visibility = View.VISIBLE
             binding.favoritesList.visibility = View.GONE

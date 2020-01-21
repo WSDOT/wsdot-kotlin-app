@@ -51,7 +51,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/empty_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/heart_icon"
