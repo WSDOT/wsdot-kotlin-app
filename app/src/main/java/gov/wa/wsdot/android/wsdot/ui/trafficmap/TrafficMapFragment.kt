@@ -16,6 +16,7 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -545,6 +546,26 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         binding!!.includedHighwayAlertBottomSheet.viewModel = highwayAlertViewModel
+
+        // if a bottom sheet is open override back button to close sheet
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    binding?.let {
+                        if (BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state == STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_COLLAPSED
+                            return
+                        }
+                        else if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state = STATE_COLLAPSED
+                            return
+                        }
+                    }
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+            })
 
     }
 
