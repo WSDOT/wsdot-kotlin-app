@@ -217,13 +217,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 extras.getString("shortcut_id") == "ferries" -> {
                     navView.menu.findItem(R.id.nav_ferries).isChecked = true
-                    enableAds(resources.getString(R.string.ad_target_ferries))
                     R.id.navFerriesHomeFragment
                 }
 
                 extras.getString("shortcut_id") == "mountain_passes" -> {
                     navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
-                    enableAds(resources.getString(R.string.ad_target_passes))
                     R.id.navMountainPassHomeFragment
                 }
 
@@ -233,16 +231,48 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
 
                 else -> {
-                    navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
-                    enableAds(resources.getString(R.string.ad_target_traffic))
-                    R.id.navTrafficMapFragment
+                    navToLastLocation(navView)
                 }
             }
         } else {
-            navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
-            enableAds(resources.getString(R.string.ad_target_traffic))
-            R.id.navTrafficMapFragment
+            navToLastLocation(navView)
         }
+    }
+
+    private fun navToLastLocation(navView: NavigationView): Int {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+
+        when (settings.getString(getString(R.string.pref_key_last_nav_location), "")) {
+            getString(R.string.key_value_ferries_nav) -> {
+                navView.menu.findItem(R.id.nav_ferries).isChecked = true
+                return R.id.navFerriesHomeFragment
+            }
+            getString(R.string.key_value_mountain_passes_nav) -> {
+                navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
+                return R.id.navMountainPassHomeFragment
+            }
+            getString(R.string.key_value_toll_rates_nav) -> {
+                navView.menu.findItem(R.id.nav_toll_rates).isChecked = true
+                return R.id.navTollRatesFragment
+            }
+            getString(R.string.key_value_border_waits_nav) -> {
+                navView.menu.findItem(R.id.nav_border_waits).isChecked = true
+                return R.id.navBorderCrossingsFragment
+            }
+            getString(R.string.key_value_amtrak_nav) -> {
+                navView.menu.findItem(R.id.nav_amtrak_cascades).isChecked = true
+                return R.id.navAmtrakCascadesFragment
+            }
+            getString(R.string.key_value_favorites_nav) -> {
+                navView.menu.findItem(R.id.nav_favorites).isChecked = true
+                return R.id.navFavoritesFragment
+            }
+        }
+
+        navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+        return R.id.navTrafficMapFragment
+
     }
 
     private fun handleExtras(extras: Bundle) {
@@ -313,13 +343,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             extras.getString("shortcut_id") == "ferries" -> {
                 val navView: NavigationView = findViewById(R.id.drawer_nav_view)
                 navView.menu.findItem(R.id.nav_ferries).isChecked = true
-                enableAds(resources.getString(R.string.ad_target_ferries))
             }
 
             extras.getString("shortcut_id") == "mountain_passes" -> {
                 val navView: NavigationView = findViewById(R.id.drawer_nav_view)
                 navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
-                enableAds(resources.getString(R.string.ad_target_passes))
             }
 
             extras.getString("shortcut_id") == "favorites" -> {
@@ -366,43 +394,53 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = settings.edit()
+        var navLocation = getString(R.string.key_value_traffic_nav)
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
         when (item.itemId) {
             R.id.nav_traffic_map -> {
+                navLocation = getString(R.string.key_value_traffic_nav)
                 if (navController.currentDestination?.id != R.id.navTrafficMapFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTrafficMapFragment)
                 }
             }
             R.id.nav_ferries -> {
+                navLocation = getString(R.string.key_value_ferries_nav)
                 if (navController.currentDestination?.id != R.id.navFerriesHomeFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFerriesHomeFragment)
                 }
             }
             R.id.nav_mountain_passes -> {
+                navLocation = getString(R.string.key_value_mountain_passes_nav)
                 if (navController.currentDestination?.id != R.id.navMountainPassHomeFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
                 }
             }
             R.id.nav_toll_rates -> {
+                navLocation = getString(R.string.key_value_toll_rates_nav)
                 if (navController.currentDestination?.id != R.id.navTollRatesFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
                 }
             }
             R.id.nav_border_waits -> {
+                navLocation = getString(R.string.key_value_border_waits_nav)
                 if (navController.currentDestination?.id != R.id.navBorderCrossingsFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBorderCrossingsFragment)
                 }
             }
             R.id.nav_amtrak_cascades -> {
+                navLocation = getString(R.string.key_value_amtrak_nav)
                 if (navController.currentDestination?.id != R.id.navAmtrakCascadesFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAmtrakCascadesFragment)
                 }
             }
             R.id.nav_favorites -> {
+                navLocation = getString(R.string.key_value_favorites_nav)
                 if (navController.currentDestination?.id != R.id.navFavoritesFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navFavoritesFragment)
                 }
@@ -433,6 +471,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         drawerLayout.closeDrawer(GravityCompat.START)
+
+        editor.putString(getString(R.string.pref_key_last_nav_location), navLocation)
+        editor.apply()
+
         return true
     }
 
