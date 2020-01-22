@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -23,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
+import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
@@ -40,6 +42,7 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.util.*
 import java.util.Calendar.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -121,6 +124,12 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             if (terminals.data != null && terminals.data.isNotEmpty()) {
                 routeViewModel.selectedTerminalCombo.value = terminals.data[0]
                 routeViewModel.terminals.removeObservers(viewLifecycleOwner)
+            } else {
+                routeViewModel.selectedTerminalCombo.value = TerminalCombo(
+                    0,
+                    "",
+                    0,
+                    "")
             }
         })
 
@@ -163,7 +172,11 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         routeViewModel.scheduleRange.observe(viewLifecycleOwner, Observer { scheduleRange ->
             binding.datePickerCallback = object : TapCallback {
                 override fun onTap(view: View) {
-                    val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title, scheduleRange.startDate.time, scheduleRange.endDate.time)
+
+                    val startDate = scheduleRange.startDate ?: Date()
+                    val endDate = scheduleRange.endDate ?: Date()
+
+                    val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title, startDate.time, endDate.time)
                     view.findNavController().navigate(action)
                     // short delay to prevent double tap
                     view.isEnabled = false
