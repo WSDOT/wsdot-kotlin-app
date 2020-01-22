@@ -398,7 +398,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val editor = settings.edit()
-        var navLocation = getString(R.string.key_value_traffic_nav)
+        var navLocation = settings.getString(getString(R.string.pref_key_last_nav_location), "")
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
