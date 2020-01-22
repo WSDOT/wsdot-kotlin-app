@@ -6,6 +6,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleRange
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
+import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
@@ -93,7 +94,15 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
         }
     }
 
-    data class RouteId(val routeId: Int, val needsRefresh: Boolean)
+    data class RouteId(val routeId: Int, val needsRefresh: Boolean) {
+        fun <T> ifExists(f: (Int, Boolean) -> LiveData<T>): LiveData<T> {
+            return if (routeId == 0) {
+                AbsentLiveData.create()
+            } else {
+                f(routeId, needsRefresh)
+            }
+        }
+    }
 
 }
 

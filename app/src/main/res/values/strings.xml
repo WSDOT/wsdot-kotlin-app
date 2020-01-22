@@ -190,7 +190,7 @@
 
     <string name="no_highest_alerts_string">No highest impact alerts</string>
     <string name="action_my_location">My Location</string>
-
+    <string name="no_sailings_title">Schedule Unavailable</string>
 
 
 </resources>

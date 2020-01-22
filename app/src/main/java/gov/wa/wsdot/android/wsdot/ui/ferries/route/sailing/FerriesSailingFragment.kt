@@ -21,6 +21,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import gov.wa.wsdot.android.wsdot.util.network.Status
 import java.util.*
 import javax.inject.Inject
 
@@ -100,12 +101,12 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 super.onItemRangeInserted(positionStart, itemCount)
                 if (currentSailingIndex != -1) {
                     if (itemCount != 0) {
-                       binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
-                       adapter.removeObserver()
+                        binding.scheduleList.layoutManager?.scrollToPosition(currentSailingIndex)
+                        adapter.removeObserver()
+
                     }
                 }
             }
-
         })
     }
 
@@ -122,7 +123,16 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
             }
 
         sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
+
             if (sailingResource?.data != null) {
+
+                if (sailingResource.data.isEmpty()) {
+                    binding.refreshLayout.visibility = View.GONE
+                    binding.emptyListView.visibility = View.VISIBLE
+                } else {
+                    binding.refreshLayout.visibility = View.VISIBLE
+                    binding.emptyListView.visibility = View.GONE
+                }
 
                 for ((i, sailing) in sailingResource.data.withIndex()) {
                     if (BindingFunctions.hasPassed(sailing.departingTime)) {
@@ -131,7 +141,14 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 }
 
                 adapter.submitList(sailingResource.data)
+            } else {
+                if (sailingResource?.status != Status.LOADING) {
+                    binding.refreshLayout.visibility = View.GONE
+                    binding.emptyListView.visibility = View.VISIBLE
+                }
             }
+
+
         })
 
         startSailingSpacesTask()
