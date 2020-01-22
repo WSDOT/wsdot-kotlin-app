@@ -47,16 +47,11 @@ import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
-import gov.wa.wsdot.android.wsdot.model.eventItems.GoToLocationMenuEventItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationMenuEventListener
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoMenuEventListener
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerMenuItemType
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
@@ -205,6 +200,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
         })
 
+        mapLocationViewModel.mapLocation.observe(viewLifecycleOwner, Observer {location ->
+            if (::mMap.isInitialized) {
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.location, location.zoom))
+            }
+        })
+
         binding = dataBinding
 
         initBottomSheets()
@@ -287,6 +288,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mMap.isTrafficEnabled = true
 
+        mapLocationViewModel.mapLocation.removeObservers(viewLifecycleOwner)
         mapLocationViewModel.mapLocation.observe(viewLifecycleOwner, Observer {location ->
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location.location, location.zoom))
         })
