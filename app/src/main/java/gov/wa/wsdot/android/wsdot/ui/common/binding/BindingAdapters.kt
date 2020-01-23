@@ -304,19 +304,19 @@ object BindingAdapters {
 
         val displayDateFormat = SimpleDateFormat("MMMM d, yyyy h:mm a", Locale.ENGLISH)
 
-        try {
+        return try {
             val relativeDate = Date()
-            var delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
-            return when {
+            val delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
+            when {
                 delta < 60 -> "Just now"
                 delta < 120 -> "1 minute ago"
-                delta < 60 * 60 -> Integer.toString(delta / 60) + " minutes ago"
+                delta < 60 * 60 -> (delta / 60).toString() + " minutes ago"
                 delta < 120 * 60 -> "1 hour ago"
-                delta < 24 * 60 * 60 -> Integer.toString(delta / 3600) + " hours ago"
+                delta < 24 * 60 * 60 -> (delta / 3600).toString() + " hours ago"
                 else -> displayDateFormat.format(date)
             }
         } catch (e: Exception) {
-            return "Unavailable"
+            "Unavailable"
         }
     }
 

@@ -19,7 +19,7 @@ class BorderCrossingViewModel @Inject constructor(borderCrossingRepository: Bord
 
     val crossings : LiveData<Resource<List<BorderCrossing>>> = Transformations
         .switchMap(_crossingDirection) { crossingDirection ->
-            borderCrossingRepository.loadCrossingsForDirection(crossingDirection.direction, false)
+            borderCrossingRepository.loadCrossingsForDirection(crossingDirection.direction, crossingDirection.needsRefresh)
         }
 
     fun updateFavorite(crossingId: Int, isFavorite: Boolean) {
