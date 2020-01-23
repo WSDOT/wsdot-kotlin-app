@@ -57,6 +57,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TOLL_SIGN
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
 import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
 
 
@@ -70,7 +71,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     lateinit var appExecutors: AppExecutors
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
-    var binding by autoCleared<FavoritesListFragmentBinding>()
+    var binding by nullableAutoCleared<FavoritesListFragmentBinding>()
 
     private var adapter by autoCleared<FavoritesListAdapter>()
 
@@ -119,7 +120,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding!!.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
         val adapter = FavoritesListAdapter(
@@ -152,13 +153,13 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         this.adapter = adapter
 
-        addFavoriteItemTouchHelper(this.adapter, binding.favoritesList)
+        addFavoriteItemTouchHelper(this.adapter, binding!!.favoritesList)
 
-        binding.favoritesList.adapter = adapter
+        binding!!.favoritesList.adapter = adapter
 
         // animations
         postponeEnterTransition()
-        binding.favoritesList.viewTreeObserver
+        binding!!.favoritesList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
                 true
@@ -210,11 +211,11 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
             when (status.status) {
                 Status.LOADING -> {
-                    binding.emptyListView.visibility = View.GONE
-                    binding.favoritesList.visibility = View.VISIBLE
+                    binding!!.emptyListView.visibility = View.GONE
+                    binding!!.favoritesList.visibility = View.VISIBLE
                 }
                 Status.ERROR -> {
-                    binding.emptyListView.visibility = View.GONE
+                    binding!!.emptyListView.visibility = View.GONE
                     Toast.makeText(
                         context,
                         getString(R.string.loading_error_message),
@@ -222,7 +223,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                     ).show()
                 }
                 Status.SUCCESS -> {
-                    shouldShowEmptyFavorites(binding)
+                    shouldShowEmptyFavorites(binding!!)
                 }
 
             }
@@ -231,7 +232,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     override fun onDataSetChanged() {
-        shouldShowEmptyFavorites(binding)
+        binding?.let {
+            shouldShowEmptyFavorites(it)
+        }
     }
 
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
