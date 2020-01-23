@@ -12,7 +12,7 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera")
     abstract fun loadCameras(): LiveData<List<Camera>>
 
-    @Query("SELECT * FROM Camera WHERE favorite = :isFavorite")
+    @Query("SELECT * FROM Camera WHERE favorite = :isFavorite  ORDER BY roadName, milepost ASC")
     abstract fun loadFavoriteCameras(isFavorite: Boolean = true): LiveData<List<Camera>>
 
     @Query("SELECT * FROM Camera WHERE cameraId = :cameraId")
@@ -21,7 +21,7 @@ abstract class CameraDao {
     @Query("SELECT * FROM Camera WHERE roadName = :roadName")
     abstract fun loadCamerasOnRoad(roadName: String): LiveData<List<Camera>>
 
-    @Query("SELECT * FROM Camera WHERE cameraId IN (:ids) ORDER BY longitude ASC")
+    @Query("SELECT * FROM Camera WHERE cameraId IN (:ids) ORDER BY milepost ASC")
     abstract fun loadCamerasWithIds(ids: List<Int>): LiveData<List<Camera>>
 
     @Query("SELECT * FROM Camera WHERE (latitude BETWEEN :minLat AND :maxLat) AND (longitude BETWEEN :minLng AND :maxLng)")
