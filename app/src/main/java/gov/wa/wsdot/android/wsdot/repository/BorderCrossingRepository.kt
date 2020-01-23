@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.borderwaits.BorderCrossingResponse
@@ -120,10 +121,10 @@ class BorderCrossingRepository @Inject constructor(
 
 
     private fun parseCrossingDate(dateString: String): Date? {
-        val parseDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm a") //e.g. "2019-08-27 08:40 AM" Can also be "Not Available"
+        val parseDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a") //e.g. "2019-08-27 08:40 AM" Can also be "Not Available"
         parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
         return try {
-            parseDateFormat.parse(dateString)
+            return parseDateFormat.parse(dateString)
         } catch (e: ParseException) {
             null
         }
