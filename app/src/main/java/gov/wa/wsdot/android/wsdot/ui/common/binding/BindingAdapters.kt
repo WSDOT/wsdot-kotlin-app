@@ -138,7 +138,7 @@ object BindingAdapters {
         if (camera.data != null) {
             Picasso.get()
                 .load(camera.data.url + String.format("?%d", Date().time))
-                .placeholder(R.drawable.image_progress_animation)
+                .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
                 .error(R.drawable.camera_offline)
                 .fit()
                 .memoryPolicy(MemoryPolicy.NO_CACHE)
@@ -153,7 +153,7 @@ object BindingAdapters {
     fun bindCameraImage(imageView: ImageView, camera: Camera) {
         Picasso.get()
             .load(camera.url + String.format("?%d", Date().time))
-            .placeholder(R.drawable.image_progress_animation)
+            .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
             .error(R.drawable.camera_offline)
             .fit()
             .memoryPolicy(MemoryPolicy.NO_CACHE)
