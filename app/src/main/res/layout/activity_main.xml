@@ -46,7 +46,7 @@
                 android:id="@+id/ad_banner_box"
                 android:layout_width="match_parent"
                 android:layout_height="66dp"
-                android:paddingTop="16dp"
+                android:paddingTop="8dp"
                 android:gravity="center_horizontal"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
