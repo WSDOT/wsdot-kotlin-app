@@ -33,6 +33,7 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollSignsViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
@@ -139,6 +140,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsReleaseViewModel::class)
     abstract fun bindNewsReleaseViewModel(newsReleaseViewModel: NewsReleaseViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExpressLanesViewModel::class)
+    abstract fun bindExpressLanesViewModel(expressLanesViewModel: ExpressLanesViewModel): ViewModel
 
     @Binds
     @IntoMap
