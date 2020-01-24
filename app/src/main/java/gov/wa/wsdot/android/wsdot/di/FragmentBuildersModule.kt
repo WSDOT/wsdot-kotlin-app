@@ -55,6 +55,7 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
@@ -135,6 +136,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeNewsReleaseFragment(): NewsReleaseFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeExpressLanesFragment(): ExpressLanesFragment
 
     @ContributesAndroidInjector
     abstract fun contributeFavoritesFragment(): FavoritesFragment

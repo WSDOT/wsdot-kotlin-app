@@ -70,6 +70,19 @@ object TrafficBindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindExpressLaneStatus")
+    fun bindExpressLaneStatus(textView: TextView, status: String) {
+        textView.text = String.format("Status: %s", status)
+
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindExpressLaneTimestamp")
+    fun bindExpressLaneTimestamp(textView: TextView, timestamp: String) {
+        textView.text = timestamp
+    }
+
+    @JvmStatic
     @BindingAdapter("bindTweetMedia")
     fun bindTweetMedia(imageView: ImageView, tweet: Tweet) {
         imageView.visibility = GONE

@@ -77,7 +77,7 @@ class TravelerInfoBottomSheetFragment:
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.EXPRESS_LANES -> {
-                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.wa.gov/travel/operations-services/express-lanes/home", "Express Lanes")
+                val action = TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavExpressLanesFragment()
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.SOCIAL_MEDIA -> {
