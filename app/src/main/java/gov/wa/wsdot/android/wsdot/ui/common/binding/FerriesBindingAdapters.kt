@@ -1,6 +1,8 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.R
+import android.graphics.Color
+import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -13,6 +15,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.util.network.Resource
+import java.util.*
 
 /**
  * Data Binding adapters specific to the app.
@@ -28,6 +31,17 @@ object FerriesBindingAdapters {
             return
         }
         textView.text = "Vessel Name Unavailable"
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindSailingTextColor")
+    fun bindSailingTextColor(textView: TextView, sailingDate: Date?) {
+        textView.setTextColor(Color.WHITE)
+        sailingDate?.let {
+            if (sailingDate.before(Date())) {
+                textView.setTextColor(Color.BLACK)
+            }
+        }
     }
 
     @JvmStatic

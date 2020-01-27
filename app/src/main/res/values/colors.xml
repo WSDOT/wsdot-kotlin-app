@@ -4,6 +4,7 @@
     <color name="wsdotGreenDark">#005151</color>
     <color name="wsdotGreenAccent">#33957F</color>
     <color name="white">#FFFFFF</color>
+    <color name="darkWhite">#E1E1E1</color>
 
     <color name="wsdotOrange">#FF6A13</color>
     <color name="wsdotOrangeDark">#c43b00</color>
