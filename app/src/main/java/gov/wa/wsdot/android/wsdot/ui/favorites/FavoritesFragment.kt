@@ -47,6 +47,7 @@ import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
+import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_BORDER_CROSSING
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_CAMERA
@@ -56,6 +57,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_MOUNTAIN_PASS
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TOLL_SIGN
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
@@ -66,6 +68,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var favoritesListViewModel: FavoritesListViewModel
+    lateinit var mapLocationViewModel: MapLocationViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -87,6 +90,10 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         favoritesListViewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FavoritesListViewModel::class.java)
+
+        mapLocationViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FavoritesListFragmentBinding>(
             inflater,
@@ -459,7 +466,12 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         editor.putDouble(getString(R.string.user_preference_traffic_map_latitude), location.latitude)
         editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), location.longitude)
         editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), location.zoom)
-        editor.commit()
+        editor.apply()
+
+        mapLocationViewModel.updateLocation(MapLocationItem(
+            LatLng(location.latitude, location.longitude),
+            location.zoom
+        ))
 
         val action = FavoritesFragmentDirections.actionNavFavoritesFragmentToNavFavoriteTrafficMapFragment()
 
