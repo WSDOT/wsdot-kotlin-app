@@ -8,12 +8,10 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.*
@@ -46,7 +44,7 @@ class FavoritesListAdapter(
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
     private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
-    private val locationLongClickCallback: ((FavoriteLocation) -> Unit)?,
+    private val locationEditClickCallback: ((FavoriteLocation, View) -> Unit)?,
     private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
@@ -562,11 +560,10 @@ class FavoritesListAdapter(
             }
         }
 
-        binding.root.findViewById<View>(R.id.tap_view).setOnLongClickListener {
+        binding.menuButton.setOnClickListener {
             binding.locationItem?.let {
-                locationLongClickCallback?.invoke(it)
+                locationEditClickCallback?.invoke(it, binding.menuButton as View)
             }
-            true
         }
 
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE

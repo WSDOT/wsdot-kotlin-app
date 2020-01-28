@@ -56,12 +56,16 @@ object TrafficBindingAdapters {
     @JvmStatic
     @BindingAdapter("bindTravelTimeColor")
     fun bindTravelTimeColor(cardView: CardView, travelTime: TravelTime) {
-        if (travelTime.currentTime < travelTime.avgTime - 1) {
-            cardView.setCardBackgroundColor(Color.parseColor("#007B5F"))
-        } else if (travelTime.currentTime > travelTime.avgTime + 1) {
-            cardView.setCardBackgroundColor(Color.parseColor("#c62828"))
-        } else {
-            cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
+        when {
+            travelTime.currentTime < travelTime.avgTime - 1 -> {
+                cardView.setCardBackgroundColor(Color.parseColor("#007B5F"))
+            }
+            travelTime.currentTime > travelTime.avgTime + 1 -> {
+                cardView.setCardBackgroundColor(Color.parseColor("#c62828"))
+            }
+            else -> {
+                cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
+            }
         }
     }
 

@@ -191,6 +191,10 @@
     <string name="no_highest_alerts_string">No highest impact alerts</string>
     <string name="action_my_location">My Location</string>
     <string name="no_sailings_title">Schedule Unavailable</string>
+    <string name="edit_favorite_location">Edit favorite location</string>
+    <string name="delete_favorite_location">delete favorite location</string>
+    <string name="action_remove">remove</string>
+    <string name="action_rename">edit name</string>
 
 
 </resources>
