@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -38,8 +39,9 @@ import java.lang.Exception
 class FavoritesListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,
-    private val dataSetChangedListener: AdapterDataSetChangedListener,
+    dataSetChangedListener: AdapterDataSetChangedListener,
     viewTypes: List<Int>,
+    private val showCameraImage: Boolean,
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
@@ -473,13 +475,25 @@ class FavoritesListAdapter(
             dataBindingComponent
         )
 
-        binding.root.findViewById<View>(R.id.cameraView).setOnClickListener {
+        binding.tapView.setOnClickListener {
             binding.camera?.let {
                 cameraClickCallback?.invoke(it)
             }
         }
 
-        binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
+        binding.favoriteButton.visibility = GONE
+
+        if (showCameraImage) {
+            binding.cameraView.visibility = VISIBLE
+            binding.cameraTitle.visibility = GONE
+            binding.cardView.elevation = 4f
+            binding.divider.visibility = GONE
+        } else {
+            binding.cardView.elevation = 0f
+            binding.cameraView.visibility = GONE
+            binding.cameraTitle.visibility = VISIBLE
+            binding.divider.visibility = VISIBLE
+        }
 
         return binding
     }

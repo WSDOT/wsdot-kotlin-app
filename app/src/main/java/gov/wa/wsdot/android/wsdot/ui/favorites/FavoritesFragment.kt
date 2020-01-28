@@ -132,12 +132,16 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         binding!!.lifecycleOwner = viewLifecycleOwner
 
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val showCameras = settings.getBoolean(getString(R.string.pref_key_show_fav_camera_inline), true)
+
         // pass function to be called on adapter item tap and favorite
         val adapter = FavoritesListAdapter(
             dataBindingComponent,
             appExecutors,
             this,
             getOrderedViewTypes(context, resources),
+            showCameras,
             { camera ->
                 navigateToCamera(camera)
             },
@@ -442,7 +446,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             val input = EditText(it)
             input.inputType = InputType.TYPE_CLASS_TEXT
             input.hint = location.title
-            input.filters += InputFilter.LengthFilter(30)
+            input.filters += InputFilter.LengthFilter(50)
 
             builder.setView(input)
 
