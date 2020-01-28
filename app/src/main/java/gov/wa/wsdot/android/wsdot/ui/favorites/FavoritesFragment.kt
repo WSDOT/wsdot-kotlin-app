@@ -7,16 +7,19 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.text.InputType
 import androidx.preference.PreferenceManager
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -147,8 +150,8 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             { locationItem ->
                 navigateToLocation(locationItem)
             },
-            { locationItem ->
-                editLocationItem(locationItem)
+            { locationItem, locationItemView ->
+                showEditMenu(locationItem, locationItemView)
             },
             { sign, index ->
                 if (sign.trips.size > index) {
@@ -245,7 +248,6 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     private fun addFavoriteItemTouchHelper(adapter: FavoritesListAdapter, recyclerView: RecyclerView) {
-
 
         // Add swipe dismiss to favorites list items.
         val simpleItemTouchCallback =
@@ -394,8 +396,40 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
-    private fun editLocationItem(location: FavoriteLocation){
-        showEditFavoriteLocationDialog(location)
+    private fun showEditMenu(location: FavoriteLocation, onView: View) {
+        context?.let { context ->
+            onView?.let {
+                PopupMenu(context, it).apply {
+                    setOnMenuItemClickListener { item ->
+                        when (item?.itemId) {
+                            R.id.action_rename -> {
+                                showEditFavoriteLocationDialog(location)
+                                true
+                            }
+                            R.id.action_remove -> {
+                                showDeleteFavoriteLocationDialog(location)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    inflate(R.menu.favorite_location_menu)
+                    show()
+                }
+            }
+        }
+    }
+
+    private fun showDeleteFavoriteLocationDialog(location: FavoriteLocation) {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Remove Favorite ${location.title}?")
+            builder.setPositiveButton("OK") {_, _ ->
+                favoritesListViewModel.removeFavoriteLocation(location)
+            }
+            builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+            builder.show()
+        }
     }
 
     private fun showEditFavoriteLocationDialog(location: FavoriteLocation) {
@@ -408,6 +442,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             val input = EditText(it)
             input.inputType = InputType.TYPE_CLASS_TEXT
             input.hint = location.title
+            input.filters += InputFilter.LengthFilter(30)
 
             builder.setView(input)
 
