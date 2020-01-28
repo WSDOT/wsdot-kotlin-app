@@ -41,7 +41,9 @@
                 android:src="@drawable/ic_more_vert"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:contentDescription="@string/edit_favorite_location"
+                android:padding="16dp"
                 android:layout_margin="16dp" />
 
             <View

@@ -21,6 +21,11 @@
             android:title="Adjust Display Order"
             android:key="@string/pref_key_favorites_sort_order"/>
 
+        <CheckBoxPreference
+            android:title="Show Traffic Camera Images"
+            android:key="@string/pref_key_show_fav_camera_inline"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
