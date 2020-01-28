@@ -294,6 +294,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navExpressLanesFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesFragment"
+        android:label="Express Lanes"
+        tools:layout="@layout/express_lanes_fragment" >
+    </fragment>
+
+    <fragment
         android:id="@+id/navHighwayAlertFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertFragment"
         android:label="{title}"
@@ -484,6 +491,14 @@
         <action
             android:id="@+id/action_navTrafficMapFragment_to_navNewsReleaseFragment"
             app:destination="@id/navNewsReleaseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navExpressLanesFragment"
+            app:destination="@id/navExpressLanesFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

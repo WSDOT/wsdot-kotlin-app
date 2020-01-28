@@ -197,7 +197,7 @@
     <string name="delete_favorite_location">delete favorite location</string>
     <string name="action_remove">remove</string>
     <string name="action_rename">edit name</string>
-
+    <string name="action_express_lanes">Schedule</string>
 
 
 </resources>
