@@ -1,6 +1,6 @@
 # WSDOT Android App (Kotlin) #
 
-Version 6.0.11
+Version 6
 -------------
 
 Washington State Traveler information provide by The Washington State Department of Transportation.
