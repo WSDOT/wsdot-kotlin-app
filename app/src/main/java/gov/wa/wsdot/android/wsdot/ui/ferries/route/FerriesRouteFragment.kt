@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.preference.PreferenceManager
@@ -92,21 +91,21 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     ): View? {
 
         // set up view models
-        routeViewModel = ViewModelProviders.of(this, viewModelFactory)
+        routeViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FerriesRouteViewModel::class.java)
         routeViewModel.setRouteId(args.routeId)
 
         dayPickerViewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+            ViewModelProvider(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         sailingViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         // set alert route ID for pager fragment
         ferryAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         ferryAlertsViewModel.setFerryAlertsRouteQuery(args.routeId)
 

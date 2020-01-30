@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -49,7 +48,7 @@ class RestAreaFragment: DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        restAreaViewModel = ViewModelProviders.of(this, viewModelFactory)
+        restAreaViewModel = ViewModelProvider(this, viewModelFactory)
             .get(RestAreaViewModel::class.java)
         val restAreaJson = resources.openRawResource(R.raw.restareas).bufferedReader().use { it.readText() }
         restAreaViewModel.setRestAreaData(restAreaJson)

@@ -25,7 +25,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -91,11 +90,11 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         savedInstanceState: Bundle?
     ): View? {
 
-        favoritesListViewModel = ViewModelProviders.of(this, viewModelFactory)
+        favoritesListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FavoritesListViewModel::class.java)
 
         mapLocationViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FavoritesListFragmentBinding>(

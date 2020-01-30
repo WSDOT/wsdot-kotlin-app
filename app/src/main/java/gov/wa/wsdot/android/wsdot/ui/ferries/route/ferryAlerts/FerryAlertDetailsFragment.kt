@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -34,7 +33,7 @@ class FerryAlertDetailsFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        ferryAlertDetailsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        ferryAlertDetailsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FerryAlertDetailsViewModel::class.java)
         ferryAlertDetailsViewModel.setFerryAlertRouteQuery(args.alertId)
 

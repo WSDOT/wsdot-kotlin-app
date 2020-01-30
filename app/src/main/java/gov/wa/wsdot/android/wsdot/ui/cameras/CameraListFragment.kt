@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
@@ -52,7 +51,7 @@ class CameraListFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        cameraListViewModel = ViewModelProviders.of(this, viewModelFactory)
+        cameraListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(CameraListViewModel::class.java)
         cameraListViewModel.setCamerasQuery(args.cameraIds.toList())
 

@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -47,7 +46,7 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        tollSignsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        tollSignsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TollSignsViewModel::class.java)
         tollSignsViewModel.setRoute(getRoute(), "N")
 

@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingComponent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.TravelChartsFragmentBinding
@@ -47,7 +46,7 @@ class TravelChartsFragment: DaggerFragment(), Injectable {
 
         (activity as MainActivity).disableAds()
 
-        travelChartsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        travelChartsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelChartsViewModel::class.java)
 
         // create the data binding

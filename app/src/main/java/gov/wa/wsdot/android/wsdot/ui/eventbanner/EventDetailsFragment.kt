@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.preference.PreferenceManager
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -35,7 +34,7 @@ class EventDetailsFragment : DaggerFragment(), Injectable {
 
         (activity as MainActivity).disableAds()
 
-        mainViewModel = ViewModelProviders.of(this, viewModelFactory)
+        mainViewModel = ViewModelProvider(this, viewModelFactory)
             .get(EventBannerViewModel::class.java)
 
         // create the data binding

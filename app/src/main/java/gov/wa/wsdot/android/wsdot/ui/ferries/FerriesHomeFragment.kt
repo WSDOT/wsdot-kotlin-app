@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
@@ -59,7 +58,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_ferries))
 
-        ferriesViewModel = ViewModelProviders.of(this, viewModelFactory)
+        ferriesViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FerriesViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<FerriesHomeFragmentBinding>(

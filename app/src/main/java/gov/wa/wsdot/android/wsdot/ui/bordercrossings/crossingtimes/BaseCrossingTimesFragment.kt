@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -41,7 +40,7 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
         (activity as MainActivity).enableAds("other")
 
-        borderCrossingViewModel = ViewModelProviders.of(this, viewModelFactory)
+        borderCrossingViewModel = ViewModelProvider(this, viewModelFactory)
             .get(BorderCrossingViewModel::class.java)
         borderCrossingViewModel.setCrossingDirection(getDirection())
 

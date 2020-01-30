@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -37,7 +36,7 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        tollRateTableViewModel = ViewModelProviders.of(this, viewModelFactory)
+        tollRateTableViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TollRateTableViewModel::class.java)
         tollRateTableViewModel.setRoute(getRoute())
 

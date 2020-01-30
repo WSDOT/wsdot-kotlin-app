@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
@@ -65,11 +64,11 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         // set up view models
         amtrakCascadesViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(AmtrakCascadesViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(AmtrakCascadesViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         dayPickerViewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+            ViewModelProvider(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         dayPickerViewModel.setValue(Date())
 

@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -50,7 +49,7 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        highestImpactAlertsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        highestImpactAlertsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(HighestImpactAlertsViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<HighwayAlertsHighestImpactFragmentBinding>(
