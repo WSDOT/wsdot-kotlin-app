@@ -56,12 +56,6 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // Clear view models since they are no longer needed
-        activity?.viewModelStore?.clear()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

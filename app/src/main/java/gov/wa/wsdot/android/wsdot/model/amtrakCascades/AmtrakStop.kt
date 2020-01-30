@@ -4,7 +4,7 @@ import java.util.*
 
 data class AmtrakStop(
     val arrivalComment: String?,
-    val arrivalScheduleType: Date?,
+    val arrivalScheduleType: String?,
     val arrivalTime: Date?,
     val departureComment: String?,
     val departureScheduleType: String?,

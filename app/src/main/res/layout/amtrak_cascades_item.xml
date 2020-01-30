@@ -158,35 +158,44 @@
                     android:paddingTop="8dp"
                     android:singleLine="false" />
 
-                <TextView
-                    style="@style/CardSubTitleText"
-                    android:id="@+id/departure_comment"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/statusLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{String.format(@string/train_comment, departureItem.departureComment.toLowerCase())}"
-                    app:visibleGone="@{departureItem.departureComment != null}"
                     app:layout_constraintTop_toBottomOf="@+id/departing_station"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
-                    app:layout_goneMarginBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="false" />
+                    app:layout_constraintEnd_toStartOf="parent">
 
-                <TextView
-                    style="@style/CardSubTitleText"
-                    android:id="@+id/arrival_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.format(@string/train_comment, arrivalItem.arrivalComment.toLowerCase())}"
-                    app:visibleGone="@{arrivalItem.arrivalComment != null}"
-                    app:layout_constraintTop_toBottomOf="@+id/arrival_station"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="8dp"
-                    app:layout_goneMarginBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:singleLine="false" />
+                    <TextView
+                        style="@style/CardSubTitleBoldText"
+                        android:id="@+id/departure_comment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:bindTrainDepartureStatus="@{departureItem}"
+                        app:visibleGone="@{departureItem.departureComment != null}"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_goneMarginBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:singleLine="false"/>
+
+                    <TextView
+                        style="@style/CardSubTitleBoldText"
+                        android:id="@+id/arrival_comment"
+                        android:gravity="end"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:bindTrainArrivalStatus="@{arrivalItem}"
+                        app:visibleGone="@{arrivalItem.arrivalComment != null}"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_goneMarginBottom="8dp"
+                        android:paddingTop="8dp"
+                        android:singleLine="false" />
+
+                </LinearLayout>
 
                 <TextView
                     style="@style/CardFooterText"
@@ -194,7 +203,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:bindTrainNumber="@{departureItem.trainNumber}"
-                    app:layout_constraintTop_toBottomOf="@+id/departure_comment"
+                    app:layout_constraintTop_toBottomOf="@+id/statusLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="16dp"
