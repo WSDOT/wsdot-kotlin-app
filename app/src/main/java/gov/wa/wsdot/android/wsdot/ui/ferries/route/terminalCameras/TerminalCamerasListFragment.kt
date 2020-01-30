@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -51,12 +50,12 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        terminalCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
+        terminalCamerasViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TerminalCamerasViewModel::class.java)
 
         // Get the sailingViewModel for the terminal ID
         sailingViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<CameraListFragmentBinding>(

@@ -27,7 +27,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -137,7 +136,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         // handle event banner
-        eventViewModel = ViewModelProviders.of(this, viewModelFactory).get(EventBannerViewModel::class.java)
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventBannerViewModel::class.java)
         eventViewModel.eventStatus.observe(this, Observer { eventResponse ->
             eventResponse.data?.let {
 
@@ -167,7 +166,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
-        notificationsViewModel = ViewModelProviders.of(this, viewModelFactory).get(NotificationsViewModel::class.java)
+        notificationsViewModel = ViewModelProvider(this, viewModelFactory).get(NotificationsViewModel::class.java)
 
         notificationsViewModel.topics.observe(this, Observer { topics ->
             topics.data?.let {

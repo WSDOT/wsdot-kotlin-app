@@ -10,8 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.NotificationsFragmentBinding
@@ -48,7 +46,7 @@ class NotificationsFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        notificationsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        notificationsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(NotificationsViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<NotificationsFragmentBinding>(

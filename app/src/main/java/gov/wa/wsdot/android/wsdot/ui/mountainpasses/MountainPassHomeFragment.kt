@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
@@ -57,7 +56,7 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
 
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
 
-        passViewModel = ViewModelProviders.of(this, viewModelFactory)
+        passViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<MountainPassHomeFragmentBinding>(

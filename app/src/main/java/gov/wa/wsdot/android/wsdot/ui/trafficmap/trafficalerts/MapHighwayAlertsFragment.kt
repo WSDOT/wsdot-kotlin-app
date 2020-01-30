@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
@@ -52,7 +51,7 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
     ): View? {
 
         mapHighwayAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<MapHighwayAlertsFragmentBinding>(

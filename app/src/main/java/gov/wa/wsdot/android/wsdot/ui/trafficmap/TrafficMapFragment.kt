@@ -22,7 +22,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -161,23 +160,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         // get it from the Activity so it can be shared with the Map Alerts Fragment
         mapHighwayAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MapHighwayAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         mapLocationViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        mapCamerasViewModel = ViewModelProviders.of(this, viewModelFactory)
+        mapCamerasViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MapCamerasViewModel::class.java)
 
-        restAreaViewModel = ViewModelProviders.of(this, viewModelFactory)
+        restAreaViewModel = ViewModelProvider(this, viewModelFactory)
             .get(RestAreaViewModel::class.java)
 
-        favoriteLocationViewModel = ViewModelProviders.of(this, viewModelFactory)
+        favoriteLocationViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FavoriteLocationViewModel::class.java)
 
-        travelChartsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        travelChartsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelChartsViewModel::class.java)
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -465,7 +464,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private fun initBottomSheets() {
 
         // Camera Bottom Sheet
-        cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
+        cameraViewModel = ViewModelProvider(this, viewModelFactory)
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
@@ -518,7 +517,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         binding!!.includedCameraBottomSheet.cameraViewModel = cameraViewModel
 
         // highway alert view model
-        highwayAlertViewModel = ViewModelProviders.of(this, viewModelFactory)
+        highwayAlertViewModel = ViewModelProvider(this, viewModelFactory)
             .get(HighwayAlertViewModel::class.java)
         highwayAlertViewModel.setAlertQuery(-1)
 

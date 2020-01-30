@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MountainPassConditionsFragmentBinding
@@ -35,7 +34,7 @@ class PassConditionsFragment : DaggerFragment(), Injectable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         passReportViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         // create the data binding

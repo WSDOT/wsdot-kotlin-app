@@ -18,7 +18,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -95,7 +94,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     ): View? {
 
         // set up view models
-        vesselViewModel = ViewModelProviders.of(this, viewModelFactory)
+        vesselViewModel = ViewModelProvider(this, viewModelFactory)
             .get(VesselWatchViewModel::class.java)
 
         // create the data binding
@@ -293,7 +292,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private fun initBottomSheets() {
 
         // Camera Bottom Sheet
-        cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
+        cameraViewModel = ViewModelProvider(this, viewModelFactory)
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 

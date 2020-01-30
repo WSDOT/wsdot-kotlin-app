@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesScheduleFragmentBinding
@@ -49,7 +48,7 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
     ): View? {
 
         amtrakCascadesViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(AmtrakCascadesViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(AmtrakCascadesViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<AmtrakCascadesScheduleFragmentBinding>(

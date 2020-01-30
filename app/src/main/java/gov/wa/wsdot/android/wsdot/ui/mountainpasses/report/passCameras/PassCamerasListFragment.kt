@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
@@ -54,7 +53,7 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
     ): View? {
 
         cameraListViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(CameraListViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(CameraListViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = inflate<CameraListFragmentBinding>(

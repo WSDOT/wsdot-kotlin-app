@@ -7,7 +7,6 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -62,7 +61,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        cameraViewModel = ViewModelProviders.of(this, viewModelFactory)
+        cameraViewModel = ViewModelProvider(this, viewModelFactory)
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(args.cameraId)
 

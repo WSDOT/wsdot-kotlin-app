@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.TravelTimeListFragmentBinding
@@ -59,7 +58,7 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         savedInstanceState: Bundle?
     ): View? {
 
-        travelTimeListViewModel = ViewModelProviders.of(this, viewModelFactory)
+        travelTimeListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelTimeListViewModel::class.java)
 
         travelTimeListViewModel.setTravelTimeQuery("")

@@ -5,7 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import java.util.*
@@ -21,7 +21,7 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         // Get view model from activity's lifecycle
         // Fragments can request the same view model to observe changes to data
         dayPickerViewModel = activity?.run {
-            ViewModelProviders.of(this).get(SharedDateViewModel::class.java)
+            ViewModelProvider(this).get(SharedDateViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         // Use the first date of sailings as the default values for the picker

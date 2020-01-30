@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -50,7 +49,7 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        alertViewModel = ViewModelProviders.of(this, viewModelFactory)
+        alertViewModel = ViewModelProvider(this, viewModelFactory)
             .get(HighwayAlertViewModel::class.java)
         alertViewModel.setAlertQuery(args.alertId)
 

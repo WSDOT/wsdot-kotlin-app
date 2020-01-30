@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerryAlertsFragmentBinding
@@ -47,7 +46,7 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
     ): View? {
 
         ferryAlertsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(FerryAlertsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FerryAlertsFragmentBinding>(

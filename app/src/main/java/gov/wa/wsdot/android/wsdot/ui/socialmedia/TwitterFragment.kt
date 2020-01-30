@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.TwitterFragmentBinding
@@ -51,7 +50,7 @@ class TwitterFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        tweetViewModel = ViewModelProviders.of(this, viewModelFactory)
+        tweetViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TwitterViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<TwitterFragmentBinding>(

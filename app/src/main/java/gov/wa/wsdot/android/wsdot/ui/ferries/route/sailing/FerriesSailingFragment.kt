@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -60,7 +59,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
     ): View? {
 
         sailingViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(FerriesSailingViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<FerriesSailingFragmentBinding>(

@@ -7,9 +7,7 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
@@ -52,7 +50,7 @@ class ExpressLanesFragment: DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        expressLanesViewModel = ViewModelProviders.of(this, viewModelFactory)
+        expressLanesViewModel = ViewModelProvider(this, viewModelFactory)
             .get(ExpressLanesViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<ExpressLanesFragmentBinding>(

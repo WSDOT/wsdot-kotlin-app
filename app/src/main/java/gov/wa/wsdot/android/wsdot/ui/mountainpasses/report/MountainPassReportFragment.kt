@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -66,12 +65,12 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
         // set up view models
         passReportViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
         passReportViewModel.setPassId(args.passId)
 
         cameraListViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(CameraListViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(CameraListViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         // create the data binding

@@ -8,12 +8,9 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.support.AndroidSupportInjection
-import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
@@ -46,7 +43,7 @@ class GoToLocationBottomSheetFragment : BottomSheetDialogFragment(),
         val view = inflater.inflate(R.layout.simple_bottom_sheet_list, container, false)
 
         mapLocationViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MapLocationViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val listItems = mutableListOf<GoToLocationMenuEventItem>()

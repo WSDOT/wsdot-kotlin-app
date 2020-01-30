@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -52,7 +51,7 @@ class NewsReleaseFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        newsReleaseViewModel = ViewModelProviders.of(this, viewModelFactory)
+        newsReleaseViewModel = ViewModelProvider(this, viewModelFactory)
             .get(NewsReleaseViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<NewsReleaseFragmentBinding>(

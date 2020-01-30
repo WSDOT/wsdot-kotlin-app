@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
@@ -30,7 +29,7 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        vesselDetailsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        vesselDetailsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(VesselDetailsViewModel::class.java)
         vesselDetailsViewModel.setVesselQuery(args.vesselId)
 

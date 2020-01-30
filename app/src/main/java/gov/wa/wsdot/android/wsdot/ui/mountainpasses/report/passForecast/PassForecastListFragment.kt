@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
@@ -50,7 +49,7 @@ class PassForecastListFragment : DaggerFragment(), Injectable {
     ): View? {
 
         passReportViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MountainPassReportViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         val dataBinding = DataBindingUtil.inflate<MountainPassForecastFragmentBinding>(
