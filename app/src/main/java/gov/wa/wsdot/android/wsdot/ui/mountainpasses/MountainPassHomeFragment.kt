@@ -129,7 +129,14 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToPassReport(routeId: Int, routeName: String) {
-       val action = MountainPassHomeFragmentDirections.actionNavMountainPassHomeFragmentToNavMountainPassReportFragment(routeId, routeName)
-       findNavController().navigate(action)
+        if (findNavController().currentDestination?.id != R.id.navMountainPassReportFragment) {
+            val action =
+                MountainPassHomeFragmentDirections.actionNavMountainPassHomeFragmentToNavMountainPassReportFragment(
+                    routeId,
+                    routeName
+                )
+            findNavController().navigate(action)
+        }
     }
+
 }
