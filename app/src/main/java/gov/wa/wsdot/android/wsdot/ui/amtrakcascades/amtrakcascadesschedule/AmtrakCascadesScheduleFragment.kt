@@ -116,5 +116,6 @@ class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
                 ).show()
             }
         })
+        amtrakCascadesViewModel.refresh()
     }
 }

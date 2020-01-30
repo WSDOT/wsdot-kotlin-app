@@ -13,7 +13,11 @@
     </style>
 
     <style name="CardSubTitleText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+    </style>
 
+    <style name="CardSubTitleBoldText" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">16sp</item>
     </style>
 
