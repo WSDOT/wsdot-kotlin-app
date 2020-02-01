@@ -113,13 +113,23 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                 title = "$originString Departures"
             }
 
-            val action = AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment(title)
-            findNavController().navigate(action)
+            if (findNavController().currentDestination?.id != R.id.navAmtrakCascadesScheduleFragment) {
+                val action =
+                    AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment(
+                        title
+                    )
+                findNavController().navigate(action)
+            }
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
-            val action = AmtrakCascadesFragmentDirections.actionGlobalNavWebViewFragment("https://www.amtrakcascades.com/buy-tickets", "Buy Tickets")
-            findNavController().navigate(action)
+            if (findNavController().currentDestination?.id != R.id.navWebViewFragment) {
+                val action = AmtrakCascadesFragmentDirections.actionGlobalNavWebViewFragment(
+                    "https://www.amtrakcascades.com/buy-tickets",
+                    "Buy Tickets"
+                )
+                findNavController().navigate(action)
+            }
         }
 
         // bind view models to view

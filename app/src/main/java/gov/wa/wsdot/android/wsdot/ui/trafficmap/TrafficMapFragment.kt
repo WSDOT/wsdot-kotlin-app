@@ -452,8 +452,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         restAreaMarkers[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.description)
-            findNavController().navigate(action)
+            if (findNavController().currentDestination?.id != R.id.navRestAreaFragment) {
+                val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.description)
+                findNavController().navigate(action)
+            }
             return true
         }
         
@@ -652,9 +654,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
 
                 } else {
-
-                    val action = NavGraphDirections.actionGlobalNavCameraListFragment(clusterItems.items.map { it.mCamera.cameraId }.toIntArray(), "Traffic Cameras")
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id != R.id.navCameraListFragment) {
+                        val action = NavGraphDirections.actionGlobalNavCameraListFragment(
+                            clusterItems.items.map { it.mCamera.cameraId }.toIntArray(),
+                            "Traffic Cameras"
+                        )
+                        findNavController().navigate(action)
+                    }
                 }
 
             } else {
@@ -782,7 +788,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
@@ -889,23 +895,34 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.action_go_to_location -> {
-                    val action = NavGraphDirections.actionGlobalNavGoToLocationBottomSheetDialog()
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id != R.id.navGoToLocationBottomSheetDialog) {
+                        val action =
+                            NavGraphDirections.actionGlobalNavGoToLocationBottomSheetDialog()
+                        findNavController().navigate(action)
+                    }
                 }
 
                 R.id.action_alerts -> {
-                    val action = TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavHighwayAlertTabFragment()
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id != R.id.navHighwayAlertTabFragment) {
+                        val action =
+                            TrafficMapFragmentDirections.actionNavTrafficMapFragmentToNavHighwayAlertTabFragment()
+                        findNavController().navigate(action)
+                    }
                 }
 
                 R.id.action_more -> {
-                    val action = NavGraphDirections.actionGlobalNavTravelerInfoBottomSheetDialog()
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id != R.id.navTravelerInfoBottomSheetDialog) {
+                        val action =
+                            NavGraphDirections.actionGlobalNavTravelerInfoBottomSheetDialog()
+                        findNavController().navigate(action)
+                    }
                 }
 
                 R.id.action_travel_charts -> {
-                    val action = NavGraphDirections.actionGlobalNavTravelChartsFragment()
-                    findNavController().navigate(action)
+                    if (findNavController().currentDestination?.id != R.id.navTravelChartsFragment) {
+                        val action = NavGraphDirections.actionGlobalNavTravelChartsFragment()
+                        findNavController().navigate(action)
+                    }
                 }
 
                 R.id.action_favorite -> {

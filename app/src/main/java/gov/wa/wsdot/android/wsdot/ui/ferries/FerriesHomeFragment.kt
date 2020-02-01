@@ -79,8 +79,6 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         dataBinding.reservationButton.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx"))
             startActivity(browserIntent)
-            //val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavWebViewFragment("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx", "Reservations")
-            //findNavController().navigate(action)
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
@@ -138,18 +136,21 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
             } else {
                 adapter.submitList(emptyList())
             }
-
             if (routeResource.status == Status.ERROR) {
                 Toast.makeText(context, getString(R.string.loading_error_message), Toast.LENGTH_SHORT).show()
             }
-
-
         })
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToRoute(routeId: Int, routeName: String) {
-        val action = FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(routeId, routeName)
-        findNavController().navigate(action)
+        if (findNavController().currentDestination?.id != R.id.navFerriesRouteFragment) {
+            val action =
+                FerriesHomeFragmentDirections.actionNavFerriesHomeFragmentToNavFerriesRouteFragment(
+                    routeId,
+                    routeName
+                )
+            findNavController().navigate(action)
+        }
     }
 }
