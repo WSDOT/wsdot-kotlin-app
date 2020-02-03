@@ -30,6 +30,10 @@ class MountainPassRepository @Inject constructor(
 
             override fun shouldFetch(data: List<MountainPass>?): Boolean {
 
+                if (forceRefresh) {
+                    return true
+                }
+
                 var update = false
 
                 if (data != null && data.isNotEmpty()) {
@@ -40,7 +44,7 @@ class MountainPassRepository @Inject constructor(
                     update = true
                 }
 
-                return forceRefresh || update
+                return update
             }
 
             override fun loadFromDb() = mountainPassDao.loadPasses()
@@ -54,13 +58,17 @@ class MountainPassRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun loadPass(passId: Int): LiveData<Resource<MountainPass>> {
+    fun loadPass(passId: Int, forceRefresh: Boolean): LiveData<Resource<MountainPass>> {
 
         return object : NetworkBoundResource<MountainPass, MountainPassResponse>(appExecutors) {
 
             override fun saveCallResult(item: MountainPassResponse) = savePasses(item)
 
             override fun shouldFetch(data: MountainPass?): Boolean {
+
+                if (forceRefresh) {
+                    return true
+                }
 
                 var update = false
 

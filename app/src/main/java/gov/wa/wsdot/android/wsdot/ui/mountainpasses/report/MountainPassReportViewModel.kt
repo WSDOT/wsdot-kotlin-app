@@ -19,7 +19,7 @@ class MountainPassReportViewModel @Inject constructor(mountainPassRepository: Mo
 
     val pass : LiveData<Resource<MountainPass>> = Transformations
         .switchMap(_passId) { passId ->
-            mountainPassRepository.loadPass(passId.passId)
+            mountainPassRepository.loadPass(passId.passId, passId.needsRefresh)
         }
 
     fun updateFavorite(passId: Int) {
