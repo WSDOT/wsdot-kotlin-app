@@ -15,27 +15,27 @@ class FerryAlertsViewModel @Inject constructor(ferryRepository: FerriesRepositor
 
     val ferryAlerts: LiveData<Resource<List<FerryAlert>>> = Transformations
         .switchMap(_ferryAlertsQuery) { input ->
-            input.ifExists { routeId ->
-                ferryRepository.loadFerryAlerts(routeId)
+            input.ifExists { routeId, forceRefresh ->
+                ferryRepository.loadFerryAlerts(routeId, forceRefresh)
             }
         }
 
     fun refresh() {
         val terminalId = _ferryAlertsQuery.value?.routeId
         if (terminalId != null) {
-            _ferryAlertsQuery.value = FerryAlertsQuery(terminalId)
+            _ferryAlertsQuery.value = FerryAlertsQuery(terminalId, true)
         }
     }
 
     fun setFerryAlertsRouteQuery(routeId: Int) {
-        val update = FerryAlertsQuery(routeId)
+        val update = FerryAlertsQuery(routeId, false)
         if (_ferryAlertsQuery.value == update) { return }
         _ferryAlertsQuery.value = update
     }
 
-    data class FerryAlertsQuery(val routeId: Int) {
-        fun <T> ifExists(f: (Int) -> LiveData<T>): LiveData<T> {
-            return f(routeId)
+    data class FerryAlertsQuery(val routeId: Int, val forceRefresh: Boolean) {
+        fun <T> ifExists(f: (Int, Boolean) -> LiveData<T>): LiveData<T> {
+            return f(routeId, forceRefresh)
         }
     }
 

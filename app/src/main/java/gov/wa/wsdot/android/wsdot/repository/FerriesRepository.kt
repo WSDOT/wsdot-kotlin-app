@@ -177,14 +177,30 @@ class FerriesRepository @Inject constructor(
 
     }
 
-    fun loadFerryAlerts(forRoute: Int): LiveData<Resource<List<FerryAlert>>> {
+    fun loadFerryAlerts(forRoute: Int, forceRefresh: Boolean): LiveData<Resource<List<FerryAlert>>> {
 
         return object : NetworkBoundResource<List<FerryAlert>, List<FerryScheduleResponse>>(appExecutors) {
 
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveAlerts(item)
 
             override fun shouldFetch(data: List<FerryAlert>?): Boolean {
-                return true
+
+                if (forceRefresh) {
+                    return true
+                }
+
+                var update = false
+
+                if (data != null) {
+                    if (data.isEmpty()) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return update
+
             }
 
             override fun loadFromDb() = ferryAlertDao.loadAlertsById(forRoute)
@@ -352,7 +368,7 @@ class FerriesRepository @Inject constructor(
             }
         }
 
-        ferryAlertDao.insertAlerts(dbAlertList.distinct())
+        ferryAlertDao.updateAlerts(dbAlertList.distinct())
 
     }
 

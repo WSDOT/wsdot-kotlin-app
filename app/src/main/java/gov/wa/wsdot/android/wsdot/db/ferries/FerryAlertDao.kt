@@ -1,10 +1,7 @@
 package gov.wa.wsdot.android.wsdot.db.ferries
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 /**
  * Interface for database access on Ferry Schedule related operations.
@@ -13,7 +10,7 @@ import androidx.room.Query
 abstract class FerryAlertDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertAlerts(schedules: List<FerryAlert>)
+    abstract fun insertAlerts(alerts: List<FerryAlert>)
 
     @Query("SELECT * FROM FerryAlert")
     abstract fun loadAlerts(): LiveData<List<FerryAlert>>
@@ -23,5 +20,14 @@ abstract class FerryAlertDao {
 
     @Query("SELECT * FROM FerryAlert WHERE alertId = (:alertId) LIMIT 1")
     abstract fun loadAlertById(alertId: Int): LiveData<FerryAlert>
+
+    @Query("DELETE FROM FerryAlert")
+    abstract fun deleteOldAlerts()
+
+    @Transaction
+    open fun updateAlerts(alerts: List<FerryAlert>) {
+        deleteOldAlerts()
+        insertAlerts(alerts)
+    }
 
 }
