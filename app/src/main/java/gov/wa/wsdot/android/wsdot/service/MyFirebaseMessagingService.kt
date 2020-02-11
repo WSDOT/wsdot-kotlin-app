@@ -5,19 +5,20 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.navigation.NavDeepLinkBuilder
+import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
+import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationWorker
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import androidx.preference.PreferenceManager
 import gov.wa.wsdot.android.wsdot.util.Utils
-
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -38,33 +39,24 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // messages. For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
         // [END_EXCLUDE]
 
-        // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Log.d(TAG, "From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
         remoteMessage.data.isNotEmpty().let {
 
-            Log.d(TAG, "Message data payload: " + remoteMessage.data)
+            remoteMessage.data["push_alert_id"]?.toInt()?.let { alertId ->
 
-            remoteMessage.data["push_alert_id"]?.toInt()?.let { alert_id ->
-
-                // TODO: Don't show alerts we've already received
-                val settings = PreferenceManager.getDefaultSharedPreferences(this)
+                val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
                 val receivedAlerts = Utils.loadOrderedIntList("KEY_RECEIVED_ALERTS", settings)
 
                 val title = remoteMessage.data["title"]
                 val message = remoteMessage.data["message"]
                 val type = remoteMessage.data["type"]
 
-                if (!receivedAlerts.contains(alert_id)) {
+                if (!receivedAlerts.contains(alertId)) {
                     if (title != null && message != null && type != null) {
-
-                        receivedAlerts.add(alert_id)
-                        Utils.saveOrderedIntList(receivedAlerts,"KEY_RECEIVED_ALERTS", settings)
-
                         sendNotification(
-                            alert_id,
+                            alertId,
                             title,
                             message,
                             getNotificationIntent(remoteMessage.data)
@@ -72,16 +64,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 }
 
+                // update shared prefs
+                val data = Data.Builder()
+                data.putInt("push_alert_id", alertId)
+                val notificationWorkRequest = OneTimeWorkRequestBuilder<MyNotificationWorker>()
+                    .setInputData(data.build())
+                    .build()
+                WorkManager.getInstance(applicationContext).beginWith(notificationWorkRequest).enqueue()
+
             }
         }
-
-        // Check if message contains a notification payload.
-        remoteMessage.notification?.let {
-            Log.d(TAG, "Message Notification Body: ${it.body}")
-        }
-
     }
-    // [END receive_message]
 
     private fun getNotificationIntent(data: MutableMap<String, String>): PendingIntent {
 
@@ -114,22 +107,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         }
 
-
         return PendingIntent.getActivity(this, alertId?.toInt() ?: 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
     }
-
-    // [START on_new_token]
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
-    override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
-    }
-    // [END on_new_token]
 
     /**
      * Create and show a simple notification containing the received FCM message.
@@ -144,11 +125,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentTitle(title)
             .setContentText(messageBody)
             .setAutoCancel(true)
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(messageBody))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(messageBody))
             .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as
+                NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -159,6 +142,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
+    }
+
+    /**
+     * Called if InstanceID token is updated. This may occur if the security of
+     * the previous token had been compromised. Note that this is called when the InstanceID token
+     * is initially generated so this is where you would retrieve the token.
+     */
+    override fun onNewToken(token: String) {
+        Log.d(TAG, "Refreshed token: $token")
     }
 
     companion object {
