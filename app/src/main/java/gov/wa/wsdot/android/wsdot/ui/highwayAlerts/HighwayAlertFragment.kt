@@ -22,7 +22,9 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.HighwayAlertFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
@@ -32,7 +34,8 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var alertViewModel: HighwayAlertViewModel
+    private lateinit var alertViewModel: HighwayAlertViewModel
+    private lateinit var mapLocationViewModel: MapLocationViewModel
 
     var binding by autoCleared<HighwayAlertFragmentBinding>()
 
@@ -53,6 +56,11 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             .get(HighwayAlertViewModel::class.java)
         alertViewModel.setAlertQuery(args.alertId)
 
+        mapLocationViewModel = activity?.run {
+            ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<HighwayAlertFragmentBinding>(
             inflater,
@@ -69,6 +77,14 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
             if (alert?.data != null) {
                 binding.highwayAlert = alert.data
+
+                mapLocationViewModel.updateLocation(
+                    MapLocationItem(
+                        LatLng(alert.data.startLatitude, alert.data.startLongitude),
+                        12.0f
+                    )
+                )
+
             } else if (alert.status != Status.LOADING){
                 binding.alertTitle.text = getString(R.string.no_alert_string)
             }
