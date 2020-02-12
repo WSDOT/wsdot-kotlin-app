@@ -11,12 +11,8 @@ import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationManager
-import gov.wa.wsdot.android.wsdot.service.helpers.MyNotificationWorker
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.Utils
 
@@ -64,13 +60,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     }
                 }
 
-                // update shared prefs
-                val data = Data.Builder()
-                data.putInt("push_alert_id", alertId)
-                val notificationWorkRequest = OneTimeWorkRequestBuilder<MyNotificationWorker>()
-                    .setInputData(data.build())
-                    .build()
-                WorkManager.getInstance(applicationContext).beginWith(notificationWorkRequest).enqueue()
+                Thread(Runnable {
+                    try {
+                        cacheAlerts(alertId)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "error with notification cache thread")
+                    }
+                }).start()
 
             }
         }
@@ -151,6 +147,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      */
     override fun onNewToken(token: String) {
         Log.d(TAG, "Refreshed token: $token")
+    }
+
+    private fun cacheAlerts(alertId: Int){
+        if (alertId != 0) {
+            val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            val receivedAlerts = Utils.loadOrderedIntList("KEY_RECEIVED_ALERTS", settings)
+            receivedAlerts.add(alertId)
+
+            Utils.saveOrderedIntList(
+                receivedAlerts,
+                "KEY_RECEIVED_ALERTS",
+                settings
+            )
+        }
+
+
     }
 
     companion object {
