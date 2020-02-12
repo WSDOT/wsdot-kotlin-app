@@ -13,8 +13,8 @@ android {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21060202
-        versionName "6.2.2"
+        versionCode 21060204
+        versionName "6.2.4"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         kotlinOptions {
@@ -73,11 +73,6 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
-
-    // Worker - used in push notifications
-    def work_version = "2.3.1"
-    // Kotlin + co-routines
-    implementation "androidx.work:work-runtime-ktx:$work_version"
 
     // tap target
     implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
