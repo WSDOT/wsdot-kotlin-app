@@ -64,7 +64,6 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
 
-
 class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injectable  {
 
     @Inject
@@ -149,6 +148,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             },
             { mountainPass ->
                 navigateToMountainPass(mountainPass)
+            },
+            { crossing ->
+                navigateToBorderCameras(crossing)
             },
             { locationItem ->
                 navigateToLocation(locationItem)
@@ -484,6 +486,17 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(pass.passId, pass.passName)
         (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
         findNavController().navigate(action)
+    }
+
+    private fun navigateToBorderCameras(borderCrossing: BorderCrossing) {
+
+        if (findNavController().currentDestination?.id != R.id.navCameraListFragment) {
+            val action = NavGraphDirections.actionGlobalNavCameraListFragment(
+                intArrayOf(1,2,3), // TODO: where to get these IDs?
+                String.format("%s (%s)", borderCrossing.name, borderCrossing.lane)
+            )
+            findNavController().navigate(action)
+        }
     }
 
     private fun navigateToTollMap(startLocation: LatLng, endLocation: LatLng){

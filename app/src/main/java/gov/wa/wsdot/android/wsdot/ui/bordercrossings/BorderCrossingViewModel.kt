@@ -14,8 +14,6 @@ class BorderCrossingViewModel @Inject constructor(borderCrossingRepository: Bord
     private val repo = borderCrossingRepository
 
     private val _crossingDirection: MutableLiveData<CrossingDirection> = MutableLiveData()
-    val crossingDirection: LiveData<CrossingDirection>
-        get() = _crossingDirection
 
     val crossings : LiveData<Resource<List<BorderCrossing>>> = Transformations
         .switchMap(_crossingDirection) { crossingDirection ->

@@ -12,7 +12,6 @@ import javax.inject.Inject
 class CameraListViewModel @Inject constructor(cameraRepository: CameraRepository) : DataBoundCameraListViewModel, ViewModel() {
 
     private val cameraRepo = cameraRepository
-
     private val _cameraQuery: MutableLiveData<CamerasQuery> = MutableLiveData()
 
     // used for loading & display status
