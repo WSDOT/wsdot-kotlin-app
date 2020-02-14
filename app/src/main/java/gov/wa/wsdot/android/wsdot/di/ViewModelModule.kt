@@ -10,6 +10,7 @@ import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
 import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.bordercameras.BorderCameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.cameras.CamerasViewModel
@@ -215,6 +216,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MapLocationViewModel::class)
     abstract fun findMapLocationViewModel(mapLocationViewModel: MapLocationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BorderCameraListViewModel::class)
+    abstract fun findBorderCameraListViewModel(borderCameraListViewModel: BorderCameraListViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: WsdotViewModelFactory): ViewModelProvider.Factory
