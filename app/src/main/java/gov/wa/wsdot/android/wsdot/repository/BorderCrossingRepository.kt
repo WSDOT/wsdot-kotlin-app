@@ -93,19 +93,23 @@ class BorderCrossingRepository @Inject constructor(
 
         for (crossingItem in crossingResponse.waitTimes.items) {
 
-            val crossing = BorderCrossing(
-                crossingId = crossingItem.id,
-                name = crossingItem.name,
-                direction = crossingItem.direction,
-                lane = crossingItem.lane,
-                route = crossingItem.route,
-                wait = crossingItem.wait,
-                updated = parseCrossingDate(crossingItem.updated),
-                localCacheDate = Date(),
-                favorite = false,
-                remove = false
-            )
-            dbCrossingList.add(crossing)
+            // Only show northbound until further notice.
+            // Accuracy of southbound times cannot be guaranteed indefinitely.
+            if (crossingItem.direction.toLowerCase(Locale.ENGLISH) == "northbound") {
+                val crossing = BorderCrossing(
+                    crossingId = crossingItem.id,
+                    name = crossingItem.name,
+                    direction = crossingItem.direction,
+                    lane = crossingItem.lane,
+                    route = crossingItem.route,
+                    wait = crossingItem.wait,
+                    updated = parseCrossingDate(crossingItem.updated),
+                    localCacheDate = Date(),
+                    favorite = false,
+                    remove = false
+                )
+                dbCrossingList.add(crossing)
+            }
         }
 
         borderCrossingDao.updateBorderCrossings(dbCrossingList)

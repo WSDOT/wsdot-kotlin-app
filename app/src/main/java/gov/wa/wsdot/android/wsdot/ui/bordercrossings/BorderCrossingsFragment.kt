@@ -7,16 +7,20 @@ import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCro
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleTabFragment
 
 class BorderCrossingsFragment : SimpleTabFragment(), Injectable {
+
+    // Only show northbound until further notice.
+    // Accuracy of southbound times cannot be guaranteed indefinitely.
     override fun getTitles(): ArrayList<String> {
         val titles = ArrayList<String>()
         titles.add("Northbound")
-        titles.add("Southbound")
+        //titles.add("Southbound")
         return titles
     }
+
     override fun getFragments(): ArrayList<Fragment> {
         val fragments = ArrayList<Fragment>()
         fragments.add(NorthboundCrossingTimesFragment())
-        fragments.add(SouthboundCrossingTimesFragment())
+        //fragments.add(SouthboundCrossingTimesFragment())
         return fragments
     }
 }
