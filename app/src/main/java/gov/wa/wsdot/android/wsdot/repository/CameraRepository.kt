@@ -86,6 +86,38 @@ class CameraRepository @Inject constructor(
         }.asLiveData()
     }
 
+    fun loadCamerasOnRoadNorthOf(roadName: String, latitude: Double, forceRefresh: Boolean): LiveData<Resource<List<Camera>>> {
+
+        return object : NetworkBoundResource<List<Camera>, CamerasResponse>(appExecutors) {
+
+            override fun saveCallResult(item: CamerasResponse) = saveCameras(item)
+
+            override fun shouldFetch(data: List<Camera>?): Boolean {
+
+                var update = false
+
+                if (data != null && data.isNotEmpty()) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return forceRefresh || update
+            }
+
+            override fun loadFromDb() = cameraDao.loadCamerasOnRoadNorthOf(roadName, latitude)
+
+            override fun createCall() = dataWebservice.getCameras()
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
     fun loadCamera(cameraId: Int): LiveData<Resource<Camera>> {
 
         return object : NetworkBoundResource<Camera, CamerasResponse>(appExecutors) {
