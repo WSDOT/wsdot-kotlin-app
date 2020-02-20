@@ -50,6 +50,7 @@ import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.BaseCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_BORDER_CROSSING
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_CAMERA
@@ -63,6 +64,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
+import java.util.*
 
 class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injectable  {
 
@@ -489,14 +491,27 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
     }
 
     private fun navigateToBorderCameras(borderCrossing: BorderCrossing) {
+        
+        if (findNavController().currentDestination?.id != R.id.navBorderCameraListFragment) {
 
-        if (findNavController().currentDestination?.id != R.id.navCameraListFragment) {
-            val action = NavGraphDirections.actionGlobalNavCameraListFragment(
-                intArrayOf(1,2,3), // TODO: where to get these IDs?
-                String.format("%s (%s)", borderCrossing.name, borderCrossing.lane)
-            )
+            val action = if (borderCrossing.direction.toLowerCase(Locale.ENGLISH) == "northbound") {
+                NavGraphDirections.actionGlobalNavBorderCameraListFragment(
+                    BaseCrossingTimesFragment.northboundRoadNames[borderCrossing.route] ?: "Error",
+                    BaseCrossingTimesFragment.northboundMinLats[borderCrossing.route] ?: "0.0",
+                    String.format("%s", borderCrossing.name)
+                )
+            } else {
+                NavGraphDirections.actionGlobalNavBorderCameraListFragment(
+                    BaseCrossingTimesFragment.southboundRoadNames[borderCrossing.route] ?: "Error",
+                    BaseCrossingTimesFragment.southboundMinLats[borderCrossing.route] ?: "0.0",
+                    String.format("%s", borderCrossing.name)
+                )
+            }
+
             findNavController().navigate(action)
+
         }
+
     }
 
     private fun navigateToTollMap(startLocation: LatLng, endLocation: LatLng){
