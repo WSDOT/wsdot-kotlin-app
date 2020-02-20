@@ -13,8 +13,8 @@ android {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 21060204
-        versionName "6.2.4"
+        versionCode 21060205
+        versionName "6.2.5"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         kotlinOptions {
@@ -51,7 +51,7 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'androidx.fragment:fragment-ktx:1.2.1'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
 
     implementation 'com.google.firebase:firebase-core:17.2.2'
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
