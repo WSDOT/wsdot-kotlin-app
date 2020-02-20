@@ -116,13 +116,13 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
                 NavGraphDirections.actionGlobalNavBorderCameraListFragment(
                     northboundRoadNames[borderCrossing.route]?: "Error",
                     northboundMinLats[borderCrossing.route]?: "0.0",
-                    String.format("%s (%s)", borderCrossing.name, borderCrossing.lane)
+                    String.format("%s", borderCrossing.name)
                 )
             } else {
                 NavGraphDirections.actionGlobalNavBorderCameraListFragment(
                     southboundRoadNames[borderCrossing.route]?: "Error",
                     southboundMinLats[borderCrossing.route]?: "0.0",
-                    String.format("%s (%s)", borderCrossing.name, borderCrossing.lane)
+                    String.format("%s", borderCrossing.name)
                 )
             }
 
