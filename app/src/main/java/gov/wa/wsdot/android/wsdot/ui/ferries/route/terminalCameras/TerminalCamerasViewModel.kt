@@ -20,7 +20,7 @@ class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepos
     // needed for loading status
     override val cameras: LiveData<Resource<List<Camera>>> = Transformations
         .switchMap(_terminalCameraQuery) { input ->
-            input.ifExists { _ ->
+            input.ifExists {
                 cameraRepository.loadCamerasOnRoad("Ferries", false)
             }
         }

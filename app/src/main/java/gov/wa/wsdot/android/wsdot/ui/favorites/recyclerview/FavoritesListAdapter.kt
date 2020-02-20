@@ -45,6 +45,7 @@ class FavoritesListAdapter(
     private val cameraClickCallback: ((Camera) -> Unit)?,
     private val scheduleClickCallback: ((FerrySchedule) -> Unit)?,
     private val passClickCallback: ((MountainPass) -> Unit)?,
+    private val viewCamerasClickCallback: ((BorderCrossing) -> Unit)?,
     private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
     private val locationEditClickCallback: ((FavoriteLocation, View) -> Unit)?,
     private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
@@ -160,7 +161,6 @@ class FavoritesListAdapter(
             }
         }
     }
-
 
     fun setOrderedViewTypes(newOrderedViewTypes: List<Int>){
         this.orderedViewTypes = newOrderedViewTypes
@@ -351,7 +351,6 @@ class FavoritesListAdapter(
         // TODO: crash reporting
         Log.e("debug", "throwing exception in getItem")
         throw Exception()
-
     }
 
     override fun getItemCount(): Int {
@@ -446,7 +445,6 @@ class FavoritesListAdapter(
             false,
             dataBindingComponent
         )
-
     }
 
     private fun createTravelTimeBinding(parent: ViewGroup): TravelTimeItemBinding {
@@ -514,8 +512,8 @@ class FavoritesListAdapter(
             }
         }
 
-        binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
-        binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE
+        binding.favoriteButton.visibility = GONE
+        binding.divider.visibility = VISIBLE
 
         return binding
     }
@@ -551,6 +549,12 @@ class FavoritesListAdapter(
             false,
             dataBindingComponent
         )
+
+        binding.crossingCamerasButton.setOnClickListener {
+            binding.crossing?.let {
+                viewCamerasClickCallback?.invoke(it)
+            }
+        }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE

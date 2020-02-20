@@ -23,6 +23,7 @@ import gov.wa.wsdot.android.wsdot.ui.about.AboutFragment
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesFragment
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.amtrakcascadesschedule.AmtrakCascadesScheduleFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingsFragment
+import gov.wa.wsdot.android.wsdot.ui.bordercrossings.bordercameras.BorderCameraListFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.NorthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraFragment
@@ -199,5 +200,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeGoToLocationBottomSheetFragment(): GoToLocationBottomSheetFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBorderCameraListFragment(): BorderCameraListFragment
 
 }
