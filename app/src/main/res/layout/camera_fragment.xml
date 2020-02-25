@@ -21,46 +21,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/cameraView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:bindCameraImage="@{cameraViewModel.camera}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <TextView
-            android:id="@+id/directionLabel"
-            style="@style/CardSubTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingBottom="8dp"
-            app:bindCameraDirection="@{cameraViewModel.camera}"
-            app:layout_constraintTop_toBottomOf="@id/cameraView"
-            app:layout_constraintStart_toStartOf="parent" />
-
-            <fragment
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:id="@+id/google_map"
-                android:layout_height="240dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/directionLabel"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                map:cameraZoom="15"
-                map:mapType="normal"/>
+                android:layout_height="wrap_content">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/cameraView"
+                android:layout_width="match_parent"
+                android:maxWidth="@dimen/camera_sheet_width"
+                android:layout_height="@dimen/camera_item_height"
+                android:layout_margin="8dp"
+                app:bindCameraImage="@{cameraViewModel.camera}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/directionLabel"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:paddingBottom="8dp"
+                app:bindCameraDirection="@{cameraViewModel.camera}"
+                app:layout_constraintTop_toBottomOf="@id/cameraView"
+                app:layout_constraintStart_toStartOf="parent" />
+
+                <fragment
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/google_map"
+                    android:layout_height="240dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/directionLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    map:cameraZoom="15"
+                    map:mapType="normal"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.cardview.widget.CardView>
 </layout>
