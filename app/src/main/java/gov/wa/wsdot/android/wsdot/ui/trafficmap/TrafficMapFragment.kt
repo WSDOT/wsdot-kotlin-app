@@ -57,11 +57,11 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewMod
 import gov.wa.wsdot.android.wsdot.util.*
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
-import kotlinx.android.parcel.Parcelize
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
+import java.lang.Boolean.getBoolean
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
@@ -194,7 +194,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 if (it.available) {
                     val bottomAppBar = dataBinding.root.findViewById<BottomAppBar>(R.id.bottom_app_bar)
                     bottomAppBar.menu.setGroupVisible(R.id.travel_charts_group, true)
-                    bottomAppBar.menu.findItem(R.id.action_travel_charts).icon = BadgeDrawable.getMenuBadge(context!!, R.drawable.ic_menu_travel_charts, "!")
+                    bottomAppBar.menu.findItem(R.id.action_travel_charts).icon = BadgeDrawable.getMenuBadge(requireContext(), R.drawable.ic_menu_travel_charts, "!")
                 }
             }
         })
@@ -251,7 +251,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_location -> {
-                enableMyLocationWithPermissionCheck()
+                goToMyLocationWithPermissionCheck()
             }
             else -> {}
         }
@@ -281,6 +281,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         mMap.clear()
+
+        enableMyLocationWithPermissionCheck()
 
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -553,7 +555,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         // if a bottom sheet is open override back button to close sheet
         requireActivity()
             .onBackPressedDispatcher
-            .addCallback(this, object : OnBackPressedCallback(true) {
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     binding?.let {
                         if (BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state == STATE_EXPANDED) {
@@ -971,6 +973,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     }
 
     // Location Permission
+
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun enableMyLocation() {
@@ -979,15 +982,20 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     mMap.isMyLocationEnabled = true
+                    requestLocationUpdates()
+                }
+        }
+    }
 
-                    location?.let {
-                        goToUsersLocation(location)
-                    }
-
-                    if (location == null) {
-                        requestLocationUpdate()
-                    }
-
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun goToMyLocation() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    mMap.isMyLocationEnabled = true
+                    requestGoToLocationUpdate()
                 }
         }
     }
@@ -1014,11 +1022,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
     }
 
-    private fun goToUsersLocation(location: Location) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15.0f))
-    }
-
-    private fun requestLocationUpdate() {
+    private fun requestGoToLocationUpdate() {
 
         val locationRequest = LocationRequest()
         locationRequest.numUpdates = 1
@@ -1026,17 +1030,59 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                for (location in locationResult.locations){
-                    goToUsersLocation(location)
-                }
+                goToUsersLocation(locationResult.lastLocation)
             }
         }
 
-        fusedLocationClient.requestLocationUpdates(locationRequest,
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
             locationCallback,
             Looper.getMainLooper())
     }
 
+    private fun goToUsersLocation(location: Location) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15.0f))
+    }
+
+    private fun requestLocationUpdates() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                checkSpeed(locationResult.lastLocation)
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
+
+    // shows a safe driving message if speed is over 9 meters/second and user has not seen message
+    // this session
+    private fun checkSpeed(location: Location) {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val hasSeenDrivingAlert = settings.getBoolean(getString(R.string.pref_key_has_seen_driving_message), true)
+
+        if (!hasSeenDrivingAlert) {
+            if (location.speed > 9) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Looks like you're on the go")
+                builder.setMessage("Please do not use the app while driving.")
+                builder.setPositiveButton("I'm a passenger") { _,_ ->
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.pref_key_has_seen_driving_message), true)
+                    editor.apply()
+                }
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+        }
+    }
 }
 
 

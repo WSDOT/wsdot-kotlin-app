@@ -114,6 +114,8 @@
     <string name="pref_key_current_event">KEY_CURRENT_EVENT</string>
     <string name="pref_key_last_seen_event">KEY_SEEN_EVENT</string>
 
+    <string name="pref_key_has_seen_driving_message">KEY_HAS_SEEN_DRIVING_MESSAGE</string>
+
     <string name="pref_key_theme">CURRENT_THEME_KEY</string>
 
     // nav pref keys
@@ -198,6 +200,7 @@
     <string name="action_remove">remove</string>
     <string name="action_rename">edit name</string>
     <string name="action_express_lanes">Schedule</string>
+
 
 
 </resources>
