@@ -19,6 +19,12 @@ class WsdotApp : Application(), HasActivityInjector {
         setDarkMode(PreferenceManager.getDefaultSharedPreferences(this), getString(R.string.pref_key_user_theme))
         super.onCreate()
 
+        // reset driving message display pref
+        val settings = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = settings.edit()
+        editor.putBoolean(getString(R.string.pref_key_has_seen_driving_message), false)
+        editor.apply()
+
         AppInjector.init(this)
     }
 
@@ -37,6 +43,8 @@ class WsdotApp : Application(), HasActivityInjector {
         }
 
     }
+
+
 
 
 }
