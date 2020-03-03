@@ -1061,8 +1061,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             Looper.getMainLooper())
     }
 
-    // shows a safe driving message if speed is over 9 meters/second and user has not seen message
-    // this session
+    // shows a safe driving message if speed is over 9 meters/second
+    // and user has not seen message this session
     private fun checkSpeed(location: Location) {
 
         val settings = PreferenceManager.getDefaultSharedPreferences(context)
@@ -1071,7 +1071,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         if (!hasSeenDrivingAlert) {
             if (location.speed > 9) {
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Looks like you're on the go")
+                builder.setTitle("You're moving fast")
                 builder.setMessage("Please do not use the app while driving.")
                 builder.setPositiveButton("I'm a passenger") { _,_ ->
                     val editor = settings.edit()
