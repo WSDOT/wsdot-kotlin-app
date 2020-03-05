@@ -1065,22 +1065,26 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // and user has not seen message this session
     private fun checkSpeed(location: Location) {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
-        val hasSeenDrivingAlert = settings.getBoolean(getString(R.string.pref_key_has_seen_driving_message), true)
+        context?.let {
 
-        if (!hasSeenDrivingAlert) {
-            if (location.speed > 9) {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("You're moving fast")
-                builder.setMessage("Please do not use the app while driving.")
-                builder.setPositiveButton("I'm a passenger") { _,_ ->
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.pref_key_has_seen_driving_message), true)
-                    editor.apply()
+            val settings = PreferenceManager.getDefaultSharedPreferences(it)
+            val hasSeenDrivingAlert = settings.getBoolean(getString(R.string.pref_key_has_seen_driving_message), false)
+
+            if (!hasSeenDrivingAlert) {
+                if (location.speed > 9) {
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("You're moving fast")
+                    builder.setMessage("Please do not use the app while driving.")
+                    builder.setPositiveButton("I'm a passenger") { _,_ ->
+                        val editor = settings.edit()
+                        editor.putBoolean(getString(R.string.pref_key_has_seen_driving_message), true)
+                        editor.apply()
+                    }
+                    val dialog: AlertDialog = builder.create()
+                    dialog.show()
                 }
-                val dialog: AlertDialog = builder.create()
-                dialog.show()
             }
+
         }
     }
 }
