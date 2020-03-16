@@ -19,16 +19,13 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
-import com.squareup.picasso.Picasso
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
@@ -136,28 +133,26 @@ object BindingAdapters {
     @BindingAdapter("bindCameraImage")
     fun bindCameraImage(imageView: ImageView, camera: Resource<Camera>) {
         if (camera.data != null) {
-            Picasso.get()
+
+            Glide.with(imageView)
                 .load(camera.data.url + String.format("?%d", Date().time))
                 .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
                 .error(R.drawable.camera_offline)
-                .fit()
-                .memoryPolicy(MemoryPolicy.NO_CACHE)
-                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .skipMemoryCache(true)
                 .centerInside()
                 .into(imageView)
+
         }
     }
 
     @JvmStatic
     @BindingAdapter("bindCameraImage")
     fun bindCameraImage(imageView: ImageView, camera: Camera) {
-        Picasso.get()
+        Glide.with(imageView)
             .load(camera.url + String.format("?%d", Date().time))
             .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
             .error(R.drawable.camera_offline)
-            .fit()
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .networkPolicy(NetworkPolicy.NO_CACHE)
+            .skipMemoryCache(true)
             .centerInside()
             .into(imageView)
     }

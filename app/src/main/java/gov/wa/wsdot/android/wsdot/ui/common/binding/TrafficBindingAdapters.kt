@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
@@ -88,11 +88,12 @@ object TrafficBindingAdapters {
         imageView.visibility = GONE
         tweet.mediaUrl?.let {
             imageView.visibility = VISIBLE
-            Picasso.get()
+            Glide.with(imageView)
                 .load(it)
                 .placeholder(R.drawable.image_progress_animation)
-                .fit()
-                .centerCrop()
+                .skipMemoryCache(true)
+                .centerInside()
+                .fitCenter()
                 .into(imageView)
         }
     }
