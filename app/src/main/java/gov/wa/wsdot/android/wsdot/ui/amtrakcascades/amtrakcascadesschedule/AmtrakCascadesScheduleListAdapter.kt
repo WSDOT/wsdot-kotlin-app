@@ -11,6 +11,9 @@ import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesItemBinding
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
+/**
+ * ListAdapter for amtrak schedule items. Uses data binding layouts
+ */
 class AmtrakCascadesScheduleListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors

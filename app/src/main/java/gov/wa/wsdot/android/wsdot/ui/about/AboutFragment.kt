@@ -17,7 +17,11 @@ import android.net.Uri
 import gov.wa.wsdot.android.wsdot.BuildConfig
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
-
+/**
+ * Fragment that displays about information.
+ * Has links to careers, HOV reporting, app issue reports and feedback
+ * Also display version number
+ */
 class AboutFragment: DaggerFragment(), Injectable {
 
     var binding by autoCleared<AboutFragmentBinding>()

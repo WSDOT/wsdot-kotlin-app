@@ -27,6 +27,10 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
+/**
+ * Fragment displays a list of cameras. Using the
+ * BorderCameraListViewModel for data.
+ */
 class BorderCameraListFragment : DaggerFragment(), Injectable {
 
     @Inject

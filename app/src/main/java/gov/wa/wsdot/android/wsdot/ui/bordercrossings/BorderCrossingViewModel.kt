@@ -9,6 +9,12 @@ import gov.wa.wsdot.android.wsdot.repository.BorderCrossingRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * ViewModel to manage data for border wait times.
+ *
+ * Holds a list of crossing times for a specific direction.
+ * The direction is set by the _crossingDirection val.
+ */
 class BorderCrossingViewModel @Inject constructor(borderCrossingRepository: BorderCrossingRepository) : ViewModel() {
 
     private val repo = borderCrossingRepository

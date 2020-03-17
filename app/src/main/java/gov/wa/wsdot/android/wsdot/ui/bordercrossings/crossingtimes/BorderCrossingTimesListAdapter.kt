@@ -13,6 +13,10 @@ import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.diffcallbacks.BorderCro
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import java.util.*
 
+/**
+ * ListAdapter for border wait items. Uses data binding layouts.
+ * Used by both south and northbound wait times
+ */
 class BorderCrossingTimesListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors,

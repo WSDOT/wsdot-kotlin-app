@@ -23,6 +23,11 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
+/**
+ * Fragment that displays a list of departure and arrival items for an Amtrak schedule.
+ * Needs a origin and optional destination to display times.
+ * Uses the AmtrakCascadesScheduleListAdapter to display data.
+ */
 class AmtrakCascadesScheduleFragment : DaggerFragment(), Injectable {
 
     @Inject
