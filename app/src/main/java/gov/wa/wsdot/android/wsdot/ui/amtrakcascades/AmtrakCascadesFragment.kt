@@ -29,6 +29,11 @@ import permissions.dispatcher.RuntimePermissions
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Fragment that displays a schedule menu for Amtrak Cascades trains/bus services.
+ * Uses location permission to select the origin closest to user.
+ * Includes a link to the official ticket purchase site.
+ */
 @RuntimePermissions
 class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
@@ -36,17 +41,19 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     lateinit var amtrakCascadesViewModel: AmtrakCascadesViewModel
-    lateinit var dayPickerViewModel: SharedDateViewModel
+    private lateinit var dayPickerViewModel: SharedDateViewModel
 
-    var originString = ""
-    var destinationString = ""
+    private var originString = ""
+    private var destinationString = ""
 
+    // view binding - part of Android Data Binding Library
     var binding by autoCleared<AmtrakCascadesFragmentBinding>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        // analytics
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
@@ -80,39 +87,26 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
             false
         )
 
-        dayPickerViewModel.value.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
-            val c = Calendar.getInstance()
-            if (date != null) {
-                c.time = date
-            }
-            c.set(Calendar.HOUR_OF_DAY, 0)
-            c.set(Calendar.MINUTE, 0)
-            c.set(Calendar.SECOND, 0)
-            c.set(Calendar.MILLISECOND, 0)
-            amtrakCascadesViewModel.setDeparturesQuery(c.time)
-
-        })
-
+        // init origin
         amtrakCascadesViewModel.selectedOrigin.observe(viewLifecycleOwner, Observer { origin ->
             amtrakCascadesViewModel.setDeparturesQuery(origin = origin.second, destination = null)
             origin?.let { originString = it.first }
         })
 
+        // init destination
         amtrakCascadesViewModel.selectedDestination.observe(viewLifecycleOwner, Observer { destination ->
             amtrakCascadesViewModel.setDeparturesQuery(origin = null, destination = destination.second)
             destination?.let { destinationString = it.first }
         })
 
-        // Adjust title based on selection, if user picks same origin destination, set title
-        // to just departures from origin
+        // Adjust title for the schedule screen based on user selection.
+        // If user picks same origin destination, set title to just departures from origin
         dataBinding.submitButton.setOnClickListener {
 
             var title = "$originString to $destinationString"
-
             if (originString == destinationString || destinationString == "All") {
                 title = "$originString Departures"
             }
-
             if (findNavController().currentDestination?.id != R.id.navAmtrakCascadesScheduleFragment) {
                 val action =
                     AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToNavAmtrakCascadesScheduleFragment(
@@ -122,6 +116,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
             }
         }
 
+        // Add link to the buy tickets button
         dataBinding.buyTicketsButton.setOnClickListener {
             if (findNavController().currentDestination?.id != R.id.navWebViewFragment) {
                 val action = AmtrakCascadesFragmentDirections.actionGlobalNavWebViewFragment(
@@ -139,13 +134,38 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         binding = dataBinding
 
-        // set date range for today to 14 days out
+        initDatePicker()
+
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setClosestStationWithPermissionCheck()
+    }
+
+    private fun initDatePicker(){
+
+        // initialize the date picker
+        dayPickerViewModel.value.observe(viewLifecycleOwner, androidx.lifecycle.Observer { date ->
+            val c = Calendar.getInstance()
+            if (date != null) {
+                c.time = date
+            }
+            c.set(Calendar.HOUR_OF_DAY, 0)
+            c.set(Calendar.MINUTE, 0)
+            c.set(Calendar.SECOND, 0)
+            c.set(Calendar.MILLISECOND, 0)
+            amtrakCascadesViewModel.setDeparturesQuery(c.time)
+
+        })
+
+        // set schedule date range for today to 14 days out
         val c = Calendar.getInstance()
         c.set(Calendar.HOUR_OF_DAY, 0)
         c.set(Calendar.MINUTE, 0)
         c.set(Calendar.SECOND, 0)
         c.set(Calendar.MILLISECOND, 0)
-
         val startTime = c.time
         c.add(Calendar.DAY_OF_YEAR, 28) // allow users to check departures up to 28 days out
         val endTime = c.time
@@ -159,12 +179,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                 Handler().postDelayed({ view.isEnabled = true }, 1000)
             }
         }
-        return dataBinding.root
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setClosestStationWithPermissionCheck()
     }
 
     @SuppressLint("MissingPermission")
