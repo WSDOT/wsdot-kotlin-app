@@ -13,12 +13,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
+/**
+ *  ViewModel to manage schedule data for Amtrak Cascades
+ *
+ *
+ */
 class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: AmtrakCascadesRepository) : ViewModel() {
-
-    private val _departuresQuery: MutableLiveData<DeparturesQuery> = MutableLiveData()
 
     private var didFindNearestStation = false
 
+    private val _departuresQuery: MutableLiveData<DeparturesQuery> = MutableLiveData()
+
+    // repo data with departure information for route queried byu the _departuresQuery Class
     private val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = Transformations
         .switchMap(_departuresQuery) { input ->
             input.ifExists { date, fromLocation, toLocation ->
@@ -26,9 +32,12 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
             }
         }
 
+    // holds pairs of schedules, the first item is for the departure from an origin, the
+    // second holds the arrival time at a destination.
     val schedulePairs: MediatorLiveData<Resource<List<Pair<AmtrakScheduleResponse, AmtrakScheduleResponse?>>>> = MediatorLiveData()
 
-    // Used by spinner
+    // Lists of  available stations
+    // used by origin spinner
     val originStations : List<Pair<String, String>> = arrayListOf(
         Pair("Vancouver, BC", "VAC"),
         Pair("Bellingham, WA", "BEL"),
@@ -49,7 +58,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         Pair("Albany, OR", "ALY"),
         Pair("Eugene, OR", "EUG")
     )
-
+    // used by destination spinner
     val destinationStations : List<Pair<String, String>> = arrayListOf(
         Pair("All", "N/A"),
         Pair("Vancouver, BC", "VAC"),
@@ -83,6 +92,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         get() = _selectedDestination
 
     init {
+
         selectedOrigin.value = originStations[0]
         selectedDestination.value = destinationStations[0]
 
