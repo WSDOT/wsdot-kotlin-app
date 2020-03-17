@@ -14,9 +14,8 @@ import java.util.*
 import javax.inject.Inject
 
 /**
- *  ViewModel to manage schedule data for Amtrak Cascades
- *
- *
+ * ViewModel to manage schedule data for Amtrak Cascades
+ * Uses the AmtrakCascadesRepository to load in data from the WSDOT API.
  */
 class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: AmtrakCascadesRepository) : ViewModel() {
 

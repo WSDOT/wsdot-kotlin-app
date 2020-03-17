@@ -2,6 +2,9 @@ package gov.wa.wsdot.android.wsdot.ui.amtrakcascades.helpers
 
 import com.google.android.gms.maps.model.LatLng
 
+/**
+ *  Helper class that holds lat/longs for amtrak stations.
+ */
 object AmtrakUtils {
 
     fun getStationLocations(): Map<String, LatLng> {

@@ -5,9 +5,22 @@ import androidx.databinding.BindingAdapter
 import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
 import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingAdapters
 
-
+/**
+ * Class that holds Amtrak specific functions for data binding.
+ */
 object AmtrakCascadesBindingAdapters {
 
+    /**
+     *  Given a departure item displays first available from:
+     *  1. actual arrival
+     *  2. schedule arrival
+     *  3. actual departure
+     *  4. scheduled departure
+     *
+     *  This handles unique case where no arrival time is listen, and instead
+     *  a departure time is given in it's place. Can happen when trains make quick
+     *  stops and aren't given arrival times at a destination.
+     */
     @JvmStatic
     @BindingAdapter("bindDepartureDateHour")
     fun bindDepartureDateHour(textView: TextView, departureItem: AmtrakScheduleResponse?) {
@@ -31,6 +44,10 @@ object AmtrakCascadesBindingAdapters {
         }
     }
 
+    /**
+     *  displays an arrival time for train schedules, handles similar
+     *  edge case as the binding method for departure times.
+     */
     @JvmStatic
     @BindingAdapter("bindArrivalDateHour")
     fun bindArrivalDateHour(textView: TextView, arrivalItem: AmtrakScheduleResponse?) {
@@ -55,6 +72,9 @@ object AmtrakCascadesBindingAdapters {
         }
     }
 
+    /**
+     * Given a station code returns a display name for the station
+     */
     @JvmStatic
     @BindingAdapter("bindTrainStationName")
     fun bindTrainStationName(textView: TextView, station: String?) {
@@ -81,6 +101,9 @@ object AmtrakCascadesBindingAdapters {
         }
     }
 
+    /**
+     *  Maps train/bus numbers to display name strings
+     */
     @JvmStatic
     @BindingAdapter("bindTrainNumber")
     fun bindTrainNumber(textView: TextView, trainNumber: Int) {

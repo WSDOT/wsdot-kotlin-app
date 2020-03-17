@@ -10,6 +10,10 @@ import gov.wa.wsdot.android.wsdot.ui.cameras.DataBoundCameraListViewModel
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * ViewModel that holds a list of cameras returned from a query using fields from the
+ * BorderCameraQuery values.
+ */
 class BorderCameraListViewModel @Inject constructor(cameraRepository: CameraRepository) : DataBoundCameraListViewModel, ViewModel() {
 
     private val cameraRepo = cameraRepository

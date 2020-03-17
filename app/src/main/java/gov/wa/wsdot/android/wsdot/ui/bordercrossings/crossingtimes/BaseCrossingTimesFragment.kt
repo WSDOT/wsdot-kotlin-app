@@ -26,11 +26,15 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import java.util.*
 import javax.inject.Inject
 
+/**
+ *  A base fragment that needs a get direction implementation for querying data.
+ *  displays wait times using data binding
+ */
 abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var borderCrossingViewModel: BorderCrossingViewModel
+    private lateinit var borderCrossingViewModel: BorderCrossingViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -132,6 +136,14 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
     abstract fun getDirection(): String
 
+    /**
+     * holds maps that are used to get cameras related to each route.
+     * values are used to query the cameras repo to retrieve cameras.
+     *
+     * First maps a route number to a route name.
+     * The second maps a route number to a min latitude for displaying cameras north of the given
+     * latitude.
+     */
     companion object BorderCameraInfo {
 
         val northboundRoadNames = mapOf(

@@ -6,6 +6,11 @@ import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.NorthboundCro
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes.SouthboundCrossingTimesFragment
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleTabFragment
 
+/**
+ * Tab Fragment for displaying Border wait times
+ * requires titles and fragments to be set.
+ * Southbound times are currently disabled.
+ */
 class BorderCrossingsFragment : SimpleTabFragment(), Injectable {
 
     // Only show northbound until further notice.
