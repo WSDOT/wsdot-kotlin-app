@@ -1,5 +1,4 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries
-
 /*
  * Copyright (C) 2017 The Android Open Source Project
  *

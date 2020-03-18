@@ -46,6 +46,18 @@ import java.util.Calendar.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
+/**
+ * Fragment with tab layout that holds the 3 main ferry fragments used to display
+ * information about a specific route (sailing times, cameras, vessel watch).
+ * Holds menus for selecting sailing terminal combo (origin and destination) and sailing date.
+ *
+ * Uses location permission to select the departure terminal closest to the user.
+ * Allows users to favorite sailing route.
+ *
+ * Observes changes to the day picker and FerriesRouteViewModel#terminals two-way data bound
+ * values to make changes to the currently displayed sailings.
+ *
+ */
 @RuntimePermissions
 class FerriesRouteFragment : DaggerFragment(), Injectable {
 
@@ -133,12 +145,9 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         })
 
         // observe the schedule item to update the favorite icon
-        routeViewModel.route.observe(viewLifecycleOwner, Observer { schedule ->
-            if (schedule.data != null) {
-                isFavorite = schedule.data.favorite
-                activity?.invalidateOptionsMenu()
-            }
-
+        routeViewModel.isFavoriteRoute.observe(viewLifecycleOwner, Observer {
+            isFavorite = it
+            activity?.invalidateOptionsMenu()
         })
 
         // observe terminal combo changes. the terminalCombo is two way data bound to the UI selector

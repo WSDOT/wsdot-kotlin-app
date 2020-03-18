@@ -11,27 +11,43 @@ import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * ViewModel that handles retrieval of route info from the FerriesRepository using
+ * a query based on the values of a RouteIdQuery.
+ *
+ * provides UI with terminal pairs for selecting origin/destinations as well
+ * as a the available range of schedule data for the route.
+ *
+ * Also holds logic for refreshing data and setting route as a favorite.
+ *
+ */
 class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesRepository) : ViewModel() {
 
     private val repo = ferriesRepository
+    private val _routeIdQuery: MutableLiveData<RouteIdQuery> = MutableLiveData()
 
-    private val _routeId: MutableLiveData<RouteId> = MutableLiveData()
-    val routeId: LiveData<RouteId>
-        get() = _routeId
-
+    // used by day picker to present available sailing dates.
     val scheduleRange: LiveData<FerryScheduleRange> = Transformations
-        .switchMap(_routeId) { routeId ->
+        .switchMap(_routeIdQuery) { routeId ->
             ferriesRepository.loadScheduleRange(routeId.routeId)
         }
 
-    val route : LiveData<Resource<FerrySchedule>> = Transformations
-        .switchMap(_routeId) { routeId ->
+    private val _route : LiveData<Resource<FerrySchedule>> = Transformations
+        .switchMap(_routeIdQuery) { routeId ->
             ferriesRepository.loadSchedule(routeId.routeId, routeId.needsRefresh)
         }
 
+    val isFavoriteRoute: MediatorLiveData<Boolean> = MediatorLiveData()
+
+    init {
+        isFavoriteRoute.addSource(_route) {
+            isFavoriteRoute.value = it.data?.favorite ?: false
+        }
+    }
+
     // Used by spinner
     val terminals : LiveData<Resource<List<TerminalCombo>>> = Transformations
-        .switchMap(_routeId) { routeId ->
+        .switchMap(_routeIdQuery) { routeId ->
             ferriesRepository.loadTerminalCombos(routeId.routeId, routeId.needsRefresh)
         }
 
@@ -42,11 +58,11 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
 
 
     fun setRouteId(newRouteId: Int) {
-        val update = RouteId(newRouteId, false)
-        if (_routeId.value == update) {
+        val update = RouteIdQuery(newRouteId, false)
+        if (_routeIdQuery.value == update) {
             return
         }
-        _routeId.value = update
+        _routeIdQuery.value = update
     }
 
     /*
@@ -81,20 +97,20 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
     }
 
     fun updateFavorite(routeId: Int) {
-        val favorite = route.value?.data?.favorite
+        val favorite = _route.value?.data?.favorite
         if (favorite != null) {
             repo.updateFavorite(routeId, !favorite)
         }
     }
 
     fun refresh() {
-        val routeId = _routeId.value?.routeId
+        val routeId = _routeIdQuery.value?.routeId
         if (routeId != null) {
-            _routeId.value = RouteId(routeId, true)
+            _routeIdQuery.value = RouteIdQuery(routeId, true)
         }
     }
 
-    data class RouteId(val routeId: Int, val needsRefresh: Boolean) {
+    data class RouteIdQuery(val routeId: Int, val needsRefresh: Boolean) {
         fun <T> ifExists(f: (Int, Boolean) -> LiveData<T>): LiveData<T> {
             return if (routeId == 0) {
                 AbsentLiveData.create()
