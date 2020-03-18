@@ -8,6 +8,9 @@ import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * View model that returns a list of every camera in the database.
+ */
 class CamerasViewModel @Inject constructor(cameraRepository: CameraRepository) : ViewModel() {
 
     private val repo = cameraRepository
@@ -26,5 +29,4 @@ class CamerasViewModel @Inject constructor(cameraRepository: CameraRepository) :
         camerasLiveData = repo.loadCameras(true)
         cameras.addSource(camerasLiveData) { cameras.value = it }
     }
-
 }

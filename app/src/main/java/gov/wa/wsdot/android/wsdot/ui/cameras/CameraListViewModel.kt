@@ -9,14 +9,18 @@ import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * ViewModel that handles retrieval of a cameras from the CameraRepository using
+ * a query based on the values of a CameraQuery.
+ */
 class CameraListViewModel @Inject constructor(cameraRepository: CameraRepository) : DataBoundCameraListViewModel, ViewModel() {
 
     private val cameraRepo = cameraRepository
-    private val _cameraQuery: MutableLiveData<CamerasQuery> = MutableLiveData()
+    private val _camerasQuery: MutableLiveData<CamerasQuery> = MutableLiveData()
 
     // used for loading & display status
     override val cameras: LiveData<Resource<List<Camera>>> = Transformations
-        .switchMap(_cameraQuery) { input ->
+        .switchMap(_camerasQuery) { input ->
             input.ifExists { cameraIds ->
                 cameraRepo.loadCamerasWithIds(cameraIds, false)
             }
@@ -27,17 +31,17 @@ class CameraListViewModel @Inject constructor(cameraRepository: CameraRepository
     }
 
     override fun refresh() {
-        val pass = _cameraQuery.value?.cameraIds
+        val pass = _camerasQuery.value?.cameraIds
         if (pass != null) {
-            _cameraQuery.value = CamerasQuery(pass)
+            _camerasQuery.value = CamerasQuery(pass)
         }
     }
 
     fun setCamerasQuery(cameraIds: List<Int>) {
         val update =
             CamerasQuery(cameraIds)
-        if (_cameraQuery.value == update) { return }
-        _cameraQuery.value = update
+        if (_camerasQuery.value == update) { return }
+        _camerasQuery.value = update
     }
 
     data class CamerasQuery(val cameraIds: List<Int>) {

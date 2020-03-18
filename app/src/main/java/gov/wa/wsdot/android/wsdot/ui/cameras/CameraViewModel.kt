@@ -10,6 +10,10 @@ import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.network.Resource
 import javax.inject.Inject
 
+/**
+ * ViewModel that handles retrieval of a camera item from the CameraRepository using
+ * a query based on the values of a CameraQuery.
+ */
 class CameraViewModel @Inject constructor(cameraRepository: CameraRepository) : ViewModel() {
 
     private val _cameraQuery: MutableLiveData<CameraQuery> = MutableLiveData()
