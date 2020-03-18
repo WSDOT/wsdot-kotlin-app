@@ -25,6 +25,10 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
+/**
+ * displays a list of camera items using data supplied by a
+ * CameraListViewModel
+ */
 class CameraListFragment : DaggerFragment(), Injectable {
 
     @Inject

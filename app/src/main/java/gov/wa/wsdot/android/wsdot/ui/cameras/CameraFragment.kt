@@ -28,6 +28,11 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import java.util.*
 import javax.inject.Inject
 
+/**
+ * Fragment displays a single camera item with data from CameraViewModel
+ * Refreshes camera image every 2 minutes.
+ * Allows user to mark a camera as a favorite in their favorites list.
+ */
 class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     @Inject
@@ -104,7 +109,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     }
                 }
             },
-            60000,
+            120000,
             120000
         )
 

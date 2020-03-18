@@ -19,8 +19,6 @@ import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListAdapter
-import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListFragmentArgs
-import gov.wa.wsdot.android.wsdot.ui.cameras.CameraListViewModel
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
