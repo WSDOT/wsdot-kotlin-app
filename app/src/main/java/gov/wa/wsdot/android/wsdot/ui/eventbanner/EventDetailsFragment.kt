@@ -17,6 +17,12 @@ import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
+/**
+ * Fragment displays dynamic event banner details.
+ * The event banner displays in the navigation bar when
+ * activated. Activation occurs when server data is set
+ * for the app to display, otherwise it's hidden
+ */
 class EventDetailsFragment : DaggerFragment(), Injectable {
 
     @Inject

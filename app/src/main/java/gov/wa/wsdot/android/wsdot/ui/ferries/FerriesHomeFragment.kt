@@ -26,6 +26,11 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.network.Status
 import javax.inject.Inject
 
+/**
+ * Fragment shows all available ferry schedules retrieved from the
+ * ferries view model. Also includes two links, one the ticket purchase site
+ * and the other to the reservation page.
+ */
 class FerriesHomeFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -77,24 +82,32 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = ferriesViewModel
 
         dataBinding.reservationButton.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx"))
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://secureapps.wsdot.wa.gov/ferries/reservations/vehicle/Mobile/MobileDefault.aspx")
+            )
             startActivity(browserIntent)
         }
 
         dataBinding.buyTicketsButton.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wave2go.wsdot.com/webstore/landingPage?cg=21&c=76"))
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://wave2go.wsdot.com/webstore/landingPage?cg=21&c=76")
+            )
             startActivity(browserIntent)
         }
 
         dataBinding.vesselWatchButton.setOnClickListener {
-            val action = FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavVesselWatchFragment()
+            val action =
+                FerriesHomeFragmentDirections.actionNavFerriesRouteFragmentToNavVesselWatchFragment()
             findNavController().navigate(action)
         }
 
         binding = dataBinding
 
         // animation
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(R.transition.move)
 
         return dataBinding.root
 
@@ -107,11 +120,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
 
         // pass function to be called on adapter item tap and favorite
         val adapter = FerryScheduleListAdapter(dataBindingComponent, appExecutors,
-            {
-                schedule -> navigateToRoute(schedule.routeId, schedule.description)
+            { schedule ->
+                navigateToRoute(schedule.routeId, schedule.description)
             },
-            {
-                schedule -> ferriesViewModel.updateFavorite(schedule.routeId, !schedule.favorite)
+            { schedule ->
+                ferriesViewModel.updateFavorite(schedule.routeId, !schedule.favorite)
             })
 
         this.adapter = adapter
@@ -137,7 +150,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
                 adapter.submitList(emptyList())
             }
             if (routeResource.status == Status.ERROR) {
-                Toast.makeText(context, getString(R.string.loading_error_message), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.loading_error_message),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
