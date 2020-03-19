@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
-import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -10,6 +9,14 @@ import gov.wa.wsdot.android.wsdot.util.network.Resource
 import java.util.*
 import javax.inject.Inject
 
+/**
+ *  ViewModel for retrieving sailings data from the FerriesRepository.
+ *
+ *  loads data from three different sources (sailings, spaces, vessels) into one FerrySailingsWithSpaces mediator object.
+ *  We need to check all there points to kick off refreshes for the three different data sources.
+ *
+ *  Fetches sailings based on values in the SailingQuery object.
+ */
 class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepository, vesselRepository: VesselRepository) : ViewModel() {
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
