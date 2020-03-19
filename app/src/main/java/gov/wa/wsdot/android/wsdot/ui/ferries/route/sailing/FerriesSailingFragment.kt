@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,10 @@ import gov.wa.wsdot.android.wsdot.util.network.Status
 import java.util.*
 import javax.inject.Inject
 
-
+/**
+ * Fragment displays sailing times for a given route on a given day.
+ * manages a timer to refresh sailing space data when available.
+ */
 class FerriesSailingFragment : DaggerFragment(), Injectable {
 
     @Inject

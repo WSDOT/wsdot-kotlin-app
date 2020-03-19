@@ -18,7 +18,26 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
-
+/**
+ *  Repository that handles ferry schedule data.
+ *
+ *  Supplies methods to pull in ferry schedules information.
+ *  The main data this repo provides is the FerrySailingWithSpaces.
+ *
+ *  FerrySailingWithSpaces takes values from the FerrySchedule, FerrySpace and Vessel entities and
+ *  combines them into a single object ready for presentation in the UI.
+ *
+ *         SERVER      |          DATABASE          |      DB & PRESENTATION
+ *  Schedule datafile -|-> FerrySchedule Entity --  |
+ *                     |                          \ |
+ *  Spaces API --------|-> FerrySpace Entity -------|-> FerrySailingWithSpaces Entity
+ *                     |                        /   |
+ *  Vessel API --------|-> Vessel Entity -------    |
+ *                     |                            |
+ *
+ *  Because of this to have a fully updated FerrySailingsWithSpaces Entity we must call
+ *  loadSchedules(), loadSpaces() and VesselRepository#loadVessels().
+ */
 @Singleton
 class FerriesRepository @Inject constructor(
     private val dataWebservice: WebDataService,
@@ -118,6 +137,8 @@ class FerriesRepository @Inject constructor(
         }.asLiveData()
     }
 
+    // updates the FerrySpace table of the database while returning a merged table of sailings,
+    // spaces, and vessel status for given route.
     fun loadSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailingWithSpaces>>> {
 
         return object : NetworkBoundResource<List<FerrySailingWithSpaces>, FerrySpacesResponse>(appExecutors) {
