@@ -5,13 +5,12 @@ import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
-import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

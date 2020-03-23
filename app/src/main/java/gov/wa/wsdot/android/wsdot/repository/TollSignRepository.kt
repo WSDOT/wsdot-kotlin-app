@@ -9,8 +9,8 @@ import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 import org.json.JSONException

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocationDao
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import gov.wa.wsdot.android.wsdot.util.network.DBResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.DBResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton

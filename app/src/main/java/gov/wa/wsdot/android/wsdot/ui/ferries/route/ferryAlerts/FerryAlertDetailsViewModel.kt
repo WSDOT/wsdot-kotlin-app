@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class FerryAlertDetailsViewModel @Inject constructor(ferryRepository: FerriesRepository): ViewModel() {

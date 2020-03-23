@@ -39,7 +39,7 @@ import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnShowRationale

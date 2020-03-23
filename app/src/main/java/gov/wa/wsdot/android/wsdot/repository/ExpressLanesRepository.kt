@@ -5,8 +5,8 @@ import gov.wa.wsdot.android.wsdot.api.ApiResponse
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.traffic.ExpressLanesStatusResponse
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import gov.wa.wsdot.android.wsdot.util.network.NetworkResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 import javax.inject.Singleton
 

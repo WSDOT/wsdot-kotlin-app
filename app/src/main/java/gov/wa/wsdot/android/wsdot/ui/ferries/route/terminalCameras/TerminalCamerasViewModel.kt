@@ -8,7 +8,7 @@ import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.ui.cameras.DataBoundCameraListViewModel
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepository) : DataBoundCameraListViewModel, ViewModel() {

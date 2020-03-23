@@ -8,7 +8,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 /**

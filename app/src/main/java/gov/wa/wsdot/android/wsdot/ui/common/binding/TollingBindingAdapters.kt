@@ -1,19 +1,13 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
-import android.R
 import android.graphics.Color
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Spinner
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
-import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 
 object TollingBindingAdapters {
 

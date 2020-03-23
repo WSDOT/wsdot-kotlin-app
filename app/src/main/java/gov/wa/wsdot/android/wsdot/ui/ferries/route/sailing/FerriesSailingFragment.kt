@@ -19,7 +19,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import java.util.*
 import javax.inject.Inject
 

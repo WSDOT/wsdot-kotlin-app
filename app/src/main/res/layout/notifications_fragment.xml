@@ -5,8 +5,8 @@
 
     <data>
 
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status" />
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
         <import type="gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel" />
 

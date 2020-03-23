@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Status" />
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Resource" />
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status" />
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Resource" />
 
         <variable
             name="dateViewModel"

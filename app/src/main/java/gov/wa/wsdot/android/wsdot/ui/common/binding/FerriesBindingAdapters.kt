@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.R
 import android.graphics.Color
-import android.util.TypedValue
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
@@ -14,7 +13,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.util.*
 
 /**

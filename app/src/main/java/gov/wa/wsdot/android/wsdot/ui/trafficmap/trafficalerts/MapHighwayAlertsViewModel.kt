@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.LatLngBoundQuery
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class MapHighwayAlertsViewModel @Inject constructor(highwayAlertRepository: HighwayAlertRepository) : ViewModel() {

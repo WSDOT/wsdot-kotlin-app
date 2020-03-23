@@ -5,7 +5,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.util.*
 import javax.inject.Inject
 

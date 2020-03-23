@@ -15,7 +15,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import javax.inject.Inject
 
 class PassConditionsFragment : DaggerFragment(), Injectable {

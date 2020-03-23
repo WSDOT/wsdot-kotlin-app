@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.util.network
+package gov.wa.wsdot.android.wsdot.model.common
 
 /*
  * Copyright (C) 2017 The Android Open Source Project

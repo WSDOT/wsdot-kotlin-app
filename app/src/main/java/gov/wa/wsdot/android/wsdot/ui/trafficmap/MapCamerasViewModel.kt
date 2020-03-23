@@ -1,16 +1,13 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLngBounds
-import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class MapCamerasViewModel @Inject constructor(cameraRepository: CameraRepository) : ViewModel() {

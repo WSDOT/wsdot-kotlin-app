@@ -7,8 +7,8 @@ import gov.wa.wsdot.android.wsdot.repository.AmtrakCascadesRepository
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.helpers.AmtrakUtils
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.util.DistanceUtils
-import gov.wa.wsdot.android.wsdot.util.network.Resource
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

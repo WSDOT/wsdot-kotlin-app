@@ -29,7 +29,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 

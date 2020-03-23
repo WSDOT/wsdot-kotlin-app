@@ -21,7 +21,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportViewModel
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import javax.inject.Inject
 
 class PassForecastListFragment : DaggerFragment(), Injectable {

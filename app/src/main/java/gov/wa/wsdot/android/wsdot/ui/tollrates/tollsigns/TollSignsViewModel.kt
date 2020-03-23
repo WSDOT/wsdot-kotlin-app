@@ -5,7 +5,7 @@ import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.TollSignRepository
 import gov.wa.wsdot.android.wsdot.repository.TravelTimesRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class TollSignsViewModel @Inject constructor(

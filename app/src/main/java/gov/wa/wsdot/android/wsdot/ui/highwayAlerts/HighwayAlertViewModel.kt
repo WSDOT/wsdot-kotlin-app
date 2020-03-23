@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class HighwayAlertViewModel @Inject constructor(highwayAlertsRepository: HighwayAlertRepository) : ViewModel() {

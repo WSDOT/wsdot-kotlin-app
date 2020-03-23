@@ -7,8 +7,8 @@ import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
 import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopicDao
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
