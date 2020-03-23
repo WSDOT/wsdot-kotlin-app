@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
@@ -8,8 +7,8 @@ import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPassDao
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

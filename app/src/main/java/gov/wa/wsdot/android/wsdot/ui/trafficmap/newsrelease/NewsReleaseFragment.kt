@@ -24,7 +24,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 
 
 class NewsReleaseFragment : DaggerFragment(), Injectable {

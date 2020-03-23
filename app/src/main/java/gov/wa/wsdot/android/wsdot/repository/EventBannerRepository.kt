@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.ApiResponse
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.response.EventStatusResponse
-import gov.wa.wsdot.android.wsdot.util.network.NetworkResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 
 @Singleton
 class EventBannerRepository @Inject constructor(

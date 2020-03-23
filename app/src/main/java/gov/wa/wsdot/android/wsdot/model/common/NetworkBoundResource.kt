@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.util.network
+package gov.wa.wsdot.android.wsdot.model.common
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
@@ -41,7 +41,10 @@ abstract class NetworkBoundResource<ResultType, RequestType>
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
-        result.value = Resource.loading(null)
+        result.value =
+            Resource.loading(
+                null
+            )
         @Suppress("LeakingThis")
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
@@ -50,7 +53,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                 fetchFromNetwork(dbSource)
             } else {
                 result.addSource(dbSource) { newData ->
-                    setValue(Resource.success(newData))
+                    setValue(
+                        Resource.success(
+                            newData
+                        )
+                    )
                 }
             }
         }
@@ -67,7 +74,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource) { newData ->
-            setValue(Resource.loading(newData))
+            setValue(
+                Resource.loading(
+                    newData
+                )
+            )
         }
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
@@ -81,7 +92,11 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                             // otherwise we will get immediately last cached value,
                             // which may not be updated with latest results received from network.
                             result.addSource(loadFromDb()) { newData ->
-                                setValue(Resource.success(newData))
+                                setValue(
+                                    Resource.success(
+                                        newData
+                                    )
+                                )
                             }
                         }
                     }
@@ -90,14 +105,23 @@ abstract class NetworkBoundResource<ResultType, RequestType>
                     appExecutors.mainThread().execute {
                         // reload from disk whatever we had
                         result.addSource(loadFromDb()) { newData ->
-                            setValue(Resource.success(newData))
+                            setValue(
+                                Resource.success(
+                                    newData
+                                )
+                            )
                         }
                     }
                 }
                 is ApiErrorResponse -> {
                     onFetchFailed()
                     result.addSource(dbSource) { newData ->
-                        setValue(Resource.error(response.errorMessage, newData))
+                        setValue(
+                            Resource.error(
+                                response.errorMessage,
+                                newData
+                            )
+                        )
                     }
                 }
             }

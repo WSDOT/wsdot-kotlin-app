@@ -1,11 +1,9 @@
 package gov.wa.wsdot.android.wsdot.ui.socialmedia
 
 import androidx.lifecycle.*
-import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.repository.TwitterRepository
-import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository) : ViewModel() {

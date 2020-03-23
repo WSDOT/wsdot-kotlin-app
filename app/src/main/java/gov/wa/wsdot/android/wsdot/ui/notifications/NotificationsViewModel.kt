@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
 import gov.wa.wsdot.android.wsdot.repository.NotificationTopicRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 

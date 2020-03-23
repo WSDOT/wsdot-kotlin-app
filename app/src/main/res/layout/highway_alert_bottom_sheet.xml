@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Status"/>
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status"/>
         <variable
             name="viewModel"
             type="gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel" />

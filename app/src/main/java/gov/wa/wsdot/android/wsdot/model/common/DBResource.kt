@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.util.network
+package gov.wa.wsdot.android.wsdot.model.common
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
@@ -18,11 +18,18 @@ abstract class DBResource<ResultType>
     private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
-        result.value = Resource.loading(null)
+        result.value =
+            Resource.loading(
+                null
+            )
         @Suppress("LeakingThis")
         val dbSource = loadFromDb()
         result.addSource(dbSource) { data ->
-            setValue(Resource.success(data))
+            setValue(
+                Resource.success(
+                    data
+                )
+            )
         }
     }
 

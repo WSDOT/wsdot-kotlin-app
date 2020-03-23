@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.util.network
+package gov.wa.wsdot.android.wsdot.model.common
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
@@ -15,7 +15,10 @@ internal constructor(private val appExecutors: AppExecutors) {
     private val result = MediatorLiveData<Resource<RequestType>>()
 
     init {
-        result.value = Resource.loading(null)
+        result.value =
+            Resource.loading(
+                null
+            )
 
         val apiResponse = this.createCall()
         result.addSource(apiResponse) { response ->
@@ -23,20 +26,30 @@ internal constructor(private val appExecutors: AppExecutors) {
                 is ApiSuccessResponse -> {
                     appExecutors.mainThread().execute {
                         // reload from disk whatever we had
-                        result.value = Resource.success(response.body)
+                        result.value =
+                            Resource.success(
+                                response.body
+                            )
                         asLiveData()
                     }
                 }
                 is ApiEmptyResponse -> {
                     appExecutors.mainThread().execute {
                         // reload from disk whatever we had
-                        result.value = Resource.success(null)
+                        result.value =
+                            Resource.success(
+                                null
+                            )
                         asLiveData()
                     }
                 }
                 is ApiErrorResponse -> {
 
-                    result.value = Resource.error(response.errorMessage, null);
+                    result.value =
+                        Resource.error(
+                            response.errorMessage,
+                            null
+                        );
                     onFetchFailed()
                 }
             }

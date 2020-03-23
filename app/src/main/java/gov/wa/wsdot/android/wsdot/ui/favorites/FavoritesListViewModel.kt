@@ -10,9 +10,8 @@ import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.*
 import gov.wa.wsdot.android.wsdot.ui.favorites.items.*
-import gov.wa.wsdot.android.wsdot.util.network.DBResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import javax.inject.Inject
 
 class FavoritesListViewModel @Inject constructor(

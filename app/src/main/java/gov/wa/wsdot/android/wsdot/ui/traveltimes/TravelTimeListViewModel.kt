@@ -3,7 +3,7 @@ package gov.wa.wsdot.android.wsdot.ui.traveltimes
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.repository.TravelTimesRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class TravelTimeListViewModel @Inject constructor(travelTimesRepository: TravelTimesRepository):  ViewModel() {

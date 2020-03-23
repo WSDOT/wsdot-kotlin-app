@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.api.response.traffic.ExpressLanesStatusResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.ExpressLanesStatusResponse.ExpressLanes
 import gov.wa.wsdot.android.wsdot.repository.ExpressLanesRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class ExpressLanesViewModel @Inject constructor(expressLanesRepository: ExpressLanesRepository) : ViewModel() {

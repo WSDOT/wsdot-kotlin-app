@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="gov.wa.wsdot.android.wsdot.util.network.Status"/>
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status"/>
 
         <variable
             name="highwayAlert"

@@ -7,8 +7,8 @@ import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.network.NetworkBoundResource
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.socialmedia
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +23,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.util.network.Status
+import gov.wa.wsdot.android.wsdot.model.common.Status
 
 class TwitterFragment : DaggerFragment(), Injectable {
 

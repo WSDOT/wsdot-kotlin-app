@@ -3,7 +3,7 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts
 import androidx.lifecycle.*
 import gov.wa.wsdot.android.wsdot.api.response.traffic.TravelChartsStatusResponse
 import gov.wa.wsdot.android.wsdot.repository.TravelChartsRepository
-import gov.wa.wsdot.android.wsdot.util.network.Resource
+import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
 class TravelChartsViewModel @Inject constructor(travelChartsRepository: TravelChartsRepository) : ViewModel() {
