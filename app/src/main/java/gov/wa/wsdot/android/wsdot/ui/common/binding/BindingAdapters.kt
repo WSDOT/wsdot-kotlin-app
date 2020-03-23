@@ -33,7 +33,6 @@ import gov.wa.wsdot.android.wsdot.model.common.Resource
 import java.text.SimpleDateFormat
 import java.util.*
 
-
 /**
  * Data Binding adapters specific to the app.
  */
@@ -90,7 +89,6 @@ object BindingAdapters {
 
 
     // General adapters
-
     @JvmStatic
     @BindingAdapter("bindListToTextView")
     fun bindListToTextView(textView: TextView, data: ArrayList<String>?) {
@@ -138,7 +136,6 @@ object BindingAdapters {
                 .load(camera.data.url + String.format("?%d", Date().time))
                 .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
                 .error(R.drawable.camera_offline)
-                .skipMemoryCache(true)
                 .centerInside()
                 .into(imageView)
 
@@ -152,7 +149,6 @@ object BindingAdapters {
             .load(camera.url + String.format("?%d", Date().time))
             .placeholder( if (android.os.Build.VERSION.SDK_INT > 22) { R.drawable.image_progress_animation } else { R.drawable.image_placeholder })
             .error(R.drawable.camera_offline)
-            .skipMemoryCache(true)
             .centerInside()
             .into(imageView)
     }
