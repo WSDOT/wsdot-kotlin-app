@@ -32,7 +32,13 @@ abstract class FerryScheduleDao {
     open fun updateSchedules(schedules: List<FerrySchedule>) {
         markSchedulesForRemoval()
         for (schedule in schedules) {
-            updateSchedules(schedule.routeId, schedule.description, schedule.crossingTime, schedule.serverCacheDate, schedule.localCacheDate, false)
+            updateSchedules(
+                schedule.routeId,
+                schedule.description,
+                schedule.crossingTime,
+                schedule.serverCacheDate,
+                schedule.localCacheDate,
+                false)
         }
         deleteOldSchedules()
         insertNewSchedules(schedules)
