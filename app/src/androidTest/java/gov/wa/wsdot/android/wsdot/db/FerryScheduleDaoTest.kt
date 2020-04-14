@@ -6,11 +6,12 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import gov.wa.wsdot.android.wsdot.TestUtil
+import gov.wa.wsdot.android.wsdot.FerriesTestUtil
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryScheduleDao
 import gov.wa.wsdot.android.wsdot.getOrAwaitValue
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -41,16 +42,15 @@ class FerryScheduleDaoTest {
     }
 
     @Test
-    fun writeScheduleAndReadInList() {
+    fun insertAndRead() {
 
-        val schedule1: FerrySchedule = TestUtil.createFerrySchedule(3, "")
-        val schedule2: FerrySchedule = TestUtil.createFerrySchedule(4, "")
+        val schedule1: FerrySchedule = FerriesTestUtil.createFerrySchedule(3, "")
+        val schedule2: FerrySchedule = FerriesTestUtil.createFerrySchedule(4, "")
 
-        db.runInTransaction {
-            ferryScheduleDao.insertNewSchedules(listOf(schedule1, schedule2))
-        }
+        ferryScheduleDao.insertNewSchedules(listOf(schedule1, schedule2))
 
         val scheduleById = ferryScheduleDao.loadSchedule(3).getOrAwaitValue()
+        assertThat(scheduleById, notNullValue())
         assertThat(scheduleById, equalTo(schedule1))
     }
 
@@ -59,14 +59,12 @@ class FerryScheduleDaoTest {
 
         val desc = "ferry Schedule"
 
-        val schedule1: FerrySchedule = TestUtil.createFerrySchedule(3, "")
-        val schedule2: FerrySchedule = TestUtil.createFerrySchedule(4, "")
+        val schedule1: FerrySchedule = FerriesTestUtil.createFerrySchedule(3, "")
+        val schedule2: FerrySchedule = FerriesTestUtil.createFerrySchedule(4, "")
 
-        db.runInTransaction {
-            ferryScheduleDao.insertNewSchedules(listOf(schedule1, schedule2))
-            val newSchedule: FerrySchedule = TestUtil.createFerrySchedule(3, desc)
-            ferryScheduleDao.update(listOf(newSchedule))
-        }
+        ferryScheduleDao.insertNewSchedules(listOf(schedule1, schedule2))
+        val newSchedule: FerrySchedule = FerriesTestUtil.createFerrySchedule(3, desc)
+        ferryScheduleDao.update(listOf(newSchedule))
 
         val scheduleById = ferryScheduleDao.loadSchedule(3).getOrAwaitValue()
         assertThat(scheduleById.description, equalTo(desc))
@@ -75,9 +73,9 @@ class FerryScheduleDaoTest {
     @Test
     fun updateFavorite() {
 
-        val schedule1: FerrySchedule = TestUtil.createFerrySchedule(3, "")
-        val schedule2: FerrySchedule = TestUtil.createFerrySchedule(4, "")
-        val schedule3: FerrySchedule = TestUtil.createFerrySchedule(5, "")
+        val schedule1: FerrySchedule = FerriesTestUtil.createFerrySchedule(3, "")
+        val schedule2: FerrySchedule = FerriesTestUtil.createFerrySchedule(4, "")
+        val schedule3: FerrySchedule = FerriesTestUtil.createFerrySchedule(5, "")
 
         db.runInTransaction {
             ferryScheduleDao.insertNewSchedules(listOf(schedule1, schedule2, schedule3))
