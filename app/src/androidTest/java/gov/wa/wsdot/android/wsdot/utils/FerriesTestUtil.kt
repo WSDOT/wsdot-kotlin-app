@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot
+package gov.wa.wsdot.android.wsdot.utils
 
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import java.util.*
