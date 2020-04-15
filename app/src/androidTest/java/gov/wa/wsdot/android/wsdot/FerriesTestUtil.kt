@@ -1,8 +1,6 @@
 package gov.wa.wsdot.android.wsdot
 
-import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailing
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySchedule
+import gov.wa.wsdot.android.wsdot.db.ferries.*
 import java.util.*
 
 object FerriesTestUtil {
@@ -21,7 +19,7 @@ object FerriesTestUtil {
         alertId = id,
         title = "",
         route = routeId,
-        description = null,
+        description = "",
         fullDescription = "",
         publishDate = Date()
     )
@@ -41,8 +39,59 @@ object FerriesTestUtil {
         arrivingTerminalName = "",
         annotations = listOf("test1", "test2"),
         departingTime = departingTime,
-        arrivingTime = null,
+        arrivingTime = Date(),
         cacheDate = Date()
+    )
+
+    fun createVessel(
+        vesselId: Int = 0,
+        departingTerminalId: Int = 0,
+        arrivingTerminalId: Int = 0,
+        departingTime: Date = Date()
+    ) = Vessel(
+        vesselId = vesselId,
+        vesselName = "",
+        departingTerminalId = departingTerminalId,
+        departingTerminalName = "",
+        arrivingTerminalId = arrivingTerminalId,
+        arrivingTerminalName = "",
+
+        latitude = 0.0,
+        longitude = 0.0,
+
+        speed = 0.0,
+        heading = 0.0,
+
+        inService = false,
+        atDock = false,
+
+        scheduledDeparture = departingTime,
+        leftDock = Date(),
+        eta = Date(),
+        etaDetails = "",
+
+        localCacheDate = Date(),
+        serverCacheDate = Date()
+    )
+
+    fun createFerrySpace(
+        departingTerminalId: Int = 0,
+        arrivingTerminalId: Int = 0,
+        departureTime: Date = Date(),
+        maxSpaces: Int = 0,
+        currentSpaces: Int = 0
+    ) = FerrySpace(
+        departingTerminalId = departingTerminalId,
+        arrivingTerminalId = arrivingTerminalId,
+        departureTime = departureTime,
+        showDriveUpSpaces = true,
+        showResSpaces = false,
+        maxSpacesCount = maxSpaces,
+        currentSpacesCount = currentSpaces,
+        reservableSpacesCount = 0,
+        currentSpacesColor = null,
+        reservableSpacesColor = null,
+        localCacheDate = Date()
     )
 
 }
