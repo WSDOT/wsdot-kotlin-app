@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.db
+package gov.wa.wsdot.android.wsdot.db.ferries
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -6,12 +6,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import gov.wa.wsdot.android.wsdot.FerriesTestUtil
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingDao
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpacesDao
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySpaceDao
-import gov.wa.wsdot.android.wsdot.db.ferries.VesselDao
-import gov.wa.wsdot.android.wsdot.getOrAwaitValue
+import gov.wa.wsdot.android.wsdot.utils.FerriesTestUtil
+import gov.wa.wsdot.android.wsdot.db.WsdotDB
+import gov.wa.wsdot.android.wsdot.utils.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
 import org.junit.After
 import org.junit.Before
