@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import gov.wa.wsdot.android.wsdot.utils.FerriesTestUtil
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
 import gov.wa.wsdot.android.wsdot.utils.MountainPassTestUtil
 import gov.wa.wsdot.android.wsdot.utils.getOrAwaitValue
@@ -19,7 +18,7 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class FerryScheduleDaoTest {
+class MountainPassDaoTest {
     private lateinit var mountainPassDao: MountainPassDao
     private lateinit var db: WsdotDB
 
