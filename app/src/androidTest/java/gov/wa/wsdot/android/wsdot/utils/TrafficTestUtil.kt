@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.utils
 
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocation
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import java.util.*
 
@@ -45,6 +46,17 @@ object TrafficTestUtil {
         endLongitude = 0.0,
         lastUpdatedTime = Date(),
         localCacheDate = Date()
+    )
+
+    fun createFavoriteLocation(
+        creationDate: Date = Date(),
+        title: String = ""
+    ) = FavoriteLocation(
+        title = title,
+        latitude = 0.0,
+        longitude = 0.0,
+        zoom = 0f,
+        creationDate = creationDate
     )
 
 }
