@@ -18,6 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
+import java.lang.Thread.sleep
 import java.util.*
 
 @RunWith(AndroidJUnit4ClassRunner::class)
@@ -65,10 +66,12 @@ class FavoriteLocationDaoTest {
         favoriteLocationDao.insertNewFavoriteLocation(
             TrafficTestUtil.createFavoriteLocation()
         )
+        sleep(5) // sleep to ensure Date id is different
 
         favoriteLocationDao.insertNewFavoriteLocation(
             TrafficTestUtil.createFavoriteLocation()
         )
+        sleep(5)
 
         favoriteLocationDao.insertNewFavoriteLocation(
             TrafficTestUtil.createFavoriteLocation()
