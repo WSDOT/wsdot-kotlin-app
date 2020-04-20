@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.utils
 
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
+import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import java.util.*
 
 object TrafficTestUtil {
@@ -24,6 +25,26 @@ object TrafficTestUtil {
         localCacheDate = Date(),
         favorite = false,
         remove = false
+    )
+
+    fun createHighwayAlert(
+        id: Int,
+        headline: String = "",
+        roadName: String = "",
+        startLatitude: Double = 0.0,
+        startLongitude: Double = 0.0
+    ) = HighwayAlert(
+        alertId = id,
+        headline = headline,
+        roadName = roadName,
+        priority = "",
+        category = "",
+        startLatitude = startLatitude,
+        startLongitude = startLongitude,
+        endLatitude = 0.0,
+        endLongitude = 0.0,
+        lastUpdatedTime = Date(),
+        localCacheDate = Date()
     )
 
 }
