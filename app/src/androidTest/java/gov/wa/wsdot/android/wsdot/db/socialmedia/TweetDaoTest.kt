@@ -1,6 +1,5 @@
 package gov.wa.wsdot.android.wsdot.db.socialmedia
 
-
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -8,8 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import gov.wa.wsdot.android.wsdot.db.WsdotDB
-import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
-import gov.wa.wsdot.android.wsdot.utils.BorderCrossingTestUtil
 import gov.wa.wsdot.android.wsdot.utils.SocialMediaTestUtil
 import gov.wa.wsdot.android.wsdot.utils.getOrAwaitValue
 import org.hamcrest.CoreMatchers.*
