@@ -310,7 +310,7 @@ class FerriesRepository @Inject constructor(
                 cacheDate = Date()
             }
 
-            var schedule = FerrySchedule(
+            val schedule = FerrySchedule(
                 scheduleResponse.routeId,
                 scheduleResponse.description,
                 scheduleResponse.crossingTime,
