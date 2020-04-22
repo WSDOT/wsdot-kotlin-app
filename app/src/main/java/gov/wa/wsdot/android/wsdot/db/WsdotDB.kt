@@ -19,6 +19,8 @@ package gov.wa.wsdot.android.wsdot.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.*
@@ -62,7 +64,7 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         NotificationTopic::class
     ],
     version = 2,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)
 abstract class WsdotDB : RoomDatabase() {
@@ -100,5 +102,4 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun tollSignDao(): TollSignDao
 
     abstract fun notificationTopicDao(): NotificationTopicDao
-
 }

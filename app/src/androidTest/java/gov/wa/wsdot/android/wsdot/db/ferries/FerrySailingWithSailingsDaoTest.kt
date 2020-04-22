@@ -19,7 +19,7 @@ import java.io.IOException
 import java.util.*
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class FerrySailingWithSpacesDaoTest {
+class FerrySailingWithSailingsDaoTest {
 
     private lateinit var ferrySailingDao: FerrySailingDao
     private lateinit var vesselDao: VesselDao
