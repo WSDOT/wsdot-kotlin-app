@@ -18,8 +18,9 @@ object MountainPassBindingAdapters {
     fun bindTemperature(textView: TextView, pass: MountainPass?) {
 
         if (pass != null) {
-            if (pass.weatherCondition.isNotEmpty()) {
-                textView.text = String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar())
+            if (pass.weatherCondition.isNotEmpty() || pass.forecasts.isNotEmpty()) {
+                textView.text =
+                    String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar())
             } else {
                 textView.text = "N/A"
             }
@@ -32,7 +33,7 @@ object MountainPassBindingAdapters {
     @BindingAdapter("bindPassWeatherSummary")
     fun bindPassWeatherSummary(textView: TextView, pass: MountainPass) {
 
-        if (!TextUtils.isEmpty(pass.weatherCondition)) {
+        if (pass.weatherCondition.isNotEmpty()) {
             textView.text = pass.weatherCondition.split(".")[0]
             return
         } else {
@@ -43,6 +44,25 @@ object MountainPassBindingAdapters {
             }
         }
         textView.text = ""
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassWeatherDetails")
+    fun bindPassWeatherDetails(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            if (pass.weatherCondition.isNotEmpty()) {
+                textView.text = pass.weatherCondition
+                return
+            } else {
+                if (pass.forecasts.isNotEmpty()) {
+                    val forecast = pass.forecasts[0]
+                    textView.text = forecast.forecastText
+                    return
+                }
+            }
+            textView.text = "N/A"
+        }
     }
 
     @JvmStatic
