@@ -2,7 +2,7 @@ package gov.wa.wsdot.android.wsdot.db.ferries
 
 import java.util.*
 
-data class FerrySailingWithSpaces(
+data class FerrySailingWithStatus(
     val route: Int,
     val sailingDate: Date,
     val departingTerminalId: Int,

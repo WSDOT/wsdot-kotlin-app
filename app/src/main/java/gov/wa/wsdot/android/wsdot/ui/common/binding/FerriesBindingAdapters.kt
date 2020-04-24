@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
@@ -45,7 +45,7 @@ object FerriesBindingAdapters {
 
     @JvmStatic
     @BindingAdapter("bindReservations")
-    fun bindReservations(textView: TextView, sailing: FerrySailingWithSpaces) {
+    fun bindReservations(textView: TextView, sailing: FerrySailingWithStatus) {
 
         textView.text = ""
 

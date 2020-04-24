@@ -106,7 +106,7 @@ class TerminalCamerasListFragment : DaggerFragment(), Injectable {
             }
 
         // get the departing terminal from the sailingViewModel
-        sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailings ->
+        sailingViewModel.sailingsWithStatus.observe(viewLifecycleOwner, Observer { sailings ->
             if (sailings != null) {
                 if (sailings.data != null) {
                     if (sailings.data.isNotEmpty()) {

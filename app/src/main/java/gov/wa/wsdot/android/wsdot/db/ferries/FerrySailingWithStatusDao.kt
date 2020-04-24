@@ -6,7 +6,7 @@ import androidx.room.Query
 import java.util.*
 
 @Dao
-abstract class FerrySailingWithSpacesDao {
+abstract class FerrySailingWithStatusDao {
 
     @Query("""
         SELECT DISTINCT FerrySailing.*,
@@ -38,6 +38,6 @@ abstract class FerrySailingWithSpacesDao {
         AND FerrySailing.arrivingTerminalId = (:arrivingId) 
         AND FerrySailing.sailingDate = (:sailingDate)
     """)
-    abstract fun loadSailingsWithSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<List<FerrySailingWithSpaces>>
+    abstract fun loadSailingsWithStatus(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<List<FerrySailingWithStatus>>
 
 }

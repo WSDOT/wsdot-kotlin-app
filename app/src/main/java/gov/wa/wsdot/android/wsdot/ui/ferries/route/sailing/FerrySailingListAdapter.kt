@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerrySailingItemBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailing
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 
@@ -19,15 +19,15 @@ import gov.wa.wsdot.android.wsdot.util.AppExecutors
 class FerrySailingListAdapter(
     private val dataBindingComponent: DataBindingComponent,
     appExecutors: AppExecutors
-) : DataBoundListAdapter<FerrySailingWithSpaces, FerrySailingItemBinding>(
+) : DataBoundListAdapter<FerrySailingWithStatus, FerrySailingItemBinding>(
     appExecutors = appExecutors,
-    diffCallback = object : DiffUtil.ItemCallback<FerrySailingWithSpaces>() {
-        override fun areItemsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
+    diffCallback = object : DiffUtil.ItemCallback<FerrySailingWithStatus>() {
+        override fun areItemsTheSame(oldItem: FerrySailingWithStatus, newItem: FerrySailingWithStatus): Boolean {
             return oldItem.departingTime == newItem.departingTime
                     && oldItem.departingTerminalId == newItem.departingTerminalId
         }
 
-        override fun areContentsTheSame(oldItem: FerrySailingWithSpaces, newItem: FerrySailingWithSpaces): Boolean {
+        override fun areContentsTheSame(oldItem: FerrySailingWithStatus, newItem: FerrySailingWithStatus): Boolean {
             return oldItem.route == newItem.route
                     && oldItem.departingTime == newItem.departingTime
                     && oldItem.arrivingTime == newItem.arrivingTime
@@ -71,7 +71,7 @@ class FerrySailingListAdapter(
         )
     }
 
-    override fun bind(binding: FerrySailingItemBinding, item: FerrySailingWithSpaces, position: Int) {
+    override fun bind(binding: FerrySailingItemBinding, item: FerrySailingWithStatus, position: Int) {
         binding.sailing = item
     }
 

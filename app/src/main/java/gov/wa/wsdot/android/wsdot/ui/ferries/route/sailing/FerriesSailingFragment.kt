@@ -123,7 +123,7 @@ class FerriesSailingFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        sailingViewModel.sailingsWithSpaces.observe(viewLifecycleOwner, Observer { sailingResource ->
+        sailingViewModel.sailingsWithStatus.observe(viewLifecycleOwner, Observer { sailingResource ->
 
             if (sailingResource?.data != null) {
 

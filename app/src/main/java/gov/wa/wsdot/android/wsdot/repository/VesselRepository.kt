@@ -3,8 +3,8 @@ package gov.wa.wsdot.android.wsdot.repository
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpacesDao
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatusDao
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.ferries.VesselDao
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
@@ -21,7 +21,7 @@ class VesselRepository @Inject constructor(
     private val wsdotWebservice: WsdotApiService,
     private val appExecutors: AppExecutors,
     private val vesselDao: VesselDao,
-    private val ferrySailingWithSpacesDao: FerrySailingWithSpacesDao
+    private val ferrySailingWithStatusDao: FerrySailingWithStatusDao
 ) {
 
     fun loadVessels(forceRefresh: Boolean): LiveData<Resource<List<Vessel>>> {
@@ -58,13 +58,13 @@ class VesselRepository @Inject constructor(
     }
 
 
-    fun loadSailingWithVessels(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithSpaces>>> {
+    fun loadSailingWithVessels(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithStatus>>> {
 
-        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, List<VesselResponse>>(appExecutors) {
+        return object : NetworkBoundResource<List<FerrySailingWithStatus>, List<VesselResponse>>(appExecutors) {
 
             override fun saveCallResult(item: List<VesselResponse>) = saveVessels(item)
 
-            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
+            override fun shouldFetch(data: List<FerrySailingWithStatus>?): Boolean {
                 var update = false
 
                 if (data != null) {
@@ -80,7 +80,7 @@ class VesselRepository @Inject constructor(
                 return update || forceRefresh
             }
 
-            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
+            override fun loadFromDb() = ferrySailingWithStatusDao.loadSailingsWithStatus(routeId, departingId, arrivingId, sailingDate)
 
             override fun createCall() = wsdotWebservice.getFerryVessels(ApiKeys.WSDOT_KEY)
 

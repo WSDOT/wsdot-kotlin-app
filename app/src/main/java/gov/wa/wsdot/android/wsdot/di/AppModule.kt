@@ -3,11 +3,9 @@ package gov.wa.wsdot.android.wsdot.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.api.JsonDateDeserializer
 import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
@@ -117,8 +115,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideFerrySailingWithSpacesDao(db: WsdotDB): FerrySailingWithSpacesDao {
-        return db.ferrySailingWithSpacesDao()
+    fun provideFerrySailingWithStatusDao(db: WsdotDB): FerrySailingWithStatusDao {
+        return db.ferrySailingWithStatusDao()
     }
 
     @Singleton

@@ -21,20 +21,20 @@ import kotlin.collections.ArrayList
  *  Repository that handles ferry schedule data.
  *
  *  Supplies methods to pull in ferry schedules information.
- *  The main data this repo provides is the FerrySailingWithSpaces.
+ *  The main data this repo provides is the FerrySailingWithStatus.
  *
- *  FerrySailingWithSpaces takes values from the FerrySchedule, FerrySpace and Vessel entities and
+ *  FerrySailingWithStatus takes values from the FerrySchedule, FerrySpace and Vessel entities and
  *  combines them into a single object ready for presentation in the UI.
  *
  *         SERVER      |          DATABASE          |      DB & PRESENTATION
  *  Schedule datafile -|-> FerrySchedule Entity --  |
  *                     |                          \ |
- *  Spaces API --------|-> FerrySpace Entity -------|-> FerrySailingWithSpaces Entity
+ *  Spaces API --------|-> FerrySpace Entity -------|-> FerrySailingWithStatus Entity
  *                     |                        /   |
  *  Vessel API --------|-> Vessel Entity -------    |
  *                     |                            |
  *
- *  Because of this to have a fully updated FerrySailingsWithSpaces Entity we must call
+ *  Because of this to have a fully updated FerrySailingsWithStatus Entity we must call
  *  loadSchedules(), loadSpaces() and VesselRepository#loadVessels().
  */
 @Singleton
@@ -45,7 +45,7 @@ class FerriesRepository @Inject constructor(
     private val ferryScheduleDao: FerryScheduleDao,
     private val ferrySailingDao: FerrySailingDao,
     private val ferrySpaceDao: FerrySpaceDao,
-    private val ferrySailingWithSpacesDao: FerrySailingWithSpacesDao,
+    private val ferrySailingWithStatusDao: FerrySailingWithStatusDao,
     private val ferryAlertDao: FerryAlertDao
 ) {
 
@@ -115,17 +115,17 @@ class FerriesRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun loadSailings(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithSpaces>>> {
+    fun loadSailings(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date, forceRefresh: Boolean): LiveData<Resource<List<FerrySailingWithStatus>>> {
 
-        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, List<FerryScheduleResponse>>(appExecutors) {
+        return object : NetworkBoundResource<List<FerrySailingWithStatus>, List<FerryScheduleResponse>>(appExecutors) {
 
             override fun saveCallResult(item: List<FerryScheduleResponse>) = saveSchedule(item)
 
-            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
+            override fun shouldFetch(data: List<FerrySailingWithStatus>?): Boolean {
                 return forceRefresh || data?.isEmpty() ?: true
             }
 
-            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
+            override fun loadFromDb() = ferrySailingWithStatusDao.loadSailingsWithStatus(routeId, departingId, arrivingId, sailingDate)
 
             override fun createCall() = dataWebservice.getFerrySchedules()
 
@@ -138,13 +138,13 @@ class FerriesRepository @Inject constructor(
 
     // updates the FerrySpace table of the database while returning a merged table of sailings,
     // spaces, and vessel status for given route.
-    fun loadSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailingWithSpaces>>> {
+    fun loadSpaces(routeId: Int, departingId: Int, arrivingId: Int, sailingDate: Date): LiveData<Resource<List<FerrySailingWithStatus>>> {
 
-        return object : NetworkBoundResource<List<FerrySailingWithSpaces>, FerrySpacesResponse>(appExecutors) {
+        return object : NetworkBoundResource<List<FerrySailingWithStatus>, FerrySpacesResponse>(appExecutors) {
 
             override fun saveCallResult(item: FerrySpacesResponse) = saveSailingSpaces(item)
 
-            override fun shouldFetch(data: List<FerrySailingWithSpaces>?): Boolean {
+            override fun shouldFetch(data: List<FerrySailingWithStatus>?): Boolean {
                 var update = false
 
                 if (data != null) {
@@ -160,7 +160,7 @@ class FerriesRepository @Inject constructor(
                 return update
             }
 
-            override fun loadFromDb() = ferrySailingWithSpacesDao.loadSailingsWithSpaces(routeId, departingId, arrivingId, sailingDate)
+            override fun loadFromDb() = ferrySailingWithStatusDao.loadSailingsWithStatus(routeId, departingId, arrivingId, sailingDate)
 
             override fun createCall() = wsdotWebservice.getFerrySailingSpaces(departingId, apiKey = ApiKeys.WSDOT_KEY)
 

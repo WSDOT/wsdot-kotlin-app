@@ -1,7 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing
 
 import androidx.lifecycle.*
-import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces
+import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -21,33 +21,33 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
 
-    private val sailings: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
+    private val sailings: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
         .switchMap(_sailingQuery) { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 ferriesRepository.loadSailings(routeId, departingId, arrivingId, sailingDate, false)
             }
         }
 
-    private val spaces: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
+    private val spaces: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
         .switchMap(_sailingQuery) { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 ferriesRepository.loadSpaces(routeId, departingId, arrivingId, sailingDate)
             }
         }
 
-    private val vessels: LiveData<Resource<List<FerrySailingWithSpaces>>> = Transformations
+    private val vessels: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
         .switchMap(_sailingQuery) { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 vesselRepository.loadSailingWithVessels(routeId, departingId, arrivingId, sailingDate, true)
             }
         }
 
-    val sailingsWithSpaces: MediatorLiveData<Resource<List<FerrySailingWithSpaces>>> = MediatorLiveData()
+    val sailingsWithStatus: MediatorLiveData<Resource<List<FerrySailingWithStatus>>> = MediatorLiveData()
 
     init {
-        sailingsWithSpaces.addSource(sailings) { sailingsWithSpaces.value = it }
-        sailingsWithSpaces.addSource(spaces) { sailingsWithSpaces.value = it }
-        sailingsWithSpaces.addSource(vessels) { sailingsWithSpaces.value = it }
+        sailingsWithStatus.addSource(sailings) { sailingsWithStatus.value = it }
+        sailingsWithStatus.addSource(spaces) { sailingsWithStatus.value = it }
+        sailingsWithStatus.addSource(vessels) { sailingsWithStatus.value = it }
     }
 
     fun setSailingQuery(routeId: Int, departingId: Int, arrivingId: Int) {

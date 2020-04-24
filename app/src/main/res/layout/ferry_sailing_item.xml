@@ -7,7 +7,7 @@
         <import type="gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions" />
         <variable
             name="sailing"
-            type="gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithSpaces"/>
+            type="gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus"/>
 
     </data>
 
