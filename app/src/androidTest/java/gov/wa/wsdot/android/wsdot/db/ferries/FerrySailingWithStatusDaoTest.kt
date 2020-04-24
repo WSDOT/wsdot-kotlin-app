@@ -19,12 +19,12 @@ import java.io.IOException
 import java.util.*
 
 @RunWith(AndroidJUnit4ClassRunner::class)
-class FerrySailingWithSailingsDaoTest {
+class FerrySailingWithStatusDaoTest {
 
     private lateinit var ferrySailingDao: FerrySailingDao
     private lateinit var vesselDao: VesselDao
     private lateinit var spacesDao: FerrySpaceDao
-    private lateinit var ferrySailingWithSailingDao: FerrySailingWithSpacesDao
+    private lateinit var ferrySailingWithSailingDao: FerrySailingWithStatusDao
 
     private lateinit var db: WsdotDB
 
@@ -37,7 +37,7 @@ class FerrySailingWithSailingsDaoTest {
         db = Room.inMemoryDatabaseBuilder(context, WsdotDB::class.java)
             .build()
         ferrySailingDao = db.ferrySailingDao()
-        ferrySailingWithSailingDao = db.ferrySailingWithSpacesDao()
+        ferrySailingWithSailingDao = db.ferrySailingWithStatusDao()
         vesselDao = db.vesselDao()
         spacesDao = db.ferrySpaceDao()
     }
@@ -67,7 +67,7 @@ class FerrySailingWithSailingsDaoTest {
 
         ferrySailingDao.insertSailings(listOf(sailing1))
 
-        val sailings = ferrySailingWithSailingDao.loadSailingsWithSpaces(
+        val sailings = ferrySailingWithSailingDao.loadSailingsWithStatus(
             routeId,
             departingTerminalId,
             arrivingTerminalId,
@@ -114,7 +114,7 @@ class FerrySailingWithSailingsDaoTest {
 
         vesselDao.insertVessels(listOf(vessel1))
 
-        val sailings = ferrySailingWithSailingDao.loadSailingsWithSpaces(
+        val sailings = ferrySailingWithSailingDao.loadSailingsWithStatus(
             routeId,
             departingTerminalId,
             arrivingTerminalId,
@@ -162,7 +162,7 @@ class FerrySailingWithSailingsDaoTest {
 
         vesselDao.insertVessels(listOf(vessel1))
 
-        val sailings = ferrySailingWithSailingDao.loadSailingsWithSpaces(
+        val sailings = ferrySailingWithSailingDao.loadSailingsWithStatus(
             routeId,
             departingTerminalId,
             arrivingTerminalId,
@@ -211,7 +211,7 @@ class FerrySailingWithSailingsDaoTest {
 
         spacesDao.insertSpaces(listOf(space1))
 
-        val sailings = ferrySailingWithSailingDao.loadSailingsWithSpaces(
+        val sailings = ferrySailingWithSailingDao.loadSailingsWithStatus(
             routeId,
             departingTerminalId,
             arrivingTerminalId,
@@ -231,7 +231,7 @@ class FerrySailingWithSailingsDaoTest {
 
 
     @Test
-    fun insertAndReadSailingWithSpaces() {
+    fun insertAndReadSailingWithStatus() {
 
         val routeId = 0
         val departingTerminalId = 1
@@ -260,7 +260,7 @@ class FerrySailingWithSailingsDaoTest {
 
         spacesDao.insertSpaces(listOf(space1))
 
-        val sailings = ferrySailingWithSailingDao.loadSailingsWithSpaces(
+        val sailings = ferrySailingWithSailingDao.loadSailingsWithStatus(
             routeId,
             departingTerminalId,
             arrivingTerminalId,

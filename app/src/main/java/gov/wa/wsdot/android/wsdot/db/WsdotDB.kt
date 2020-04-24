@@ -19,8 +19,6 @@ package gov.wa.wsdot.android.wsdot.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossingDao
 import gov.wa.wsdot.android.wsdot.db.ferries.*
@@ -79,7 +77,7 @@ abstract class WsdotDB : RoomDatabase() {
 
     abstract fun ferrySpaceDao(): FerrySpaceDao
 
-    abstract fun ferrySailingWithSpacesDao(): FerrySailingWithSpacesDao
+    abstract fun ferrySailingWithStatusDao(): FerrySailingWithStatusDao
 
     abstract fun vesselDao(): VesselDao
 

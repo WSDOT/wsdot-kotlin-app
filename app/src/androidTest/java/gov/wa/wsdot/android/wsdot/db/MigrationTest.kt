@@ -21,10 +21,13 @@ class MigrationTest {
         FrameworkSQLiteOpenHelperFactory()
     )
 
+    /**
+     *  Use to test migration once we update to version 3 of the database
+     */
     @Test
     @Throws(IOException::class)
     fun migrate2To3() {
-        var db  = helper.createDatabase(TEST_DB, 1).apply {
+        var db  = helper.createDatabase(TEST_DB, 2).apply {
             // db has schema version 1. insert some data using SQL queries.
             // You cannot use DAO classes because they expect the latest schema.
 
@@ -36,7 +39,7 @@ class MigrationTest {
 
         // Re-open the database with version 2 and provide
         // MIGRATION_1_2 as the migration process.
-        db = helper.runMigrationsAndValidate(TEST_DB, 3, true, MIGRATION_2_3)
+        // db = helper.runMigrationsAndValidate(TEST_DB, 3, true, MIGRATION_2_3)
 
         // MigrationTestHelper automatically verifies the schema changes,
         // but you need to validate that the data was migrated properly.

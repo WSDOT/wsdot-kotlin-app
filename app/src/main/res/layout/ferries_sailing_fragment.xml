@@ -33,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:onRefreshListener="@{() -> sailingViewModel.refresh()}"
-            app:refreshing="@{((Resource) sailingViewModel.sailingsWithSpaces).status == Status.LOADING}">
+            app:refreshing="@{((Resource) sailingViewModel.sailingsWithStatus).status == Status.LOADING}">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/schedule_list"
