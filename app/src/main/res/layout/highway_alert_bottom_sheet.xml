@@ -20,7 +20,9 @@
         android:layout_gravity="start"
         android:elevation="16dp"
         android:background="?android:colorBackground"
+        android:clipToPadding="true"
         app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="0dp">
 
         <androidx.appcompat.widget.AppCompatImageButton

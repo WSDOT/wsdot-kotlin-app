@@ -17,9 +17,12 @@
         android:focusable="true"
         android:layout_gravity="start"
         android:elevation="16dp"
+        android:clipToPadding="true"
         android:background="?android:colorBackground"
         app:layout_behavior="@string/bottom_sheet_behavior"
+        app:behavior_hideable="true"
         app:behavior_peekHeight="0dp">
+
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/close_button"
