@@ -219,8 +219,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onPause() {
         super.onPause()
 
-        BottomSheetBehavior.from(binding!!.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
-        BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+        from(binding!!.cameraBottomSheet).state = STATE_HIDDEN
+        BottomSheetBehavior.from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
 
         if (::mMap.isInitialized) {
 
@@ -443,11 +443,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     .visible(true)
                     .icon(icon))
 
-            BottomSheetBehavior.from(binding!!.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
+            from(binding!!.cameraBottomSheet).state = STATE_HIDDEN
 
             highwayAlertViewModel.setAlertQuery(alert .alertId)
-            binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet.requestLayout()
-            BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_EXPANDED
+            binding!!.highwayAlertBottomSheet.requestLayout()
+            from(binding!!.highwayAlertBottomSheet).state = STATE_EXPANDED
 
             return true
         }
@@ -471,7 +471,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
-        val cameraSheetBehavior = BottomSheetBehavior.from(binding!!.includedCameraBottomSheet.cameraBottomSheet)
+        val cameraSheetBehavior = from(binding!!.cameraBottomSheet)
         cameraSheetBehavior.state = STATE_HIDDEN
 
         val cameraBottomSheetBehaviorCallback =
@@ -480,14 +480,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                     when(newState) {
                         STATE_EXPANDED -> {
-                            BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+                            from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
                             t?.cancel()
                             t = Timer()
                             t?.scheduleAtFixedRate(
                                 object : TimerTask() {
                                     override fun run() {
                                         appExecutors.mainThread().execute {
-                                            binding?.includedCameraBottomSheet?.invalidateAll()
+                                            binding?.invalidateAll()
                                         }
                                     }
                                 },
@@ -499,33 +499,36 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                             selectedCameraMarker?.remove()
                             t?.cancel()
                         }
-                        BottomSheetBehavior.STATE_DRAGGING -> {}
-                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
-                        BottomSheetBehavior.STATE_HIDDEN -> {}
-                        BottomSheetBehavior.STATE_SETTLING -> {}
+                        STATE_DRAGGING -> {}
+                        STATE_HALF_EXPANDED -> {}
+                        STATE_SETTLING -> {}
+                        STATE_COLLAPSED -> {
+                            selectedCameraMarker?.remove()
+                            t?.cancel()
+                        }
                     }
                 }
             }
 
         cameraSheetBehavior.addBottomSheetCallback(cameraBottomSheetBehaviorCallback)
 
-        binding!!.includedCameraBottomSheet.favoriteButton.setOnClickListener(null)
-        binding!!.includedCameraBottomSheet.favoriteButton.setOnClickListener {
+        binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener(null)
+        binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
             cameraViewModel.updateFavorite(-1)
         }
 
-        binding!!.includedCameraBottomSheet.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding!!.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
+        binding!!.includedCameraBottomSheetView.closeButton.setOnClickListener {
+            from(binding!!.cameraBottomSheet).state = STATE_HIDDEN
         }
 
-        binding!!.includedCameraBottomSheet.cameraViewModel = cameraViewModel
+        binding!!.includedCameraBottomSheetView.cameraViewModel = cameraViewModel
 
         // highway alert view model
         highwayAlertViewModel = ViewModelProvider(this, viewModelFactory)
             .get(HighwayAlertViewModel::class.java)
         highwayAlertViewModel.setAlertQuery(-1)
 
-        val alertSheetBehavior = BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet)
+        val alertSheetBehavior = from(binding!!.highwayAlertBottomSheet)
         alertSheetBehavior.state = STATE_HIDDEN
 
         val alertBottomSheetBehaviorCallback =
@@ -537,12 +540,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         STATE_COLLAPSED -> {
                             selectedAlertMarker?.remove()
                         }
-                        BottomSheetBehavior.STATE_DRAGGING -> {}
-                        BottomSheetBehavior.STATE_HALF_EXPANDED -> {}
-                        BottomSheetBehavior.STATE_HIDDEN -> {
+                        STATE_DRAGGING -> {}
+                        STATE_HALF_EXPANDED -> {}
+                        STATE_HIDDEN -> {
                             selectedAlertMarker?.remove()
                         }
-                        BottomSheetBehavior.STATE_SETTLING -> {}
+                        STATE_SETTLING -> {}
                     }
                 }
             }
@@ -550,7 +553,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         alertSheetBehavior.addBottomSheetCallback(alertBottomSheetBehaviorCallback)
 
         binding!!.includedHighwayAlertBottomSheet.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+            from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
         }
 
         binding!!.includedHighwayAlertBottomSheet.viewModel = highwayAlertViewModel
@@ -561,12 +564,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     binding?.let {
-                        if (BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state == STATE_EXPANDED) {
-                            BottomSheetBehavior.from(it.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+                        if (from(it.highwayAlertBottomSheet).state == STATE_EXPANDED) {
+                            from(it.highwayAlertBottomSheet).state = STATE_HIDDEN
                             return
                         }
-                        else if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == STATE_EXPANDED) {
-                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state = STATE_HIDDEN
+                        else if (from(it.cameraBottomSheet).state == STATE_EXPANDED) {
+                            from(it.cameraBottomSheet).state = STATE_HIDDEN
                             return
                         }
                     }
@@ -613,7 +616,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
         p0?.let { cameraClusterItem ->
 
-            BottomSheetBehavior.from(binding!!.includedHighwayAlertBottomSheet.highwayAlertBottomSheet).state = STATE_HIDDEN
+            from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
 
             selectedCameraMarker?.remove()
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
@@ -627,11 +630,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             cameraViewModel.setCameraQuery(cameraClusterItem.mCamera.cameraId)
 
-            binding!!.includedCameraBottomSheet.favoriteButton.setOnClickListener {
+            binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
                 cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
             }
 
-            BottomSheetBehavior.from(binding!!.includedCameraBottomSheet.cameraBottomSheet).state = STATE_EXPANDED
+            from(binding!!.cameraBottomSheet).state = STATE_EXPANDED
         }
         return true
     }
