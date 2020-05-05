@@ -6,7 +6,6 @@
         <variable
             name="vesselViewModel"
             type="gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchViewModel"/>
-
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -30,9 +29,27 @@
             app:setCameraIconForFab="@{vesselViewModel.showCameras}"
             android:layout_gravity="bottom|end"/>
 
-        <include
-            android:id="@+id/included_camera_bottom_sheet"
-            layout="@layout/camera_bottom_sheet"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/camera_bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxWidth="@dimen/camera_sheet_width"
+            android:maxHeight="@dimen/camera_sheet_height"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="start"
+            android:elevation="16dp"
+            android:clipToPadding="true"
+            android:background="?android:colorBackground"
+            app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp">
+
+            <include
+                android:id="@+id/included_camera_bottom_sheet_view"
+                layout="@layout/camera_bottom_sheet"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

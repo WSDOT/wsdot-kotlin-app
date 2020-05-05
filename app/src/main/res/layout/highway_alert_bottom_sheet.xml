@@ -9,21 +9,9 @@
             name="viewModel"
             type="gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel" />
     </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/highway_alert_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxWidth="500dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_gravity="start"
-        android:elevation="16dp"
-        android:background="?android:colorBackground"
-        android:clipToPadding="true"
-        app:layout_behavior="@string/bottom_sheet_behavior"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp">
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/close_button"

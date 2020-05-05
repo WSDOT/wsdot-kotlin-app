@@ -275,11 +275,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
             cameraViewModel.setCameraQuery(camera.cameraId)
 
-            binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
+            binding.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
                 cameraViewModel.updateFavorite(camera .cameraId)
             }
 
-            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state =
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state =
                 BottomSheetBehavior.STATE_EXPANDED
 
             return true
@@ -296,9 +296,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
-        binding.includedCameraBottomSheet.cameraViewModel = cameraViewModel
+        binding.includedCameraBottomSheetView.cameraViewModel = cameraViewModel
 
-        val behavior = BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet)
+        val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
 
         val bottomSheetBehaviorCallback =
             object : BottomSheetBehavior.BottomSheetCallback() {
@@ -313,23 +313,23 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
         behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
 
-        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener(null)
-        binding.includedCameraBottomSheet.favoriteButton.setOnClickListener {
+        binding.includedCameraBottomSheetView.favoriteButton.setOnClickListener(null)
+        binding.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
             cameraViewModel.updateFavorite(-1)
         }
 
-        binding.includedCameraBottomSheet.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding.includedCameraBottomSheet.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+        binding.includedCameraBottomSheetView.closeButton.setOnClickListener {
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
         // if a bottom sheet is open override back button to close sheet
         requireActivity()
             .onBackPressedDispatcher
-            .addCallback(this, object : OnBackPressedCallback(true) {
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     binding.let {
-                        if (BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
-                            BottomSheetBehavior.from(it.includedCameraBottomSheet.cameraBottomSheet).state =
+                        if (BottomSheetBehavior.from(it.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
+                            BottomSheetBehavior.from(it.cameraBottomSheet).state =
                                 BottomSheetBehavior.STATE_COLLAPSED
                             return
                         }
