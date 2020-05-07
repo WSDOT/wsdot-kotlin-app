@@ -14,17 +14,17 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#-printconfiguration full-r8-config.txt
+
 -dontobfuscate
 
--keepclassmembers class gov.wa.wsdot.android.wsdot.** {
-  *;
-}
+-keepclassmembers class gov.wa.wsdot.android.wsdot.** { *; }
 
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
@@ -33,3 +33,5 @@
 
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.stream.** { *; }
+
+
