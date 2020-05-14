@@ -38,7 +38,6 @@
             android:tint="@color/white"/>
 
         <com.google.android.material.bottomappbar.BottomAppBar
-
             style="@style/Widget.MaterialComponents.BottomAppBar"
             android:id="@+id/filler"
             android:layout_width="match_parent"
