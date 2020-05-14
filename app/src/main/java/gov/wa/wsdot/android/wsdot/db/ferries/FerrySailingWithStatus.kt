@@ -22,6 +22,7 @@ data class FerrySailingWithStatus(
 
     // Vessel Data
     val vesselId: Int?,
+    val vesselName: String?,
     val vesselEta: Date?,
     val vesselLeftDock: Date?,
     val vesselAtDock: Boolean?,

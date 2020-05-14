@@ -20,7 +20,8 @@ abstract class FerrySailingWithStatusDao {
         Vessel.leftDock AS vesselLeftDock,
         Vessel.atDock AS vesselAtDock,
         Vessel.scheduledDeparture AS vesselScheduledDeparture,
-        Vessel.vesselId
+        Vessel.vesselId,
+        Vessel.vesselName
         FROM FerrySailing
         
         LEFT OUTER JOIN FerrySpace

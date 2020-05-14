@@ -3,6 +3,8 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 import android.R
 import android.graphics.Color
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.Spinner
 import android.widget.TextView
@@ -68,6 +70,41 @@ object FerriesBindingAdapters {
             return
         }
         textView.text = "unavailable"
+    }
+
+    /**
+     *  sets textView to display vessel name, as well as if the vessel is at
+     *  the dock.
+     */
+    @JvmStatic
+    @BindingAdapter("bindVesselStatus")
+    fun bindVesselStatus(textView: TextView, sailing: FerrySailingWithStatus?) {
+        if (sailing != null) {
+
+            textView.visibility = VISIBLE
+
+            val atDock = sailing.vesselAtDock ?: false
+
+            val vesselName = when {
+                sailing.vesselName != null -> {
+                    sailing.vesselName.toUpperCase(Locale.ENGLISH) + " "
+                }
+                else -> { sailing.vesselName }
+            }
+
+            when {
+                atDock -> {
+                    textView.text = vesselName + "VESSEL AT DOCK"
+                }
+                vesselName != null -> {
+                    textView.text = vesselName + "VESSEL"
+                }
+                else -> {
+                    textView.visibility = GONE
+                }
+            }
+
+        }
     }
 
     @JvmStatic
