@@ -269,19 +269,17 @@
 
             <TextView
                 style="@style/CardMiniHeading"
-                android:id="@+id/vesselAtDockText"
+                android:id="@+id/vesselStatus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="VESSEL AT DOCK"
-                visibleGone="@{sailing.vesselAtDock}"
+                app:bindVesselStatus="@{sailing}"
                 app:layout_constraintTop_toBottomOf="@+id/left_dock_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/annotations"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
-                app:layout_goneMarginBottom="8dp"
-                android:paddingTop="8dp"/>
-
+                app:layout_goneMarginBottom="4dp"
+                android:paddingTop="4dp"/>
 
             <TextView
                 style="@style/CardSubTitleText"
@@ -290,14 +288,14 @@
                 android:layout_height="wrap_content"
                 app:bindStringArray="@{sailing.annotations}"
                 app:visibleGone="@{sailing.annotations.size > 0}"
-                app:layout_constraintTop_toBottomOf="@+id/vesselAtDockText"
+                app:layout_constraintTop_toBottomOf="@+id/vesselStatus"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/spaces_view"
                 app:layout_constraintBottom_toTopOf="@id/spaces_disclaimer"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
-                app:layout_goneMarginBottom="8dp"
-                android:paddingTop="8dp"
+                app:layout_goneMarginBottom="4dp"
+                android:paddingTop="4dp"
                 android:singleLine="false" />
 
             <TextView
@@ -311,29 +309,12 @@
                 app:layout_constraintEnd_toStartOf="@id/spaces_view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:gravity="bottom"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:singleLine="false"
                 app:visibleGone="@{sailing.maxSpaces != null &amp;&amp; !BindingFunctions.hasPassed(sailing.departingTime)}"/>
-
-            <TextView
-                style="@style/CardFooterText"
-                android:id="@+id/updated_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:bindRelativeDate="@{sailing.spacesCacheDate}"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/spaces_disclaimer"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="gone"/>
-                <!-- app:visibleGone="@{sailing.maxSpaces != null &amp;&amp; !BindingFunctions.hasPassed(sailing.departingTime)}"/> -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
