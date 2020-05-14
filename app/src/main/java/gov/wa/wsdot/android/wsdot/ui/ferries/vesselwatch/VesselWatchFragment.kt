@@ -296,6 +296,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             .get(CameraViewModel::class.java)
         cameraViewModel.setCameraQuery(-1)
 
+        val cameraSheetBehavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
+        cameraSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
         binding.includedCameraBottomSheetView.cameraViewModel = cameraViewModel
 
         val behavior = BottomSheetBehavior.from(binding.cameraBottomSheet)
@@ -306,7 +309,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                         selectedCameraMarker?.remove()
                     }
                 }
@@ -319,7 +322,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         }
 
         binding.includedCameraBottomSheetView.closeButton.setOnClickListener {
-            BottomSheetBehavior.from(binding.cameraBottomSheet).state = BottomSheetBehavior.STATE_COLLAPSED
+            BottomSheetBehavior.from(binding.cameraBottomSheet).state = BottomSheetBehavior.STATE_HIDDEN
         }
 
         // if a bottom sheet is open override back button to close sheet
@@ -330,7 +333,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     binding.let {
                         if (BottomSheetBehavior.from(it.cameraBottomSheet).state == BottomSheetBehavior.STATE_EXPANDED) {
                             BottomSheetBehavior.from(it.cameraBottomSheet).state =
-                                BottomSheetBehavior.STATE_COLLAPSED
+                                BottomSheetBehavior.STATE_HIDDEN
                             return
                         }
                     }
