@@ -16,6 +16,7 @@ import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.model.common.Resource
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -194,6 +195,15 @@ object FerriesBindingAdapters {
         textView.text = "unavailable"
     }
 
+    @JvmStatic
+    @BindingAdapter("bindVesselUpdated")
+    fun bindVesselUpdated(textView: TextView, vessel: Resource<Vessel>) {
+        if (vessel.data != null) {
+            textView.text = getDateString(vessel.data.serverCacheDate)
+            return
+        }
+        textView.text = "unavailable"
+    }
 
     // Two-way binding adapters
     @JvmStatic
@@ -250,6 +260,13 @@ object FerriesBindingAdapters {
 
     }
 
-
-
+    // Creates an updated timestamp from date object
+    private fun getDateString(date: Date): String {
+        val displayDateFormat = SimpleDateFormat("EEE, MMMM d", Locale.ENGLISH)
+        return try {
+            displayDateFormat.format(date)
+        } catch (e: Exception) {
+            "Unavailable"
+        }
+    }
 }
