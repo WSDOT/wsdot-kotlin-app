@@ -10,9 +10,8 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:maxHeight="@dimen/camera_item_height">
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -45,20 +44,19 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/cameraView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:maxHeight="@dimen/camera_item_height"
-                    android:layout_margin="8dp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
+                    android:minHeight="@dimen/camera_item_height"
                     app:bindCameraImage="@{camera}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/favorite_button"
@@ -71,7 +69,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_margin="8dp" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

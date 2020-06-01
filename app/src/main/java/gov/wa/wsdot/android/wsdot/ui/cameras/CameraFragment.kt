@@ -8,10 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -19,7 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.CameraFragmentBinding
-import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
@@ -27,6 +23,7 @@ import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import java.util.*
 import javax.inject.Inject
+
 
 /**
  * Fragment displays a single camera item with data from CameraViewModel
@@ -88,7 +85,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         dataBinding.lifecycleOwner = viewLifecycleOwner
         dataBinding.cameraViewModel = cameraViewModel
 
-        mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
+        mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
