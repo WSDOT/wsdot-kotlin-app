@@ -50,7 +50,7 @@
                 <fragment
                     xmlns:map="http://schemas.android.com/apk/res-auto"
                     android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:id="@+id/google_map"
+                    android:id="@+id/map"
                     android:layout_height="240dp"
                     android:layout_width="match_parent"
                     android:layout_marginTop="16dp"
