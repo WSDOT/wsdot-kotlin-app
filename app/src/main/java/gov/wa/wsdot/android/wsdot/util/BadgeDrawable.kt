@@ -37,7 +37,7 @@ class BadgeDrawable(context: Context) : Drawable() {
 
         mTextPaint = Paint()
         mTextPaint.color = Color.WHITE
-        mTextPaint.typeface = Typeface.DEFAULT
+        //mTextPaint.typeface = Typeface.DEFAULT
         mTextPaint.textSize = mTextSize
         mTextPaint.isAntiAlias = true
         mTextPaint.textAlign = Paint.Align.CENTER
