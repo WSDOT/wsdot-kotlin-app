@@ -134,14 +134,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
-        (activity as MainActivity).setScreenName(this::class.java.simpleName)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+
+        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
+        (activity as MainActivity).setScreenName(this::class.java.simpleName)
 
         // Inflate the layout for this fragment
 

@@ -142,6 +142,7 @@
     <string name="ad_target_traffic">traffic</string>
     <string name="ad_target_ferries">ferries</string>
     <string name="ad_target_passes">passes</string>
+    <string name="ad_target_border">border</string>
     <string name="ad_target_other">other</string>
 
     <string name="no_alerts_string">No Alerts Reported In This Location</string>
