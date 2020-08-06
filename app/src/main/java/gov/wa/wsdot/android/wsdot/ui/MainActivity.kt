@@ -1,14 +1,10 @@
 package gov.wa.wsdot.android.wsdot.ui
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,12 +13,7 @@ import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toolbar
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,8 +25,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.material.navigation.NavigationView
@@ -489,32 +479,30 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdViewBox.visibility = VISIBLE
 
         val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
+        mAdView.visibility = VISIBLE
 
         val adRequest = PublisherAdRequest.Builder()
-            .addTestDevice(PublisherAdRequest.DEVICE_ID_EMULATOR) // All emulators
             .addCustomTargeting("wsdotapp", target)
             .build()
 
-       // mAdView.visibility = View.GONE
         mAdView.adListener = null
-
         mAdView.adListener = object : AdListener() {
+
             override fun onAdLoaded() {
-                super.onAdLoaded()
-                mAdView.visibility = View.VISIBLE
+                mAdView.visibility = VISIBLE
             }
 
-            override fun onAdFailedToLoad(error: Int) {
-                super.onAdFailedToLoad(error)
-                when (error) {
-                    AdRequest.ERROR_CODE_NO_FILL -> Log.e("debug", "no fill")
-                    AdRequest.ERROR_CODE_INVALID_REQUEST -> Log.e("debug", "invalid request")
-                    AdRequest.ERROR_CODE_NETWORK_ERROR -> Log.e("debug", "network error")
-                    AdRequest.ERROR_CODE_INTERNAL_ERROR -> Log.e("debug", "internal error")
-                }
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                Log.e("debug", "failed to load ad")
+                Log.e("debug", error.domain)
+                Log.e("debug", error.code.toString())
+                Log.e("debug", error.message)
+                Log.e("debug", error.cause.toString())
             }
         }
+
         mAdView.loadAd(adRequest)
+
     }
 
     /**
