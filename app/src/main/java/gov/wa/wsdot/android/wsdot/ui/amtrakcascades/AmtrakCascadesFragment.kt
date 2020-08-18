@@ -67,7 +67,8 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as MainActivity).enableAds("other")
+        val adTargets = mapOf("wsdotapp" to "other")
+        (activity as MainActivity).enableAds(adTargets)
 
         // set up view models
         amtrakCascadesViewModel = activity?.run {

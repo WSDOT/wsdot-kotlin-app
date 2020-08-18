@@ -46,8 +46,8 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_border))
-
+        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_border))
+        (activity as MainActivity).enableAds(adTargets)
 
         borderCrossingViewModel = ViewModelProvider(this, viewModelFactory)
             .get(BorderCrossingViewModel::class.java)
