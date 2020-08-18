@@ -54,7 +54,8 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
+        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_passes))
+        (activity as MainActivity).enableAds(adTargets)
 
         passViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)

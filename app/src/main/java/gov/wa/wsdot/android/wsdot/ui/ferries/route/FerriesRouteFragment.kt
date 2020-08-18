@@ -35,6 +35,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragmen
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingViewModel
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
+import gov.wa.wsdot.android.wsdot.util.AdTargets
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
@@ -101,6 +102,12 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val adTargets = mapOf(
+            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
+            "wsdotferries" to AdTargets.getFerryAdTarget(args.routeId)
+        )
+        (activity as MainActivity).enableAds(adTargets)
 
         // set up view models
         routeViewModel = ViewModelProvider(this, viewModelFactory)

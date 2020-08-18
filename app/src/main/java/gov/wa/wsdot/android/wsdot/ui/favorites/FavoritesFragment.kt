@@ -35,8 +35,6 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
-import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -59,8 +57,7 @@ import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter.ViewType.ITEM_TYPE_TRAVEL_TIME
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
 import gov.wa.wsdot.android.wsdot.model.common.Status
-import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
-import gov.wa.wsdot.android.wsdot.util.putDouble
+import gov.wa.wsdot.android.wsdot.util.*
 import java.util.*
 
 class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injectable  {
@@ -471,19 +468,25 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
     private fun navigateToCamera(camera: Camera){
         val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
+        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+        (activity as MainActivity).enableAds(adTargets)
         findNavController().navigate(action)
     }
 
     private fun navigateToSchedule(schedule: FerrySchedule) {
         val action = NavGraphDirections.actionGlobalNavFerriesRouteFragment(schedule.routeId, schedule.description)
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_ferries))
+        val adTargets = mapOf(
+            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
+            "wsdotferries" to AdTargets.getFerryAdTarget(schedule.routeId)
+        )
+        (activity as MainActivity).enableAds(adTargets)
         findNavController().navigate(action)
     }
 
     private fun navigateToMountainPass(pass: MountainPass) {
         val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(pass.passId, pass.passName)
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_passes))
+        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_passes))
+        (activity as MainActivity).enableAds(adTargets)
         findNavController().navigate(action)
     }
 
@@ -538,7 +541,9 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         val action = FavoritesFragmentDirections.actionNavFavoritesFragmentToNavFavoriteTrafficMapFragment()
 
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_traffic))
+        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+        (activity as MainActivity).enableAds(adTargets)
+
         findNavController().navigate(action)
     }
 

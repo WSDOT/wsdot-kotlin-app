@@ -24,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.model.common.Status
+import gov.wa.wsdot.android.wsdot.util.AdTargets
 import javax.inject.Inject
 
 /**
@@ -61,7 +62,11 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        (activity as MainActivity).enableAds(resources.getString(R.string.ad_target_ferries))
+        val adTargets = mapOf(
+            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
+            "wsdotferries" to AdTargets.getFerryAdTarget(null)
+        )
+        (activity as MainActivity).enableAds(adTargets)
 
         ferriesViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FerriesViewModel::class.java)

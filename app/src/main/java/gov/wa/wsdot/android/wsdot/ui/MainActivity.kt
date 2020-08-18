@@ -64,6 +64,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        MobileAds.initialize(this) {}
+
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -473,17 +475,17 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      * Initialize and display ads.
      * WARNING: don't call in onCreate
      */
-     fun enableAds(target: String) {
-
-        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
-        mAdViewBox.visibility = VISIBLE
+     fun enableAds(targets: Map<String, String>) {
 
         val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
         mAdView.visibility = VISIBLE
 
         val adRequest = PublisherAdRequest.Builder()
-            .addCustomTargeting("wsdotapp", target)
-            .build()
+
+        for ((key, value) in targets) {
+            println("$key = $value")
+            adRequest.addCustomTargeting(key, value)
+        }
 
         mAdView.adListener = null
         mAdView.adListener = object : AdListener() {
@@ -501,7 +503,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
 
-        mAdView.loadAd(adRequest)
+        mAdView.loadAd(adRequest.build())
 
     }
 
