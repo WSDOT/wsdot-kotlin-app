@@ -1,11 +1,10 @@
 package gov.wa.wsdot.android.wsdot.util
 
-
 object AdTargets {
     fun getFerryAdTarget(routeId: Int?): String {
         return when (routeId) {
             9 -> "Anacortes-SanJuan"
-            // TODO: add other anacortes ID
+            272 -> "Anacortes-SanJuan" // "Anacortes / San Juan Islands / Sidney B.C."
             6 -> "Edmonds-Kingston"
             13 -> "Fauntleroy-Southworth"
             14 -> "Fauntleroy-Vashon"
