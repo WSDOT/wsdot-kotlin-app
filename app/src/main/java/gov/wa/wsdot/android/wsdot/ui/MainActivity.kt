@@ -94,10 +94,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navAmtrakCascadesFragment
             ), drawerLayout)
 
-
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
-
 
         val startDestination = getStartDestination(intent?.extras)
 
@@ -205,22 +203,18 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         return if (extras != null) {
             when {
-
                 extras.getString("shortcut_id") == "ferries" -> {
                     navView.menu.findItem(R.id.nav_ferries).isChecked = true
                     R.id.navFerriesHomeFragment
                 }
-
                 extras.getString("shortcut_id") == "mountain_passes" -> {
                     navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
                     R.id.navMountainPassHomeFragment
                 }
-
                 extras.getString("shortcut_id") == "favorites" -> {
                     navView.menu.findItem(R.id.nav_favorites).isChecked = true
                     R.id.navFavoritesFragment
                 }
-
                 else -> {
                     navToLastLocation(navView)
                 }
@@ -305,7 +299,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
                 findNavController(R.id.nav_host_fragment).navigate(action)
 
-
             }
 
             extras.getBoolean(getString(R.string.push_alert_ferry_alert), false) -> {
@@ -327,7 +320,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 findNavController(R.id.nav_host_fragment).navigate(actionTwo)
 
             }
-
         }
 
         when {
@@ -345,9 +337,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 val navView: NavigationView = findViewById(R.id.drawer_nav_view)
                 navView.menu.findItem(R.id.nav_favorites).isChecked = true
             }
-
         }
-
 
         // reset intent so we don't reuse it on config changes.
         intent.replaceExtras(Bundle())
@@ -355,11 +345,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         intent.data = null
         intent.flags = 0
 
-
     }
     
     override fun getTheme(): Resources.Theme {
-
         val theme = super.getTheme()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
@@ -370,10 +358,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         } else {
             theme.applyStyle(R.style.ThemeWSDOTGreen, true)
         }
-
         return theme
     }
-
 
     override fun onBackPressed() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -381,7 +367,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
-
         }
     }
 
@@ -437,23 +422,23 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
             R.id.nav_settings -> {
-                if(navController.currentDestination?.id != R.id.navSettingsFragment) {
+                if (navController.currentDestination?.id != R.id.navSettingsFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navSettingsFragment)
                 }
             }
             R.id.nav_about -> {
-                if(navController.currentDestination?.id != R.id.navAboutFragment) {
+                if (navController.currentDestination?.id != R.id.navAboutFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navAboutFragment)
                 }
             }
             R.id.event_banner -> {
-                if(navController.currentDestination?.id != R.id.navEventDetailsFragment) {
+                if (navController.currentDestination?.id != R.id.navEventDetailsFragment) {
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
             }
             R.id.nav_notifications -> {
-                if(navController.currentDestination?.id != R.id.navNotificationsFragment) {
+                if (navController.currentDestination?.id != R.id.navNotificationsFragment) {
                     val action = NavGraphDirections.actionGlobalNavNotificationsFragment()
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
