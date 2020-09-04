@@ -462,6 +462,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      */
      fun enableAds(targets: Map<String, String>) {
 
+        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
+        mAdViewBox.visibility = VISIBLE
+
         val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
         mAdView.visibility = VISIBLE
 
