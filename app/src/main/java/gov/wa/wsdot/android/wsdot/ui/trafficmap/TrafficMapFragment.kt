@@ -328,6 +328,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
                 for (alert in alerts.data) {
 
+                    // don't show alerts with coordinates (0,0)
+                    if (alert.startLatitude == 0.0
+                        && alert.startLongitude == 0.0) {
+                        continue
+                    }
+
                     var alertIcon: BitmapDescriptor
 
                     val construction = arrayOf("construction", "maintenance")
