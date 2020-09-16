@@ -54,7 +54,7 @@ class HighwayAlertRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun loadHighestImpactHighwayAlerts(forceRefresh: Boolean): LiveData<Resource<List<HighwayAlert>>> {
+    fun loadStatewideAndHighestImpactHighwayAlerts(forceRefresh: Boolean): LiveData<Resource<List<HighwayAlert>>> {
 
         return object : NetworkBoundResource<List<HighwayAlert>, HighwayAlertsResponse>(appExecutors) {
 
@@ -76,7 +76,7 @@ class HighwayAlertRepository @Inject constructor(
                 return forceRefresh || update
             }
 
-            override fun loadFromDb() = highwayAlertDao.loadHighestImpactAlerts()
+            override fun loadFromDb() = highwayAlertDao.loadStatewideAndHighestImpactAlerts()
 
             override fun createCall() = dataWebservice.getHighwayAlerts()
 
