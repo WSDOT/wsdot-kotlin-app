@@ -8,14 +8,14 @@ import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
 import javax.inject.Inject
 
-class HighestImpactAlertsViewModel @Inject constructor(highwayAlertRepository: HighwayAlertRepository) : ViewModel() {
+class StatewideAndHighestImpactAlertsViewModel @Inject constructor(highwayAlertRepository: HighwayAlertRepository) : ViewModel() {
 
     private val repo = highwayAlertRepository
 
     // mediator handles resubscribe on refresh
     val highestImpactAlerts = MediatorLiveData<Resource<List<HighwayAlert>>>()
 
-    private var alertsLiveData : LiveData<Resource<List<HighwayAlert>>> = highwayAlertRepository.loadHighestImpactHighwayAlerts(false)
+    private var alertsLiveData : LiveData<Resource<List<HighwayAlert>>> = highwayAlertRepository.loadStatewideAndHighestImpactHighwayAlerts(false)
 
     init {
         highestImpactAlerts.addSource(alertsLiveData) { highestImpactAlerts.value = it }
@@ -23,7 +23,7 @@ class HighestImpactAlertsViewModel @Inject constructor(highwayAlertRepository: H
 
     fun refresh() {
         highestImpactAlerts.removeSource(alertsLiveData)
-        alertsLiveData = repo.loadHighestImpactHighwayAlerts(true)
+        alertsLiveData = repo.loadStatewideAndHighestImpactHighwayAlerts(true)
         highestImpactAlerts.addSource(alertsLiveData) { highestImpactAlerts.value = it }
     }
 
