@@ -39,7 +39,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsVi
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighestImpactAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.StatewideAndHighestImpactAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
 
@@ -89,8 +89,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(HighestImpactAlertsViewModel::class)
-    abstract fun bindStatewideAlertsViewModel(statewideAlertsViewModel: HighestImpactAlertsViewModel): ViewModel
+    @ViewModelKey(StatewideAndHighestImpactAlertsViewModel::class)
+    abstract fun bindStatewideAlertsViewModel(statewideAndHighestImpactAlertsViewModel: StatewideAndHighestImpactAlertsViewModel): ViewModel
 
     @Binds
     @IntoMap

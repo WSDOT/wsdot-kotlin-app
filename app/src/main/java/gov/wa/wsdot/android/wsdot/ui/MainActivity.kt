@@ -471,7 +471,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         val adRequest = PublisherAdRequest.Builder()
 
         for ((key, value) in targets) {
-            println("$key = $value")
             adRequest.addCustomTargeting(key, value)
         }
 
