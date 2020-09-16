@@ -2,7 +2,6 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var highestImpactAlertsViewModel: HighestImpactAlertsViewModel
+    lateinit var statewideAndHighestImpactAlertsViewModel: StatewideAndHighestImpactAlertsViewModel
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -49,8 +48,8 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        highestImpactAlertsViewModel = ViewModelProvider(this, viewModelFactory)
-            .get(HighestImpactAlertsViewModel::class.java)
+        statewideAndHighestImpactAlertsViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(StatewideAndHighestImpactAlertsViewModel::class.java)
 
         val dataBinding = DataBindingUtil.inflate<HighwayAlertsHighestImpactFragmentBinding>(
             inflater,
@@ -61,13 +60,13 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
 
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
-                highestImpactAlertsViewModel.refresh()
+                statewideAndHighestImpactAlertsViewModel.refresh()
             }
         }
 
         dataBinding.viewModel
 
-        dataBinding.viewModel = highestImpactAlertsViewModel
+        dataBinding.viewModel = statewideAndHighestImpactAlertsViewModel
 
         binding = dataBinding
 
@@ -99,7 +98,7 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
                 true
             }
 
-        highestImpactAlertsViewModel.highestImpactAlerts.observe(viewLifecycleOwner, Observer { alertResource ->
+        statewideAndHighestImpactAlertsViewModel.highestImpactAlerts.observe(viewLifecycleOwner, Observer { alertResource ->
 
             if (alertResource.data != null) {
 

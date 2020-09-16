@@ -8,7 +8,7 @@ class HighwayAlertTabFragment : SimpleTabFragment(), Injectable {
     override fun getTitles(): ArrayList<String> {
         val titles = ArrayList<String>()
         titles.add("Alerts In Area")
-        titles.add("Statewide Highest Impact Alerts")
+        titles.add("Statewide & Highest Impact Alerts")
         return titles
     }
     override fun getFragments(): ArrayList<Fragment> {
