@@ -150,10 +150,25 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 }
 
                 binding.highwayAlert = alert.data
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(alert.data.startLatitude, alert.data.startLongitude), 14.0f))
+
+                var lat = alert.data.startLatitude
+                var long = alert.data.startLongitude
+                var zoom = 14.0f
+
+                if (lat == 0.0 && long == 0.0) {
+                    lat = 47.7511
+                    long = -120.7401
+                    zoom = 6.0f
+                }
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    LatLng(lat, long),
+                    zoom))
                 mMap.addMarker(
                     MarkerOptions()
-                        .position(LatLng(alert.data.startLatitude, alert.data.startLongitude))
+                        .position(
+                            LatLng(lat, long)
+                        )
                         .icon(alertIcon))
             } else {
                 mapFragment.view?.visibility = View.GONE
