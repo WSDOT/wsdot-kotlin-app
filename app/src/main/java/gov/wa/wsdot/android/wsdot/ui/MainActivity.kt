@@ -42,6 +42,9 @@ import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
 import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -65,7 +68,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
 
         MobileAds.initialize(this) {}
-
+        
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -478,7 +481,17 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         mAdView.adListener = object : AdListener() {
 
             override fun onAdLoaded() {
+                super.onAdLoaded()
                 mAdView.visibility = VISIBLE
+
+                //debug
+                val info = publisherAdView.responseInfo
+                var adResponseId = "null"
+                if (info != null){
+                    adResponseId = info.responseId.toString()
+                }
+                Log.d("Ads", "onAdLoaded: Ad response ID is $adResponseId")
+
             }
 
             override fun onAdFailedToLoad(error: LoadAdError) {
