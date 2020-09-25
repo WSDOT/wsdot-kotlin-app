@@ -25,11 +25,13 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
@@ -43,8 +45,6 @@ import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -67,8 +67,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        MobileAds.initialize(this) {}
-        
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -95,7 +93,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
                 R.id.navAmtrakCascadesFragment
-            ), drawerLayout)
+            ), drawerLayout
+        )
 
         val navInflater = navController.navInflater
         val graph = navInflater.inflate(R.navigation.nav_graph)
@@ -108,16 +107,25 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
-                R.id.navTrafficMapFragment -> navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
-                R.id.navFerriesHomeFragment -> navView.menu.findItem(R.id.nav_ferries).isChecked = true
-                R.id.navMountainPassHomeFragment -> navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
-                R.id.navTollRatesFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked = true
-                R.id.navBorderCrossingsFragment -> navView.menu.findItem(R.id.nav_border_waits).isChecked = true
-                R.id.navAmtrakCascadesFragment -> navView.menu.findItem(R.id.nav_amtrak_cascades).isChecked = true
-                R.id.navFavoritesFragment -> navView.menu.findItem(R.id.nav_favorites).isChecked = true
-                R.id.navSettingsFragment -> navView.menu.findItem(R.id.nav_settings).isChecked = true
+                R.id.navTrafficMapFragment -> navView.menu.findItem(R.id.nav_traffic_map).isChecked =
+                    true
+                R.id.navFerriesHomeFragment -> navView.menu.findItem(R.id.nav_ferries).isChecked =
+                    true
+                R.id.navMountainPassHomeFragment -> navView.menu.findItem(R.id.nav_mountain_passes).isChecked =
+                    true
+                R.id.navTollRatesFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked =
+                    true
+                R.id.navBorderCrossingsFragment -> navView.menu.findItem(R.id.nav_border_waits).isChecked =
+                    true
+                R.id.navAmtrakCascadesFragment -> navView.menu.findItem(R.id.nav_amtrak_cascades).isChecked =
+                    true
+                R.id.navFavoritesFragment -> navView.menu.findItem(R.id.nav_favorites).isChecked =
+                    true
+                R.id.navSettingsFragment -> navView.menu.findItem(R.id.nav_settings).isChecked =
+                    true
                 R.id.navAboutFragment -> navView.menu.findItem(R.id.nav_about).isChecked = true
-                R.id.navNotificationsFragment -> navView.menu.findItem(R.id.nav_notifications).isChecked = true
+                R.id.navNotificationsFragment -> navView.menu.findItem(R.id.nav_notifications).isChecked =
+                    true
             }
         }
 
@@ -140,7 +148,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                     eventTitle = it.title
                     navView.menu.setGroupVisible(R.id.event_banner_group, true)
-                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text = it.bannerText
+                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text =
+                        it.bannerText
 
                     editor.putInt(getString(R.string.pref_key_theme), it.themeId)
                     editor.putString(getString(R.string.pref_key_current_event), it.title)
@@ -159,7 +168,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         })
 
-        notificationsViewModel = ViewModelProvider(this, viewModelFactory).get(NotificationsViewModel::class.java)
+        notificationsViewModel = ViewModelProvider(this, viewModelFactory).get(
+            NotificationsViewModel::class.java
+        )
 
         notificationsViewModel.topics.observe(this, Observer { topics ->
             topics.data?.let {
@@ -191,7 +202,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         if (lastSeenEvent != currentEvent) {
             val actionbar = supportActionBar
-            actionbar?.setHomeAsUpIndicator(BadgeDrawable.getMenuBadge(this, R.drawable.ic_menu, "!"))
+            actionbar?.setHomeAsUpIndicator(
+                BadgeDrawable.getMenuBadge(
+                    this,
+                    R.drawable.ic_menu,
+                    "!"
+                )
+            )
         }
     }
 
@@ -272,11 +289,23 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 val settings = PreferenceManager.getDefaultSharedPreferences(this)
 
-                val latitude = settings.getDouble(getString(R.string.user_preference_traffic_map_latitude), 47.6062)
-                val longitude = settings.getDouble(getString(R.string.user_preference_traffic_map_longitude), -122.3321)
+                val latitude = settings.getDouble(
+                    getString(R.string.user_preference_traffic_map_latitude),
+                    47.6062
+                )
+                val longitude = settings.getDouble(
+                    getString(R.string.user_preference_traffic_map_longitude),
+                    -122.3321
+                )
 
-                val lat = extras.getDouble(getString(R.string.push_alert_traffic_alert_latitude), latitude)
-                val lng = extras.getDouble(getString(R.string.push_alert_traffic_alert_longitude), longitude)
+                val lat = extras.getDouble(
+                    getString(R.string.push_alert_traffic_alert_latitude),
+                    latitude
+                )
+                val lng = extras.getDouble(
+                    getString(R.string.push_alert_traffic_alert_longitude),
+                    longitude
+                )
 
                 val editor = settings.edit()
                 editor.putDouble(
@@ -297,9 +326,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 // reset navigation to the traffic map
                 findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
-                findNavController(R.id.nav_host_fragment).popBackStack(R.id.navTrafficMapFragment, false)
+                findNavController(R.id.nav_host_fragment).popBackStack(
+                    R.id.navTrafficMapFragment,
+                    false
+                )
 
-                val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alertId, "Traffic Alert")
+                val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(
+                    alertId,
+                    "Traffic Alert"
+                )
                 findNavController(R.id.nav_host_fragment).navigate(action)
 
             }
@@ -311,12 +346,21 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 val alertId = extras.getInt(getString(R.string.push_alert_ferry_alert_id), 0)
                 val routeId = extras.getInt(getString(R.string.push_alert_ferry_route_id), 0)
-                val routeTitle = extras.getString(getString(R.string.push_alert_ferry_route_title), "")
+                val routeTitle = extras.getString(
+                    getString(R.string.push_alert_ferry_route_title),
+                    ""
+                )
 
                 findNavController(R.id.nav_host_fragment).navigate(R.id.navFerriesHomeFragment)
-                findNavController(R.id.nav_host_fragment).popBackStack(R.id.navFerriesHomeFragment, false)
+                findNavController(R.id.nav_host_fragment).popBackStack(
+                    R.id.navFerriesHomeFragment,
+                    false
+                )
 
-                val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(routeId, routeTitle)
+                val actionOne = NavGraphDirections.actionGlobalNavFerriesRouteFragment(
+                    routeId,
+                    routeTitle
+                )
                 findNavController(R.id.nav_host_fragment).navigate(actionOne)
 
                 val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
@@ -484,11 +528,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 super.onAdLoaded()
                 mAdView.visibility = VISIBLE
 
-                //debug
+                // report ad ID to crashlytics
                 val info = publisherAdView.responseInfo
                 var adResponseId = "null"
                 if (info != null){
                     adResponseId = info.responseId.toString()
+                    FirebaseCrashlytics.getInstance().setCustomKey(
+                        "banner_ad_response_id", adResponseId
+                    )
+
                 }
                 Log.d("Ads", "onAdLoaded: Ad response ID is $adResponseId")
 
@@ -496,10 +544,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
             override fun onAdFailedToLoad(error: LoadAdError) {
                 Log.e("debug", "failed to load ad")
-                Log.e("debug", error.domain)
-                Log.e("debug", error.code.toString())
-                Log.e("debug", error.message)
-                Log.e("debug", error.cause.toString())
+                FirebaseCrashlytics.getInstance().setCustomKey(
+                    "banner_ad_load_failure_code", error.code.toString()
+                )
             }
         }
 
