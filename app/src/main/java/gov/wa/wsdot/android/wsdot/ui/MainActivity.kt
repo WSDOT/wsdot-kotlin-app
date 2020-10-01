@@ -25,8 +25,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
+import com.google.ads.AdRequest
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.material.navigation.NavigationView
@@ -45,6 +48,7 @@ import gov.wa.wsdot.android.wsdot.util.TimeUtils
 import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -509,11 +513,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      */
      fun enableAds(targets: Map<String, String>) {
 
-        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
-        mAdViewBox.visibility = VISIBLE
+        ad_banner_box.visibility = VISIBLE
+        ad_view.visibility = VISIBLE
 
-        val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
-        mAdView.visibility = VISIBLE
+        //val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
+        //val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        //MobileAds.setRequestConfiguration(configuration)
 
         val adRequest = PublisherAdRequest.Builder()
 
@@ -521,15 +526,14 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             adRequest.addCustomTargeting(key, value)
         }
 
-        mAdView.adListener = null
-        mAdView.adListener = object : AdListener() {
+        ad_view.adListener = object : AdListener() {
 
             override fun onAdLoaded() {
                 super.onAdLoaded()
-                mAdView.visibility = VISIBLE
+                ad_view.visibility = VISIBLE
 
                 // report ad ID to crashlytics
-                val info = publisherAdView.responseInfo
+                val info = ad_view.responseInfo
                 var adResponseId = "null"
                 if (info != null){
                     adResponseId = info.responseId.toString()
@@ -543,15 +547,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
 
             override fun onAdFailedToLoad(error: LoadAdError) {
-                Log.e("debug", "failed to load ad")
                 FirebaseCrashlytics.getInstance().setCustomKey(
                     "banner_ad_load_failure_code", error.code.toString()
                 )
             }
         }
 
-        mAdView.loadAd(adRequest.build())
-
+        ad_view.loadAd(adRequest.build())
     }
 
     /**
@@ -559,11 +561,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      *  WARNING: don't call in onCreate
      */
     fun disableAds() {
-        val mAdView: PublisherAdView = drawerLayout.findViewById(R.id.publisherAdView)
-        val mAdViewBox: LinearLayout = drawerLayout.findViewById(R.id.ad_banner_box)
-        mAdViewBox.visibility = GONE
-        mAdView.visibility = GONE
-        mAdView.pause()
+        ad_banner_box.visibility = GONE
+        ad_view.visibility = GONE
+        ad_view.pause()
     }
 
     fun setScreenName(screenName: String) {
