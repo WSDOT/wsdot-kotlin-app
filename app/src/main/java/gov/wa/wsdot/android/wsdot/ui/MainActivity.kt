@@ -516,9 +516,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         ad_banner_box.visibility = VISIBLE
         ad_view.visibility = VISIBLE
 
-        //val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
-        //val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-        //MobileAds.setRequestConfiguration(configuration)
+        val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        MobileAds.setRequestConfiguration(configuration)
 
         val adRequest = PublisherAdRequest.Builder()
 
