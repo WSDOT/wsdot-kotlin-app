@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -11,7 +12,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,16 +25,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetView
-import com.google.ads.AdRequest
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.DaggerAppCompatActivity
@@ -43,10 +38,7 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
-import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
-import gov.wa.wsdot.android.wsdot.util.TimeUtils
-import gov.wa.wsdot.android.wsdot.util.getDouble
-import gov.wa.wsdot.android.wsdot.util.putDouble
+import gov.wa.wsdot.android.wsdot.util.*
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import javax.inject.Inject
@@ -68,8 +60,29 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
+    private lateinit var adView: PublisherAdView
+
+    private val adSize: AdSize
+        get() {
+            val display = windowManager.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = ad_banner_box.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -186,6 +199,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
         })
+
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this) { }
+
+        adView = PublisherAdView(this)
+        ad_banner_box.addView(adView)
+        adView.setAdSizes(adSize)
+        adView.adUnitId = ApiKeys.UNIT_ID
+
     }
 
     override fun onResume() {
@@ -514,46 +536,42 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      fun enableAds(targets: Map<String, String>) {
 
         ad_banner_box.visibility = VISIBLE
-        ad_view.visibility = VISIBLE
 
         val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
         MobileAds.setRequestConfiguration(configuration)
 
-        val adRequest = PublisherAdRequest.Builder()
+
+        adView.adListener = object : AdListener() {
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+
+                // report ad ID to crashlytics
+                val info = adView.responseInfo
+                var adResponseId = "null"
+                if (info != null){
+                    Log.e("Ads", info.toString())
+                }
+                Log.d("Ads", "onAdLoaded: Ad response ID is $adResponseId")
+            }
+
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                Log.e("Ads", error.toString())
+            }
+        }
+
+        val adRequest = PublisherAdRequest
+            .Builder()
+
 
         for ((key, value) in targets) {
             adRequest.addCustomTargeting(key, value)
         }
 
-        ad_view.adListener = object : AdListener() {
+        // Start loading the ad in the background.
+        adView.loadAd(adRequest.build())
 
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                ad_view.visibility = VISIBLE
-
-                // report ad ID to crashlytics
-                val info = ad_view.responseInfo
-                var adResponseId = "null"
-                if (info != null){
-                    adResponseId = info.responseId.toString()
-                    FirebaseCrashlytics.getInstance().setCustomKey(
-                        "banner_ad_response_id", adResponseId
-                    )
-
-                }
-                Log.d("Ads", "onAdLoaded: Ad response ID is $adResponseId")
-
-            }
-
-            override fun onAdFailedToLoad(error: LoadAdError) {
-                FirebaseCrashlytics.getInstance().setCustomKey(
-                    "banner_ad_load_failure_code", error.code.toString()
-                )
-            }
-        }
-
-        ad_view.loadAd(adRequest.build())
     }
 
     /**
@@ -562,8 +580,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      */
     fun disableAds() {
         ad_banner_box.visibility = GONE
-        ad_view.visibility = GONE
-        ad_view.pause()
+        adView.pause()
     }
 
     fun setScreenName(screenName: String) {
@@ -645,4 +662,5 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
         return null
     }
+
 }
