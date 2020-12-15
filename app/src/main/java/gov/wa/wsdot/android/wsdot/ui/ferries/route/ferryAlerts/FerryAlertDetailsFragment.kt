@@ -49,6 +49,7 @@ class FerryAlertDetailsFragment : DaggerFragment(), Injectable {
         binding = dataBinding
 
         ferryAlertDetailsViewModel.ferryAlert.observe(viewLifecycleOwner, Observer { alert ->
+            // Is data not null when alerts have expired?
             if (alert?.data != null) {
                 binding.alert = alert.data
             } else {
