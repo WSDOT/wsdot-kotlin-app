@@ -16,6 +16,7 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
  * limitations under the License.
  */
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.Html
@@ -197,21 +198,23 @@ object BindingAdapters {
     @JvmStatic
     @BindingAdapter("bindStringArray")
     fun bindStringArray(textView: TextView, strings: List<String>) {
-
         var messageString = ""
-
         for (string in strings) {
             messageString = "$messageString$string "
         }
-
         textView.text = stripHtml(messageString)
     }
 
     @JvmStatic
     @BindingAdapter("bindHTML")
     fun bindHTML(textView: TextView, text: String?) {
-        text?.let {
-            textView.text = stripHtml(it).trimEnd()
+
+        "Unavailable".also { textView.text = it }
+
+        if (text != null) {
+            if (text != "") {
+                textView.text = stripHtml(text).trimEnd()
+            }
         }
     }
 

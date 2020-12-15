@@ -31,7 +31,6 @@ class WsdotApp : Application(), HasActivityInjector {
     override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 
     fun setDarkMode(sharedPreferences: SharedPreferences?, prefKey: String?) {
-
         sharedPreferences?.let { prefs ->
             if (prefKey == resources.getString(R.string.pref_key_user_theme)) {
                 when (prefs.getString(prefKey, resources.getString(R.string.key_value_system_theme))) {
@@ -43,8 +42,4 @@ class WsdotApp : Application(), HasActivityInjector {
         }
 
     }
-
-
-
-
 }
