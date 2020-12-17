@@ -82,8 +82,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -537,11 +535,13 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         ad_banner_box.visibility = VISIBLE
 
-        val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-        MobileAds.setRequestConfiguration(configuration)
+        //val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
+        //val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        //MobileAds.setRequestConfiguration(configuration)
 
+        adView.pause()
 
+        adView.adListener = null
         adView.adListener = object : AdListener() {
 
             override fun onAdLoaded() {
@@ -563,7 +563,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val adRequest = PublisherAdRequest
             .Builder()
-
 
         for ((key, value) in targets) {
             adRequest.addCustomTargeting(key, value)
