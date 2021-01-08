@@ -563,24 +563,25 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         binding!!.includedHighwayAlertBottomSheet.viewModel = highwayAlertViewModel
 
         // if a bottom sheet is open override back button to close sheet
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    binding?.let {
-                        if (from(it.highwayAlertBottomSheet).state == STATE_EXPANDED) {
-                            from(it.highwayAlertBottomSheet).state = STATE_HIDDEN
-                            return
-                        }
-                        else if (from(it.cameraBottomSheet).state == STATE_EXPANDED) {
-                            from(it.cameraBottomSheet).state = STATE_HIDDEN
-                            return
-                        }
+
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                binding?.let {
+                    if (from(it.highwayAlertBottomSheet).state == STATE_EXPANDED) {
+                        from(it.highwayAlertBottomSheet).state = STATE_HIDDEN
+                        return
                     }
-                    isEnabled = false
-                    requireActivity().onBackPressed()
+                    else if (from(it.cameraBottomSheet).state == STATE_EXPANDED) {
+                        from(it.cameraBottomSheet).state = STATE_HIDDEN
+                        return
+                    }
                 }
-            })
+                isEnabled = false
+                requireActivity().onBackPressed()
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
 
     }
 
