@@ -182,8 +182,11 @@
     <string name="push_alert_ferry_alert_id">ferry_alert_id_push_key</string>
     <string name="push_alert_ferry_route_id">ferry_alert_route_id_push_key</string>
     <string name="push_alert_ferry_route_title">ferry_alert_route_title_push_key</string>
+
+
     <string name="app_version_text">Version %s</string>
 
+    // Shortcuts
     <string name="ferries_shortcut_short_label">Ferries</string>
     <string name="ferries_shortcut_long_label">Ferry Schedules</string>
 
@@ -193,6 +196,7 @@
     <string name="favorites_shortcut_short_label">Favorites</string>
     <string name="favorites_shortcut_long_label">Favorites</string>
 
+    // misc.
     <string name="no_highest_alerts_string">No highest impact alerts</string>
     <string name="action_my_location">My Location</string>
     <string name="no_sailings_title">Schedule Unavailable</string>
@@ -202,6 +206,7 @@
     <string name="action_rename">edit name</string>
     <string name="action_express_lanes">Schedule</string>
 
-
+    // notification channel
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
 </resources>
