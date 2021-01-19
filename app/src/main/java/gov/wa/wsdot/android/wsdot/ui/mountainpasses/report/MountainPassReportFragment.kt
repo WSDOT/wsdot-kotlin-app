@@ -1,10 +1,8 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -30,6 +28,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     lateinit var passReportViewModel: MountainPassReportViewModel
     lateinit var cameraListViewModel: CameraListViewModel
 

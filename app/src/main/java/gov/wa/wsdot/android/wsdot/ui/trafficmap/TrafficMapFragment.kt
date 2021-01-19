@@ -218,7 +218,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         super.onPause()
 
         from(binding!!.cameraBottomSheet).state = STATE_HIDDEN
-        BottomSheetBehavior.from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
+        from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
 
         if (::mMap.isInitialized) {
 

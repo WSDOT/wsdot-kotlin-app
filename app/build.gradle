@@ -115,9 +115,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.6"
     annotationProcessor 'androidx.room:room-compiler:2.2.6'
 
-    // tap target
-    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.0'
-
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
 

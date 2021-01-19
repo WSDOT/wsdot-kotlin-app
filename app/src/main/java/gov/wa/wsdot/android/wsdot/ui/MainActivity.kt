@@ -23,8 +23,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
-import com.getkeepsafe.taptargetview.TapTarget
-import com.getkeepsafe.taptargetview.TapTargetView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import com.google.android.gms.ads.doubleclick.PublisherAdView
@@ -40,7 +38,6 @@ import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.*
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -82,6 +79,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -111,14 +109,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             ), drawerLayout
         )
 
-        val navInflater = navController.navInflater
-        val graph = navInflater.inflate(R.navigation.nav_graph)
 
-        val startDestination = getStartDestination(intent?.extras)
-
-        graph.startDestination = startDestination
-
-        navController.graph = graph
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
@@ -143,6 +134,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     true
             }
         }
+
+        val navInflater = navController.navInflater
+        val graph = navInflater.inflate(R.navigation.nav_graph)
+
+        val startDestination = getStartDestination(intent?.extras)
+
+        graph.startDestination = startDestination
+
+        navController.graph = graph
 
         NavigationUI.setupWithNavController(findViewById(R.id.toolbar), navController, config)
         NavigationUI.setupActionBarWithNavController(this, navController, config)
@@ -206,11 +206,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         adView.setAdSizes(adSize)
         adView.adUnitId = ApiKeys.UNIT_ID
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showMenuPrompt()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -620,46 +615,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     // Pref change listener
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, prefKey: String?) {
         (application as WsdotApp).setDarkMode(sharedPreferences, prefKey)
-    }
-
-    // tap target for new users
-    private fun showMenuPrompt() {
-        try {
-            val prefManager = PreferenceManager.getDefaultSharedPreferences(this)
-            if (!prefManager.getBoolean("didShowPrompt", false)) {
-                TapTargetView.showFor(this,
-                    TapTarget.forView(
-                        getNavButtonView(),
-                        "Know Before You Go!",
-                        "Tap here for Ferry Schedules, Mountain Pass Reports and more."
-                    ),
-                    object : TapTargetView.Listener() {
-                        override fun onTargetDismissed(
-                            view: TapTargetView?,
-                            userInitiated: Boolean
-                        ) {
-                            val prefEditor = prefManager.edit()
-                            prefEditor.putBoolean("didShowPrompt", true)
-                            prefEditor.apply()
-                            super.onTargetDismissed(view, userInitiated)
-                        }
-
-                    }
-                )
-            }
-        } catch (e: NullPointerException) {
-            return
-        }
-    }
-
-    private fun getNavButtonView(): View? {
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        for (x in 0..toolbar.childCount) {
-            if (toolbar.getChildAt(x).id != R.id.action_my_location && toolbar.getChildAt(x) is ImageButton) {
-                return toolbar.getChildAt(x)
-            }
-        }
-        return null
     }
 
 }
