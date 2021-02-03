@@ -24,8 +24,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.preference.PreferenceManager
 import com.google.android.gms.ads.*
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
-import com.google.android.gms.ads.doubleclick.PublisherAdView
+import com.google.android.gms.ads.admanager.AdManagerAdRequest
+import com.google.android.gms.ads.admanager.AdManagerAdView
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
@@ -57,7 +57,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private lateinit var adView: PublisherAdView
+    private lateinit var adView: AdManagerAdView
 
     private val adSize: AdSize
         get() {
@@ -201,7 +201,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         // Initialize the Mobile Ads SDK.
         MobileAds.initialize(this) { }
 
-        adView = PublisherAdView(this)
+        adView = AdManagerAdView(this)
         ad_banner_box.addView(adView)
         adView.setAdSizes(adSize)
         adView.adUnitId = ApiKeys.UNIT_ID
@@ -556,7 +556,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
 
-        val adRequest = PublisherAdRequest
+        val adRequest = AdManagerAdRequest
             .Builder()
 
         for ((key, value) in targets) {
@@ -586,9 +586,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             // undo sub if network request fails
             FirebaseMessaging.getInstance().subscribeToTopic(topic)
                 .addOnCompleteListener { task ->
-                    var msg = getString(R.string.msg_subscribed)
                     if (!task.isSuccessful) {
-                        msg = getString(R.string.msg_subscribe_failed)
                         notificationsViewModel.updateSubscription(
                             topic,
                             !isSubbed
@@ -599,10 +597,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             // undo sub if network request fails
             FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
                 .addOnCompleteListener { task ->
-
-                    var msg = getString(R.string.msg_unsubscribed)
                     if (!task.isSuccessful) {
-                        msg = getString(R.string.msg_unsubscribe_failed)
                         notificationsViewModel.updateSubscription(
                             topic,
                             !isSubbed
