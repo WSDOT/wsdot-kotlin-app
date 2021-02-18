@@ -109,8 +109,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             ), drawerLayout
         )
 
-
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when(destination.id) {
                 R.id.navTrafficMapFragment -> navView.menu.findItem(R.id.nav_traffic_map).isChecked =
