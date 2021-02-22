@@ -8,10 +8,8 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -35,6 +33,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.WsdotApp
+import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -299,6 +298,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     private fun handleExtras(extras: Bundle) {
         when {
+
+            // Handles when app receives a TRAFFIC_ALERT type
             extras.getBoolean(getString(R.string.push_alert_traffic_alert), false) -> {
 
                 val navView: NavigationView = findViewById(R.id.drawer_nav_view)
@@ -356,6 +357,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
             }
 
+            // Handles when app receives a FERRY_ALERT type
             extras.getBoolean(getString(R.string.push_alert_ferry_alert), false) -> {
 
                 val navView: NavigationView = findViewById(R.id.drawer_nav_view)
@@ -382,6 +384,74 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
                 findNavController(R.id.nav_host_fragment).navigate(actionTwo)
+
+            }
+
+            // Handles when app receives a BRIDGE_ALERT type
+            extras.getBoolean(getString(R.string.push_alert_bridge_alert), false) -> {
+
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.menu.findItem(R.id.nav_traffic_map).isChecked = true
+
+                val settings = PreferenceManager.getDefaultSharedPreferences(this)
+
+                val latitude = settings.getDouble(
+                    getString(R.string.user_preference_traffic_map_latitude),
+                    47.6062
+                )
+
+                val longitude = settings.getDouble(
+                    getString(R.string.user_preference_traffic_map_longitude),
+                    -122.3321
+                )
+
+                val lat = extras.getDouble(
+                    getString(R.string.push_alert_bridge_alert_latitude),
+                    latitude
+                )
+                val lng = extras.getDouble(
+                    getString(R.string.push_alert_bridge_alert_longitude),
+                    longitude
+                )
+
+                val title = extras.getString(
+                    getString(R.string.push_alert_bridge_alert_title),
+                    "Bridge Alert"
+                )
+
+                val message = extras.getString(
+                    getString(R.string.push_alert_bridge_alert_message),
+                    "Unavailable"
+                )
+
+                val editor = settings.edit()
+                editor.putDouble(
+                    getString(R.string.user_preference_traffic_map_latitude),
+                    lat
+                )
+                editor.putDouble(
+                    getString(R.string.user_preference_traffic_map_longitude),
+                    lng
+                )
+                editor.putFloat(
+                    getString(R.string.user_preference_traffic_map_zoom),
+                    12.0f
+                )
+                editor.apply()
+
+                // reset navigation to the traffic map
+                findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
+                findNavController(R.id.nav_host_fragment).popBackStack(
+                    R.id.navTrafficMapFragment,
+                    false
+                )
+
+                val action = NavGraphDirections.actionGlobalNavNotificationDetailsFragment(
+                    title,
+                    message
+                )
+
+                findNavController(R.id.nav_host_fragment).navigate(action)
 
             }
         }

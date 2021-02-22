@@ -60,7 +60,6 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-
         // create the data binding
         val dataBinding = DataBindingUtil.inflate<HighwayAlertFragmentBinding>(
             inflater,

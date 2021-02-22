@@ -3,17 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="gov.wa.wsdot.android.wsdot.model.common.Status"/>
-
         <variable
             name="highwayAlert"
             type="gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert"/>
-
         <variable
             name="viewModel"
             type="gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel" />
-
     </data>
 
     <androidx.cardview.widget.CardView

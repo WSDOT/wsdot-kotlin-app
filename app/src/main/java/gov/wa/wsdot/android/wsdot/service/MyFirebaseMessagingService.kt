@@ -101,6 +101,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             intent.putExtra(getString(R.string.push_alert_ferry_route_id), routeId?.toInt())
             intent.putExtra(getString(R.string.push_alert_ferry_route_title), routeTitle.toString())
 
+        } else if (type == "bridge_alert") {
+
+            val lat = data["lat"]
+            val lng = data["long"]
+            val title = data["title"]
+            val message = data["message"]
+
+            intent.putExtra(getString(R.string.push_alert_bridge_alert), true)
+            intent.putExtra(getString(R.string.push_alert_bridge_alert_latitude), lat?.toDouble())
+            intent.putExtra(getString(R.string.push_alert_bridge_alert_longitude), lng?.toDouble())
+            intent.putExtra(getString(R.string.push_alert_bridge_alert_title), title)
+            intent.putExtra(getString(R.string.push_alert_bridge_alert_message), message)
+
         }
 
         return PendingIntent.getActivity(this, alertId?.toInt() ?: 0, intent,

@@ -88,7 +88,6 @@ class NotificationsFragment : DaggerFragment(), Injectable {
                     topicItem.topic,
                     isChecked
                 )
-
                 (activity as MainActivity).updateTopicSub(topicItem.topic, isChecked)
             }
         }

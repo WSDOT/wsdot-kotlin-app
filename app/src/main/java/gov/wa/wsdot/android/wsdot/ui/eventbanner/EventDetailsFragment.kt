@@ -13,7 +13,6 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.EventDetailsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import javax.inject.Inject
 
