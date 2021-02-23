@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui
+package gov.wa.wsdot.android.wsdot.ui.eventbanner
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

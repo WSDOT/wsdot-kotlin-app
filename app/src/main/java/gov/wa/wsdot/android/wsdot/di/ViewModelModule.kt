@@ -7,7 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import gov.wa.wsdot.android.wsdot.di.viewmodel.WsdotViewModelFactory
-import gov.wa.wsdot.android.wsdot.ui.EventBannerViewModel
+import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.amtrakcascades.AmtrakCascadesViewModel
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.BorderCrossingViewModel
 import gov.wa.wsdot.android.wsdot.ui.bordercrossings.bordercameras.BorderCameraListViewModel

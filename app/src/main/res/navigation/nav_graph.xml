@@ -332,6 +332,21 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navNotificationDetailsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.notifications.NotificationDetailsFragment"
+        android:label="{title}"
+        tools:layout="@layout/highway_alert_fragment" >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+        <argument
+            android:name="message"
+            app:argType="string"
+            android:defaultValue=""/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navFerriesHomeFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.ferries.FerriesHomeFragment"
         android:label="Ferries"
@@ -581,6 +596,10 @@
     <action
         android:id="@+id/action_global_navEventDetailsFragment"
         app:destination="@id/navEventDetailsFragment" />
+
+    <action
+        android:id="@+id/action_global_navNotificationDetailsFragment"
+        app:destination="@id/navNotificationDetailsFragment" />
 
     <action
         android:id="@+id/action_global_navFerriesRouteFragment"

@@ -172,7 +172,7 @@
     <string name="msg_unsubscribe_failed">unsubscribed failed</string>
 
 
-    // shortcuts / notifications
+    // notifications
     <string name="push_alert_traffic_alert">traffic_alert_push_key</string>
     <string name="push_alert_traffic_alert_id">traffic_alert_id_push_key</string>
     <string name="push_alert_traffic_alert_latitude">traffic_alert_lat_push_key</string>
@@ -183,6 +183,11 @@
     <string name="push_alert_ferry_route_id">ferry_alert_route_id_push_key</string>
     <string name="push_alert_ferry_route_title">ferry_alert_route_title_push_key</string>
 
+    <string name="push_alert_bridge_alert">bridge_alert_push_key</string>
+    <string name="push_alert_bridge_alert_latitude">bridge_alert_lat_push_key</string>
+    <string name="push_alert_bridge_alert_longitude">bridge_alert_long_push_key</string>
+    <string name="push_alert_bridge_alert_title">bridge_alert_title_push_key</string>
+    <string name="push_alert_bridge_alert_message">bridge_alert_message_push_key</string>
 
     <string name="app_version_text">Version %s</string>
 
@@ -208,5 +213,7 @@
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
+
 
 </resources>

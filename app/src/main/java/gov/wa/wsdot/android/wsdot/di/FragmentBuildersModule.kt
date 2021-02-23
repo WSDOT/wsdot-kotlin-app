@@ -44,6 +44,7 @@ import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.MountainPassReportFra
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras.PassCamerasListFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passConditions.PassConditionsFragment
 import gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passForecast.PassForecastListFragment
+import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsFragment
 import gov.wa.wsdot.android.wsdot.ui.settings.FavoritesSortSettingFragment
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
@@ -188,6 +189,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeEventDetailsFragment(): EventDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeNotificationDetailsFragment(): NotificationDetailsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeTravelChartsFragment(): TravelChartsFragment
