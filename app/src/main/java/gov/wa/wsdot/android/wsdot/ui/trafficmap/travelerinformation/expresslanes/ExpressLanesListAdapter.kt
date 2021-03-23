@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

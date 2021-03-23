@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgealerts
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.BridgeAlertItemBinding
-import gov.wa.wsdot.android.wsdot.databinding.HighwayAlertItemBinding
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.ui.common.recyclerview.DataBoundListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors

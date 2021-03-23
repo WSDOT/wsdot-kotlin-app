@@ -57,8 +57,10 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertsFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighwayAlertTabFragment
@@ -87,6 +89,12 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeStatewideAlertsFragment(): HighestAlertsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBridgeAlertFragment(): BridgeAlertFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeBridgeAlertsFragment(): BridgeAlertsFragment
 
     @ContributesAndroidInjector
     abstract fun contributeCameraFragment(): CameraFragment

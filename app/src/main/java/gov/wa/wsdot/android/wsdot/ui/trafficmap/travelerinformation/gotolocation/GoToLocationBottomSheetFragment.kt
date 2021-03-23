@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.gotolocation
 
 import android.content.Context
 import android.os.Bundle

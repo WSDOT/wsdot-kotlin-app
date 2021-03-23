@@ -4,14 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <import type="gov.wa.wsdot.android.wsdot.model.common.Status" />
         <import type="gov.wa.wsdot.android.wsdot.model.common.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
-        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesViewModel" />
 
         <variable
             name="viewModel"
-            type="ExpressLanesViewModel"/>
+            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertsViewModel"/>
 
         <variable
             name="retryCallback"
@@ -31,11 +31,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:refreshing="@{((Resource) viewModel.expressLanesLiveData).status == Status.LOADING}"
+            app:refreshing="@{((Resource) viewModel.alerts).status == Status.LOADING}"
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/express_lanes_list"
+                android:id="@+id/alert_list"
                 app:layoutManager="LinearLayoutManager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -43,10 +43,33 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
-                tools:listitem="@layout/express_lane_item"
-                android:paddingStart="@dimen/content_padding"
-                android:paddingEnd="@dimen/content_padding"/>
+                tools:listitem="@layout/highway_alert_item" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/empty_list_view"
+            style="@style/CardTitleText"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <include
+            layout="@layout/loading_error_state"
+            app:resource="@{(Resource) viewModel.alerts}"
+            app:callback="@{() -> retryCallback.retry()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

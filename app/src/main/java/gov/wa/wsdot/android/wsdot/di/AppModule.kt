@@ -20,6 +20,7 @@ import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSignDao
 import gov.wa.wsdot.android.wsdot.db.traffic.CameraDao
 import gov.wa.wsdot.android.wsdot.db.traffic.FavoriteLocationDao
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
+import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlertDao
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
 import gov.wa.wsdot.android.wsdot.util.api.LiveDataCallAdapterFactory
@@ -81,6 +82,12 @@ class AppModule {
     @Provides
     fun highwayAlertDao(db: WsdotDB): HighwayAlertDao {
         return db.highwayAlertDao()
+    }
+
+    @Singleton
+    @Provides
+    fun bridgeAlertDao(db: WsdotDB): BridgeAlertDao {
+        return db.bridgeAlertDao()
     }
 
     @Singleton

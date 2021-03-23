@@ -75,7 +75,6 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
-
     </fragment>
 
     <fragment
@@ -312,7 +311,7 @@
 
     <fragment
         android:id="@+id/navExpressLanesFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesFragment"
         android:label="Express Lanes"
         tools:layout="@layout/express_lanes_fragment" >
     </fragment>
@@ -333,7 +332,7 @@
 
     <fragment
         android:id="@+id/navBridgeAlertFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgealerts.BridgeAlertFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertFragment"
         android:label="{title}"
         tools:layout="@layout/bridge_alert_fragment" >
         <argument
@@ -343,6 +342,13 @@
             android:name="title"
             app:argType="string"
             android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navBridgeAlertsFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertsFragment"
+        android:label="Bridge Alerts"
+        tools:layout="@layout/bridge_alerts_fragment">
     </fragment>
 
     <fragment
@@ -528,7 +534,7 @@
 
     <dialog
         android:id="@+id/navTravelerInfoBottomSheetDialog"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation.TravelerInfoBottomSheetFragment">
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.TravelerInfoBottomSheetFragment">
 
         <action
             android:id="@+id/action_navTrafficMapFragment_to_navTravelerInfoBottomSheetDialog"
@@ -558,11 +564,18 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
+        <action
+            android:id="@+id/action_navTrafficMapFragment_to_navBridgeAlertsFragment"
+            app:destination="@id/navBridgeAlertsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </dialog>
 
     <dialog
         android:id="@+id/navGoToLocationBottomSheetDialog"
-        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.gotolocation.GoToLocationBottomSheetFragment"/>
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.gotolocation.GoToLocationBottomSheetFragment"/>
 
     <!-- Global nav actions -->
     <action
@@ -682,6 +695,14 @@
     <action
         android:id="@+id/action_global_navHighwayAlertFragment"
         app:destination="@id/navHighwayAlertFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navBridgeAlertFragment"
+        app:destination="@id/navBridgeAlertFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

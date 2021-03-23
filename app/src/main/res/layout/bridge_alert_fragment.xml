@@ -9,7 +9,7 @@
             type="gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert"/>
         <variable
             name="viewModel"
-            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgealerts.BridgeAlertViewModel" />
+            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView

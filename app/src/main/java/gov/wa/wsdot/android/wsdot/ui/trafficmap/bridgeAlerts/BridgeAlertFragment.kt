@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgealerts
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts
 
 import android.content.res.Resources
 import android.os.Bundle

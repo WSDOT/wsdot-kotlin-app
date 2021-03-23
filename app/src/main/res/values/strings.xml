@@ -213,7 +213,7 @@
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-
+    <string name="no_bridge_alerts_string">No Bridge Alerts Reported</string>
 
 
 </resources>

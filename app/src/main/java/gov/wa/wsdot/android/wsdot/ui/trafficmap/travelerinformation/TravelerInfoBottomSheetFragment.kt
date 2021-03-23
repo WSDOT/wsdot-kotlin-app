@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.travelerinformation
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.model.eventItems.TravelerInfoMenuEventItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragmentDirections
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -49,7 +48,13 @@ class TravelerInfoBottomSheetFragment:
         )
 
         listItems.add(
-            TravelerInfoMenuEventItem("Commercial Vehicle Restrictions", TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS)
+            TravelerInfoMenuEventItem("Commercial Vehicle Restrictions",
+                TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS
+            )
+        )
+
+        listItems.add(
+            TravelerInfoMenuEventItem("Bridge Alerts", TravelerMenuItemType.BRIDGE_ALERTS)
         )
 
         val listHeader = view.findViewById<TextView>(R.id.list_header)
@@ -73,11 +78,13 @@ class TravelerInfoBottomSheetFragment:
     override fun travelerInfoMenuEvent(eventType: TravelerMenuItemType) {
         when (eventType) {
             TravelerMenuItemType.NEWS_ITEMS -> {
-                val action = TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
+                val action =
+                    TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavNewsReleaseFragment()
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.EXPRESS_LANES -> {
-                val action = TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavExpressLanesFragment()
+                val action =
+                    TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavExpressLanesFragment()
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.SOCIAL_MEDIA -> {
@@ -85,11 +92,17 @@ class TravelerInfoBottomSheetFragment:
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.TRAVEL_TIMES -> {
-                val action = TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
+                val action =
+                    TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavTravelTimeListFragment()
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")
+                findNavController().navigate(action)
+            }
+            TravelerMenuItemType.BRIDGE_ALERTS -> {
+                val action =
+                    TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavBridgeAlertsFragment()
                 findNavController().navigate(action)
             }
         }
