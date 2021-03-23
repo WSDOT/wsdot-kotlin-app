@@ -332,6 +332,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navBridgeAlertFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgealerts.BridgeAlertFragment"
+        android:label="{title}"
+        tools:layout="@layout/bridge_alert_fragment" >
+        <argument
+            android:name="alert_id"
+            app:argType="integer" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navNotificationDetailsFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.notifications.NotificationDetailsFragment"
         android:label="{title}"

@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.HighwayAlertFragmentBinding
+import gov.wa.wsdot.android.wsdot.databinding.BridgeAlertFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
@@ -30,16 +30,16 @@ import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.model.common.Status
 import javax.inject.Inject
 
-class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
+class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var alertViewModel: HighwayAlertViewModel
+    private lateinit var alertViewModel: BridgeAlertViewModel
     private lateinit var mapLocationViewModel: MapLocationViewModel
 
-    var binding by autoCleared<HighwayAlertFragmentBinding>()
+    var binding by autoCleared<BridgeAlertFragmentBinding>()
 
-    val args: HighwayAlertFragmentArgs by navArgs()
+    val args: BridgeAlertFragmentArgs by navArgs()
 
     private lateinit var mapFragment: SupportMapFragment
 
@@ -53,7 +53,7 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         alertViewModel = ViewModelProvider(this, viewModelFactory)
-            .get(HighwayAlertViewModel::class.java)
+            .get(BridgeAlertViewModel::class.java)
         alertViewModel.setAlertQuery(args.alertId)
 
         mapLocationViewModel = activity?.run {
@@ -61,9 +61,9 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         } ?: throw Exception("Invalid Activity")
 
         // create the data binding
-        val dataBinding = DataBindingUtil.inflate<HighwayAlertFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<BridgeAlertFragmentBinding>(
             inflater,
-            R.layout.highway_alert_fragment,
+            R.layout.bridge_alert_fragment,
             container,
             false
         )
@@ -75,11 +75,11 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
             if (alert?.data != null) {
-                binding.highwayAlert = alert.data
+                binding.bridgeAlert = alert.data
 
                 mapLocationViewModel.updateLocation(
                     MapLocationItem(
-                        LatLng(alert.data.startLatitude, alert.data.startLongitude),
+                        LatLng(0.0,0.0),//LatLng(alert.data.startLatitude, alert.data.startLongitude),
                         12.0f
                     )
                 )
@@ -122,36 +122,13 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
             if (alert?.data != null) {
                 mapFragment.view?.visibility = View.VISIBLE
-                var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
 
-                val construction = arrayOf("construction", "maintenance")
-                val closure = arrayOf("closed", "closure")
+                var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
 
-                when {
-                    construction.any { alert.data.category.contains(it, ignoreCase = true) } ->
-                        alertIcon = when(alert.data.priority.toLowerCase()) {
-                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_highest)
-                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_high)
-                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_low)
-                            else -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                        }
-                    closure.any { alert.data.category.contains(it, ignoreCase = true) } -> {
-                        alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.closed)
-                    }
-                    else -> alertIcon = when(alert.data.priority.toLowerCase()) {
-                        "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
-                        "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
-                        "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                        "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
-                        else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                    }
-                }
+                binding.bridgeAlert = alert.data
 
-                binding.highwayAlert = alert.data
-
-                var lat = alert.data.startLatitude
-                var long = alert.data.startLongitude
+                var lat = 0.0//alert.data.startLatitude
+                var long = 0.0//alert.data.startLongitude
                 var zoom = 14.0f
 
                 if (lat == 0.0 && long == 0.0) {

@@ -4,18 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
+import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.repository.BridgeAlertRepository
 import javax.inject.Inject
 
-class HighwayAlertsViewModel @Inject constructor(highwayAlertRepository: HighwayAlertRepository) : ViewModel() {
+class BridgeAlertsViewModel @Inject constructor(bridgeAlertRepository: BridgeAlertRepository) : ViewModel() {
 
-    private val repo = highwayAlertRepository
+    private val repo = bridgeAlertRepository
 
     // mediator handles resubscribe on refresh
-    val alerts = MediatorLiveData<Resource<List<HighwayAlert>>>()
+    val alerts = MediatorLiveData<Resource<List<BridgeAlert>>>()
 
-    private var alertsLiveData : LiveData<Resource<List<HighwayAlert>>> = highwayAlertRepository.loadHighwayAlerts(false)
+    private var alertsLiveData : LiveData<Resource<List<BridgeAlert>>> = bridgeAlertRepository.loadBridgeAlerts(false)
 
     init {
         alerts.addSource(alertsLiveData) { alerts.value = it }
@@ -23,7 +25,7 @@ class HighwayAlertsViewModel @Inject constructor(highwayAlertRepository: Highway
 
     fun refresh() {
         alerts.removeSource(alertsLiveData)
-        alertsLiveData = repo.loadHighwayAlerts(true)
+        alertsLiveData = repo.loadBridgeAlerts(true)
         alerts.addSource(alertsLiveData) { alerts.value = it }
     }
 

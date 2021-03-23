@@ -4,22 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
-import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
+import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.repository.BridgeAlertRepository
 import javax.inject.Inject
 
-class HighwayAlertViewModel @Inject constructor(highwayAlertsRepository: HighwayAlertRepository) : ViewModel() {
+class BridgeAlertViewModel @Inject constructor(bridgeAlertsRepository: BridgeAlertRepository) : ViewModel() {
 
     private val _alertQuery: MutableLiveData<AlertQuery> = MutableLiveData()
 
-    private val repo = highwayAlertsRepository
+    private val repo = bridgeAlertsRepository
 
-    val alert: LiveData<Resource<HighwayAlert>> = Transformations
+    val alert: LiveData<Resource<BridgeAlert>> = Transformations
         .switchMap(_alertQuery) { input ->
             input.ifExists {
-                highwayAlertsRepository.loadHighwayAlert(it)
+                bridgeAlertsRepository.loadBridgeAlert(it)
             }
         }
 
@@ -32,7 +32,7 @@ class HighwayAlertViewModel @Inject constructor(highwayAlertsRepository: Highway
     }
 
     fun refresh() {
-        repo.loadHighwayAlerts(true)
+        repo.loadBridgeAlerts(true)
     }
 
     data class AlertQuery(val alertId: Int) {
