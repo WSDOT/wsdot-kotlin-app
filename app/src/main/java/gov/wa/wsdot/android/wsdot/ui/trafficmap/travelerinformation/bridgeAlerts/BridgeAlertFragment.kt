@@ -79,8 +79,8 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 mapLocationViewModel.updateLocation(
                     MapLocationItem(
-                        LatLng(0.0,0.0),//LatLng(alert.data.startLatitude, alert.data.startLongitude),
-                        12.0f
+                        LatLng(alert.data.latitude, alert.data.longitude),
+                        13.0f
                     )
                 )
 
