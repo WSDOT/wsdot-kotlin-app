@@ -414,16 +414,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     longitude
                 )
 
-                val title = extras.getString(
-                    getString(R.string.push_alert_bridge_alert_title),
-                    "Bridge Alert"
-                )
-
-                val message = extras.getString(
-                    getString(R.string.push_alert_bridge_alert_message),
-                    "Unavailable"
-                )
-
                 val editor = settings.edit()
                 editor.putDouble(
                     getString(R.string.user_preference_traffic_map_latitude),
@@ -439,6 +429,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 )
                 editor.apply()
 
+                val alertId = extras.getInt(getString(R.string.push_alert_bridge_alert_id), 0)
+                val alertTitle = extras.getString(getString(R.string.push_alert_bridge_alert_title), "Bridge Alert")
+
                 // reset navigation to the traffic map
                 findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
                 findNavController(R.id.nav_host_fragment).popBackStack(
@@ -446,11 +439,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     false
                 )
 
-                val action = NavGraphDirections.actionGlobalNavNotificationDetailsFragment(
-                    title,
-                    message
+                val action = NavGraphDirections.actionGlobalNavBridgeAlertFragment(
+                    alertId,
+                    alertTitle
                 )
-
                 findNavController(R.id.nav_host_fragment).navigate(action)
 
             }
