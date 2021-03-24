@@ -77,13 +77,6 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             if (alert?.data != null) {
                 binding.bridgeAlert = alert.data
 
-                mapLocationViewModel.updateLocation(
-                    MapLocationItem(
-                        LatLng(alert.data.latitude, alert.data.longitude),
-                        13.0f
-                    )
-                )
-
             } else if (alert.status != Status.LOADING){
                 binding.alertTitle.text = getString(R.string.no_alert_string)
             }
