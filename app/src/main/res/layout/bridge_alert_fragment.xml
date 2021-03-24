@@ -9,7 +9,7 @@
             type="gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert"/>
         <variable
             name="viewModel"
-            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertViewModel" />
+            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -38,7 +38,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:paddingBottom="8dp"
-                        app:bindHTML="@{bridgeAlert.bridge}"
+                        app:bindHTML="@{bridgeAlert.description}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 

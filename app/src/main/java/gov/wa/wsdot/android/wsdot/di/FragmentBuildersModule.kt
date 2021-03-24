@@ -57,8 +57,8 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.TrafficMapFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertFragment
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertsFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertFragment
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.gotolocation.GoToLocationBottomSheetFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseFragment

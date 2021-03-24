@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "3d56fb3e5550b821f749028fa36becc2",
+    "identityHash": "46544c70dfe1799770171c13b5e7f6af",
     "entities": [
       {
         "tableName": "HighwayAlert",
@@ -86,7 +86,7 @@
       },
       {
         "tableName": "BridgeAlert",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `bridge` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `openingTime` INTEGER, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `bridge` TEXT NOT NULL, `title` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `description` TEXT NOT NULL, `openingTime` INTEGER, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
         "fields": [
           {
             "fieldPath": "alertId",
@@ -104,6 +104,18 @@
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -1266,7 +1278,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3d56fb3e5550b821f749028fa36becc2')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '46544c70dfe1799770171c13b5e7f6af')"
     ]
   }
 }

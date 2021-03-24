@@ -11,8 +11,6 @@ import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.*
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.BridgeAlertResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
-import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
-import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import retrofit2.http.GET
 
 interface WebDataService {

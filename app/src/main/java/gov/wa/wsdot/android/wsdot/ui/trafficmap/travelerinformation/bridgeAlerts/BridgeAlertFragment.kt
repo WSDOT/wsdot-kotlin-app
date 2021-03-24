@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts
 
 import android.content.res.Resources
 import android.os.Bundle
@@ -127,8 +127,8 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 binding.bridgeAlert = alert.data
 
-                var lat = 0.0//alert.data.startLatitude
-                var long = 0.0//alert.data.startLongitude
+                var lat = alert.data.latitude
+                var long = alert.data.longitude
                 var zoom = 14.0f
 
                 if (lat == 0.0 && long == 0.0) {

@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts
 
 import android.view.LayoutInflater
 import android.view.View

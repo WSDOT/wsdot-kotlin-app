@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts
+package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

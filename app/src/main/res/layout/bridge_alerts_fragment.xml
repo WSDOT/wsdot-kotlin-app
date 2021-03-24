@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.bridgeAlerts.BridgeAlertsViewModel"/>
+            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertsViewModel"/>
 
         <variable
             name="retryCallback"
