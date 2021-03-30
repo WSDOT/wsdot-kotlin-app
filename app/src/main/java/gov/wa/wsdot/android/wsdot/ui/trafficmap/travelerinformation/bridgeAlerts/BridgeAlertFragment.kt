@@ -55,7 +55,7 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         alertViewModel = ViewModelProvider(this, viewModelFactory)
             .get(BridgeAlertViewModel::class.java)
         alertViewModel.setAlertQuery(args.alertId)
-
+        alertViewModel.refresh()
         mapLocationViewModel = activity?.run {
             ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
@@ -116,7 +116,7 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             if (alert?.data != null) {
                 mapFragment.view?.visibility = View.VISIBLE
 
-                var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
+                val alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
 
                 binding.bridgeAlert = alert.data
 

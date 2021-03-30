@@ -109,6 +109,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val message = data["message"]
 
             intent.putExtra(getString(R.string.push_alert_bridge_alert), true)
+            intent.putExtra(getString(R.string.push_alert_bridge_alert_id), alertId?.toInt())
             intent.putExtra(getString(R.string.push_alert_bridge_alert_latitude), lat?.toDouble())
             intent.putExtra(getString(R.string.push_alert_bridge_alert_longitude), lng?.toDouble())
             intent.putExtra(getString(R.string.push_alert_bridge_alert_title), title)

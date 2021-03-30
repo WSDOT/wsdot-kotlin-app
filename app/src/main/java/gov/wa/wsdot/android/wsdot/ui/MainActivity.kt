@@ -37,6 +37,7 @@ import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -436,6 +437,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
                 findNavController(R.id.nav_host_fragment).popBackStack(
                     R.id.navTrafficMapFragment,
+                    false
+                )
+                findNavController(R.id.nav_host_fragment).navigate(R.id.navBridgeAlertsFragment)
+                findNavController(R.id.nav_host_fragment).popBackStack(
+                    R.id.navBridgeAlertsFragment,
                     false
                 )
 
