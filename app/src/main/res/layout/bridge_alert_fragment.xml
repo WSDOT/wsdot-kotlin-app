@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status"/>
+        <variable
+            name="bridgeAlert"
+            type="gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert"/>
+        <variable
+            name="viewModel"
+            type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/alertTitle"
+                        style="@style/CardSubTitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:paddingBottom="8dp"
+                        app:bindHTML="@{bridgeAlert.description}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/timestamp"
+                        style="@style/CardFooterText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:paddingBottom="8dp"
+                        app:bindRelativeDate="@{bridgeAlert.localCacheDate}"
+                        app:layout_constraintTop_toBottomOf="@id/alertTitle"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <fragment
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:id="@+id/google_map"
+                        android:layout_height="300dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/timestamp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        map:cameraZoom="13"
+                        map:mapType="normal"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    style="@style/Base.Widget.AppCompat.ProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:visibleGone="@{viewModel.alert.status == Status.LOADING}"
+                    android:indeterminate="true"
+                    android:layout_gravity="center"/>
+
+            </FrameLayout>
+        </ScrollView>
+    </androidx.cardview.widget.CardView>
+</layout>

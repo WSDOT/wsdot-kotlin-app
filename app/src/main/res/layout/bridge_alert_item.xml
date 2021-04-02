@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="gov.wa.wsdot.android.wsdot.ui.common.binding.BindingFunctions" />
+        <variable
+            name="alert"
+            type="gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/alert_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="?android:attr/selectableItemBackground">
+
+            <TextView
+                style="@style/CardTitleText"
+                android:id="@+id/titleView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{alert.bridge}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"/>
+
+            <TextView
+                style="@style/CardSubTitleText"
+                android:id="@+id/subTitleView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:bindHTML="@{alert.description}"
+                app:layout_constraintTop_toBottomOf="@id/titleView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:autoLink="all"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"/>
+
+            <TextView
+                style="@style/CardFooterText"
+                android:id="@+id/FooterView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:bindRelativeDate="@{alert.localCacheDate}"
+                tools:text=""
+                app:layout_constraintTop_toBottomOf="@id/subTitleView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -34,6 +34,8 @@ import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTableDao
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSignDao
 import gov.wa.wsdot.android.wsdot.db.traffic.*
+import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
+import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlertDao
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsRelease
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.NewsReleaseDao
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
@@ -45,6 +47,7 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
 @Database(
     entities = [
         HighwayAlert::class,
+        BridgeAlert::class,
         FerrySchedule::class,
         FerrySailing::class,
         FerryAlert::class,
@@ -61,13 +64,15 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         TollSign::class,
         NotificationTopic::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)
 abstract class WsdotDB : RoomDatabase() {
 
     abstract fun highwayAlertDao(): HighwayAlertDao
+
+    abstract fun bridgeAlertDao(): BridgeAlertDao
 
     abstract fun ferryScheduleDao(): FerryScheduleDao
 

@@ -34,13 +34,15 @@ import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.TollSignsViewModel
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.TollRateTableViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapCamerasViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.MapLocationViewModel
-import gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.newsrelease.NewsReleaseViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.StatewideAndHighestImpactAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
+import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertViewModel
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
 
 @Suppress("unused")
@@ -91,6 +93,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StatewideAndHighestImpactAlertsViewModel::class)
     abstract fun bindStatewideAlertsViewModel(statewideAndHighestImpactAlertsViewModel: StatewideAndHighestImpactAlertsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BridgeAlertsViewModel::class)
+    abstract fun bindBridgeAlertsViewModel(bridgeAlertsViewModel: BridgeAlertsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BridgeAlertViewModel::class)
+    abstract fun bindBridgeAlertViewModel(bridgeAlertViewModel: BridgeAlertViewModel): ViewModel
 
     @Binds
     @IntoMap

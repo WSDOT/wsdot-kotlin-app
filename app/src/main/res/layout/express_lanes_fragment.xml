@@ -7,7 +7,7 @@
         <import type="gov.wa.wsdot.android.wsdot.model.common.Status" />
         <import type="gov.wa.wsdot.android.wsdot.model.common.Resource" />
         <import type="androidx.lifecycle.LiveData"/>
-        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.expresslanes.ExpressLanesViewModel" />
+        <import type="gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.expresslanes.ExpressLanesViewModel" />
 
         <variable
             name="viewModel"

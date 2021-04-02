@@ -16,7 +16,7 @@
         style="@style/CardTitleText"/>
 
 
-        <gov.wa.wsdot.android.wsdot.ui.trafficmap.menus.BottomSheetListView
+        <gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.BottomSheetListView
             android:id="@+id/bottom_sheet_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
