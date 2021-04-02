@@ -19,7 +19,7 @@ class BridgeAlertViewModel @Inject constructor(bridgeAlertsRepository: BridgeAle
     val alert: LiveData<Resource<BridgeAlert>> = Transformations
         .switchMap(_alertQuery) { input ->
             input.ifExists {
-                bridgeAlertsRepository.loadBridgeAlert(it)
+                bridgeAlertsRepository.loadBridgeAlert(it, true)
             }
         }
 

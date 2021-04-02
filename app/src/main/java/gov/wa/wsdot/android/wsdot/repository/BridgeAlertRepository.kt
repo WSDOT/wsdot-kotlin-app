@@ -58,7 +58,7 @@ class BridgeAlertRepository @Inject constructor(
         }.asLiveData()
     }
 
-    fun loadBridgeAlert(alertId: Int): LiveData<Resource<BridgeAlert>> {
+    fun loadBridgeAlert(alertId: Int, forceRefresh: Boolean): LiveData<Resource<BridgeAlert>> {
 
         return object : NetworkBoundResource<BridgeAlert, List<BridgeAlertResponse>>(appExecutors) {
 
@@ -76,7 +76,7 @@ class BridgeAlertRepository @Inject constructor(
                     update = true
                 }
 
-                return update
+                return update || forceRefresh
             }
 
             override fun loadFromDb() = bridgeAlertDao.loadBridgeAlert(alertId)
