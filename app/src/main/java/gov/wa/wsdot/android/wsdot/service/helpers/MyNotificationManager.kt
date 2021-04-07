@@ -15,6 +15,7 @@ class MyNotificationManager(private val context: Context) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun createMainNotificationChannels() {
         createAlertsChannel()
+        createBridgeAlertsChannel()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -30,10 +31,27 @@ class MyNotificationManager(private val context: Context) {
         mNotificationManager.createNotificationChannel(mChannel)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createBridgeAlertsChannel() {
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+
+        val mChannel = NotificationChannel(BRIDGE_CHANNEL_ID, BRIDGE_CHANNEL_NAME, importance)
+        mChannel.description = BRIDGE_CHANNEL_DESCRIPTION
+        mChannel.lightColor = Color.GREEN
+        context.getSystemService(Context.NOTIFICATION_SERVICE)
+        val mNotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotificationManager.createNotificationChannel(mChannel)
+    }
+
     companion object {
         var ALERT_CHANNEL_ID = "ALERTS"
         private const val ALERT_CHANNEL_NAME = "Alerts"
         private const val ALERT_CHANNEL_DESCRIPTION = "Notifications from WSDOT"
+
+        var BRIDGE_CHANNEL_ID = "BRIDGE_ALERTS"
+        private const val BRIDGE_CHANNEL_NAME = "Bridge Alerts"
+        private const val BRIDGE_CHANNEL_DESCRIPTION = "Bridge Closure Notifications from WSDOT"
     }
 
 }

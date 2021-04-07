@@ -1,11 +1,9 @@
 package gov.wa.wsdot.android.wsdot.service
 
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
@@ -55,6 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                             alertId,
                             title,
                             message,
+                            type,
                             getNotificationIntent(remoteMessage.data)
                         )
                     }
@@ -81,45 +80,47 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
-        if (type == "highway_alert") {
+        when (type) {
+            "highway_alert" -> {
 
-            val lat = data["lat"]
-            val lng = data["long"]
+                val lat = data["lat"]
+                val lng = data["long"]
 
-            intent.putExtra(getString(R.string.push_alert_traffic_alert), true)
-            intent.putExtra(getString(R.string.push_alert_traffic_alert_id), alertId?.toInt())
-            intent.putExtra(getString(R.string.push_alert_traffic_alert_latitude), lat?.toDouble())
-            intent.putExtra(getString(R.string.push_alert_traffic_alert_longitude), lng?.toDouble())
+                intent.putExtra(getString(R.string.push_alert_traffic_alert), true)
+                intent.putExtra(getString(R.string.push_alert_traffic_alert_id), alertId?.toInt())
+                intent.putExtra(getString(R.string.push_alert_traffic_alert_latitude), lat?.toDouble())
+                intent.putExtra(getString(R.string.push_alert_traffic_alert_longitude), lng?.toDouble())
 
-        } else if (type == "ferry_alert") {
+            }
+            "ferry_alert" -> {
 
-            val routeId = data["route_id"]
-            val routeTitle = data["route_title"]
+                val routeId = data["route_id"]
+                val routeTitle = data["route_title"]
 
-            intent.putExtra(getString(R.string.push_alert_ferry_alert), true)
-            intent.putExtra(getString(R.string.push_alert_ferry_alert_id), alertId?.toInt())
-            intent.putExtra(getString(R.string.push_alert_ferry_route_id), routeId?.toInt())
-            intent.putExtra(getString(R.string.push_alert_ferry_route_title), routeTitle.toString())
+                intent.putExtra(getString(R.string.push_alert_ferry_alert), true)
+                intent.putExtra(getString(R.string.push_alert_ferry_alert_id), alertId?.toInt())
+                intent.putExtra(getString(R.string.push_alert_ferry_route_id), routeId?.toInt())
+                intent.putExtra(getString(R.string.push_alert_ferry_route_title), routeTitle.toString())
 
-        } else if (type == "bridge_alert") {
+            }
+            "bridge_alert" -> {
 
-            val lat = data["lat"]
-            val lng = data["long"]
-            val title = data["title"]
-            val message = data["message"]
+                val lat = data["lat"]
+                val lng = data["long"]
+                val title = data["title"]
+                val message = data["message"]
 
-            intent.putExtra(getString(R.string.push_alert_bridge_alert), true)
-            intent.putExtra(getString(R.string.push_alert_bridge_alert_id), alertId?.toInt())
-            intent.putExtra(getString(R.string.push_alert_bridge_alert_latitude), lat?.toDouble())
-            intent.putExtra(getString(R.string.push_alert_bridge_alert_longitude), lng?.toDouble())
-            intent.putExtra(getString(R.string.push_alert_bridge_alert_title), title)
-            intent.putExtra(getString(R.string.push_alert_bridge_alert_message), message)
+                intent.putExtra(getString(R.string.push_alert_bridge_alert), true)
+                intent.putExtra(getString(R.string.push_alert_bridge_alert_id), alertId?.toInt())
+                intent.putExtra(getString(R.string.push_alert_bridge_alert_latitude), lat?.toDouble())
+                intent.putExtra(getString(R.string.push_alert_bridge_alert_longitude), lng?.toDouble())
+                intent.putExtra(getString(R.string.push_alert_bridge_alert_title), title)
+                intent.putExtra(getString(R.string.push_alert_bridge_alert_message), message)
 
+            }
         }
-
         return PendingIntent.getActivity(this, alertId?.toInt() ?: 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
-
     }
 
     /**
@@ -127,9 +128,22 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
      *
      * @param messageBody FCM message body received.
      */
-    private fun sendNotification(notificationId: Int, title: String, messageBody: String, pendingIntent: PendingIntent) {
+    private fun sendNotification(notificationId: Int, title: String, messageBody: String, type: String, pendingIntent: PendingIntent) {
 
-        val channelId = MyNotificationManager.ALERT_CHANNEL_ID
+        var channelId = MyNotificationManager.ALERT_CHANNEL_ID
+
+        when (type) {
+            "highway_alert" -> {
+                channelId = MyNotificationManager.ALERT_CHANNEL_ID
+            }
+            "ferry_alert" -> {
+                channelId = MyNotificationManager.ALERT_CHANNEL_ID
+            }
+            "bridge_alert" -> {
+                channelId = MyNotificationManager.BRIDGE_CHANNEL_ID
+            }
+        }
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_list_wsdot)
             .setContentTitle(title)
@@ -142,14 +156,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as
                 NotificationManager
-
-        // Since android Oreo notification channel is needed.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                "WSDOT Alerts",
-                NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
@@ -168,15 +174,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val settings = PreferenceManager.getDefaultSharedPreferences(applicationContext)
             val receivedAlerts = Utils.loadOrderedIntList("KEY_RECEIVED_ALERTS", settings)
             receivedAlerts.add(alertId)
-
             Utils.saveOrderedIntList(
                 receivedAlerts,
                 "KEY_RECEIVED_ALERTS",
                 settings
             )
         }
-
-
     }
 
     companion object {
