@@ -596,12 +596,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         ad_banner_box.visibility = VISIBLE
 
-        //val testDeviceIds = Arrays.asList("B3EEABB8EE11C2BE770B684D95219ECB")
-        //val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        //val testDeviceIds = Arrays.asList("2531EB5FD75758B5E8BDD4669A870BF7")
+        //val configuration = RequestConfiguration.Builder()
+            //.setTestDeviceIds(testDeviceIds)
+            //.setTagForChildDirectedTreatment(RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_TRUE)
+            //.setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G)
+            //.build()
         //MobileAds.setRequestConfiguration(configuration)
 
         adView.pause()
-
         adView.adListener = null
         adView.adListener = object : AdListener() {
 
@@ -622,8 +625,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
         }
 
-        val adRequest = AdManagerAdRequest
-            .Builder()
+        val adRequest = AdManagerAdRequest.Builder()
 
         for ((key, value) in targets) {
             adRequest.addCustomTargeting(key, value)
