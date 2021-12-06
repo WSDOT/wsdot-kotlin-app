@@ -206,7 +206,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         addMenuBadgeIfNeeded()
         return super.onCreateOptionsMenu(menu)
     }
