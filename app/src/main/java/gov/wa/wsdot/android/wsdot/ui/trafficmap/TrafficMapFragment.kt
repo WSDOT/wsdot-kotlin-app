@@ -255,7 +255,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         return false
     }
 
-    override fun onMapReady(map: GoogleMap?) {
+    override fun onMapReady(map: GoogleMap) {
 
         mMap = map as GoogleMap
 
