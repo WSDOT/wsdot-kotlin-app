@@ -57,7 +57,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private lateinit var adView: AdManagerAdView
+    private var adView: AdManagerAdView? = null
 
     private val adSize: AdSize
         get() {
@@ -201,8 +201,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         adView = AdManagerAdView(this)
         ad_banner_box.addView(adView)
-        adView.setAdSizes(adSize)
-        adView.adUnitId = ApiKeys.UNIT_ID
+        adView?.setAdSizes(adSize)
+        adView?.adUnitId = ApiKeys.UNIT_ID
 
     }
 
@@ -592,9 +592,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      * Initialize and display ads.
      * WARNING: don't call in onCreate
      */
-     fun enableAds(targets: Map<String, String>) {
+    fun enableAds(targets: Map<String, String>) {
 
-        ad_banner_box.visibility = VISIBLE
+        ad_banner_box?.visibility = VISIBLE
 
         //val testDeviceIds = Arrays.asList("2531EB5FD75758B5E8BDD4669A870BF7")
         //val configuration = RequestConfiguration.Builder()
@@ -604,15 +604,15 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             //.build()
         //MobileAds.setRequestConfiguration(configuration)
 
-        adView.pause()
-        adView.adListener = null
-        adView.adListener = object : AdListener() {
+        adView?.pause()
+        adView?.adListener = null
+        adView?.adListener = object : AdListener() {
 
             override fun onAdLoaded() {
                 super.onAdLoaded()
 
                 // report ad ID to crashlytics
-                val info = adView.responseInfo
+                val info = adView?.responseInfo
                 var adResponseId = "null"
                 if (info != null){
                     Log.e("Ads", info.toString())
@@ -632,7 +632,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
         // Start loading the ad in the background.
-        adView.loadAd(adRequest.build())
+        adView?.loadAd(adRequest.build())
 
     }
 
@@ -641,8 +641,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      *  WARNING: don't call in onCreate
      */
     fun disableAds() {
-        ad_banner_box.visibility = GONE
-        adView.pause()
+        ad_banner_box?.visibility = GONE
+        adView?.pause()
     }
 
     fun setScreenName(screenName: String) {
