@@ -160,8 +160,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+//        (activity as MainActivity).enableAds(adTargets)
+        
+        (activity as MainActivity).disableAds()
 
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
         // Inflate the layout for this fragment
