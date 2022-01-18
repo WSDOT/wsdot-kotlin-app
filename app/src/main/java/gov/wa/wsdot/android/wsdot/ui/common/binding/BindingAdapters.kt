@@ -19,7 +19,9 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.os.Build
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
@@ -213,7 +215,12 @@ object BindingAdapters {
 
         if (text != null) {
             if (text != "") {
-                textView.text = stripHtml(text).trimEnd()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).trimEnd()
+                    textView.movementMethod = LinkMovementMethod.getInstance()
+                } else {
+                    textView.text = stripHtml(text).trimEnd()
+                }
             }
         }
     }
