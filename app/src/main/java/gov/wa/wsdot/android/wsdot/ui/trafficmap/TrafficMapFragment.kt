@@ -1106,7 +1106,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         locationRequest.numUpdates = 1
 
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 goToUsersLocation(locationResult.lastLocation)
             }
@@ -1128,7 +1128,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val locationRequest = LocationRequest()
         locationRequest.numUpdates = 1
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 checkSpeed(locationResult.lastLocation)
             }

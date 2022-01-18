@@ -393,7 +393,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         locationRequest.numUpdates = 1
 
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 locationResult.locations.first()?.let {
                     routeViewModel.selectTerminalNearestTo(it)

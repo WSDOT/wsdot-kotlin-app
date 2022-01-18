@@ -449,7 +449,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         val locationRequest = LocationRequest()
         locationRequest.numUpdates = 1
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
             }
         }

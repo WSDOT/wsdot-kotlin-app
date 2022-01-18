@@ -94,7 +94,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
 
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
-    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     implementation 'com.google.firebase:firebase-core:20.0.2'
