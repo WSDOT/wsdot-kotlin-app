@@ -90,17 +90,17 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.activity:activity-ktx:1.4.0'
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
 
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
-    implementation 'com.google.android.gms:play-services-maps:18.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
-    implementation 'com.google.firebase:firebase-core:20.0.0'
-    implementation 'com.google.firebase:firebase-analytics:20.0.0'
+    implementation 'com.google.firebase:firebase-core:20.0.2'
+    implementation 'com.google.firebase:firebase-analytics:20.0.2'
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.5'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.6'
 
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -115,9 +115,9 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:2.4.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation "androidx.room:room-runtime:2.3.0"
+    implementation "androidx.room:room-runtime:2.4.0"
     kapt "androidx.room:room-compiler:2.3.0"
-    annotationProcessor 'androidx.room:room-compiler:2.3.0'
+    annotationProcessor 'androidx.room:room-compiler:2.4.0'
 
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
@@ -132,7 +132,7 @@ dependencies {
     kapt "com.android.databinding:compiler:3.1.4"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
-    def nav_version = "2.3.3"
+    def nav_version = "2.3.5"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
@@ -169,7 +169,7 @@ dependencies {
     // Optional -- Robolectric environment
     testImplementation 'androidx.test:core:1.4.0'
     androidTestImplementation 'androidx.test:core:1.4.0'
-    testImplementation "androidx.room:room-testing:2.3.0"
+    testImplementation "androidx.room:room-testing:2.4.0"
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
