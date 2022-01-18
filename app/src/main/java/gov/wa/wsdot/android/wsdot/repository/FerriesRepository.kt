@@ -61,7 +61,7 @@ class FerriesRepository @Inject constructor(
 
                 if (data != null && data.isNotEmpty()) {
 
-                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
@@ -94,7 +94,7 @@ class FerriesRepository @Inject constructor(
 
                 if (data != null) {
 
-                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 15)) {
+                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
@@ -267,7 +267,7 @@ class FerriesRepository @Inject constructor(
 
                 if (data != null && data.isNotEmpty()) {
 
-                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 15)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
