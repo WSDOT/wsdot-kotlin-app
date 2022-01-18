@@ -131,11 +131,13 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         savedInstanceState: Bundle?
     ): View? {
 
-        val adTargets = mapOf(
-            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
-            "wsdotferries" to AdTargets.getFerryAdTarget(args.routeId)
-        )
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf(
+//            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
+//            "wsdotferries" to AdTargets.getFerryAdTarget(args.routeId)
+//        )
+//        (activity as MainActivity).enableAds(adTargets)
+
+        (activity as MainActivity).disableAds()
 
         // set up view models
         routeViewModel = ViewModelProvider(this, viewModelFactory)
