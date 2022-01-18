@@ -88,7 +88,7 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         return dataBinding.root
     }
 
-    override fun onMapReady(map: GoogleMap?) {
+    override fun onMapReady(map: GoogleMap) {
 
         mMap = map as GoogleMap
 

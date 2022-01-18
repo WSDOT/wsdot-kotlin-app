@@ -2,13 +2,20 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -39,8 +46,6 @@ import gov.wa.wsdot.android.wsdot.util.AdTargets
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
 import java.util.*
 import java.util.Calendar.*
@@ -80,6 +85,29 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     val args: FerriesRouteFragmentArgs by navArgs()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                myLocationFineWithPermissionCheck()
+                println("Precise location access granted.")
+
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                myLocationCoarseWithPermissionCheck()
+                println("Coarse location access granted.")
+
+            }
+            else -> {
+                println("No location access granted.")
+            }
+        }
+    }
+
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -210,7 +238,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         val tabLayout: TabLayout = view.findViewById(R.id.tab_layout)
         tabLayout.setupWithViewPager(viewPager)
 
-        setClosestTerminalWithPermissionCheck()
+        checkAppPermissions()
 
     }
 
@@ -260,9 +288,10 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     }
 
+    // Location Permissions
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun setClosestTerminal() {
+    fun myLocationFine() {
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
@@ -277,10 +306,77 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         }
     }
 
-    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun showRationaleForLocation(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_terminal_location_rationale, request)
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun myLocationCoarse() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        routeViewModel.selectTerminalNearestTo(it)
+                    }
+                    if (location == null) {
+                        requestLocationUpdate()
+                    }
+                }
+        }
     }
+
+    private fun checkAppPermissions() {
+
+        if (Build.VERSION.SDK_INT == 23) {
+            myLocationFineWithPermissionCheck()
+        } else {
+
+            // Check if app has location permissions granted
+            when (PackageManager.PERMISSION_GRANTED) {
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationFineWithPermissionCheck()
+                }
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationCoarseWithPermissionCheck()
+                }
+                else -> {
+
+                    // show permission rational dialog
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                            context as Activity,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    ) {
+                        AlertDialog.Builder(context!!)
+                            .setTitle("Location Permission")
+                            .setMessage(R.string.permission_terminal_location_rationale)
+                            .setCancelable(false)
+                            .setPositiveButton("next")
+                            { _, _ ->
+                                locationPermissionRequest.launch(
+                                    arrayOf(
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    )
+                                )
+                            }
+                            .show()
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -288,18 +384,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
-        context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Location Permission")
-            builder.setMessage(rationMessage)
-            builder.setCancelable(false)
-            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-        }
-    }
-
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdate() {
 
         val locationRequest = LocationRequest()
