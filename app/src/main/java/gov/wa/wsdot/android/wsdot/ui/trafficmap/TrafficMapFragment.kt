@@ -274,6 +274,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_location -> {
+                myLocationFineWithPermissionCheck()
                 if (activity?.let {
                         ContextCompat.checkSelfPermission(
                             it,
@@ -291,7 +292,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     myLocationCoarseWithPermissionCheck()
                 }
             }
-            else -> {}
+            else -> {
+                locationPermissionRequest.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+            }
         }
         return false
     }
