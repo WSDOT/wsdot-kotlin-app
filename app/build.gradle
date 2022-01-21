@@ -91,6 +91,8 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.4.0'
     implementation 'androidx.fragment:fragment-ktx:1.4.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+
+    // Updating to 2.4.0 causes error. Duplicate classes found in modules.
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0'
 
     implementation 'com.google.android.gms:play-services-ads:20.5.0'
@@ -116,6 +118,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation "androidx.room:room-runtime:2.4.0"
+
+    // Updating to 2.4.1 causes app:kaptDebugKotlin error.
     kapt "androidx.room:room-compiler:2.3.0"
     annotationProcessor 'androidx.room:room-compiler:2.4.0'
 
@@ -153,6 +157,8 @@ dependencies {
 
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+    // Updating to 2.28.3 causes app:kaptDebugKotlin error.
     implementation "com.google.dagger:dagger:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 

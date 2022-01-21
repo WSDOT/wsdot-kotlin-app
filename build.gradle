@@ -12,6 +12,8 @@ buildscript {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
         classpath 'com.google.gms:google-services:4.3.10'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
+
+        // Updating to 2.0.0 causes error. Manifest merger failed.
         classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.2.0"
     }
 
