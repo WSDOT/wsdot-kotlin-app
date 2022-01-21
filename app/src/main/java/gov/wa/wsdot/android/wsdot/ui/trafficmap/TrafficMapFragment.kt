@@ -1047,7 +1047,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
-                    mMap.isMyLocationEnabled = true
+                    mMap.isMyLocationEnabled = false
                     requestLocationUpdates()
                     requestGoToLocationUpdate()
                 }

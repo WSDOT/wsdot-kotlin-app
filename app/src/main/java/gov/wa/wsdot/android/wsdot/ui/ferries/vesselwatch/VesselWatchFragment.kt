@@ -392,7 +392,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     location?.let {
-                        mMap?.isMyLocationEnabled = true
+                        mMap?.isMyLocationEnabled = false
                         requestLocationUpdates()
                     }
                 }
