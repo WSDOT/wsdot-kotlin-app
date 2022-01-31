@@ -275,34 +275,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         when (item.itemId) {
             R.id.action_my_location -> {
                 myLocationFineWithPermissionCheck()
-                if (activity?.let {
-                        ContextCompat.checkSelfPermission(
-                            it,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                    }
-                    == PackageManager.PERMISSION_GRANTED) {
-                    myLocationFineWithPermissionCheck()
-                }
-                else if (activity?.let {
-                        ContextCompat.checkSelfPermission(
-                            it,
-                            Manifest.permission.ACCESS_COARSE_LOCATION)
-                    }
-                    == PackageManager.PERMISSION_GRANTED) {
-                    myLocationCoarseWithPermissionCheck()
-                }
-            }
-            else -> {
-                locationPermissionRequest.launch(
-                    arrayOf(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    )
-                )
+                checkAppPermissions()
             }
         }
+
         return false
+
     }
+
 
     override fun onMapReady(map: GoogleMap) {
 
