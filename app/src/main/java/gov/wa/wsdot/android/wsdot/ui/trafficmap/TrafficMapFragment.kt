@@ -101,6 +101,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
+    var requestLocationUpgrade: Boolean = true
 
     private lateinit var mMap: GoogleMap
 
@@ -274,7 +275,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_location -> {
-                myLocationFineWithPermissionCheck()
+                if (requestLocationUpgrade) {
+                    myLocationFineWithPermissionCheck()
+                }
                 checkAppPermissions()
             }
         }
@@ -1068,6 +1071,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
                 -> {
                     myLocationCoarseWithPermissionCheck()
+
+                    if (Build.VERSION.SDK_INT > 30) {
+                        requestLocationUpgrade = false
+                    }
+
                 }
                 else -> {
                     // Present permission dialog to request permission type
