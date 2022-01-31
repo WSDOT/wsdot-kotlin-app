@@ -29,11 +29,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
@@ -117,6 +119,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     // Camera update task timer
     var t: Timer? = null
+
+    // Approximate location radius circle
+    private var radiusCircle: Circle? = null
+
+    // Current location cancellation token
+    private var cancellationTokenSource = CancellationTokenSource()
 
     // FAB
     private lateinit var mFab: SpeedDialView
@@ -1020,6 +1028,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun myLocationFine() {
+        radiusCircle?.remove()
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
@@ -1036,13 +1045,25 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     fun myLocationCoarse() {
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    mMap.isMyLocationEnabled = false
-                    requestLocationUpdates()
-                    requestGoToLocationUpdate()
+            fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token).addOnSuccessListener { location : Location? ->
+                mMap.isMyLocationEnabled = false
+                if(location != null) {
+                    circle(location)
                 }
+            }
+            requestCoarseLocationUpdate()
         }
+    }
+
+    private fun circle(location: Location) {
+        val circleOptions = CircleOptions()
+            .center(LatLng(location.latitude, location.longitude))
+            .radius(location.accuracy.toDouble())
+            .strokeWidth(5F)
+            .strokeColor(0x3571cce7)
+            .fillColor(0x3571cce7)
+        radiusCircle?.remove()
+        radiusCircle = mMap.addCircle(circleOptions)
     }
 
     private fun checkAppPermissions() {
@@ -1094,6 +1115,29 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }
+
+    @SuppressLint("MissingPermission")
+    private fun requestCoarseLocationUpdate() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+
+        // Request location update every 60 seconds
+        locationRequest.interval = 60000
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                goToUsersLocation(locationResult.lastLocation)
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
+
 
     @SuppressLint("MissingPermission")
     private fun requestGoToLocationUpdate() {
