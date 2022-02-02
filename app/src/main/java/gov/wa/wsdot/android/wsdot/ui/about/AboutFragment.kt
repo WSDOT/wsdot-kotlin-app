@@ -52,11 +52,6 @@ class AboutFragment: DaggerFragment(), Injectable {
             startActivity(browserIntent)
         }
 
-        binding.heroButton.setOnClickListener {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.wsdot.wa.gov/travel/highways-bridges/hov/report-violator"))
-            startActivity(browserIntent)
-        }
-
         binding.appBugReportButton.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SEND)
             emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("webfeedback@wsdot.wa.gov"))

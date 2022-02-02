@@ -117,7 +117,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         t?.cancel()
     }
 
-    override fun onMapReady(map: GoogleMap?) {
+    override fun onMapReady(map: GoogleMap) {
 
         mMap = map as GoogleMap
 

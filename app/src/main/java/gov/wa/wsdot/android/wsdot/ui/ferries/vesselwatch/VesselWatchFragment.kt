@@ -2,8 +2,10 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,13 +16,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -42,8 +45,6 @@ import gov.wa.wsdot.android.wsdot.util.getDouble
 import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
@@ -76,6 +77,28 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             vesselUpdateHandler.postDelayed(this, 180000)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                myLocationFineWithPermissionCheck()
+                println("Precise location access granted.")
+
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                myLocationCoarseWithPermissionCheck()
+                println("Coarse location access granted.")
+
+            }
+            else -> {
+                println("No location access granted.")
+            }
+        }
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -124,7 +147,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     }
 
 
-    override fun onMapReady(map: GoogleMap?) {
+    override fun onMapReady(map: GoogleMap) {
 
         mMap = map as GoogleMap
 
@@ -146,7 +169,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
         }
 
-        enableMyLocationWithPermissionCheck()
+        checkAppPermissions()
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 
@@ -348,21 +371,71 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     // Location Permission
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun enableMyLocation() {
+    fun myLocationFine() {
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
+                .addOnSuccessListener { location: Location? ->
                     location?.let {
                         mMap?.isMyLocationEnabled = true
+                        requestLocationUpdates()
                     }
                 }
         }
     }
 
-    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun showRationaleForLocation(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_map_location_rationale, request)
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun myLocationCoarse() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    location?.let {
+                        mMap?.isMyLocationEnabled = false
+                        requestLocationUpdates()
+                    }
+                }
+        }
+    }
+
+    private fun checkAppPermissions() {
+
+        if (Build.VERSION.SDK_INT == 23) {
+            myLocationFineWithPermissionCheck()
+        } else {
+
+            // Check if app has location permissions granted
+            when (PackageManager.PERMISSION_GRANTED) {
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationFineWithPermissionCheck()
+                }
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationCoarseWithPermissionCheck()
+                }
+                else -> {
+                    // Present permission dialog to request permission type
+                    locationPermissionRequest.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -370,16 +443,20 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
-        context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Location Permission")
-            builder.setMessage(rationMessage)
-            builder.setCancelable(false)
-            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
-        }
-    }
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdates() {
 
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
 }

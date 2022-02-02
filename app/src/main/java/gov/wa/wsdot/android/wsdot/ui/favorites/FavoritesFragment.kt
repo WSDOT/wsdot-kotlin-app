@@ -468,25 +468,34 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
     private fun navigateToCamera(camera: Camera){
         val action = NavGraphDirections.actionGlobalNavCameraFragment(camera.cameraId, camera.title)
-        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+//        (activity as MainActivity).enableAds(adTargets)
+
+        (activity as MainActivity).disableAds()
+
         findNavController().navigate(action)
     }
 
     private fun navigateToSchedule(schedule: FerrySchedule) {
         val action = NavGraphDirections.actionGlobalNavFerriesRouteFragment(schedule.routeId, schedule.description)
-        val adTargets = mapOf(
-            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
-            "wsdotferries" to AdTargets.getFerryAdTarget(schedule.routeId)
-        )
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf(
+//            "wsdotapp" to resources.getString(R.string.ad_target_ferries),
+//            "wsdotferries" to AdTargets.getFerryAdTarget(schedule.routeId)
+//        )
+//        (activity as MainActivity).enableAds(adTargets)
+
+        (activity as MainActivity).disableAds()
+
         findNavController().navigate(action)
     }
 
     private fun navigateToMountainPass(pass: MountainPass) {
         val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(pass.passId, pass.passName)
-        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_passes))
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_passes))
+//        (activity as MainActivity).enableAds(adTargets)
+
+        (activity as MainActivity).disableAds()
+
         findNavController().navigate(action)
     }
 
@@ -541,8 +550,10 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         val action = FavoritesFragmentDirections.actionNavFavoritesFragmentToNavFavoriteTrafficMapFragment()
 
-        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+//        (activity as MainActivity).enableAds(adTargets)
+
+        (activity as MainActivity).disableAds()
 
         findNavController().navigate(action)
     }

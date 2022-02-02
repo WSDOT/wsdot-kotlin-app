@@ -2,10 +2,12 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.location.Location
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,18 +19,23 @@ import android.view.*
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
@@ -57,10 +64,7 @@ import gov.wa.wsdot.android.wsdot.util.*
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.RuntimePermissions
-import java.lang.Boolean.getBoolean
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
@@ -99,6 +103,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
+    var requestLocationUpgrade: Boolean = true
 
     private lateinit var mMap: GoogleMap
 
@@ -115,6 +120,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // Camera update task timer
     var t: Timer? = null
 
+    // Approximate location radius circle
+    private var radiusCircle: Circle? = null
+
+    // Current location cancellation token
+    private var cancellationTokenSource = CancellationTokenSource()
+
     // FAB
     private lateinit var mFab: SpeedDialView
 
@@ -124,6 +135,27 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         override fun run() {
             mapHighwayAlertsViewModel.refresh()
             mapUpdateHandler.postDelayed(this, 300000)
+        }
+    }
+
+    // Determine which permissions have been granted
+    @RequiresApi(Build.VERSION_CODES.N)
+    val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                myLocationFineWithPermissionCheck()
+                println("Precise location access granted.")
+
+            }
+            permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                myLocationCoarseWithPermissionCheck()
+                println("Coarse location access granted.")
+
+            } else -> {
+            println("No location access granted.")
+        }
         }
     }
 
@@ -137,8 +169,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
-        (activity as MainActivity).enableAds(adTargets)
+//        val adTargets = mapOf("wsdotapp" to resources.getString(R.string.ad_target_traffic))
+//        (activity as MainActivity).enableAds(adTargets)
+        
+        (activity as MainActivity).disableAds()
 
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
         // Inflate the layout for this fragment
@@ -245,17 +279,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    // Check location permissions when menu item is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_location -> {
-                goToMyLocationWithPermissionCheck()
+                if (requestLocationUpgrade) {
+                    myLocationFineWithPermissionCheck()
+                }
+                checkAppPermissions()
             }
-            else -> {}
         }
+
         return false
+
     }
 
-    override fun onMapReady(map: GoogleMap?) {
+
+    override fun onMapReady(map: GoogleMap) {
 
         mMap = map as GoogleMap
 
@@ -279,7 +319,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mMap.clear()
 
-        enableMyLocationWithPermissionCheck()
+        checkAppPermissions()
 
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -987,33 +1027,88 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun enableMyLocation() {
+    fun myLocationFine() {
+        radiusCircle?.remove()
         context?.let { context ->
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location : Location? ->
                     mMap.isMyLocationEnabled = true
                     requestLocationUpdates()
-                }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun goToMyLocation() {
-        context?.let { context ->
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location : Location? ->
-                    mMap.isMyLocationEnabled = true
                     requestGoToLocationUpdate()
                 }
         }
     }
 
-    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun showRationaleForLocation(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_map_location_rationale, request)
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+    fun myLocationCoarse() {
+        context?.let { context ->
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.getCurrentLocation(PRIORITY_HIGH_ACCURACY, cancellationTokenSource.token).addOnSuccessListener { location : Location? ->
+                mMap.isMyLocationEnabled = false
+                if(location != null) {
+                    circle(location)
+                }
+            }
+            requestCoarseLocationUpdate()
+        }
+    }
+
+    private fun circle(location: Location) {
+        val circleOptions = CircleOptions()
+            .center(LatLng(location.latitude, location.longitude))
+            .radius(location.accuracy.toDouble())
+            .strokeWidth(5F)
+            .strokeColor(0x3571cce7)
+            .fillColor(0x3571cce7)
+        radiusCircle?.remove()
+        radiusCircle = mMap.addCircle(circleOptions)
+    }
+
+    private fun checkAppPermissions() {
+
+        // API 23 requires fine location alert dialog
+        if (Build.VERSION.SDK_INT == 23) {
+            myLocationFineWithPermissionCheck()
+        } else {
+
+            // Check if app has location permissions granted
+            when (PackageManager.PERMISSION_GRANTED) {
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationFineWithPermissionCheck()
+                }
+                activity?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                }
+                -> {
+                    myLocationCoarseWithPermissionCheck()
+
+                    if (Build.VERSION.SDK_INT > 30) {
+                        requestLocationUpgrade = false
+                    }
+
+                }
+                else -> {
+                    // Present permission dialog to request permission type
+                    locationPermissionRequest.launch(
+                        arrayOf(
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    )
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
@@ -1021,25 +1116,37 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    private fun showRationaleDialog(rationMessage: Int, permRequest: PermissionRequest) {
-        context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Location Permission")
-            builder.setMessage(rationMessage)
-            builder.setCancelable(false)
-            builder.setPositiveButton("next") { _, _ -> permRequest.proceed()}
-            val dialog: AlertDialog = builder.create()
-            dialog.show()
+    @SuppressLint("MissingPermission")
+    private fun requestCoarseLocationUpdate() {
+
+        val locationRequest = LocationRequest()
+        locationRequest.numUpdates = 1
+
+        // Request location update every 60 seconds
+        locationRequest.interval = 60000
+
+        val locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                goToUsersLocation(locationResult.lastLocation)
+            }
         }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
     }
 
+
+    @SuppressLint("MissingPermission")
     private fun requestGoToLocationUpdate() {
 
         val locationRequest = LocationRequest()
         locationRequest.numUpdates = 1
 
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 goToUsersLocation(locationResult.lastLocation)
             }
@@ -1055,12 +1162,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15.0f))
     }
 
+    @SuppressLint("MissingPermission")
     private fun requestLocationUpdates() {
 
         val locationRequest = LocationRequest()
         locationRequest.numUpdates = 1
         val locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
+            override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 checkSpeed(locationResult.lastLocation)
             }
