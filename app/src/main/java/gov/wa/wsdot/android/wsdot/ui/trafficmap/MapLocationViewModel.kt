@@ -39,7 +39,7 @@ class MapLocationViewModel @Inject constructor(private val context: Context) : V
             context.getString(R.string.user_preference_traffic_map_zoom),
             location.zoom
         )
-        editor.apply()
+        editor.commit()
 
         mapLocation.value = location
     }
