@@ -104,6 +104,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
     var requestLocationUpgrade: Boolean = true
+    var goToLocation: Boolean = true
 
     private lateinit var mMap: GoogleMap
 
@@ -283,6 +284,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_my_location -> {
+                goToLocation = true
                 if (requestLocationUpgrade) {
                     myLocationFineWithPermissionCheck()
                 }
@@ -318,7 +320,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         mMap.clear()
-
+        goToLocation = false
         checkAppPermissions()
 
         mMap.uiSettings.isCompassEnabled = true
@@ -1128,7 +1130,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
-                goToUsersLocation(locationResult.lastLocation)
+                if(goToLocation) {
+                    goToUsersLocation(locationResult.lastLocation)
+                }
             }
         }
 
@@ -1148,7 +1152,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
-                goToUsersLocation(locationResult.lastLocation)
+                if(goToLocation) {
+                    goToUsersLocation(locationResult.lastLocation)
+                }
             }
         }
 
