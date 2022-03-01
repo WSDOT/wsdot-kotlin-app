@@ -9,8 +9,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
 import android.util.Log
 import android.view.*
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -218,14 +223,26 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             binding.datePickerCallback = object : TapCallback {
                 override fun onTap(view: View) {
 
-                    val startDate = scheduleRange.startDate ?: Date()
-                    val endDate = scheduleRange.endDate ?: Date()
+                    // Ferry Schedule Calendar Message
+                    val ferryMessage = SpannableString("Many of the sailings continue to operate on reduced or alternate schedules. In order to provide up-to-date information, the mobile app ferry schedule calendar is now limited to daily schedules.<p>To view a future sailing time for your route please visit the <a href=https://wsdot.com/ferries/schedule/>schedule page online</a>.")
+                    Linkify.addLinks(ferryMessage, Linkify.ALL)
+                    val alert: AlertDialog = AlertDialog.Builder(context!!)
+                        .setTitle("Ferry Schedule Calendar")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setMessage(Html.fromHtml(ferryMessage.toString()))
+                        .create()
+                    alert.show()
+                    (alert.findViewById<View>(android.R.id.message) as TextView?)!!.movementMethod =
+                        LinkMovementMethod.getInstance()
 
-                    val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title, startDate.time, endDate.time)
-                    view.findNavController().navigate(action)
-                    // short delay to prevent double tap
-                    view.isEnabled = false
-                    Handler().postDelayed({ view.isEnabled = true }, 1000)
+//                    val startDate = scheduleRange.startDate ?: Date()
+//                    val endDate = scheduleRange.endDate ?: Date()
+//
+//                    val action = FerriesRouteFragmentDirections.actionNavFerriesRouteFragmentToDayPickerDialogFragment(args.title, startDate.time, endDate.time)
+//                    view.findNavController().navigate(action)
+//                    // short delay to prevent double tap
+//                    view.isEnabled = false
+//                    Handler().postDelayed({ view.isEnabled = true }, 1000)
                 }
             }
         })
