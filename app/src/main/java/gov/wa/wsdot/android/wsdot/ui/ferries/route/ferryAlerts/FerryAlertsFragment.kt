@@ -56,6 +56,8 @@ class FerryAlertsFragment : DaggerFragment(), Injectable {
             false
         )
 
+        ferryAlertsViewModel.refresh()
+
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
                 ferryAlertsViewModel.refresh()
