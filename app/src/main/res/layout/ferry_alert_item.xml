@@ -9,13 +9,18 @@
             type="gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert"/>
     </data>
 
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="?android:attr/selectableItemBackground">
@@ -77,7 +82,8 @@
                 android:layout_marginRight="@dimen/default_margin"
                 />
 
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
+
 </layout>
