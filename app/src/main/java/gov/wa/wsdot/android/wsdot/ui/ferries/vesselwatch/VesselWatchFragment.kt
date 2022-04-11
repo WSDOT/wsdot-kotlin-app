@@ -69,6 +69,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private var showCameras: Boolean = true
     private var selectedCameraMarker: Marker? = null
+    var requestLocation: Boolean = true
+
 
     private lateinit var vesselUpdateHandler: Handler
     private val vesselUpdateTask = object: Runnable {
@@ -95,6 +97,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
             else -> {
                 println("No location access granted.")
+                requestLocation = false
+
             }
         }
     }
@@ -169,7 +173,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             }
         }
 
-        checkAppPermissions()
+        if (requestLocation) {
+            checkAppPermissions()
+        }
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
 

@@ -68,6 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:paddingBottom="8dp"
+                        android:autoLink="all"
                         app:bindHTML="@{viewModel.alert.data.headline}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
