@@ -23,7 +23,6 @@
                 style="@style/CardTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoLink="web"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 app:bindHTML="@{event.details}"
