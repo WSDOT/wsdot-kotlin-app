@@ -27,4 +27,39 @@
 
     <color name="cardLightGray">#7b7b7b</color>
 
+    <color name="wsdotBlue">#007B9A</color>
+    <color name="wsdotBlueDark">#006680</color>
+    <color name="wsdotBlueAccent">#00576e</color>
+    
+    <!--Utility Colors-->
+    <color name="wsdotGray100">#1d252d</color>
+    <color name="wsdotGray80">#4a5157</color>
+    <color name="wsdotGray60">#777c81</color>
+    <color name="wsdotGray40">#a5a8ab</color>
+    <color name="wsdotGray20">#d2d3d5</color>
+    <color name="wsdotGray10">#e8e9ea</color>
+    <color name="wsdotGray5">#f4f4f5</color>
+    <color name="wsdotWhite">#ffffff</color>
+    <color name="wsdotGreenSuccess">#28a745</color>
+    <color name="wsdotRed">#dc3545</color>
+    <color name="wsdotYellow">#ffc107</color>
+    <color name="wsdotPurple">#59315F</color>
+
+<!--Brand-Primary-->
+    <color name="wsdotPrimaryBrand100">#007b5f</color>
+    <color name="wsdotPrimaryBrand80">#33957f</color>
+    <color name="wsdotPrimaryBrand60">#66b09f</color>
+    <color name="wsdotPrimaryBrand40">#99cabf</color>
+
+<!--Brand-Secondary-->
+    <color name="wsdotLightAccent100">#97d700</color>
+    <color name="wsdotLightAccentSoftened">#ADC86D</color>
+    <color name="wsdotDarkAccent100">#005151</color>
+
+<!--Sub-Brand-->
+    <color name="wsdotPMS519100">#59315F</color>
+    <color name="wsdotPMS1585100">#FF6A13</color>
+    <color name="wsdotPMS3125100">#00AEC7</color>
+    <color name="wsdotPMS314100">#007FA3</color>
+
 </resources>
