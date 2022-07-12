@@ -485,9 +485,17 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         val settings = PreferenceManager.getDefaultSharedPreferences(this)
         val themeId = settings.getInt(getString(R.string.pref_key_theme), 0)
 
-        if (themeId == 1) {
+        if (themeId == 0) {
+            theme.applyStyle(R.style.ThemeWSDOTGreen, true)
+        }
+        else if (themeId == 1) {
             theme.applyStyle(R.style.ThemeWSDOTOrange, true)
-        } else {
+        }
+        else if (themeId == 2) {
+            theme.applyStyle(R.style.ThemeWSDOTEmergency, true)
+        }
+
+        else {
             theme.applyStyle(R.style.ThemeWSDOTGreen, true)
         }
         return theme
