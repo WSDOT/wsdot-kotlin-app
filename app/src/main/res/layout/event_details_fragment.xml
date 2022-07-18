@@ -14,7 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -23,13 +27,14 @@
                 style="@style/CardTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autoLink="web"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 app:bindHTML="@{event.details}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
+
 </layout>

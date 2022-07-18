@@ -37,6 +37,12 @@
         <item name="themeColorAccent">@color/wsdotOrangeAccent</item>
     </style>
 
+    <style name="ThemeWSDOTEmergency" parent="AppTheme">
+        <item name="themeColorPrimary">@color/wsdotGreen</item>
+        <item name="themeColorDark">@color/wsdotGreenDark</item>
+        <item name="themeColorAccent">@color/wsdotGreenAccent</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
