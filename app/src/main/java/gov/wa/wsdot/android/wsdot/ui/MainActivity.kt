@@ -492,6 +492,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             theme.applyStyle(R.style.ThemeWSDOTOrange, true)
         }
         else if (themeId == 2) {
+            theme.applyStyle(R.style.ThemeWSDOTBlue, true)
+        }
+        else if (themeId == 3) {
+            theme.applyStyle(R.style.ThemeWSDOTCustom, true)
+        }
+        else if (themeId == 4) {
             theme.applyStyle(R.style.ThemeWSDOTEmergency, true)
         }
 
