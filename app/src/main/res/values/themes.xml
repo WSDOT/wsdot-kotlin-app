@@ -31,10 +31,21 @@
     </style>
 
     <style name="ThemeWSDOTOrange" parent="AppTheme">
-
         <item name="themeColorPrimary">@color/wsdotOrange</item>
         <item name="themeColorDark">@color/wsdotOrangeDark</item>
         <item name="themeColorAccent">@color/wsdotOrangeAccent</item>
+    </style>
+
+    <style name="ThemeWSDOTBlue" parent="AppTheme">
+        <item name="themeColorPrimary">@color/wsdotBlue</item>
+        <item name="themeColorDark">@color/wsdotBlueDark</item>
+        <item name="themeColorAccent">@color/wsdotBlueAccent</item>
+    </style>
+
+    <style name="ThemeWSDOTCustom" parent="AppTheme">
+        <item name="themeColorPrimary">@color/wsdotCustom</item>
+        <item name="themeColorDark">@color/wsdotGreenDark</item>
+        <item name="themeColorAccent">@color/wsdotGreenAccent</item>
     </style>
 
     <style name="ThemeWSDOTEmergency" parent="AppTheme">

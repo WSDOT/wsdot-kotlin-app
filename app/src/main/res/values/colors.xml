@@ -30,7 +30,10 @@
     <color name="wsdotBlue">#007B9A</color>
     <color name="wsdotBlueDark">#006680</color>
     <color name="wsdotBlueAccent">#00576e</color>
-    
+
+    <color name="wsdotCustom">#003F87</color>
+
+
     <!--Utility Colors-->
     <color name="wsdotGray100">#1d252d</color>
     <color name="wsdotGray80">#4a5157</color>
