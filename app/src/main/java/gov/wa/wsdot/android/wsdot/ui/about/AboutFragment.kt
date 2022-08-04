@@ -89,6 +89,11 @@ class AboutFragment: DaggerFragment(), Injectable {
 
         }
 
+        binding.privacyPolicy.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://wsdot.wa.gov/about/policies/web-privacy-notice"))
+            startActivity(browserIntent)
+        }
+
         binding.versionText.text = getString(R.string.app_version_text, BuildConfig.VERSION_NAME)
 
         return dataBinding.root
