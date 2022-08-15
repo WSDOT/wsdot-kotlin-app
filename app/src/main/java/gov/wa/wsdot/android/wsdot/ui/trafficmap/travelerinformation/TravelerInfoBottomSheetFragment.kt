@@ -1,9 +1,13 @@
 package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation
 
+import android.app.Activity
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
@@ -24,12 +28,24 @@ class TravelerInfoBottomSheetFragment:
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
     }
 
+    private fun getScreenWidth(): Int {
+        return Resources.getSystem().displayMetrics.widthPixels
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
         val view = inflater.inflate(R.layout.simple_bottom_sheet_list, container, false)
 
         val listItems = mutableListOf<TravelerInfoMenuEventItem>()
+
+        println("screenWidth" + getScreenWidth())
+
+        // Hides map legend on smaller screen sizes due to legibility issues.
+        if (getScreenWidth() < 720) {
+            val mapLegend = view.findViewById<ImageView>(R.id.map_legend)
+            mapLegend.visibility = View.GONE
+        }
 
         listItems.add(
             TravelerInfoMenuEventItem("Travel Times", TravelerMenuItemType.TRAVEL_TIMES)
