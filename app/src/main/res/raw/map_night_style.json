@@ -199,5 +199,13 @@
         "color": "#17263c"
       }
     ]
+  },
+  {
+    "featureType": "poi",
+    "stylers": [
+      {
+        "visibility": "off"
+      }
+    ]
   }
 ]

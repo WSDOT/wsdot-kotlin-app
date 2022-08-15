@@ -5,13 +5,13 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.content.res.Resources.NotFoundException
 import android.graphics.Color
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.preference.PreferenceManager
 import android.text.InputType
 import android.util.Log
 import android.util.TypedValue
@@ -28,6 +28,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -67,7 +68,6 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 
 @RuntimePermissions
@@ -315,7 +315,25 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
             } else {
-                mMap.setMapStyle(null)
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    val success: Boolean = mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                            it, R.raw.googlemapstyle
+                        )
+                    )
+                    if (!success) {
+                        Log.e("debug", "Style parsing failed.")
+                        mMap.setMapStyle(null)
+
+                    } else {
+                        Log.e("debug", "Style parsing failed.")
+
+                    }
+                } catch (e: NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
             }
         }
 
