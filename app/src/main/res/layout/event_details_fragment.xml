@@ -22,15 +22,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/alertTitle"
+                    style="@style/CardTitleText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:paddingBottom="8dp"
+                    app:bindHTML="@{event.bannerText}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
             <TextView
-                android:id="@+id/alertTitle"
-                style="@style/CardTitleText"
+                android:id="@+id/alertDetails"
+                style="@style/CardSubTitleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 app:bindHTML="@{event.details}"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/alertTitle"
                 app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
