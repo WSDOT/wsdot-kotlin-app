@@ -207,7 +207,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        addMenuBadgeIfNeeded()
+//        addMenuBadgeIfNeeded()
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -578,6 +578,20 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
             R.id.event_banner -> {
+
+                // Hide event banner if event date has expired.
+                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+                navView.setNavigationItemSelectedListener(this)
+                eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventBannerViewModel::class.java)
+                eventViewModel.eventStatus.observe(this, Observer { eventResponse ->
+                    eventResponse.data?.let {
+
+                        if (!TimeUtils.currentDateInRange(it.startDate, it.endDate, "yyyy-MM-dd")) {
+                            navView.menu.setGroupVisible(R.id.event_banner_group, false)
+                        }
+                    }
+                })
+
                 if (navController.currentDestination?.id != R.id.navEventDetailsFragment) {
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
