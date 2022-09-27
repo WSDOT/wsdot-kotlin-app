@@ -618,6 +618,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
+                eventViewModel.refresh()
             }
             R.id.nav_notifications -> {
                 if (navController.currentDestination?.id != R.id.navNotificationsFragment) {
