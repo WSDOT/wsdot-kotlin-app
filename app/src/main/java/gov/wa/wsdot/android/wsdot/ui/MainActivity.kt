@@ -208,6 +208,42 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        addMenuBadgeIfNeeded()
+        
+        // display menu event banner if available
+        val navView: NavigationView = findViewById(R.id.drawer_nav_view)
+        navView.setNavigationItemSelectedListener(this)
+
+        eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventBannerViewModel::class.java)
+        eventViewModel.eventStatus.observe(this, Observer { eventResponse ->
+            eventResponse.data?.let {
+
+                val settings = PreferenceManager.getDefaultSharedPreferences(this)
+                val editor = settings.edit()
+
+                if (TimeUtils.currentDateInRange(it.startDate, it.endDate, "yyyy-MM-dd")) {
+
+                    eventTitle = it.title
+                    navView.menu.setGroupVisible(R.id.event_banner_group, true)
+                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text =
+                        it.bannerText
+
+                    editor.putInt(getString(R.string.pref_key_theme), it.themeId)
+                    editor.putString(getString(R.string.pref_key_current_event), it.title)
+                    editor.commit()
+
+                    addMenuBadgeIfNeeded()
+
+                } else {
+                    navView.menu.setGroupVisible(R.id.event_banner_group, false)
+
+                    editor.putString(getString(R.string.pref_key_last_seen_event), "")
+                    editor.putString(getString(R.string.pref_key_current_event), "")
+                    editor.putInt(getString(R.string.pref_key_theme), 0)
+                    editor.apply()
+                }
+            }
+        })
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -578,24 +614,11 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 }
             }
             R.id.event_banner -> {
-
-                // Hide event banner if event date has expired.
-                val navView: NavigationView = findViewById(R.id.drawer_nav_view)
-                navView.setNavigationItemSelectedListener(this)
-                eventViewModel = ViewModelProvider(this, viewModelFactory).get(EventBannerViewModel::class.java)
-                eventViewModel.eventStatus.observe(this, Observer { eventResponse ->
-                    eventResponse.data?.let {
-
-                        if (!TimeUtils.currentDateInRange(it.startDate, it.endDate, "yyyy-MM-dd")) {
-                            navView.menu.setGroupVisible(R.id.event_banner_group, false)
-                        }
-                    }
-                })
-
                 if (navController.currentDestination?.id != R.id.navEventDetailsFragment) {
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
+                eventViewModel.refresh()
             }
             R.id.nav_notifications -> {
                 if (navController.currentDestination?.id != R.id.navNotificationsFragment) {
