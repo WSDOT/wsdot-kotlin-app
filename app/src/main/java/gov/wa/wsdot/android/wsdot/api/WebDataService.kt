@@ -8,10 +8,13 @@ import gov.wa.wsdot.android.wsdot.api.response.mountainpass.MountainPassResponse
 import gov.wa.wsdot.android.wsdot.api.response.notifications.NotificationTopicResponse
 import gov.wa.wsdot.android.wsdot.api.response.notifications.NotificationVersionResponse
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollRateTableResponse
+import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
 import gov.wa.wsdot.android.wsdot.api.response.traffic.*
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.BridgeAlertResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.NewsReleaseResponse
 import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.Query
 
 interface WebDataService {
     /**
@@ -44,8 +47,11 @@ interface WebDataService {
     @GET("BorderCrossings.js")
     fun getBorderCrossingItems(): LiveData<ApiResponse<BorderCrossingResponse>>
 
+    @GET("TollRates.js")
+    fun getTollRateTables(): LiveData<ApiResponse<List<TollTripResponse>>>
+
     @GET("StaticTollRates.js")
-    fun getTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
+    fun getStaticTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
 
     @GET("EventStatus.js")
     fun getEventStatus(): LiveData<ApiResponse<EventStatusResponse>>

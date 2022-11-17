@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.repository
 
 import androidx.lifecycle.LiveData
+import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollSign
@@ -18,6 +19,7 @@ import java.util.*
 
 @Singleton
 class TollSignRepository @Inject constructor(
+    private val dataWebService: WebDataService,
     private val wsdotApiService: WsdotApiService,
     private val appExecutors: AppExecutors,
     private val tollSignDao: TollSignDao
@@ -46,7 +48,7 @@ class TollSignRepository @Inject constructor(
 
             override fun loadFromDb() = tollSignDao.loadTollSignsOnRouteForDirection(route, direction)
 
-            override fun createCall() = wsdotApiService.getTollTrips(ApiKeys.WSDOT_KEY)
+            override fun createCall() = dataWebService.getTollRateTables()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)
@@ -79,7 +81,7 @@ class TollSignRepository @Inject constructor(
 
             override fun loadFromDb() = tollSignDao.loadFavoriteTollSigns()
 
-            override fun createCall() = wsdotApiService.getTollTrips(ApiKeys.WSDOT_KEY)
+            override fun createCall() = dataWebService.getTollRateTables()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)

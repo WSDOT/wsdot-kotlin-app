@@ -44,7 +44,7 @@ class TollRateRepository @Inject constructor(
 
             override fun loadFromDb() = tollRateTableDao.loadTollRateTableForRoute(route)
 
-            override fun createCall() = dataWebservice.getTollRateTables()
+            override fun createCall() = dataWebservice.getStaticTollRateTables()
 
             override fun onFetchFailed() {
                 //repoListRateLimit.reset(owner)

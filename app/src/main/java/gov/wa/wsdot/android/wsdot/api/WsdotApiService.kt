@@ -30,12 +30,6 @@ interface WsdotApiService {
         @Path("accountName") accountName: String
     ): LiveData<ApiResponse<List<TwitterResponse>>>
 
-    @Headers("Content-Type:application/json")
-    @GET("traffic/api/api/tolling")
-    fun getTollTrips(
-        @Query("accesscode") apiKey: String
-    ): LiveData<ApiResponse<List<TollTripResponse>>>
-
     @GET("/traffic/api/amtrak/Schedulerest.svc/GetScheduleAsJson")
     fun getAmtrackSchedule(
         @Query("accesscode") apiKey: String,
