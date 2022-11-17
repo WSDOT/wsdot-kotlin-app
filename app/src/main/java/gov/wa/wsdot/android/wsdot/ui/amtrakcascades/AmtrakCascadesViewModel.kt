@@ -115,7 +115,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
                         currentIndex++
                         pairs.add(Pair(item, nextItem))
                     } else {
-                        pairs.add(Pair(item, null))
+//                        pairs.add(Pair(item, null))
                     }
 
                     currentIndex++
