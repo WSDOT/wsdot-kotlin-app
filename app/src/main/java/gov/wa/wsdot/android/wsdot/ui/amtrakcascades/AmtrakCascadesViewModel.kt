@@ -59,7 +59,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     )
     // used by destination spinner
     val destinationStations : List<Pair<String, String>> = arrayListOf(
-        Pair("All", "N/A"),
+//        Pair("All", "N/A"),
         Pair("Vancouver, BC", "VAC"),
         Pair("Bellingham, WA", "BEL"),
         Pair("Mount Vernon, WA", "MVW"),
