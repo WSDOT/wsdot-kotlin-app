@@ -99,7 +99,7 @@
             app:layout_constraintTop_toBottomOf="@+id/origin_picker_layout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Destination (Optional)"/>
+            android:text="Destination"/>
 
         <LinearLayout
             android:id="@+id/destination_layout"
