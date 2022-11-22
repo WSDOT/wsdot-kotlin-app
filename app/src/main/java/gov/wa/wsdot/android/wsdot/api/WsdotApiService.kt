@@ -31,7 +31,7 @@ interface WsdotApiService {
     ): LiveData<ApiResponse<List<TwitterResponse>>>
 
     @Headers("Content-Type:application/json")
-    @GET("traffic/api/api/tolling")
+    @GET("traffic/api/TollRates/TollRatesREST.svc/GetTollRatesAsJson")
     fun getTollTrips(
         @Query("accesscode") apiKey: String
     ): LiveData<ApiResponse<List<TollTripResponse>>>
