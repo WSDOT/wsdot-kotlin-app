@@ -113,7 +113,7 @@ class TravelerInfoBottomSheetFragment:
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
-                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://www.wsdot.com/Small/CV/", "Restrictions")
+                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://wsdot.com/travel/real-time/truck-restrictions", "Restrictions")
                 findNavController().navigate(action)
             }
             TravelerMenuItemType.BRIDGE_ALERTS -> {

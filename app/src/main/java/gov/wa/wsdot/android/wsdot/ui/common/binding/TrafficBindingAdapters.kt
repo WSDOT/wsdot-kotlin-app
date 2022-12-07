@@ -28,7 +28,10 @@ object TrafficBindingAdapters {
     @BindingAdapter("bindTravelTime")
     fun bindTravelTime(textView: TextView, travelTime: TravelTime) {
 
-        if (travelTime.currentTime < travelTime.avgTime - 1) {
+        if (travelTime.currentTime == -1) {
+            textView.setTextColor(Color.parseColor("#000000"))
+        }
+        else if (travelTime.currentTime < travelTime.avgTime - 1) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
         } else if (travelTime.currentTime > travelTime.avgTime + 1) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
@@ -36,17 +39,18 @@ object TrafficBindingAdapters {
             textView.setTextColor(Color.parseColor("#000000"))
         }
 
-        if (travelTime.currentTime != 0) {
+        if ((travelTime.currentTime != 0) && (travelTime.currentTime != -1)) {
             textView.text = String.format("%s min", travelTime.currentTime)
         } else {
             textView.text = "N/A"
+
         }
     }
 
     @JvmStatic
     @BindingAdapter("bindTravelTimeInfo")
     fun bindTravelTimeInfo(textView: TextView, travelTime: TravelTime) {
-        if (travelTime.miles != 0f && travelTime.avgTime != 0) {
+        if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
             textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
         } else {
             textView.text = "Not Available"
@@ -57,6 +61,9 @@ object TrafficBindingAdapters {
     @BindingAdapter("bindTravelTimeColor")
     fun bindTravelTimeColor(cardView: CardView, travelTime: TravelTime) {
         when {
+            travelTime.currentTime == -1 -> {
+                cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
+            }
             travelTime.currentTime < travelTime.avgTime - 1 -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#007B5F"))
             }
