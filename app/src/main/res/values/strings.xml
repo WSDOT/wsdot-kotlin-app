@@ -39,6 +39,7 @@
     <string name="highway_alert_marker_collection_id">HIGHWAY_ALERT_MARKERS</string>
     <string name="rest_area_marker_collection_id">REST_AREA_MARKERS</string>
     <string name="selected_marker_collection_id">SELECTED_CAMERA_MARKER</string>
+    <string name="mountain_pass_marker_collection_id">SELECTED_MOUNTAIN_PASS_MARKER</string>
 
     <string name="no_alert_string">Alert unavailable</string>
 
@@ -99,6 +100,7 @@
     <string name="user_preference_traffic_map_show_highway_alerts">USER_PREF_KEY_TRAFFIC_MAP_SHOW_HIGHWAY_ALERTS</string>
     <string name="user_preference_traffic_map_cluster_cameras">USER_PREF_KEY_TRAFFIC_MAP_CLUSTER_CAMERAS</string>
     <string name="user_preference_traffic_map_show_rest_areas">USER_PREF_KEY_TRAFFIC_MAP_SHOW_REST_AREAS</string>
+    <string name="user_preference_traffic_map_show_mountain_passes">USER_PREF_KEY_TRAFFIC_MAP_SHOW_MOUNTAIN_PASSES</string>
 
     // pref list keys
 
@@ -134,6 +136,7 @@
     <string name="fab_camera_label">Cameras</string>
     <string name="fab_camera_Clusters_label">Group Cameras</string>
     <string name="fab_rest_areas_label">Rest Areas</string>
+    <string name="fab_mountain_passes_label">Mountain Passes</string>
 
     // Ads
     <string name="ad_banner_description">advertisement</string>
