@@ -75,80 +75,29 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-            <TextView
-                style="@style/CardTitleText"
-                android:id="@+id/restrictionsOneHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{pass.restrictionOneDirection}"
-                app:layout_constraintTop_toBottomOf="@id/forecast_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:visibleGone='@{!pass.restrictionOneText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
-
             <TextView
                 style="@style/CardSubTitleText"
                 android:id="@+id/restrictionsOneText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{pass.restrictionOneText}"
-                app:layout_constraintTop_toBottomOf="@id/restrictionsOneHeader"
+                app:bindPassRestrictionsOne="@{pass}"
+                app:layout_constraintTop_toBottomOf="@id/forecast_view"
                 app:layout_constraintStart_toStartOf="parent"
-                app:visibleGone='@{!pass.restrictionOneText.toLowerCase().equals("no restrictions")}'
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
-
-            <TextView
-                style="@style/CardTitleText"
-                android:id="@+id/restrictionsTwoHeader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{pass.restrictionTwoDirection}"
-                app:layout_constraintTop_toBottomOf="@id/restrictionsOneText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:visibleGone='@{!pass.restrictionTwoText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
+                android:layout_marginRight="@dimen/default_margin"
+                android:paddingRight="8dp" />
 
             <TextView
                 style="@style/CardSubTitleText"
                 android:id="@+id/restrictionsTwoText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{pass.restrictionTwoText}"
-                app:visibleGone='@{!pass.restrictionTwoText.toLowerCase().equals("no restrictions") &amp;&amp; !pass.restrictionOneText.toLowerCase().equals("closed for the season")}'
-                app:layout_constraintTop_toBottomOf="@id/restrictionsTwoHeader"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/default_margin"
-                android:layout_marginBottom="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
-
-
-            <TextView
-                style="@style/CardFooterText"
-                android:id="@+id/FooterView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bindRelativeDate="@{pass.serverCacheDate}"
-                tools:text=""
-                app:layout_constraintTop_toBottomOf="@id/restrictionsTwoText"
+                app:bindPassRestrictionsTwo="@{pass}"
+                app:layout_constraintTop_toBottomOf="@id/restrictionsOneText"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="@dimen/default_margin"
@@ -157,6 +106,8 @@
                 android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginRight="@dimen/default_margin"
+                android:paddingRight="8dp"
+                android:paddingBottom="12dp"
                 />
 
             <androidx.appcompat.widget.AppCompatImageButton

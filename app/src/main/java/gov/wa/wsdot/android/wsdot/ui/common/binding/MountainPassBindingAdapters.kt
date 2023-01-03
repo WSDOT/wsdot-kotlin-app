@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -45,6 +46,40 @@ object MountainPassBindingAdapters {
         }
         textView.text = ""
     }
+
+    @JvmStatic
+    @BindingAdapter("bindPassRestrictionsOne")
+    fun bindPassRestrictionsOne(textView: TextView, pass: MountainPass) {
+
+        textView.text =
+            Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
+
+//        if (!pass.restrictionOneText.toLowerCase().equals("closed for the season")) {
+//            textView.text =
+//                Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
+//        }
+//        else {
+//            textView.text =
+//                Html.fromHtml( pass.restrictionOneText)
+//        }
+        }
+
+    @JvmStatic
+    @BindingAdapter("bindPassRestrictionsTwo")
+    fun bindPassRestrictionsTwo(textView: TextView, pass: MountainPass) {
+//        if (!pass.restrictionTwoText.toLowerCase().equals("closed for the season")) {
+//
+//            textView.text =
+//                Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
+//        }
+//        else {
+//            Html.fromHtml( pass.restrictionTwoText)
+//
+//        }
+        textView.text =
+            Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
+    }
+
 
     @JvmStatic
     @BindingAdapter("bindPassWeatherDetails")
