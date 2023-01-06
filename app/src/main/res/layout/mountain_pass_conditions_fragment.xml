@@ -21,100 +21,47 @@
             android:paddingEnd="@dimen/content_padding">
 
             <TextView
-                android:id="@+id/timestamp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:bindDate="@{pass.serverCacheDate}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"/>
-
-            <TextView
-                android:id="@+id/restrictionOneHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{@string/restriction_header_text(pass.restrictionOneDirection)}"
-                app:layout_constraintTop_toBottomOf="@id/timestamp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"/>
-
-            <TextView
                 android:id="@+id/restrictionOneText"
                 style="@style/CardSubTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{pass.restrictionOneText}"
-                app:layout_constraintTop_toBottomOf="@id/restrictionOneHeader"
+                app:bindPassRestrictionsOne="@{pass}"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
+                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/restrictionTwoHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{@string/restriction_header_text(pass.restrictionTwoDirection)}"
-                app:layout_constraintTop_toBottomOf="@id/restrictionOneText"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"/>
 
             <TextView
                 android:id="@+id/restrictionTwoText"
                 style="@style/CardSubTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{pass.restrictionTwoText}"
-                app:layout_constraintTop_toBottomOf="@id/restrictionTwoHeader"
+                app:bindPassRestrictionsTwo="@{pass}"
+                app:layout_constraintTop_toBottomOf="@id/restrictionOneText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/conditionsHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Conditions:"
-                app:layout_constraintTop_toBottomOf="@id/restrictionTwoText"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="8dp"/>
 
             <TextView
                 android:id="@+id/conditionsText"
                 style="@style/CardSubTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text='@{pass.roadCondition.isEmpty() ? "N/A" : pass.roadCondition }'
-                app:layout_constraintTop_toBottomOf="@id/conditionsHeader"
+                app:bindPassConditions="@{pass}"
+                app:layout_constraintTop_toBottomOf="@id/restrictionTwoText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/weatherHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Weather:"
-                app:layout_constraintTop_toBottomOf="@id/conditionsText"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="8dp"/>
 
             <TextView
                 android:id="@+id/weatherText"
@@ -122,25 +69,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindPassWeatherDetails="@{pass}"
-                app:layout_constraintTop_toBottomOf="@id/weatherHeader"
+                app:layout_constraintTop_toBottomOf="@id/conditionsText"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
-
-            <TextView
-                android:id="@+id/temperatureHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Temperature:"
-                app:layout_constraintTop_toBottomOf="@id/weatherText"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"/>
 
             <TextView
                 android:id="@+id/temperatureText"
@@ -149,39 +84,46 @@
                 android:layout_height="wrap_content"
                 app:bindTemperature="@{pass}"
                 app:layout_constraintTop_toBottomOf="@id/weatherText"
-                app:layout_constraintStart_toEndOf="@id/temperatureHeader"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="9dp"
-                android:paddingBottom="8dp"/>
-
-            <TextView
-                android:id="@+id/elevationHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Elevation:"
-                app:layout_constraintTop_toBottomOf="@id/temperatureHeader"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:paddingBottom="8dp"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
             <TextView
                 android:id="@+id/elevationText"
                 style="@style/CardSubTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{@string/elevation_text(pass.elevationInFeet)}"
-                app:layout_constraintTop_toBottomOf="@id/temperatureHeader"
-                app:layout_constraintStart_toEndOf="@id/elevationHeader"
+                app:bindPassElevation="@{pass}"
+                app:layout_constraintTop_toBottomOf="@id/temperatureText"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="9dp"
-                android:layout_marginBottom="8dp"
-                android:paddingBottom="8dp"/>
+                android:layout_margin="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
+            <TextView
+                android:id="@+id/timestampHeader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Last updated: "
+                app:layout_constraintTop_toBottomOf="@id/elevationText"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="8dp"
+                android:paddingStart="8dp"/>
+
+            <TextView
+                android:id="@+id/timestampText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:bindDate="@{pass.serverCacheDate}"
+                app:layout_constraintTop_toBottomOf="@id/elevationText"
+                app:layout_constraintStart_toEndOf="@id/timestampHeader"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="8dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

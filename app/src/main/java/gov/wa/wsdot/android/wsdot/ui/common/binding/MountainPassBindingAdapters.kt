@@ -18,12 +18,15 @@ object MountainPassBindingAdapters {
     @BindingAdapter("bindTemperature")
     fun bindTemperature(textView: TextView, pass: MountainPass?) {
 
+
         if (pass != null) {
             if (pass.weatherCondition.isNotEmpty() || pass.forecasts.isNotEmpty()) {
                 textView.text =
-                    String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar())
+                    Html.fromHtml("<b>Temperature: </b>" + String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar()))
             } else {
-                textView.text = "N/A"
+                textView.text =
+                    Html.fromHtml("<b>Temperature: </b>" + "N/A")
+
             }
         }
 
@@ -49,35 +52,56 @@ object MountainPassBindingAdapters {
 
     @JvmStatic
     @BindingAdapter("bindPassRestrictionsOne")
-    fun bindPassRestrictionsOne(textView: TextView, pass: MountainPass) {
+    fun bindPassRestrictionsOne(textView: TextView, pass: MountainPass?) {
 
-        textView.text =
-            Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
-
-//        if (!pass.restrictionOneText.toLowerCase().equals("closed for the season")) {
-//            textView.text =
-//                Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
-//        }
-//        else {
-//            textView.text =
-//                Html.fromHtml( pass.restrictionOneText)
-//        }
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Travel: </b>" + "N/A")
+        }
         }
 
     @JvmStatic
     @BindingAdapter("bindPassRestrictionsTwo")
-    fun bindPassRestrictionsTwo(textView: TextView, pass: MountainPass) {
-//        if (!pass.restrictionTwoText.toLowerCase().equals("closed for the season")) {
-//
-//            textView.text =
-//                Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
-//        }
-//        else {
-//            Html.fromHtml( pass.restrictionTwoText)
-//
-//        }
-        textView.text =
-            Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
+    fun bindPassRestrictionsTwo(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Travel: </b>" + "N/A")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassElevation")
+    fun bindPassElevation(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Elevation: </b>" + pass.elevationInFeet + " ft")
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Elevation: </b>" + "N/A")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassConditions")
+    fun bindPassConditions(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            if (pass.roadCondition.isNotEmpty()) {
+                textView.text =
+                    Html.fromHtml("<b>" + "Conditions: </b>" + pass.roadCondition)
+            }
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Conditions: </b>" + "N/A")
+        }
     }
 
 
@@ -87,16 +111,17 @@ object MountainPassBindingAdapters {
 
         if (pass != null) {
             if (pass.weatherCondition.isNotEmpty()) {
-                textView.text = pass.weatherCondition
+                textView.text = Html.fromHtml("<b>Weather: </b>" + pass.weatherCondition)
+
                 return
             } else {
                 if (pass.forecasts.isNotEmpty()) {
                     val forecast = pass.forecasts[0]
-                    textView.text = forecast.forecastText
+                    textView.text = Html.fromHtml("<b>Weather: </b>" + forecast.forecastText)
                     return
                 }
             }
-            textView.text = "N/A"
+            textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
         }
     }
 
