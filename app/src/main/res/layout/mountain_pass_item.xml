@@ -10,68 +10,49 @@
             type="gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass"/>
     </data>
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tap_view"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:background="?android:attr/selectableItemBackground"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:focusable="true"
             android:clickable="true">
 
-            <TextView
-                style="@style/CardTitleText"
-                android:id="@+id/titleView"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/title_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{pass.passName}"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin" />
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/forecast_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/titleView"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/weatherIcon"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    app:bindPassWeatherIcon="@{pass}"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="8dp"
                     android:contentDescription="@string/weather_forecast_icon"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:bindPassWeatherIcon="@{pass}"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:padding="8dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    style="@style/CardSubTitleText"
-                    android:id="@+id/subTitleView"
+                    android:id="@+id/titleView"
+                    style="@style/CardTitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:bindPassWeatherSummary="@{pass}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/weatherIcon"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="30dp"
+                    android:text="@{pass.passName}"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp" />
+                    app:layout_constraintTop_toTopOf="parent"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -81,15 +62,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:bindPassRestrictionsOne="@{pass}"
-                app:layout_constraintTop_toBottomOf="@id/forecast_view"
+                app:layout_constraintTop_toBottomOf="@id/title_view"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:paddingRight="8dp" />
+                android:paddingStart="0dp"
+                android:paddingEnd="20dp"/>
 
             <TextView
                 style="@style/CardSubTitleText"
@@ -103,12 +83,10 @@
                 android:layout_marginTop="@dimen/default_margin"
                 android:layout_marginBottom="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginLeft="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginRight="@dimen/default_margin"
-                android:paddingRight="8dp"
-                android:paddingBottom="12dp"
-                />
+                android:paddingStart="0dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="16dp"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/favorite_button"
@@ -118,8 +96,9 @@
                 android:src="@drawable/ic_menu_favorite_outline"
                 app:setFavoriteIcon="@{pass.favorite}"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp" />
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/divider"
@@ -131,6 +110,5 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
