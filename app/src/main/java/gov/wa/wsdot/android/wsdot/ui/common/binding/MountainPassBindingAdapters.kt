@@ -133,14 +133,14 @@ object MountainPassBindingAdapters {
         imageView.visibility = View.GONE
 
         if (!TextUtils.isEmpty(pass.weatherCondition)) {
-            getIconFromForecast(pass.weatherCondition, pass.weatherCondition.split(".")[0])?.let {
+            getIconFromForecast("day", pass.weatherCondition.split(".")[0])?.let {
                 imageView.setImageResource(it)
                 imageView.visibility = View.VISIBLE
             }
         } else {
             if (pass.forecasts.isNotEmpty()) {
                 val forecast = pass.forecasts[0]
-                getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
+                getIconFromForecast("day", forecast.forecastText.split(".")[0])?.let {
                     imageView.setImageResource(it)
                     imageView.visibility = View.VISIBLE
                 }
@@ -155,6 +155,7 @@ object MountainPassBindingAdapters {
         getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
             imageView.setImageResource(it)
             imageView.visibility = View.VISIBLE
+
         }
     }
 
