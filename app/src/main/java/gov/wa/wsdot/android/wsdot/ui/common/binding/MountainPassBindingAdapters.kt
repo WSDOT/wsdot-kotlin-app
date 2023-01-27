@@ -20,7 +20,7 @@ object MountainPassBindingAdapters {
 
 
         if (pass != null) {
-            if (pass.weatherCondition.isNotEmpty() || pass.forecasts.isNotEmpty()) {
+            if (pass.temperatureInFahrenheit != 0) {
                 textView.text =
                     Html.fromHtml("<b>Temperature: </b>" + String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar()))
             } else {
