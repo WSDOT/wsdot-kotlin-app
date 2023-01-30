@@ -21,8 +21,8 @@
             android:layout_width="match_parent"
             android:background="?android:attr/selectableItemBackground"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:focusable="true"
             android:clickable="true">
 
@@ -92,6 +92,7 @@
                 android:id="@+id/favorite_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
+                android:layout_marginTop="2dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_menu_favorite_outline"
                 app:setFavoriteIcon="@{pass.favorite}"
