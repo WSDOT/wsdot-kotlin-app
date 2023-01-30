@@ -62,6 +62,8 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
         passViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)
 
+        passViewModel.refresh()
+
         val dataBinding = DataBindingUtil.inflate<MountainPassHomeFragmentBinding>(
             inflater,
             R.layout.mountain_pass_home_fragment,
