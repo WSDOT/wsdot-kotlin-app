@@ -12,6 +12,7 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="16dp"
         android:layout_margin="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,14 +22,28 @@
             android:paddingEnd="@dimen/content_padding">
 
             <TextView
+                android:id="@+id/titleText"
+                style="@style/CardTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:text="@{pass.passName}"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="8dp"
+                android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
+
+            <TextView
                 android:id="@+id/restrictionOneText"
                 style="@style/CardSubTitleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindPassRestrictionsOne="@{pass}"
-                app:layout_constraintTop_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleText"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
