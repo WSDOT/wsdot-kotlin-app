@@ -73,7 +73,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-@RuntimePermissions
 class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
     ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
@@ -153,12 +152,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                myLocationFineWithPermissionCheck()
+                myLocationFine()
                 println("Precise location access granted.")
 
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                myLocationCoarseWithPermissionCheck()
+                myLocationCoarse()
                 println("Coarse location access granted.")
 
             } else -> {
@@ -296,7 +295,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             R.id.action_my_location -> {
                 goToLocation = true
                 if (requestLocationUpgrade) {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 checkAppPermissions()
             }
@@ -1183,7 +1182,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         // API 23 requires fine location alert dialog
         if (Build.VERSION.SDK_INT == 23) {
-            myLocationFineWithPermissionCheck()
+            myLocationFine()
         } else {
 
             // Check if app has location permissions granted
@@ -1195,7 +1194,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     )
                 }
                 -> {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 activity?.let {
                     ContextCompat.checkSelfPermission(
@@ -1204,7 +1203,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     )
                 }
                 -> {
-                    myLocationCoarseWithPermissionCheck()
+                    myLocationCoarse()
 
                     if (Build.VERSION.SDK_INT > 30) {
                         requestLocationUpgrade = false
@@ -1222,11 +1221,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
             }
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @SuppressLint("MissingPermission")

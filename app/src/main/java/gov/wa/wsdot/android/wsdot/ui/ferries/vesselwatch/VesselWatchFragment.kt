@@ -48,7 +48,6 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
-@RuntimePermissions
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     @Inject
@@ -86,12 +85,12 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                myLocationFineWithPermissionCheck()
+                myLocationFine()
                 println("Precise location access granted.")
 
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                myLocationCoarseWithPermissionCheck()
+                myLocationCoarse()
                 println("Coarse location access granted.")
 
             }
@@ -427,7 +426,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private fun checkAppPermissions() {
 
         if (Build.VERSION.SDK_INT == 23) {
-            myLocationFineWithPermissionCheck()
+            myLocationFine()
         } else {
 
             // Check if app has location permissions granted
@@ -439,7 +438,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     )
                 }
                 -> {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 activity?.let {
                     ContextCompat.checkSelfPermission(
@@ -448,7 +447,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     )
                 }
                 -> {
-                    myLocationCoarseWithPermissionCheck()
+                    myLocationCoarse()
                 }
                 else -> {
                     // Present permission dialog to request permission type
@@ -461,11 +460,6 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                 }
             }
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @SuppressLint("MissingPermission")

@@ -117,8 +117,7 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.4.3"
 
-    // Updating to 2.4.3 causes app:kaptDebugKotlin error.
-    kapt "androidx.room:room-compiler:2.3.0"
+    kapt "androidx.room:room-compiler:2.4.3"
     annotationProcessor 'androidx.room:room-compiler:2.4.3'
 
     // drag and drop list
