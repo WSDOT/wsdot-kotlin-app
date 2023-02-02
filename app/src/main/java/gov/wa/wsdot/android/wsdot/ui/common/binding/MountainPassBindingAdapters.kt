@@ -137,6 +137,7 @@ object MountainPassBindingAdapters {
                 imageView.setImageResource(it)
                 imageView.visibility = View.VISIBLE
             }
+
         } else {
             if (pass.forecasts.isNotEmpty()) {
                 val forecast = pass.forecasts[0]
@@ -144,18 +145,31 @@ object MountainPassBindingAdapters {
                     imageView.setImageResource(it)
                     imageView.visibility = View.VISIBLE
                 }
+
+                if (getIconFromForecast("day", forecast.forecastText.split(".")[0]) == null)
+                    getIconFromForecast("day", forecast.forecastText.split(". ")[1])?.let {
+                        imageView.setImageResource(it)
+                        imageView.visibility = View.VISIBLE
+                        println(forecast.forecastText.split(". ")[1])
+
+                    }
             }
         }
-
     }
 
     @JvmStatic
     @BindingAdapter("bindPassWeatherIcon")
     fun bindPassWeatherIcon(imageView: ImageView, forecast: MountainPassResponse.PassConditions.PassItem.PassForecast) {
+
         getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
             imageView.setImageResource(it)
             imageView.visibility = View.VISIBLE
+        }
 
+            if (getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0]) == null)
+                getIconFromForecast(forecast.day, forecast.forecastText.split(". ")[1])?.let {
+                    imageView.setImageResource(it)
+                    imageView.visibility = View.VISIBLE
         }
     }
 
