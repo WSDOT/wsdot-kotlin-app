@@ -39,7 +39,6 @@ import javax.inject.Inject
  * Uses location permission to select the origin closest to user.
  * Includes a link to the official ticket purchase site.
  */
-@RuntimePermissions
 class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -62,12 +61,12 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                myLocationFineWithPermissionCheck()
+                myLocationFine()
                 println("Precise location access granted.")
 
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                myLocationCoarseWithPermissionCheck()
+                myLocationCoarse()
                 println("Coarse location access granted.")
 
             }
@@ -251,7 +250,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
     private fun checkAppPermissions() {
 
         if (Build.VERSION.SDK_INT == 23) {
-            myLocationFineWithPermissionCheck()
+            myLocationFine()
         } else {
 
             // Check if app has location permissions granted
@@ -263,7 +262,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                     )
                 }
                 -> {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 activity?.let {
                     ContextCompat.checkSelfPermission(
@@ -272,7 +271,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                     )
                 }
                 -> {
-                    myLocationCoarseWithPermissionCheck()
+                    myLocationCoarse()
                 }
                 else -> {
 
@@ -300,12 +299,6 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                 }
             }
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated function
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @SuppressLint("MissingPermission")

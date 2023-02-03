@@ -7,13 +7,9 @@
             name="restArea"
             type="gov.wa.wsdot.android.wsdot.model.RestAreaItem"/>
     </data>
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp">
 
         <ScrollView
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -21,23 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/location_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
                 <TextView
-                    android:id="@+id/locationHeader"
+                    android:id="@+id/titleText"
                     style="@style/CardTitleText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center|start"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/rest_area_location_header}"
+                    app:bindRestAreaLocation="@{restArea}"
+                    app:layout_constraintTop_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="8dp"
@@ -46,131 +32,75 @@
                 <TextView
                     android:id="@+id/locationText"
                     style="@style/CardSubTitleText"
-                    android:layout_width="0dp"
-                    android:layout_gravity="center|start"
-                    android:layout_weight="3"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/rest_area_location_text(restArea.location, restArea.description)}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/locationHeader"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingBottom="8dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/direction_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/location_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    android:id="@+id/directionHeader"
-                    style="@style/CardTitleText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="start|center"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/rest_area_direction_header}"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:bindRestAreaDescription="@{restArea}"
+                    app:layout_constraintTop_toBottomOf="@id/titleText"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="8dp"
                     android:paddingBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/directionText"
                     style="@style/CardSubTitleText"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_gravity="start|center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{restArea.direction}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/directionHeader"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:paddingBottom="8dp"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/milepost_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@id/direction_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    android:id="@+id/milepostHeader"
-                    style="@style/CardTitleText"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="start|center"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/rest_area_milepost_header}"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:bindRestAreaDirection="@{restArea}"
+                    app:layout_constraintTop_toBottomOf="@id/locationText"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginStart="8dp"
                     android:paddingBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/milepostText"
                     style="@style/CardSubTitleText"
-                    android:layout_width="0dp"
-                    android:layout_weight="3"
-                    android:layout_gravity="start|center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/rest_area_milepost_text(restArea.milepost)}"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/milepostHeader"
+                    app:bindRestAreaMilePost="@{restArea}"
+                    app:layout_constraintTop_toBottomOf="@id/directionText"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="8dp"
                     android:paddingBottom="8dp"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/amenitiesHeader"
-                style="@style/CardTitleText"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_gravity="start|center"
-                android:layout_height="wrap_content"
-                android:text="@{@string/rest_area_amenities_header}"
-                app:layout_constraintTop_toBottomOf="@id/milepost_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="8dp"
-                android:paddingBottom="8dp"/>
 
             <TextView
                 android:id="@+id/amenitiesList"
                 style="@style/CardSubTitleText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:bindListToTextView="@{restArea.amenities}"
-                app:layout_constraintTop_toBottomOf="@id/amenitiesHeader"
+                app:bindRestAreaAmenities="@{restArea.amenities}"
+                app:layout_constraintTop_toBottomOf="@id/milepostText"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="8dp"
                 android:paddingBottom="8dp"/>
 
-            <fragment
-                xmlns:map="http://schemas.android.com/apk/res-auto"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:id="@+id/google_map"
-                android:layout_height="300dp"
-                android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/amenitiesList"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                map:cameraZoom="13"
-                map:mapType="normal"
-                map:liteMode="true"/>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/amenitiesList"
+                    app:strokeWidth="0.5dp"
+                    app:strokeColor="@color/black"
+                    app:cardCornerRadius="0dp"
+                    android:layout_margin="8dp">
+
+                    <androidx.fragment.app.FragmentContainerView
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:id="@+id/google_map"
+                        android:layout_height="240dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/amenitiesList"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        map:cameraZoom="13"
+                        map:mapType="normal"
+                        map:liteMode="true"/>
+                </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-    </androidx.cardview.widget.CardView>
 </layout>

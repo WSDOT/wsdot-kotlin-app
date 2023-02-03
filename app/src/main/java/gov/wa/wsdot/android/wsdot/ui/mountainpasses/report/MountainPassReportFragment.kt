@@ -147,7 +147,7 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
         if (withForecast) { fragments.add(PassForecastListFragment()) }
 
         val titles = ArrayList<String>()
-        titles.add("report")
+        titles.add("pass report")
         if (withCameras) { titles.add("cameras") }
         if (withForecast) { titles.add("forecast") }
 

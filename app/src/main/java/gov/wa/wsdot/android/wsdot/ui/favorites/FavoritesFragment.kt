@@ -88,6 +88,8 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         favoritesListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(FavoritesListViewModel::class.java)
 
+        favoritesListViewModel.refresh()
+
         mapLocationViewModel = activity?.run {
             ViewModelProvider(this, viewModelFactory).get(MapLocationViewModel::class.java)
         } ?: throw Exception("Invalid Activity")

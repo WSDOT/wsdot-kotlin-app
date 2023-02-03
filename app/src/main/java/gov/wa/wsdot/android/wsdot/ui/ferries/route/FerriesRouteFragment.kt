@@ -69,7 +69,6 @@ import kotlin.collections.ArrayList
  * values to make changes to the currently displayed sailings.
  *
  */
-@RuntimePermissions
 class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     @Inject
@@ -97,12 +96,12 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                myLocationFineWithPermissionCheck()
+                myLocationFine()
                 println("Precise location access granted.")
 
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                myLocationCoarseWithPermissionCheck()
+                myLocationCoarse()
                 println("Coarse location access granted.")
 
             }
@@ -345,7 +344,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     private fun checkAppPermissions() {
 
         if (Build.VERSION.SDK_INT == 23) {
-            myLocationFineWithPermissionCheck()
+            myLocationFine()
         } else {
 
             // Check if app has location permissions granted
@@ -357,7 +356,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
                     )
                 }
                 -> {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 activity?.let {
                     ContextCompat.checkSelfPermission(
@@ -366,7 +365,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
                     )
                 }
                 -> {
-                    myLocationCoarseWithPermissionCheck()
+                    myLocationCoarse()
                 }
                 else -> {
 
@@ -394,13 +393,6 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
                 }
             }
         }
-    }
-
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated function
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @SuppressLint("MissingPermission")

@@ -49,6 +49,8 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
+import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
+import gov.wa.wsdot.android.wsdot.model.MountainPassItem
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
@@ -57,6 +59,7 @@ import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel
+import gov.wa.wsdot.android.wsdot.ui.mountainpasses.MountainPassViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocationViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
@@ -70,7 +73,6 @@ import java.util.*
 import javax.inject.Inject
 
 
-@RuntimePermissions
 class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
     ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
@@ -92,17 +94,21 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     lateinit var favoriteLocationViewModel: FavoriteLocationViewModel
     lateinit var travelChartsViewModel: TravelChartsViewModel
     lateinit var mapLocationViewModel: MapLocationViewModel
+    lateinit var mountainPassViewModel: MountainPassViewModel
+
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
     private val restAreaMarkers = HashMap<Marker, RestAreaItem>()
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
+    private val mountainPassMarkers = HashMap<Marker, MountainPass>()
 
     private var selectedCameraMarker: Marker? = null
     private var selectedAlertMarker: Marker? = null
 
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
+    var showMountainPasses: Boolean = true
     var requestLocationUpgrade: Boolean = true
     var goToLocation: Boolean = true
 
@@ -146,12 +152,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     ) { permissions ->
         when {
             permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                myLocationFineWithPermissionCheck()
+                myLocationFine()
                 println("Precise location access granted.")
 
             }
             permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                myLocationCoarseWithPermissionCheck()
+                myLocationCoarse()
                 println("Coarse location access granted.")
 
             } else -> {
@@ -214,6 +220,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+
+        mountainPassViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MountainPassViewModel::class.java)
 
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -286,7 +295,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             R.id.action_my_location -> {
                 goToLocation = true
                 if (requestLocationUpgrade) {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 checkAppPermissions()
             }
@@ -375,6 +384,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
         mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
 
+        // init a new collection for alert markers
+        mMarkerManager.newCollection(getString(R.string.mountain_pass_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.mountain_pass_marker_collection_id)).setOnMarkerClickListener(this)
+
         mapHighwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
             if (alerts.data != null) {
 
@@ -431,6 +444,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
         })
 
+
         mapCamerasViewModel.cameras.observe(viewLifecycleOwner, Observer { cameras ->
             if (cameras.data != null) {
 
@@ -446,6 +460,22 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 mCameraClusterManager.cluster()
             }
         })
+
+
+        mountainPassViewModel.passes.observe(viewLifecycleOwner, Observer { passes ->
+            if (passes.data != null) {
+                for (pass in passes.data) {
+                    var icon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mountainpass)
+                    val marker = mMarkerManager.getCollection(getString(R.string.mountain_pass_marker_collection_id)).addMarker(
+                        MarkerOptions()
+                            .position(LatLng(pass.latitude, pass.longitude))
+                            .visible(showMountainPasses)
+                            .icon(icon))
+                    mountainPassMarkers[marker] = pass
+                }
+            }
+        })
+
 
         // init a new collection for rest area markers
         mMarkerManager.newCollection(getString(R.string.rest_area_marker_collection_id))
@@ -476,6 +506,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             }
         })
+
     }
 
     override fun onCameraMoveStarted(p0: Int) {
@@ -520,6 +551,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             if (findNavController().currentDestination?.id != R.id.navRestAreaFragment) {
                 val action = NavGraphDirections.actionGlobalNavRestAreaFragment(it.description)
                 findNavController().navigate(action)
+            }
+            return true
+        }
+
+        mountainPassMarkers[marker]?.let {
+            if (findNavController().currentDestination?.id != R.id.navMountainPassReportFragment) {
+                val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(it.passId)
+                findNavController().navigate(action)
+                (activity as MainActivity).supportActionBar?.title = it.passName
             }
             return true
         }
@@ -662,6 +702,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     }
 
+    private fun setMountainPassMarkerVisibility(visibility: Boolean){
+        val collection = mMarkerManager.getCollection(getString(R.string.mountain_pass_marker_collection_id))
+        for (marker in collection.markers) {
+            marker.isVisible = visibility
+        }
+
+    }
+
+
     // Google Maps Cluster Utils
 
     private fun setCameraMarkerVisibility(visibility: Boolean){
@@ -759,6 +808,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mFab.addActionItem(getCameraVisibilityAction(), 1)
         mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
         mFab.addActionItem(getRestAreasVisibilityAction(), 3)
+        mFab.addActionItem(getMountainPassVisibilityAction(), 4)
 
         mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
 
@@ -818,6 +868,35 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_rest_area_visibility_action, icon)
             .setLabel(R.string.fab_rest_areas_label)
+            .setFabImageTintColor(Color.WHITE)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getMountainPassVisibilityAction(): SpeedDialActionItem  {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
+        var icon = R.drawable.ic_layers
+
+        if (!showMountainPasses) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_mountain_passes_visibility_action, icon)
+            .setLabel(R.string.fab_mountain_passes_label)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -908,6 +987,19 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     showRestAreas = !show
 
                     mFab.replaceActionItem(actionItem, getRestAreasVisibilityAction())
+                }
+
+                R.id.fab_mountain_passes_visibility_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), !show)
+                    editor.apply()
+
+                    setMountainPassMarkerVisibility(!show)
+                    showMountainPasses = !show
+
+                    mFab.replaceActionItem(actionItem, getMountainPassVisibilityAction())
                 }
 
                 R.id.fab_highway_alert_visibility_action -> {
@@ -1090,7 +1182,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         // API 23 requires fine location alert dialog
         if (Build.VERSION.SDK_INT == 23) {
-            myLocationFineWithPermissionCheck()
+            myLocationFine()
         } else {
 
             // Check if app has location permissions granted
@@ -1102,7 +1194,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     )
                 }
                 -> {
-                    myLocationFineWithPermissionCheck()
+                    myLocationFine()
                 }
                 activity?.let {
                     ContextCompat.checkSelfPermission(
@@ -1111,7 +1203,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     )
                 }
                 -> {
-                    myLocationCoarseWithPermissionCheck()
+                    myLocationCoarse()
 
                     if (Build.VERSION.SDK_INT > 30) {
                         requestLocationUpgrade = false
@@ -1129,11 +1221,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
             }
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     @SuppressLint("MissingPermission")

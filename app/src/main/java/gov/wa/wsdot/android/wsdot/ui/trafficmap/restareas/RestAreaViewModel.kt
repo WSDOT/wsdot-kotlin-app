@@ -60,9 +60,9 @@ class RestAreaViewModel @Inject constructor(): ViewModel() {
                 }
 
                 var item = RestAreaItem(
-                    restAreaJSON.getString("location"),
-                    restAreaJSON.getString("description"),
                     restAreaJSON.getString("route"),
+                    restAreaJSON.getString("description"),
+                    restAreaJSON.getString("location"),
                     restAreaJSON.getInt("milepost"),
                     restAreaJSON.getString("direction"),
                     restAreaJSON.getDouble("latitude"),

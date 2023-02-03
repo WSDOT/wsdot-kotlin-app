@@ -16,6 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp">
 
             <TextView
@@ -38,7 +39,8 @@
                 app:setFavoriteIcon="@{tollSign.favorite}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="16dp" />
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -48,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[0]}">
 
@@ -57,6 +59,7 @@
                 style="@style/CardTitleText"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="10dp"
                 app:bindTollTrip="@{tollSign.trips[0]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[1]}">
 
@@ -112,6 +115,7 @@
                 style="@style/CardTitleText"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginStart="10dp"
                 app:bindTollTrip="@{tollSign.trips[1]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -159,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[2]}">
 
@@ -170,6 +174,7 @@
                 app:bindTollTrip="@{tollSign.trips[2]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -213,7 +218,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp"
             app:showTrip="@{tollSign.trips[3]}">
 
@@ -223,6 +228,7 @@
                 app:bindTollTrip="@{tollSign.trips[3]}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -260,12 +266,22 @@
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="16dp">
         <TextView
             style="@style/CardFooterText"
             android:layout_margin="8dp"
             app:bindRelativeDate="@{tollSign.localCacheDate}"
             android:layout_width="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <View
             android:id="@+id/divider"

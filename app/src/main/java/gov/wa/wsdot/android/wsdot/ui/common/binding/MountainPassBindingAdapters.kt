@@ -1,5 +1,6 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
+import android.text.Html
 import android.text.TextUtils
 import android.view.View
 import android.widget.ImageView
@@ -17,12 +18,15 @@ object MountainPassBindingAdapters {
     @BindingAdapter("bindTemperature")
     fun bindTemperature(textView: TextView, pass: MountainPass?) {
 
+
         if (pass != null) {
-            if (pass.weatherCondition.isNotEmpty() || pass.forecasts.isNotEmpty()) {
+            if (pass.temperatureInFahrenheit != 0) {
                 textView.text =
-                    String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar())
+                    Html.fromHtml("<b>Temperature: </b>" + String.format("%d%sF", pass.temperatureInFahrenheit, 0x00B0.toChar()))
             } else {
-                textView.text = "N/A"
+                textView.text =
+                    Html.fromHtml("<b>Temperature: </b>" + "N/A")
+
             }
         }
 
@@ -47,21 +51,77 @@ object MountainPassBindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindPassRestrictionsOne")
+    fun bindPassRestrictionsOne(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Travel " + pass.restrictionOneDirection + ": </b>" + pass.restrictionOneText)
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Travel: </b>" + "N/A")
+        }
+        }
+
+    @JvmStatic
+    @BindingAdapter("bindPassRestrictionsTwo")
+    fun bindPassRestrictionsTwo(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Travel " + pass.restrictionTwoDirection + ": </b>" + pass.restrictionTwoText)
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Travel: </b>" + "N/A")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassElevation")
+    fun bindPassElevation(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            textView.text =
+                Html.fromHtml("<b>" + "Elevation: </b>" + pass.elevationInFeet + " ft")
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Elevation: </b>" + "N/A")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindPassConditions")
+    fun bindPassConditions(textView: TextView, pass: MountainPass?) {
+
+        if (pass != null) {
+            if (pass.roadCondition.isNotEmpty()) {
+                textView.text =
+                    Html.fromHtml("<b>" + "Conditions: </b>" + pass.roadCondition)
+            }
+        } else {
+            textView.text =
+                Html.fromHtml("<b>Conditions: </b>" + "N/A")
+        }
+    }
+
+
+    @JvmStatic
     @BindingAdapter("bindPassWeatherDetails")
     fun bindPassWeatherDetails(textView: TextView, pass: MountainPass?) {
 
         if (pass != null) {
             if (pass.weatherCondition.isNotEmpty()) {
-                textView.text = pass.weatherCondition
+                textView.text = Html.fromHtml("<b>Weather: </b>" + pass.weatherCondition)
+
                 return
             } else {
                 if (pass.forecasts.isNotEmpty()) {
                     val forecast = pass.forecasts[0]
-                    textView.text = forecast.forecastText
+                    textView.text = Html.fromHtml("<b>Weather: </b>" + forecast.forecastText)
                     return
                 }
             }
-            textView.text = "N/A"
+            textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
         }
     }
 
@@ -73,28 +133,43 @@ object MountainPassBindingAdapters {
         imageView.visibility = View.GONE
 
         if (!TextUtils.isEmpty(pass.weatherCondition)) {
-            getIconFromForecast(pass.weatherCondition, pass.weatherCondition.split(".")[0])?.let {
+            getIconFromForecast("day", pass.weatherCondition.split(".")[0])?.let {
                 imageView.setImageResource(it)
                 imageView.visibility = View.VISIBLE
             }
+
         } else {
             if (pass.forecasts.isNotEmpty()) {
                 val forecast = pass.forecasts[0]
-                getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
+                getIconFromForecast("day", forecast.forecastText.split(".")[0])?.let {
                     imageView.setImageResource(it)
                     imageView.visibility = View.VISIBLE
                 }
+
+                if (getIconFromForecast("day", forecast.forecastText.split(".")[0]) == null)
+                    getIconFromForecast("day", forecast.forecastText.split(". ")[1])?.let {
+                        imageView.setImageResource(it)
+                        imageView.visibility = View.VISIBLE
+                        println(forecast.forecastText.split(". ")[1])
+
+                    }
             }
         }
-
     }
 
     @JvmStatic
     @BindingAdapter("bindPassWeatherIcon")
     fun bindPassWeatherIcon(imageView: ImageView, forecast: MountainPassResponse.PassConditions.PassItem.PassForecast) {
+
         getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0])?.let {
             imageView.setImageResource(it)
             imageView.visibility = View.VISIBLE
+        }
+
+            if (getIconFromForecast(forecast.day, forecast.forecastText.split(".")[0]) == null)
+                getIconFromForecast(forecast.day, forecast.forecastText.split(". ")[1])?.let {
+                    imageView.setImageResource(it)
+                    imageView.visibility = View.VISIBLE
         }
     }
 
