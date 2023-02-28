@@ -168,6 +168,12 @@ object BindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindCameraRefreshLabel")
+    fun bindCameraRefreshLabel(textView: TextView, camera: Resource<Camera>) {
+            textView.text = Html.fromHtml("<b>Refresh Rate: </b>Approximately every 5 minutes.")
+    }
+
+    @JvmStatic
     @BindingAdapter("visibleGone")
     fun showHide(view: View, show: Boolean) {
         view.visibility = if (show) View.VISIBLE else View.GONE
