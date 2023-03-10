@@ -10,7 +10,7 @@
     <dimen name="default_margin">8dp</dimen>
 
     <dimen name="camera_sheet_width">500dp</dimen>
-    <dimen name="camera_sheet_height">300dp</dimen>
+    <dimen name="camera_sheet_height">475dp</dimen>
 
     <dimen name="camera_item_height">300dp</dimen>
 

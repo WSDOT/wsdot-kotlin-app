@@ -18,6 +18,7 @@
 
         <ScrollView
             android:id="@+id/scrollView"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -29,7 +30,8 @@
                 android:id="@+id/cameraView"
                 android:layout_width="match_parent"
                 android:maxWidth="@dimen/camera_sheet_width"
-                android:layout_height="@dimen/camera_item_height"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
@@ -44,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:paddingBottom="8dp"
                 app:bindCameraDirection="@{cameraViewModel.camera}"
                 app:layout_constraintTop_toBottomOf="@id/cameraView"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -55,24 +56,35 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:paddingBottom="8dp"
                     app:bindCameraRefreshLabel="@{cameraViewModel.camera}"
                     app:layout_constraintTop_toBottomOf="@id/directionLabel"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <fragment
-                    xmlns:map="http://schemas.android.com/apk/res-auto"
-                    android:name="com.google.android.gms.maps.SupportMapFragment"
-                    android:id="@+id/map"
-                    android:layout_height="240dp"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/mapView"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/refreshLabel"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    map:cameraZoom="15"
-                    map:mapType="normal"/>
+                    app:strokeWidth="0.5dp"
+                    app:strokeColor="@color/black"
+                    app:cardCornerRadius="0dp"
+                    android:layout_margin="8dp">
+
+                    <androidx.fragment.app.FragmentContainerView
+                        xmlns:map="http://schemas.android.com/apk/res-auto"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:id="@+id/map"
+                        android:layout_height="240dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintTop_toBottomOf="@id/mapView"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        map:cameraZoom="15"
+                        map:mapType="normal"/>
+                </com.google.android.material.card.MaterialCardView>
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
