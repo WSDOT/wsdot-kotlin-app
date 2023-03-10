@@ -136,6 +136,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // FAB
     private lateinit var mFab: SpeedDialView
 
+    // Toast
+    private lateinit var toast: Toast
+
     // Update Tasks
     private lateinit var mapUpdateHandler: Handler
     private val alertsUpdateTask = object: Runnable {
@@ -1054,7 +1057,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 R.id.action_refresh -> {
                     mapHighwayAlertsViewModel.refresh()
                     mapCamerasViewModel.refresh()
-                    val toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
+
+                    if (this::toast.isInitialized)
+                    {
+                        toast.cancel()
+                    }
+
+                    toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER,0,500)
                     toast.show()
                 }
