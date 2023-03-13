@@ -98,7 +98,7 @@ class HighwayAlertRepository @Inject constructor(
                 var update = false
 
                 if (data != null && data.isNotEmpty()) {
-                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 10080)) {
+                    if (TimeUtils.isOverXMinOld(data[0].localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
@@ -130,7 +130,7 @@ class HighwayAlertRepository @Inject constructor(
                 var update = false
 
                 if (data != null){
-                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 10080)) {
+                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
