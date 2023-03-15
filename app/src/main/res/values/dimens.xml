@@ -14,6 +14,9 @@
 
     <dimen name="camera_item_height">300dp</dimen>
 
+    <dimen name="alert_sheet_width">500dp</dimen>
+    <dimen name="alert_sheet_height">475dp</dimen>
+
     <dimen name="content_padding">0dp</dimen>
 
 </resources>
