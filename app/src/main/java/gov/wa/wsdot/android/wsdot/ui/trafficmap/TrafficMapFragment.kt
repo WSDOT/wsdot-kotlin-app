@@ -605,6 +605,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         STATE_HIDDEN -> {
                             selectedCameraMarker?.remove()
                             t?.cancel()
+                            appExecutors.mainThread().execute {
+                                binding?.invalidateAll()
+                            }
                         }
                         STATE_DRAGGING -> {}
                         STATE_HALF_EXPANDED -> {}
