@@ -599,7 +599,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                                     }
                                 },
                                 60000,
-                                120000
+                                300000
                             )
                         }
                         STATE_HIDDEN -> {

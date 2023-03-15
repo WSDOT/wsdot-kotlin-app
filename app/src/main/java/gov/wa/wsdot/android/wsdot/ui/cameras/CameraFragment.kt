@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 /**
  * Fragment displays a single camera item with data from CameraViewModel
- * Refreshes camera image every 2 minutes.
+ * Refreshes camera image every 5 minutes.
  * Allows user to mark a camera as a favorite in their favorites list.
  */
 class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
@@ -106,8 +106,8 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     }
                 }
             },
-            120000,
-            120000
+            300000,
+            300000
         )
 
     }
