@@ -136,6 +136,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // FAB
     private lateinit var mFab: SpeedDialView
 
+    // Toast
+    private lateinit var toast: Toast
+
     // Update Tasks
     private lateinit var mapUpdateHandler: Handler
     private val alertsUpdateTask = object: Runnable {
@@ -596,12 +599,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                                     }
                                 },
                                 60000,
-                                120000
+                                300000
                             )
                         }
                         STATE_HIDDEN -> {
                             selectedCameraMarker?.remove()
                             t?.cancel()
+                            appExecutors.mainThread().execute {
+                                binding?.invalidateAll()
+                            }
                         }
                         STATE_DRAGGING -> {}
                         STATE_HALF_EXPANDED -> {}
@@ -1054,7 +1060,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 R.id.action_refresh -> {
                     mapHighwayAlertsViewModel.refresh()
                     mapCamerasViewModel.refresh()
-                    val toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
+
+                    // Center camera position to activate markers
+                    val center = mMap.cameraPosition
+                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(center))
+
+                    if (this::toast.isInitialized)
+                    {
+                        toast.cancel()
+                    }
+
+                    toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER,0,500)
                     toast.show()
                 }

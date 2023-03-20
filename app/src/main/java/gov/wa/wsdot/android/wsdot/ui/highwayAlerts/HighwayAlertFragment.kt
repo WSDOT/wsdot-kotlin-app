@@ -113,7 +113,25 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 }
 
             } else {
-                mMap.setMapStyle(null)
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    val success: Boolean = mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                            it, R.raw.googlemapstyle
+                        )
+                    )
+                    if (!success) {
+                        Log.e("debug", "Style parsing failed.")
+                        mMap.setMapStyle(null)
+
+                    } else {
+                        Log.e("debug", "Style parsing failed.")
+
+                    }
+                } catch (e: Resources.NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
             }
         }
 

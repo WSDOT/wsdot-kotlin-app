@@ -160,11 +160,35 @@ object BindingAdapters {
     @BindingAdapter("bindCameraDirection")
     fun bindCameraDirection(textView: TextView, camera: Resource<Camera>) {
         if (camera.data?.direction != null) {
-            textView.text = String.format("Camera faces %s", camera.data.direction)
+            var cameraDirection = camera.data?.direction
+
+            if (cameraDirection == "B") {
+                cameraDirection = "This camera moves to point in more than one direction."
+            }
+            if (cameraDirection == "N") {
+                cameraDirection = "North"
+            }
+            if (cameraDirection == "E") {
+                cameraDirection = "East"
+            }
+            if (cameraDirection == "S") {
+                cameraDirection = "South"
+            }
+            if (cameraDirection == "W") {
+                cameraDirection = "West"
+            }
+            textView.text = Html.fromHtml("<b>Camera Direction: </b>" + String.format(cameraDirection))
             textView.visibility = View.VISIBLE
+
         } else {
             textView.visibility = View.GONE
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindCameraRefreshLabel")
+    fun bindCameraRefreshLabel(textView: TextView, camera: Resource<Camera>) {
+            textView.text = Html.fromHtml("<b>Refresh Rate: </b>Approximately every 5 minutes.")
     }
 
     @JvmStatic
