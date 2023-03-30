@@ -2,11 +2,10 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlert
 
 import android.os.Bundle
 import android.transition.TransitionInflater
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -41,9 +40,17 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
     private var firstAveBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
     private var interstateBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
 
+    // Toast
+    private lateinit var toast: Toast
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -208,6 +215,29 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.bridge_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_refresh -> {
+                bridgeAlertsViewModel.refresh()
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+                toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
+                toast.setGravity(Gravity.CENTER,0,500)
+                toast.show()
+                return false
+            }
+            else -> {}
+        }
+        return false
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
