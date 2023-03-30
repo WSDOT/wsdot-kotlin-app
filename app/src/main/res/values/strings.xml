@@ -217,7 +217,11 @@
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="no_bridge_alerts_string">No Bridge Alerts Reported</string>
+    <string name="no_bridge_alerts_string">No Alerts Reported</string>
 
+    // Bridges
+    <string name="_1st_avenue_south_bridge">1st Avenue South Bridge</string>
+    <string name="hood_canal_bridge">Hood Canal Bridge</string>
+    <string name="interstate_bridge">Interstate Bridge</string>
 
 </resources>

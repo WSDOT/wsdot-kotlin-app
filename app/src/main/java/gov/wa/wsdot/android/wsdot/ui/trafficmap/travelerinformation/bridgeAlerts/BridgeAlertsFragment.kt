@@ -37,7 +37,9 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     var binding by autoCleared<BridgeAlertsFragmentBinding>()
 
-    private var adapter by autoCleared<BridgeAlertListAdapter>()
+    private var hoodCanalBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
+    private var firstAveBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
+    private var interstateBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -69,9 +71,11 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = bridgeAlertsViewModel
 
         binding = dataBinding
+        bridgeAlertsViewModel.refresh()
 
         // animation
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(R.transition.move)
 
         return dataBinding.root
 
@@ -83,40 +87,127 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = BridgeAlertListAdapter(dataBindingComponent, appExecutors)
+        val hoodCanalBridgeAdapter = BridgeAlertListAdapter(dataBindingComponent, appExecutors)
         { alert -> navigateToAlert(alert) }
+        this.hoodCanalBridgeAdapter = hoodCanalBridgeAdapter
+        binding.hoodCanalBridgeList.adapter = hoodCanalBridgeAdapter
 
-        this.adapter = adapter
+        val firstAveBridgeAdapter = BridgeAlertListAdapter(dataBindingComponent, appExecutors)
+        { alert -> navigateToAlert(alert) }
+        this.firstAveBridgeAdapter = firstAveBridgeAdapter
+        binding.firstAveBridgeList.adapter = firstAveBridgeAdapter
 
-        binding.alertList.adapter = adapter
+        val interstateBridgeAdapter = BridgeAlertListAdapter(dataBindingComponent, appExecutors)
+        { alert -> navigateToAlert(alert) }
+        this.interstateBridgeAdapter = interstateBridgeAdapter
+        binding.interstateBridgeList.adapter = interstateBridgeAdapter
 
         // animations
         postponeEnterTransition()
-        binding.alertList.viewTreeObserver
+        binding.hoodCanalBridgeList.viewTreeObserver
+            .addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
+        binding.firstAveBridgeList.viewTreeObserver
+            .addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
+        binding.interstateBridgeList.viewTreeObserver
             .addOnPreDrawListener {
                 startPostponedEnterTransition()
                 true
             }
 
         bridgeAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alertResource ->
+            val hoodCanalBridgeList: MutableList<BridgeAlert> = mutableListOf()
+            val firstAveBridgeList: MutableList<BridgeAlert> = mutableListOf()
+            val interstateBridgeList: MutableList<BridgeAlert> = mutableListOf()
 
             if (alertResource.data != null) {
-
-                binding.alertList.visibility = VISIBLE
-                binding.emptyListView.visibility = GONE
-
-                adapter.submitList(alertResource.data)
-
-                if (alertResource.data.isEmpty()) {
-                    binding.emptyListView.text = getString(R.string.no_bridge_alerts_string)
-                    binding.alertList.visibility = GONE
-                    binding.emptyListView.visibility = VISIBLE
+                for (bridge in alertResource.data) {
+                    if (bridge.bridge == "Hood Canal") {
+                        hoodCanalBridgeList.add(bridge)
+                        bridgeAlerts("Hood Canal", true)
+                    }
+                }
+                if (hoodCanalBridgeList.isEmpty()) {
+                    bridgeAlerts("Hood Canal", false)
+                }
+                for (bridge in alertResource.data) {
+                    if (bridge.bridge == "1st Avenue South Bridge") {
+                        firstAveBridgeList.add(bridge)
+                        bridgeAlerts("1st Avenue South Bridge", true)
+                    }
+                }
+                if (firstAveBridgeList.isEmpty()) {
+                    bridgeAlerts("1st Avenue South Bridge", false)
+                }
+                for (bridge in alertResource.data) {
+                    if (bridge.bridge == "Interstate Bridge") {
+                        interstateBridgeList.add(bridge)
+                        bridgeAlerts("Interstate Bridge", true)
+                    }
+                }
+                if (interstateBridgeList.isEmpty()) {
+                    bridgeAlerts("Interstate Bridge", false)
                 }
 
+                hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList)
+                firstAveBridgeAdapter.submitList(firstAveBridgeList)
+                interstateBridgeAdapter.submitList(interstateBridgeList)
+
             } else {
-                adapter.submitList(emptyList())
+                bridgeAlerts("Hood Canal", false)
+                bridgeAlerts("1st Avenue South Bridge", false)
+                bridgeAlerts("Interstate Bridge", false)
             }
         })
+    }
+
+    private fun bridgeAlerts(bridge: String, visible: Boolean) {
+
+        if (visible) {
+            when (bridge) {
+                "Hood Canal" -> {
+                    binding.hoodCanalBridgeList.visibility = VISIBLE
+                    binding.hoodCanalBridgeEmptyView.visibility = GONE
+                    binding.hoodCanalBridgeEmptyListView.visibility = GONE
+                }
+                "1st Avenue South Bridge" -> {
+                    binding.firstAveBridgeList.visibility = VISIBLE
+                    binding.firstAveBridgeEmptyView.visibility = GONE
+                    binding.firstAveBridgeEmptyListView.visibility = GONE
+                }
+                "Interstate Bridge" -> {
+                    binding.interstateBridgeList.visibility = VISIBLE
+                    binding.interstateBridgeEmptyView.visibility = GONE
+                    binding.interstateBridgeEmptyListView.visibility = GONE
+                }
+            }
+        } else {
+            when (bridge) {
+                "Hood Canal" -> {
+                    binding.hoodCanalBridgeEmptyListView.text =
+                        getString(R.string.no_bridge_alerts_string)
+                    binding.hoodCanalBridgeEmptyView.visibility = VISIBLE
+                    binding.hoodCanalBridgeEmptyListView.visibility = VISIBLE
+                }
+                "1st Avenue South Bridge" -> {
+                    binding.firstAveBridgeEmptyListView.text = getString(R.string.no_bridge_alerts_string)
+                    binding.firstAveBridgeEmptyView.visibility = VISIBLE
+                    binding.firstAveBridgeEmptyListView.visibility = VISIBLE
+                }
+                "Interstate Bridge" -> {
+                    binding.interstateBridgeEmptyListView.text =
+                        getString(R.string.no_bridge_alerts_string)
+                    binding.interstateBridgeEmptyView.visibility = VISIBLE
+                    binding.interstateBridgeEmptyListView.visibility = VISIBLE
+
+                }
+            }
+        }
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
