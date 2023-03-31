@@ -17,11 +17,13 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.BridgeAlertsFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import kotlinx.android.synthetic.main.bridge_alerts_fragment.*
 import javax.inject.Inject
 
 class BridgeAlertsFragment : DaggerFragment(), Injectable {
@@ -132,43 +134,60 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
             val firstAveBridgeList: MutableList<BridgeAlert> = mutableListOf()
             val interstateBridgeList: MutableList<BridgeAlert> = mutableListOf()
 
-            if (alertResource.data != null) {
-                for (bridge in alertResource.data) {
-                    if (bridge.bridge == "Hood Canal") {
-                        hoodCanalBridgeList.add(bridge)
-                        bridgeAlerts("Hood Canal", true)
-                    }
+            when (alertResource.status) {
+                Status.LOADING -> {
+                    binding.bridgeLayout.visibility = GONE
                 }
-                if (hoodCanalBridgeList.isEmpty()) {
-                    bridgeAlerts("Hood Canal", false)
+                Status.ERROR -> {
+                        binding.bridgeLayout.visibility = GONE
+                        firstAveBridgeAdapter.submitList(emptyList())
+                        hoodCanalBridgeAdapter.submitList(emptyList())
+                        interstateBridgeAdapter.submitList(emptyList())
+                        showToast("Error Loading")
                 }
-                for (bridge in alertResource.data) {
-                    if (bridge.bridge == "1st Avenue South Bridge") {
-                        firstAveBridgeList.add(bridge)
-                        bridgeAlerts("1st Avenue South Bridge", true)
-                    }
-                }
-                if (firstAveBridgeList.isEmpty()) {
-                    bridgeAlerts("1st Avenue South Bridge", false)
-                }
-                for (bridge in alertResource.data) {
-                    if (bridge.bridge == "Interstate Bridge") {
-                        interstateBridgeList.add(bridge)
-                        bridgeAlerts("Interstate Bridge", true)
-                    }
-                }
-                if (interstateBridgeList.isEmpty()) {
-                    bridgeAlerts("Interstate Bridge", false)
-                }
+                Status.SUCCESS -> {
+                    if (alertResource.data != null) {
+                        binding.bridgeLayout.visibility = VISIBLE
+                        for (bridge in alertResource.data) {
+                            if (bridge.bridge == "Hood Canal") {
+                                hoodCanalBridgeList.add(bridge)
+                                bridgeAlerts("Hood Canal", true)
+                            }
+                        }
+                        if (hoodCanalBridgeList.isEmpty()) {
+                            bridgeAlerts("Hood Canal", false)
+                        }
+                        for (bridge in alertResource.data) {
+                            if (bridge.bridge == "1st Avenue South Bridge") {
+                                firstAveBridgeList.add(bridge)
+                                bridgeAlerts("1st Avenue South Bridge", true)
+                            }
+                        }
+                        if (firstAveBridgeList.isEmpty()) {
+                            bridgeAlerts("1st Avenue South Bridge", false)
+                        }
+                        for (bridge in alertResource.data) {
+                            if (bridge.bridge == "Interstate Bridge") {
+                                interstateBridgeList.add(bridge)
+                                bridgeAlerts("Interstate Bridge", true)
+                            }
+                        }
+                        if (interstateBridgeList.isEmpty()) {
+                            bridgeAlerts("Interstate Bridge", false)
+                        }
 
-                hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList)
-                firstAveBridgeAdapter.submitList(firstAveBridgeList)
-                interstateBridgeAdapter.submitList(interstateBridgeList)
-
-            } else {
-                bridgeAlerts("Hood Canal", false)
-                bridgeAlerts("1st Avenue South Bridge", false)
-                bridgeAlerts("Interstate Bridge", false)
+                        hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList)
+                        firstAveBridgeAdapter.submitList(firstAveBridgeList)
+                        interstateBridgeAdapter.submitList(interstateBridgeList)
+                    }
+                    else {
+                        binding.bridgeLayout.visibility = GONE
+                        firstAveBridgeAdapter.submitList(emptyList())
+                        hoodCanalBridgeAdapter.submitList(emptyList())
+                        interstateBridgeAdapter.submitList(emptyList())
+                        showToast("Error Loading")
+                    }
+                }
             }
         })
     }
@@ -226,18 +245,22 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         when (item.itemId) {
             R.id.action_refresh -> {
                 bridgeAlertsViewModel.refresh()
-                if (this::toast.isInitialized)
-                {
-                    toast.cancel()
-                }
-                toast = Toast.makeText(context, "refreshing...", Toast.LENGTH_SHORT)
-                toast.setGravity(Gravity.CENTER,0,500)
-                toast.show()
+                showToast("refreshing...")
                 return false
             }
             else -> {}
         }
         return false
+    }
+
+    private fun showToast(message: String) {
+        if (this::toast.isInitialized)
+        {
+            toast.cancel()
+        }
+        toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER,0,500)
+        toast.show()
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args

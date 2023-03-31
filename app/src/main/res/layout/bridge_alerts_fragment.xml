@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
+                    android:id="@+id/bridge_layout"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
