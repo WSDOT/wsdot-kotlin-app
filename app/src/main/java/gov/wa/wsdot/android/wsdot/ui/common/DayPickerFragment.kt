@@ -53,7 +53,7 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
         ) { _, _ ->
             // Ferry Schedule Calendar Message
             val ferryMessage =
-                SpannableString("Future ferry schedules are provided for planning purposes and can change daily. Please monitor ferry alerts to stay notified of changes to your route. For additional trip planning information, visit the <a href=https://wsdot.wa.gov/travel/washington-state-ferries>Washington State Ferries website</a>.")
+                SpannableString("Future ferry schedules are provided for planning purposes and can change daily. Please monitor ferry alerts to stay notified of changes to your route. For additional trip planning information visit the <a href=https://wsdot.wa.gov/travel/washington-state-ferries>Washington State Ferries website</a>.")
             Linkify.addLinks(ferryMessage, Linkify.ALL)
             val alert: AlertDialog = AlertDialog.Builder(context)
                 .setTitle("Ferry Schedule Calendar")
