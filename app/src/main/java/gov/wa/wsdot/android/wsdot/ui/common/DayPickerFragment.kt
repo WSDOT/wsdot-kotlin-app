@@ -1,9 +1,16 @@
 package gov.wa.wsdot.android.wsdot.ui.common
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Html
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.util.Linkify
+import android.view.View
 import android.widget.DatePicker
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -39,9 +46,30 @@ class DayPickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
         // Create a new instance of TimePickerDialog and return it
         val datePickerDialog = DatePickerDialog(requireActivity(), this, year, month, day)
-
         datePickerDialog.datePicker.minDate = args.startTime
         datePickerDialog.datePicker.maxDate = args.endTime
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, "",datePickerDialog) // hide cancel button
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEUTRAL, "INFO"
+        ) { _, _ ->
+            // Ferry Schedule Calendar Message
+            val ferryMessage =
+                SpannableString("Future ferry schedules are provided for planning purposes and can change daily. Please monitor ferry alerts to stay notified of changes to your route. For additional trip planning information visit the <a href=https://wsdot.wa.gov/travel/washington-state-ferries>Washington State Ferries website</a>.")
+            Linkify.addLinks(ferryMessage, Linkify.ALL)
+            val alert: AlertDialog = AlertDialog.Builder(context)
+                .setTitle("Ferry Schedule Calendar")
+                .setPositiveButton(android.R.string.ok) { _, _ ->
+                    datePickerDialog.show()
+                }
+                .setMessage(Html.fromHtml(ferryMessage.toString()))
+                .create()
+            alert.show()
+            datePickerDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(View.OnClickListener {
+                alert.show()
+                datePickerDialog.dismiss()
+            })
+            (alert.findViewById<View>(android.R.id.message) as TextView?)!!.movementMethod =
+                LinkMovementMethod.getInstance()
+        }
 
         return datePickerDialog
     }
