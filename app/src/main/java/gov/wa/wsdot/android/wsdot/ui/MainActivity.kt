@@ -161,7 +161,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                     eventTitle = it.title
                     navView.menu.setGroupVisible(R.id.event_banner_group, true)
-                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text =
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text =
                         it.bannerText
 
                     editor.putInt(getString(R.string.pref_key_theme), it.themeId)
@@ -224,7 +224,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                     eventTitle = it.title
                     navView.menu.setGroupVisible(R.id.event_banner_group, true)
-                    navView.menu.findItem(R.id.event_banner).actionView.findViewById<TextView>(R.id.event_banner_text).text =
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text =
                         it.bannerText
 
                     editor.putInt(getString(R.string.pref_key_theme), it.themeId)
