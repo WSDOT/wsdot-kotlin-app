@@ -75,7 +75,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private val vesselUpdateTask = object: Runnable {
         override fun run() {
             vesselViewModel.refresh()
-            vesselUpdateHandler.postDelayed(this, 180000)
+            vesselUpdateHandler.postDelayed(this, 30000)
         }
     }
 

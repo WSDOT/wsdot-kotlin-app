@@ -1252,7 +1252,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 if(goToLocation) {
-                    goToUsersLocation(locationResult.lastLocation)
+                    locationResult.lastLocation?.let { goToUsersLocation(it) }
                 }
             }
         }
@@ -1274,7 +1274,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 if(goToLocation) {
-                    goToUsersLocation(locationResult.lastLocation)
+                    locationResult.lastLocation?.let { goToUsersLocation(it) }
                 }
             }
         }
@@ -1297,7 +1297,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
-                checkSpeed(locationResult.lastLocation)
+                locationResult.lastLocation?.let { checkSpeed(it) }
             }
         }
 
