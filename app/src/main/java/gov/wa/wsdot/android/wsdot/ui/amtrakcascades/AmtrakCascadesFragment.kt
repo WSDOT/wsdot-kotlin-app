@@ -26,6 +26,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.AmtrakCascadesFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.common.DayPickerFragment
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
 import gov.wa.wsdot.android.wsdot.util.autoCleared
@@ -202,6 +203,9 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
 
         binding.datePickerCallback = object : TapCallback {
             override fun onTap(view: View) {
+
+                DayPickerFragment.displayInfoButton = false
+
                 val action = AmtrakCascadesFragmentDirections.actionNavAmtrakCascadesFragmentToDayPickerDialogFragment("", startTime.time, endTime.time)
                 view.findNavController().navigate(action)
                 // short delay to prevent double tap
