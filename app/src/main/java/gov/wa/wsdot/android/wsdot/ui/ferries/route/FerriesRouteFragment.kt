@@ -33,6 +33,7 @@ import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.ui.common.DayPickerFragment
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
 import gov.wa.wsdot.android.wsdot.ui.common.callback.TapCallback
 import gov.wa.wsdot.android.wsdot.ui.common.viewmodel.SharedDateViewModel
@@ -216,6 +217,8 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
         routeViewModel.scheduleRange.observe(viewLifecycleOwner, Observer { scheduleRange ->
             binding.datePickerCallback = object : TapCallback {
                 override fun onTap(view: View) {
+
+                    DayPickerFragment.displayInfoButton = true
 
                     val startDate = scheduleRange.startDate ?: Date()
                     val endDate = scheduleRange.endDate ?: Date()
