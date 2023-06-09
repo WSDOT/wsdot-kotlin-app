@@ -1058,12 +1058,11 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         item?.let {
             when(it.itemId) {
                 R.id.action_refresh -> {
+
+                    mapHighwayAlertsViewModel.setAlertQuery(mMap.projection.visibleRegion.latLngBounds, false)
+                    mapCamerasViewModel.setCameraQuery(mMap.projection.visibleRegion.latLngBounds, false)
                     mapHighwayAlertsViewModel.refresh()
                     mapCamerasViewModel.refresh()
-
-                    // Center camera position to activate markers
-                    val center = mMap.cameraPosition
-                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(center))
 
                     if (this::toast.isInitialized)
                     {
