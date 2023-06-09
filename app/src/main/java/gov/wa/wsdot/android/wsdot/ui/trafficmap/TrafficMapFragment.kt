@@ -143,6 +143,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private lateinit var mapUpdateHandler: Handler
     private val alertsUpdateTask = object: Runnable {
         override fun run() {
+            mapHighwayAlertsViewModel.setAlertQuery(mMap.projection.visibleRegion.latLngBounds, false)
             mapHighwayAlertsViewModel.refresh()
             mapUpdateHandler.postDelayed(this, 300000)
         }
