@@ -111,6 +111,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     var showMountainPasses: Boolean = true
     var requestLocationUpgrade: Boolean = true
     var goToLocation: Boolean = true
+    private var alertQueryTask: Boolean = false
 
     private lateinit var mMap: GoogleMap
 
@@ -143,9 +144,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private lateinit var mapUpdateHandler: Handler
     private val alertsUpdateTask = object: Runnable {
         override fun run() {
-            mapHighwayAlertsViewModel.setAlertQuery(mMap.projection.visibleRegion.latLngBounds, false)
-            mapHighwayAlertsViewModel.refresh()
+
+            if (alertQueryTask) {
+                mapHighwayAlertsViewModel.setAlertQuery(
+                    mMap.projection.visibleRegion.latLngBounds,
+                    false
+                )
+            }
+                mapHighwayAlertsViewModel.refresh()
             mapUpdateHandler.postDelayed(this, 300000)
+            alertQueryTask = true
+
         }
     }
 
@@ -285,6 +294,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mapUpdateHandler.removeCallbacks(alertsUpdateTask)
 
         t?.cancel()
+        alertQueryTask = false
 
     }
 
