@@ -41,6 +41,9 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     val args: MountainPassReportFragmentArgs by navArgs()
 
+    // Toast
+    private lateinit var toast: Toast
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
@@ -122,7 +125,14 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
             }
             R.id.action_refresh -> {
                 passReportViewModel.refresh()
-                Toast.makeText(context, "refreshing report...", Toast.LENGTH_SHORT).show()
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                toast = Toast.makeText(context, "refreshing report...", Toast.LENGTH_SHORT)
+                toast.show()
                 return false
             }
             else -> {}
