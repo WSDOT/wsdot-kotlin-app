@@ -150,6 +150,7 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                         binding.bridgeLayout.visibility = VISIBLE
                         for (bridge in alertResource.data) {
                             if (bridge.bridge == "Hood Canal") {
+                                bridge.bridge = "Hood Canal Bridge"
                                 hoodCanalBridgeList.add(bridge)
                                 bridgeAlerts("Hood Canal", true)
                             }
