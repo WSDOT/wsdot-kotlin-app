@@ -11,13 +11,18 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:gravity="bottom">
 
     <ImageView
         android:id="@+id/my_custom_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="24dp"
+        android:scaleType="fitStart"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="18dp"
+        android:paddingEnd="16dp"
         android:src="@drawable/wsdot_banner_white"/>
 
 </LinearLayout>
