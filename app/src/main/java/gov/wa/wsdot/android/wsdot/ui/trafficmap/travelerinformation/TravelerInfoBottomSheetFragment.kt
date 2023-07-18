@@ -51,9 +51,9 @@ class TravelerInfoBottomSheetFragment:
             TravelerInfoMenuEventItem("Travel Times", TravelerMenuItemType.TRAVEL_TIMES)
         )
 
-        listItems.add(
-            TravelerInfoMenuEventItem("Twitter Traffic Updates", TravelerMenuItemType.SOCIAL_MEDIA)
-        )
+//        listItems.add(
+//            TravelerInfoMenuEventItem("Twitter Traffic Updates", TravelerMenuItemType.SOCIAL_MEDIA)
+//        )
 
         listItems.add(
             TravelerInfoMenuEventItem("Express Lanes", TravelerMenuItemType.EXPRESS_LANES)
