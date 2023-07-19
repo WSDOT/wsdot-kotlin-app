@@ -5,15 +5,17 @@ Version 6
 
 Washington State Traveler information provide by The Washington State Department of Transportation.
 
+* Written in Kotlin
+* Developed with Android Studio
+
 Features
 --------
-* Traffic Map with highway cameras, real-time alerts and traffic conditions.
-* Ferry schedules, alerts and VesselWatch.
-* Mountain Pass condition and weather reports.
-* WSDOT Social media feeds for the latest news.
-* Toll Rates.
-* Canadian Border Waits.
-* Amtrak Cascades Schedules. 
+* Traffic Map with statewide traffic cameras and travel alerts.
+* Ferry schedules, alerts, and real-time ferry locations.
+* Mountain pass conditions and weather reports.
+* Washington State toll rates.
+* Northbound Canadian Border Waits.
+* Amtrak Cascades Train Schedules.
 
 Contributing
 ------------
@@ -23,7 +25,7 @@ Find a bug? Got an idea? Send us a pull request or open an issue and we'll take 
 License
 -------
 
-Copyright (c) 2019 Washington State Department of Transportation
+Copyright (c) 2023 Washington State Department of Transportation
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

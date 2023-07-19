@@ -233,6 +233,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         val settings = PreferenceManager.getDefaultSharedPreferences(activity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+        showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
 
         mountainPassViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)
