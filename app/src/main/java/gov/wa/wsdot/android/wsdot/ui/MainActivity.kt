@@ -656,7 +656,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         //MobileAds.setRequestConfiguration(configuration)
 
         adView?.pause()
-        adView?.adListener = null
+//        adView?.adListener = null
         adView?.adListener = object : AdListener() {
 
             override fun onAdLoaded() {
