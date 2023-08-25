@@ -1,11 +1,14 @@
 package gov.wa.wsdot.android.wsdot.ui.notifications
 
+import android.Manifest
+import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -39,6 +42,16 @@ class NotificationsFragment : DaggerFragment(), Injectable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
     }
 
     override fun onCreateView(
@@ -107,4 +120,16 @@ class NotificationsFragment : DaggerFragment(), Injectable {
             adapter.setTopics(topicsMap)
         })
     }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            println("Notifications Enabled")
+        } else {
+            println("Notifications Disabled")
+
+        }
+    }
+
 }
