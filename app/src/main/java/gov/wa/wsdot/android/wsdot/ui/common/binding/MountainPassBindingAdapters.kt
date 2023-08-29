@@ -61,7 +61,17 @@ object MountainPassBindingAdapters {
             textView.text =
                 Html.fromHtml("<b>Travel: </b>" + "N/A")
         }
+
+        // Check if advisory is active
+        if (pass != null) {
+            if (!pass.travelAdvisoryActive) {
+                textView.visibility = View.GONE
+            }
+            else {
+                textView.visibility = View.VISIBLE
+            }
         }
+    }
 
     @JvmStatic
     @BindingAdapter("bindPassRestrictionsTwo")
@@ -73,6 +83,16 @@ object MountainPassBindingAdapters {
         } else {
             textView.text =
                 Html.fromHtml("<b>Travel: </b>" + "N/A")
+        }
+
+        // Check if advisory is active
+        if (pass != null) {
+            if (!pass.travelAdvisoryActive) {
+                textView.visibility = View.GONE
+            }
+            else {
+                textView.visibility = View.VISIBLE
+            }
         }
     }
 
