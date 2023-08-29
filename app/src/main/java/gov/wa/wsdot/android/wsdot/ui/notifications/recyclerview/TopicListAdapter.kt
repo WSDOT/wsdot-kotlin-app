@@ -1,16 +1,24 @@
 package gov.wa.wsdot.android.wsdot.ui.notifications.recyclerview
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import android.text.Html
+import android.text.SpannableString
 import android.util.Log
 import android.view.LayoutInflater
-import androidx.databinding.DataBindingUtil
 import android.view.ViewGroup
 import android.widget.CheckBox
+import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.*
 import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
-import java.lang.Exception
+import kotlinx.android.synthetic.main.topic_item.view.*
 
 class TopicListAdapter(
     private val dataBindingComponent: DataBindingComponent,
@@ -133,7 +141,36 @@ class TopicListAdapter(
 
         binding.root.findViewById<CheckBox>(R.id.sub_checkbox).setOnCheckedChangeListener { _, isChecked ->
             binding.topicItem?.let {
-                subscribeClickCallback?.invoke(it, isChecked)
+
+                 if (!NotificationManagerCompat.from(parent.context).areNotificationsEnabled() && binding.root.findViewById<CheckBox>(R.id.sub_checkbox).isPressed) {
+
+                     binding.root.sub_checkbox.isChecked = !binding.root.sub_checkbox.isChecked
+                     subscribeClickCallback?.invoke(it, !isChecked)
+
+                     val notificationMessage =
+                        SpannableString("Please allow notifications from Settings")
+                     val alert: AlertDialog = AlertDialog.Builder(parent.context)
+                        .setTitle("Turn On Notifications")
+                        .setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+                        .setPositiveButton("Open Settings") { _, _ ->
+                            val intent: Intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                                    .putExtra(Settings.EXTRA_APP_PACKAGE, parent.context.packageName)
+                            } else {
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                intent.setData(Uri.parse("package:" + parent.context.applicationContext.packageName))
+                            }
+                            parent.context.startActivity(intent)
+                        }
+                        .setMessage(Html.fromHtml(notificationMessage.toString()))
+                        .create()
+                        alert.show()
+
+                }
+                else {
+                    subscribeClickCallback?.invoke(it, isChecked)
+
+                }
             }
         }
 
