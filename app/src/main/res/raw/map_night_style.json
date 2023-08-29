@@ -95,23 +95,6 @@
     ]
   },
   {
-    "featureType": "road.local",
-    "stylers": [
-      {
-        "lightness": -5
-      }
-    ]
-  },
-  {
-    "featureType": "road.local",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "lightness": 45
-      }
-    ]
-  },
-  {
     "featureType": "transit",
     "elementType": "geometry",
     "stylers": [
