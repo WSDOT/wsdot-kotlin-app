@@ -815,9 +815,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mFab.addActionItem(getCameraClusterAction(), 0)
         mFab.addActionItem(getCameraVisibilityAction(), 1)
-        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
-        mFab.addActionItem(getRestAreasVisibilityAction(), 3)
-        mFab.addActionItem(getMountainPassVisibilityAction(), 4)
+        mFab.addActionItem(getRestAreasVisibilityAction(), 2)
+        mFab.addActionItem(getMountainPassVisibilityAction(), 3)
+        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 4)
         mFab.addActionItem(getTrafficLayerVisibilityAction(), 5)
 
         mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
