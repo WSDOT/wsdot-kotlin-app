@@ -106,7 +106,7 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
                 binding.cameraList.visibility = VISIBLE
                 binding.emptyListView.visibility = GONE
 
-                adapter.submitList(alertResource.data)
+                adapter.submitList(alertResource.data.sortedByDescending {it.lastUpdatedTime}.sortedBy{ it.eventCategoryTypeDescription })
 
                 if (alertResource.data.isEmpty()) {
                     binding.emptyListView.text = getString(R.string.no_alerts_string)
