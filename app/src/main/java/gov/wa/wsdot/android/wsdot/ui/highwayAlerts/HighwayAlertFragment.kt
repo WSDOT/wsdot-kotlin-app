@@ -85,8 +85,13 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     )
                 )
 
-            } else if (alert.status != Status.LOADING){
+
+            }
+
+            else if (alert.status != Status.LOADING){
                 binding.alertTitle.text = getString(R.string.no_alert_string)
+                binding.alertRoadName.visibility = View.GONE
+                binding.timestamp.text = ""
             }
         })
 
