@@ -78,6 +78,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val type = data["type"]
         val alertId = data["alert_id"]
+        val alertTitle = data["title"]
 
         val intent = Intent(this, MainActivity::class.java)
 
@@ -91,6 +92,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
                 intent.putExtra(getString(R.string.push_alert_traffic_alert), true)
                 intent.putExtra(getString(R.string.push_alert_traffic_alert_id), alertId?.toInt())
+                intent.putExtra(getString(R.string.push_alert_traffic_alert_title), alertTitle.toString())
                 intent.putExtra(getString(R.string.push_alert_traffic_alert_latitude), lat?.toDouble())
                 intent.putExtra(getString(R.string.push_alert_traffic_alert_longitude), lng?.toDouble())
 
