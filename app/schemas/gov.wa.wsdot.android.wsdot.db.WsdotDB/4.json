@@ -1,0 +1,1305 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "86149bbe6abf02dcf95801136321abb5",
+    "entities": [
+      {
+        "tableName": "HighwayAlert",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `headline` TEXT NOT NULL, `roadName` TEXT, `priority` TEXT NOT NULL, `travelCenterPriorityId` INTEGER NOT NULL, `category` TEXT NOT NULL, `eventCategoryTypeDescription` TEXT NOT NULL, `startLatitude` REAL NOT NULL, `startLongitude` REAL NOT NULL, `direction` TEXT NOT NULL, `endLatitude` REAL NOT NULL, `endLongitude` REAL NOT NULL, `lastUpdatedTime` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
+        "fields": [
+          {
+            "fieldPath": "alertId",
+            "columnName": "alertId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "headline",
+            "columnName": "headline",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roadName",
+            "columnName": "roadName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "priority",
+            "columnName": "priority",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "travelCenterPriorityId",
+            "columnName": "travelCenterPriorityId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventCategoryTypeDescription",
+            "columnName": "eventCategoryTypeDescription",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLatitude",
+            "columnName": "startLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLongitude",
+            "columnName": "startLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "direction",
+            "columnName": "direction",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endLatitude",
+            "columnName": "endLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endLongitude",
+            "columnName": "endLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdatedTime",
+            "columnName": "lastUpdatedTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "alertId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BridgeAlert",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `bridge` TEXT NOT NULL, `title` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `description` TEXT NOT NULL, `openingTime` INTEGER, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
+        "fields": [
+          {
+            "fieldPath": "alertId",
+            "columnName": "alertId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bridge",
+            "columnName": "bridge",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "openingTime",
+            "columnName": "openingTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "alertId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FerrySchedule",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`routeId` INTEGER NOT NULL, `description` TEXT NOT NULL, `crossingTime` INTEGER NOT NULL, `serverCacheDate` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`routeId`))",
+        "fields": [
+          {
+            "fieldPath": "routeId",
+            "columnName": "routeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "crossingTime",
+            "columnName": "crossingTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serverCacheDate",
+            "columnName": "serverCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "routeId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FerrySailing",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route` INTEGER NOT NULL, `sailingDate` INTEGER NOT NULL, `departingTerminalId` INTEGER NOT NULL, `departingTerminalName` TEXT NOT NULL, `arrivingTerminalId` INTEGER NOT NULL, `arrivingTerminalName` TEXT NOT NULL, `annotations` TEXT NOT NULL, `departingTime` INTEGER NOT NULL, `arrivingTime` INTEGER, `cacheDate` INTEGER NOT NULL, PRIMARY KEY(`route`, `sailingDate`, `departingTerminalId`, `arrivingTerminalId`, `departingTime`))",
+        "fields": [
+          {
+            "fieldPath": "route",
+            "columnName": "route",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sailingDate",
+            "columnName": "sailingDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "departingTerminalId",
+            "columnName": "departingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "departingTerminalName",
+            "columnName": "departingTerminalName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arrivingTerminalId",
+            "columnName": "arrivingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arrivingTerminalName",
+            "columnName": "arrivingTerminalName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "annotations",
+            "columnName": "annotations",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "departingTime",
+            "columnName": "departingTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arrivingTime",
+            "columnName": "arrivingTime",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cacheDate",
+            "columnName": "cacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "route",
+            "sailingDate",
+            "departingTerminalId",
+            "arrivingTerminalId",
+            "departingTime"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_FerrySailing_route_sailingDate_departingTerminalId_arrivingTerminalId_departingTime_arrivingTime",
+            "unique": true,
+            "columnNames": [
+              "route",
+              "sailingDate",
+              "departingTerminalId",
+              "arrivingTerminalId",
+              "departingTime",
+              "arrivingTime"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_FerrySailing_route_sailingDate_departingTerminalId_arrivingTerminalId_departingTime_arrivingTime` ON `${TABLE_NAME}` (`route`, `sailingDate`, `departingTerminalId`, `arrivingTerminalId`, `departingTime`, `arrivingTime`)"
+          },
+          {
+            "name": "index_FerrySailing_departingTerminalId_arrivingTerminalId_departingTime",
+            "unique": true,
+            "columnNames": [
+              "departingTerminalId",
+              "arrivingTerminalId",
+              "departingTime"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_FerrySailing_departingTerminalId_arrivingTerminalId_departingTime` ON `${TABLE_NAME}` (`departingTerminalId`, `arrivingTerminalId`, `departingTime`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FerryAlert",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `title` TEXT NOT NULL, `route` INTEGER NOT NULL, `description` TEXT, `fullDescription` TEXT NOT NULL, `publishDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`, `route`))",
+        "fields": [
+          {
+            "fieldPath": "alertId",
+            "columnName": "alertId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route",
+            "columnName": "route",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "fullDescription",
+            "columnName": "fullDescription",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "publishDate",
+            "columnName": "publishDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "alertId",
+            "route"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FerrySpace",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`departingTerminalId` INTEGER NOT NULL, `arrivingTerminalId` INTEGER NOT NULL, `showDriveUpSpaces` INTEGER NOT NULL, `showResSpaces` INTEGER NOT NULL, `maxSpacesCount` INTEGER NOT NULL, `currentSpacesCount` INTEGER, `reservableSpacesCount` INTEGER, `currentSpacesColor` TEXT, `reservableSpacesColor` TEXT, `departureTime` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`departingTerminalId`, `arrivingTerminalId`, `departureTime`))",
+        "fields": [
+          {
+            "fieldPath": "departingTerminalId",
+            "columnName": "departingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arrivingTerminalId",
+            "columnName": "arrivingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showDriveUpSpaces",
+            "columnName": "showDriveUpSpaces",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "showResSpaces",
+            "columnName": "showResSpaces",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSpacesCount",
+            "columnName": "maxSpacesCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentSpacesCount",
+            "columnName": "currentSpacesCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reservableSpacesCount",
+            "columnName": "reservableSpacesCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currentSpacesColor",
+            "columnName": "currentSpacesColor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "reservableSpacesColor",
+            "columnName": "reservableSpacesColor",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "departureTime",
+            "columnName": "departureTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "departingTerminalId",
+            "arrivingTerminalId",
+            "departureTime"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_FerrySpace_departingTerminalId_arrivingTerminalId_departureTime",
+            "unique": true,
+            "columnNames": [
+              "departingTerminalId",
+              "arrivingTerminalId",
+              "departureTime"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_FerrySpace_departingTerminalId_arrivingTerminalId_departureTime` ON `${TABLE_NAME}` (`departingTerminalId`, `arrivingTerminalId`, `departureTime`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Vessel",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`vesselId` INTEGER NOT NULL, `vesselName` TEXT NOT NULL, `departingTerminalId` INTEGER NOT NULL, `departingTerminalName` TEXT NOT NULL, `arrivingTerminalId` INTEGER, `arrivingTerminalName` TEXT, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `speed` REAL NOT NULL, `heading` REAL NOT NULL, `inService` INTEGER NOT NULL, `atDock` INTEGER NOT NULL, `scheduledDeparture` INTEGER, `leftDock` INTEGER, `eta` INTEGER, `etaDetails` TEXT, `localCacheDate` INTEGER NOT NULL, `serverCacheDate` INTEGER NOT NULL, PRIMARY KEY(`vesselId`))",
+        "fields": [
+          {
+            "fieldPath": "vesselId",
+            "columnName": "vesselId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vesselName",
+            "columnName": "vesselName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "departingTerminalId",
+            "columnName": "departingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "departingTerminalName",
+            "columnName": "departingTerminalName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arrivingTerminalId",
+            "columnName": "arrivingTerminalId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "arrivingTerminalName",
+            "columnName": "arrivingTerminalName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speed",
+            "columnName": "speed",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "heading",
+            "columnName": "heading",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inService",
+            "columnName": "inService",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "atDock",
+            "columnName": "atDock",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scheduledDeparture",
+            "columnName": "scheduledDeparture",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "leftDock",
+            "columnName": "leftDock",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "eta",
+            "columnName": "eta",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "etaDetails",
+            "columnName": "etaDetails",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serverCacheDate",
+            "columnName": "serverCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "vesselId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Camera",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cameraId` INTEGER NOT NULL, `title` TEXT NOT NULL, `roadName` TEXT NOT NULL, `milepost` INTEGER NOT NULL, `direction` TEXT, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `url` TEXT NOT NULL, `hasVideo` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`cameraId`))",
+        "fields": [
+          {
+            "fieldPath": "cameraId",
+            "columnName": "cameraId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roadName",
+            "columnName": "roadName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "milepost",
+            "columnName": "milepost",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "direction",
+            "columnName": "direction",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hasVideo",
+            "columnName": "hasVideo",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "cameraId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "MountainPass",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`passId` INTEGER NOT NULL, `passName` TEXT NOT NULL, `roadCondition` TEXT NOT NULL, `weatherCondition` TEXT NOT NULL, `temperatureInFahrenheit` INTEGER NOT NULL, `elevationInFeet` INTEGER NOT NULL, `travelAdvisoryActive` INTEGER NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `restrictionOneText` TEXT NOT NULL, `restrictionOneDirection` TEXT NOT NULL, `restrictionTwoText` TEXT NOT NULL, `restrictionTwoDirection` TEXT NOT NULL, `serverCacheDate` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, `cameras` TEXT NOT NULL, `forecasts` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`passId`))",
+        "fields": [
+          {
+            "fieldPath": "passId",
+            "columnName": "passId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "passName",
+            "columnName": "passName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "roadCondition",
+            "columnName": "roadCondition",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "weatherCondition",
+            "columnName": "weatherCondition",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "temperatureInFahrenheit",
+            "columnName": "temperatureInFahrenheit",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "elevationInFeet",
+            "columnName": "elevationInFeet",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "travelAdvisoryActive",
+            "columnName": "travelAdvisoryActive",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "restrictionOneText",
+            "columnName": "restrictionOneText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "restrictionOneDirection",
+            "columnName": "restrictionOneDirection",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "restrictionTwoText",
+            "columnName": "restrictionTwoText",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "restrictionTwoDirection",
+            "columnName": "restrictionTwoDirection",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "serverCacheDate",
+            "columnName": "serverCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cameras",
+            "columnName": "cameras",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "forecasts",
+            "columnName": "forecasts",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "passId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NewsRelease",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`link` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT NOT NULL, `pubdate` INTEGER NOT NULL, PRIMARY KEY(`link`))",
+        "fields": [
+          {
+            "fieldPath": "link",
+            "columnName": "link",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pubdate",
+            "columnName": "pubdate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "link"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TravelTime",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`travelTimeId` INTEGER NOT NULL, `title` TEXT NOT NULL, `via` TEXT NOT NULL, `status` TEXT NOT NULL, `avgTime` INTEGER NOT NULL, `currentTime` INTEGER NOT NULL, `miles` REAL NOT NULL, `startLocationLatitude` REAL NOT NULL, `startLocationLongitude` REAL NOT NULL, `endLocationLatitude` REAL NOT NULL, `endLocationLongitude` REAL NOT NULL, `updated` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`travelTimeId`))",
+        "fields": [
+          {
+            "fieldPath": "travelTimeId",
+            "columnName": "travelTimeId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "via",
+            "columnName": "via",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "avgTime",
+            "columnName": "avgTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentTime",
+            "columnName": "currentTime",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "miles",
+            "columnName": "miles",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLocationLatitude",
+            "columnName": "startLocationLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLocationLongitude",
+            "columnName": "startLocationLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endLocationLatitude",
+            "columnName": "endLocationLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endLocationLongitude",
+            "columnName": "endLocationLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "travelTimeId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "FavoriteLocation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `zoom` REAL NOT NULL, `creationDate` INTEGER NOT NULL, PRIMARY KEY(`creationDate`))",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "latitude",
+            "columnName": "latitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "longitude",
+            "columnName": "longitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "zoom",
+            "columnName": "zoom",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "creationDate",
+            "columnName": "creationDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "creationDate"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "BorderCrossing",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`crossingId` INTEGER NOT NULL, `name` TEXT NOT NULL, `route` INTEGER NOT NULL, `lane` TEXT NOT NULL, `direction` TEXT NOT NULL, `wait` INTEGER, `updated` INTEGER, `localCacheDate` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`crossingId`))",
+        "fields": [
+          {
+            "fieldPath": "crossingId",
+            "columnName": "crossingId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "route",
+            "columnName": "route",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lane",
+            "columnName": "lane",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "direction",
+            "columnName": "direction",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wait",
+            "columnName": "wait",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "crossingId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Tweet",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tweetId` TEXT NOT NULL, `userId` TEXT NOT NULL, `userName` TEXT NOT NULL, `text` TEXT NOT NULL, `mediaUrl` TEXT, `createdAt` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`tweetId`))",
+        "fields": [
+          {
+            "fieldPath": "tweetId",
+            "columnName": "tweetId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userId",
+            "columnName": "userId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "text",
+            "columnName": "text",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaUrl",
+            "columnName": "mediaUrl",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "createdAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "tweetId"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TollRateTable",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`route` INTEGER NOT NULL, `message` TEXT, `numCol` INTEGER NOT NULL, `rows` TEXT NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`route`))",
+        "fields": [
+          {
+            "fieldPath": "route",
+            "columnName": "route",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "numCol",
+            "columnName": "numCol",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rows",
+            "columnName": "rows",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "route"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "TollSign",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `locationName` TEXT NOT NULL, `stateRoute` INTEGER NOT NULL, `milepost` REAL NOT NULL, `travelDirection` TEXT NOT NULL, `startLatitude` REAL NOT NULL, `startLongitude` REAL NOT NULL, `trips` TEXT NOT NULL, `localCacheDate` INTEGER NOT NULL, `favorite` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "locationName",
+            "columnName": "locationName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "stateRoute",
+            "columnName": "stateRoute",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "milepost",
+            "columnName": "milepost",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "travelDirection",
+            "columnName": "travelDirection",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLatitude",
+            "columnName": "startLatitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startLongitude",
+            "columnName": "startLongitude",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "trips",
+            "columnName": "trips",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "favorite",
+            "columnName": "favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "NotificationTopic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`topic` TEXT NOT NULL, `title` TEXT NOT NULL, `category` TEXT NOT NULL, `subscribed` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, `remove` INTEGER NOT NULL, PRIMARY KEY(`topic`))",
+        "fields": [
+          {
+            "fieldPath": "topic",
+            "columnName": "topic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "category",
+            "columnName": "category",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "subscribed",
+            "columnName": "subscribed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localCacheDate",
+            "columnName": "localCacheDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remove",
+            "columnName": "remove",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "topic"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86149bbe6abf02dcf95801136321abb5')"
+    ]
+  }
+}
