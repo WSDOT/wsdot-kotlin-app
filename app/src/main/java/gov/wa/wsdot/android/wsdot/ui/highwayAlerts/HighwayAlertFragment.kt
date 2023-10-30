@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -140,30 +141,13 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
             if (alert?.data != null) {
                 mapFragment.view?.visibility = View.VISIBLE
-                var alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
 
-                val construction = arrayOf("construction", "maintenance")
-                val closure = arrayOf("closed", "closure")
-
-                when {
-                    construction.any { alert.data.category.contains(it, ignoreCase = true) } ->
-                        alertIcon = when(alert.data.priority.toLowerCase()) {
-                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_highest)
-                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_high)
-                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_low)
-                            else -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                        }
-                    closure.any { alert.data.category.contains(it, ignoreCase = true) } -> {
-                        alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.closed)
-                    }
-                    else -> alertIcon = when(alert.data.priority.toLowerCase()) {
-                        "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
-                        "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
-                        "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                        "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
-                        else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                    }
+                val alertIcon: BitmapDescriptor = when(alert.data.travelCenterPriorityId) {
+                    4 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                    3 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                    2 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                    1 -> BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                    else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
                 }
 
                 binding.highwayAlert = alert.data

@@ -162,6 +162,7 @@ class HighwayAlertRepository @Inject constructor(
                 alertItem.HeadlineDescription,
                 alertItem.startRoadwayLocation.roadName,
                 alertItem.priority,
+                alertItem.travelCenterPriorityId,
                 alertItem.eventCategory,
                 alertItem.startRoadwayLocation.latitude,
                 alertItem.startRoadwayLocation.longitude,
