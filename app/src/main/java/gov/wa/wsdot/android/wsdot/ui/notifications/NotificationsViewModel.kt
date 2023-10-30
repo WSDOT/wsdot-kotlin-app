@@ -39,7 +39,7 @@ class NotificationsViewModel @Inject constructor(notificationTopicRepository: No
         topics?.let {
             val mTopicsMap = HashMap<String, MutableList<NotificationTopic>>()
 
-            for (topic in topics) {
+            for (topic in topics.sortedBy{it.title}) {
 
                 val category = topic.category
 
@@ -50,7 +50,6 @@ class NotificationsViewModel @Inject constructor(notificationTopicRepository: No
                 } else {
                     mTopicsMap[category]?.add(topic)
                 }
-
             }
 
             val map = HashMap<String, List<NotificationTopic>>()

@@ -73,7 +73,7 @@ class TopicListAdapter(
 
         var currentPos = position
 
-        for (key in data.keys) {
+        for (key in data.keys.sorted()) {
 
             val size = data[key]!!.size + (if (data[key]!!.isEmpty()) 0 else 1)
 
