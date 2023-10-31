@@ -166,6 +166,7 @@ class HighwayAlertRepository @Inject constructor(
                 alertItem.eventCategory,
                 alertItem.startRoadwayLocation.latitude,
                 alertItem.startRoadwayLocation.longitude,
+                alertItem.startRoadwayLocation.direction,
                 alertItem.endRoadwayLocation.latitude,
                 alertItem.endRoadwayLocation.longitude,
                 Date(alertItem.lastUpdatedTime.substring(6, 19).toLong()),

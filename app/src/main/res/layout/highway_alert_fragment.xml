@@ -32,6 +32,16 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/alertRoadName"
+                        style="@style/CardTitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:bindRoadName="@{highwayAlert.roadName + @string/space + highwayAlert.direction}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
                         android:id="@+id/alertTitle"
                         style="@style/CardSubTitleText"
                         android:layout_width="match_parent"
@@ -39,7 +49,7 @@
                         android:layout_margin="8dp"
                         android:paddingBottom="8dp"
                         app:bindHTML="@{highwayAlert.headline}"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/alertRoadName"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView

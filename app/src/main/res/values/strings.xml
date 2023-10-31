@@ -209,6 +209,7 @@
     <string name="action_remove">remove</string>
     <string name="action_rename">edit name</string>
     <string name="action_express_lanes">Schedule</string>
+    <string name="space">&#160;</string>
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

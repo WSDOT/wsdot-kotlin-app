@@ -248,6 +248,19 @@ object BindingAdapters {
             }
         }
     }
+    
+    @JvmStatic
+    @BindingAdapter("bindRoadName")
+    fun bindRoadName(textView: TextView, text: String?) {
+
+        if (!text.toString().contains("null")) {
+                textView.text = text
+                textView.visibility = View.VISIBLE
+        }
+        else {
+            textView.visibility = View.GONE
+        }
+    }
 
     @JvmStatic
     @BindingAdapter("bindDate")

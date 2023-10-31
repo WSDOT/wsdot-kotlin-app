@@ -13,6 +13,7 @@ data class HighwayAlert(
     val category: String,
     val startLatitude: Double,
     val startLongitude: Double,
+    val direction: String,
     val endLatitude: Double,
     val endLongitude: Double,
     val lastUpdatedTime: Date,

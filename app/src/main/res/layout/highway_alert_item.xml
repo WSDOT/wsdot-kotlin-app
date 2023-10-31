@@ -35,12 +35,22 @@
                 android:layout_marginEnd="@dimen/default_margin"/>
 
             <TextView
+                android:id="@+id/alertRoadName"
+                style="@style/CardSubTitleBoldText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:bindRoadName="@{alert.roadName + @string/space + alert.direction}"
+                app:layout_constraintTop_toBottomOf="@id/titleView"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
                 style="@style/CardSubTitleText"
                 android:id="@+id/subTitleView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:bindHTML="@{alert.headline}"
-                app:layout_constraintTop_toBottomOf="@id/titleView"
+                app:layout_constraintTop_toBottomOf="@id/alertRoadName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="8dp"
