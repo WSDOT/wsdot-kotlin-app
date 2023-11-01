@@ -26,7 +26,7 @@
                 android:id="@+id/titleView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{alert.category}"
+                android:text="@{alert.eventCategoryTypeDescription}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

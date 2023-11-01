@@ -25,6 +25,8 @@ data class HighwayAlertsResponse (
             val region: String,
             @field:SerializedName("EventCategory")
             val eventCategory: String,
+            @field:SerializedName("EventCategoryTypeDescription")
+            val eventCategoryTypeDescription: String,
             @field:SerializedName("County")
             val county: String,
             @field:SerializedName("EventStatus")

@@ -121,7 +121,7 @@ class HighestAlertsFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToAlert(alert: HighwayAlert){
-        val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alert.alertId, alert.category)
+        val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alert.alertId, alert.eventCategoryTypeDescription)
         findNavController().navigate(action)
     }
 }
