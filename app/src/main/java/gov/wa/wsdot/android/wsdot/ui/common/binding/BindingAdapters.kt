@@ -248,7 +248,26 @@ object BindingAdapters {
             }
         }
     }
-    
+
+    @JvmStatic
+    @BindingAdapter("bindAlertHTML")
+    fun bindAlertHTML(textView: TextView, text: String?) {
+
+        if (text != null) {
+            if (text != "") {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    textView.text = Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).trimEnd()
+                    textView.movementMethod = LinkMovementMethod.getInstance()
+                } else {
+                    textView.text = stripHtml(text).trimEnd()
+                }
+            }
+            else {
+                "".also { textView.text = it }
+            }
+        }
+    }
+
     @JvmStatic
     @BindingAdapter("bindRoadName")
     fun bindRoadName(textView: TextView, text: String?) {
