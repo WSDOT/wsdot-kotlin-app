@@ -420,7 +420,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 )
                 findNavController(R.id.nav_host_fragment).navigate(actionOne)
 
-                val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
+                val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId, routeTitle)
                 findNavController(R.id.nav_host_fragment).navigate(actionTwo)
 
             }
