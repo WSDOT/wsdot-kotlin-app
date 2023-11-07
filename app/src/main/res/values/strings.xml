@@ -172,6 +172,7 @@
     // notifications
     <string name="push_alert_traffic_alert">traffic_alert_push_key</string>
     <string name="push_alert_traffic_alert_id">traffic_alert_id_push_key</string>
+    <string name="push_alert_traffic_alert_title">traffic_alert_title_key</string>
     <string name="push_alert_traffic_alert_latitude">traffic_alert_lat_push_key</string>
     <string name="push_alert_traffic_alert_longitude">traffic_alert_lng_push_key</string>
 
@@ -208,6 +209,7 @@
     <string name="action_remove">remove</string>
     <string name="action_rename">edit name</string>
     <string name="action_express_lanes">Schedule</string>
+    <string name="space">&#160;</string>
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

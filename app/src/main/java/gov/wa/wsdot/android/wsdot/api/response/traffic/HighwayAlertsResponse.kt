@@ -19,10 +19,14 @@ data class HighwayAlertsResponse (
             val extendedDescription: String?,
             @field:SerializedName("Priority")
             val priority: String,
+            @field:SerializedName("TravelCenterPriorityId")
+            val travelCenterPriorityId: Int,
             @field:SerializedName("Region")
             val region: String,
             @field:SerializedName("EventCategory")
             val eventCategory: String,
+            @field:SerializedName("EventCategoryTypeDescription")
+            val eventCategoryTypeDescription: String,
             @field:SerializedName("County")
             val county: String,
             @field:SerializedName("EventStatus")

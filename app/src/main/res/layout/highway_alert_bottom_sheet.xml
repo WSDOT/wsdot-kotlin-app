@@ -24,14 +24,14 @@
             android:layout_margin="16dp" />
 
         <TextView
+            style="@style/CardTitleText"
             android:layout_margin="16dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/header"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="@{viewModel.alert.data.category}"
-            style="@style/CardTitleText"
+            android:text="@{viewModel.alert.data.eventCategoryTypeDescription}"
             app:layout_constraintStart_toEndOf="@id/close_button"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -62,19 +62,28 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/alertTitle"
-                        style="@style/CardSubTitleText"
+                        style="@style/CardSubTitleBoldText"
+                        android:id="@+id/alertRoadName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:paddingBottom="8dp"
-                        app:bindHTML="@{viewModel.alert.data.headline}"
+                        app:bindRoadName="@{viewModel.alert.data.roadName + @string/space + viewModel.alert.data.direction}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
-                        android:id="@+id/timestamp"
+                        style="@style/CardSubTitleText"
+                        android:id="@+id/alertTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        app:bindHTML="@{viewModel.alert.data.headline}"
+                        app:layout_constraintTop_toBottomOf="@id/alertRoadName"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
                         style="@style/CardFooterText"
+                        android:id="@+id/timestamp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"

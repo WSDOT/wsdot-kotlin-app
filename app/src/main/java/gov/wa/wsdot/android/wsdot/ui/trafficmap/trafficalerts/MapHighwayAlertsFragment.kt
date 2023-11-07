@@ -106,7 +106,7 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
                 binding.cameraList.visibility = VISIBLE
                 binding.emptyListView.visibility = GONE
 
-                adapter.submitList(alertResource.data)
+                adapter.submitList(alertResource.data.sortedByDescending {it.lastUpdatedTime}.sortedBy{ it.eventCategoryTypeDescription })
 
                 if (alertResource.data.isEmpty()) {
                     binding.emptyListView.text = getString(R.string.no_alerts_string)
@@ -122,7 +122,7 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
     private fun navigateToAlert(alert: HighwayAlert){
-        val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alert.alertId, alert.category)
+        val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(alert.alertId, alert.eventCategoryTypeDescription)
         findNavController().navigate(action)
     }
 }

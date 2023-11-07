@@ -378,6 +378,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 editor.apply()
 
                 val alertId = extras.getInt(getString(R.string.push_alert_traffic_alert_id), 0)
+                val title = extras.getString(getString(R.string.push_alert_traffic_alert_title), "")
 
                 // reset navigation to the traffic map
                 findNavController(R.id.nav_host_fragment).navigate(R.id.navTrafficMapFragment)
@@ -388,7 +389,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 val action = NavGraphDirections.actionGlobalNavHighwayAlertFragment(
                     alertId,
-                    "Traffic Alert"
+                    title
                 )
                 findNavController(R.id.nav_host_fragment).navigate(action)
 
@@ -419,7 +420,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 )
                 findNavController(R.id.nav_host_fragment).navigate(actionOne)
 
-                val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId)
+                val actionTwo = NavGraphDirections.actionGlobalNavFerryAlertDetailsFragment(alertId, routeTitle)
                 findNavController(R.id.nav_host_fragment).navigate(actionTwo)
 
             }

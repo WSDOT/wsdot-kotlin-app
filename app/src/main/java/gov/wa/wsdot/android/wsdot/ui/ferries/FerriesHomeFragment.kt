@@ -54,7 +54,7 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     override fun onDestroy() {
         super.onDestroy()
         // Clear view models since they are no longer needed
-        activity?.viewModelStore?.clear()
+        viewModelStore?.clear()
     }
 
     override fun onCreateView(

@@ -64,7 +64,7 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         TollSign::class,
         NotificationTopic::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)

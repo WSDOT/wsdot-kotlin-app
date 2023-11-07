@@ -422,30 +422,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         continue
                     }
 
-                    var alertIcon: BitmapDescriptor
-
-                    val construction = arrayOf("construction", "maintenance")
-                    val closure = arrayOf("closed", "closure")
-
-                    when {
-                        construction.any { alert.category.contains(it, ignoreCase = true) } ->
-                            alertIcon = when(alert.priority.toLowerCase()) {
-                                "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_highest)
-                                "high" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_high)
-                                "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                                "low" -> BitmapDescriptorFactory.fromResource(R.drawable.construction_low)
-                                else -> BitmapDescriptorFactory.fromResource(R.drawable.construction_moderate)
-                            }
-                        closure.any { alert.category.contains(it, ignoreCase = true) } -> {
-                            alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.closed)
-                        }
-                        else -> alertIcon = when(alert.priority.toLowerCase()) {
-                            "highest" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
-                            "high" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
-                            "medium" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                            "low" -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
-                            else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
-                        }
+                    val alertIcon: BitmapDescriptor = when(alert.travelCenterPriorityId) {
+                        4 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                        3 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                        2 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                        1 -> BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                        else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
                     }
 
                     val marker = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).addMarker(
@@ -539,11 +521,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
             selectedAlertMarker?.remove()
 
-            var icon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highlight)
-            val closure = arrayOf("closed", "closure")
-
-            if (closure.any { alert.category.contains(it, ignoreCase = true) }) {
-                icon = BitmapDescriptorFactory.fromResource(R.drawable.closed_highlight)
+            val icon: BitmapDescriptor = when(alert.travelCenterPriorityId) {
+                4 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                3 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                2 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                1 -> BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
             }
 
             selectedAlertMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
