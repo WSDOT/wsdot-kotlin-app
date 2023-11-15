@@ -9,8 +9,8 @@ import javax.inject.Inject
 class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository) : ViewModel() {
 
     // 2-way binding value for spinner
-    private val _selectedTwitterAccount = MediatorLiveData<Pair<String, String>>()
-    val selectedTwitterAccount: MutableLiveData<Pair<String, String>>
+    private val _selectedTwitterAccount = MediatorLiveData<Pair<String, String>?>()
+    val selectedTwitterAccount: MediatorLiveData<Pair<String, String>?>
         get() = _selectedTwitterAccount
 
     val twitterAccounts = listOf(
@@ -31,7 +31,7 @@ class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository)
 
     val tweets: LiveData<Resource<List<Tweet>>> = Transformations
         .switchMap(_selectedTwitterAccount) {
-            twitterRepository.loadTweetsForAccount(it.second, false)
+            it?.let { it1 -> twitterRepository.loadTweetsForAccount(it1.second, false) }
         }
 
     fun refresh() {
