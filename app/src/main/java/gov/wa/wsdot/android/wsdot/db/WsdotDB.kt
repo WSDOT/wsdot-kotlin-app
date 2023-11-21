@@ -16,6 +16,7 @@ package gov.wa.wsdot.android.wsdot.db
  * limitations under the License.
  */
 
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -65,6 +66,10 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         NotificationTopic::class
     ],
     version = 4,
+    autoMigrations = [
+        AutoMigration (from = 2, to = 4),
+        AutoMigration (from = 3, to = 4)
+    ],
     exportSchema = true
 )
 @TypeConverters(WsdotTypeConverters::class, MountainPassCameraTypeConverters::class)

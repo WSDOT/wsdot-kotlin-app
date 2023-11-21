@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "86149bbe6abf02dcf95801136321abb5",
+    "identityHash": "5ab869c0d7e866c98785caed6e534c5d",
     "entities": [
       {
         "tableName": "HighwayAlert",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `headline` TEXT NOT NULL, `roadName` TEXT, `priority` TEXT NOT NULL, `travelCenterPriorityId` INTEGER NOT NULL, `category` TEXT NOT NULL, `eventCategoryTypeDescription` TEXT NOT NULL, `startLatitude` REAL NOT NULL, `startLongitude` REAL NOT NULL, `direction` TEXT NOT NULL, `endLatitude` REAL NOT NULL, `endLongitude` REAL NOT NULL, `lastUpdatedTime` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`alertId` INTEGER NOT NULL, `headline` TEXT NOT NULL, `roadName` TEXT, `priority` TEXT NOT NULL, `travelCenterPriorityId` INTEGER, `category` TEXT NOT NULL, `eventCategoryTypeDescription` TEXT, `startLatitude` REAL NOT NULL, `startLongitude` REAL NOT NULL, `direction` TEXT, `endLatitude` REAL NOT NULL, `endLongitude` REAL NOT NULL, `lastUpdatedTime` INTEGER NOT NULL, `localCacheDate` INTEGER NOT NULL, PRIMARY KEY(`alertId`))",
         "fields": [
           {
             "fieldPath": "alertId",
@@ -36,7 +36,7 @@
             "fieldPath": "travelCenterPriorityId",
             "columnName": "travelCenterPriorityId",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "category",
@@ -48,7 +48,7 @@
             "fieldPath": "eventCategoryTypeDescription",
             "columnName": "eventCategoryTypeDescription",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "startLatitude",
@@ -66,7 +66,7 @@
             "fieldPath": "direction",
             "columnName": "direction",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "endLatitude",
@@ -1299,7 +1299,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '86149bbe6abf02dcf95801136321abb5')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5ab869c0d7e866c98785caed6e534c5d')"
     ]
   }
 }

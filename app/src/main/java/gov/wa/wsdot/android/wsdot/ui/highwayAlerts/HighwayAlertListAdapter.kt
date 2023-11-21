@@ -26,7 +26,7 @@ class HighwayAlertListAdapter(
         override fun areContentsTheSame(oldItem: HighwayAlert, newItem: HighwayAlert): Boolean {
             return oldItem.headline == newItem.headline
                     && oldItem.localCacheDate == newItem.localCacheDate
-                    && oldItem.priority == newItem.priority
+                    && oldItem.travelCenterPriorityId == newItem.travelCenterPriorityId
                     && oldItem.startLatitude == newItem.startLatitude
                     && oldItem.startLongitude == newItem.startLongitude
         }
