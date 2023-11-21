@@ -121,14 +121,26 @@ class MapHighwayAlertsFragment : DaggerFragment(), Injectable {
     }
 
     // uses Safe Args to pass data https://developer.android.com/guide/navigation/navigation-pass-data#Safe-args
-    private fun navigateToAlert(alert: HighwayAlert){
-        val action = alert.eventCategoryTypeDescription?.let {
-            NavGraphDirections.actionGlobalNavHighwayAlertFragment(alert.alertId,
-                it
-            )
-        }
-        if (action != null) {
+    private fun navigateToAlert(alert: HighwayAlert) {
+
+        if (alert.eventCategoryTypeDescription != null) {
+
+            val action = alert.eventCategoryTypeDescription.let {
+                NavGraphDirections.actionGlobalNavHighwayAlertFragment(
+                    alert.alertId,
+                    it
+                )
+            }
             findNavController().navigate(action)
+        } else {
+            val action =
+                NavGraphDirections.actionGlobalNavHighwayAlertFragment(
+                    alert.alertId,
+                    ""
+                )
+
+            findNavController().navigate(action)
+
         }
     }
 }
