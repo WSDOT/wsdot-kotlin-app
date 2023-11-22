@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -145,7 +146,13 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             if (alert?.data != null) {
                 mapFragment.view?.visibility = View.VISIBLE
 
-                val alertIcon = BitmapDescriptorFactory.fromResource(R.drawable.alert_highest)
+                val alertIcon: BitmapDescriptor = when(alert.data.travelCenterPriorityId) {
+                    4 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                    3 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_moderate)
+                    2 -> BitmapDescriptorFactory.fromResource(R.drawable.alert_high)
+                    1 -> BitmapDescriptorFactory.fromResource(R.drawable.closed)
+                    else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
+                }
 
                 binding.bridgeAlert = alert.data
 

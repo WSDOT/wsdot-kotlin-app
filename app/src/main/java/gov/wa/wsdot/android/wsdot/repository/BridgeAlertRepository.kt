@@ -103,6 +103,7 @@ class BridgeAlertRepository @Inject constructor(
                 alertItem.bridgeLocation.latitude,
                 alertItem.bridgeLocation.longitude,
                 alertItem.eventText,
+                alertItem.travelCenterPriorityId,
                 parseBridgeDate(alertItem.openingTime),
                 Date()
             )

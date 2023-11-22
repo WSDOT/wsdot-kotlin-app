@@ -11,6 +11,7 @@ data class BridgeAlert(
     val latitude: Double,
     val longitude: Double,
     val description: String,
+    val travelCenterPriorityId: Int?,
     val openingTime: Date?,
     val localCacheDate: Date
 )
