@@ -152,7 +152,7 @@ object MountainPassBindingAdapters {
         imageView.setImageDrawable(null)
         imageView.visibility = View.GONE
 
-        if (!TextUtils.isEmpty(pass.weatherCondition)) {
+            if (!TextUtils.isEmpty(pass.weatherCondition) && !pass.weatherCondition.contains("No current information available")) {
             getIconFromForecast("day", pass.weatherCondition.split(".")[0])?.let {
                 imageView.setImageResource(it)
                 imageView.visibility = View.VISIBLE
