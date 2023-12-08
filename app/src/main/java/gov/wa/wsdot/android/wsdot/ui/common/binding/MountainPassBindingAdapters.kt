@@ -29,25 +29,6 @@ object MountainPassBindingAdapters {
 
             }
         }
-
-    }
-
-
-    @JvmStatic
-    @BindingAdapter("bindPassWeatherSummary")
-    fun bindPassWeatherSummary(textView: TextView, pass: MountainPass) {
-
-        if (pass.weatherCondition.isNotEmpty()) {
-            textView.text = pass.weatherCondition.split(".")[0]
-            return
-        } else {
-            if (pass.forecasts.isNotEmpty()) {
-                val forecast = pass.forecasts[0]
-                textView.text = forecast.forecastText.split(".")[0]
-                return
-            }
-        }
-        textView.text = ""
     }
 
     @JvmStatic
@@ -135,13 +116,8 @@ object MountainPassBindingAdapters {
 
                 return
             } else {
-                if (pass.forecasts.isNotEmpty()) {
-                    val forecast = pass.forecasts[0]
-                    textView.text = Html.fromHtml("<b>Weather: </b>" + forecast.forecastText)
-                    return
-                }
+                textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
             }
-            textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
         }
     }
 
