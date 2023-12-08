@@ -98,8 +98,9 @@ class BridgeAlertRepository @Inject constructor(
 
             val alert = BridgeAlert(
                 alertItem.bridgeOpeningId,
-                alertItem.bridgeLocation.description,
                 alertItem.status,
+                alertItem.bridgeLocation.description,
+                alertItem.bridgeLocation.description,
                 alertItem.bridgeLocation.latitude,
                 alertItem.bridgeLocation.longitude,
                 alertItem.eventText,

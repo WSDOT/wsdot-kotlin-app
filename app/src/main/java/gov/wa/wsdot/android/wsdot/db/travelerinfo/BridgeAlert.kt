@@ -6,6 +6,7 @@ import java.util.*
 @Entity(primaryKeys = ["alertId"])
 data class BridgeAlert(
     val alertId: Int,
+    val status: String?,
     var bridge: String,
     val title: String,
     val latitude: Double,
