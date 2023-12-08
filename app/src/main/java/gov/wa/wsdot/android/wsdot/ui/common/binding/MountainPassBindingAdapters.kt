@@ -29,25 +29,6 @@ object MountainPassBindingAdapters {
 
             }
         }
-
-    }
-
-
-    @JvmStatic
-    @BindingAdapter("bindPassWeatherSummary")
-    fun bindPassWeatherSummary(textView: TextView, pass: MountainPass) {
-
-        if (pass.weatherCondition.isNotEmpty()) {
-            textView.text = pass.weatherCondition.split(".")[0]
-            return
-        } else {
-            if (pass.forecasts.isNotEmpty()) {
-                val forecast = pass.forecasts[0]
-                textView.text = forecast.forecastText.split(".")[0]
-                return
-            }
-        }
-        textView.text = ""
     }
 
     @JvmStatic
@@ -135,13 +116,8 @@ object MountainPassBindingAdapters {
 
                 return
             } else {
-                if (pass.forecasts.isNotEmpty()) {
-                    val forecast = pass.forecasts[0]
-                    textView.text = Html.fromHtml("<b>Weather: </b>" + forecast.forecastText)
-                    return
-                }
+                textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
             }
-            textView.text = Html.fromHtml("<b>Weather: </b>" + "N/A")
         }
     }
 
@@ -152,7 +128,7 @@ object MountainPassBindingAdapters {
         imageView.setImageDrawable(null)
         imageView.visibility = View.GONE
 
-        if (!TextUtils.isEmpty(pass.weatherCondition)) {
+            if (!TextUtils.isEmpty(pass.weatherCondition) && !pass.weatherCondition.contains("No current information available")) {
             getIconFromForecast("day", pass.weatherCondition.split(".")[0])?.let {
                 imageView.setImageResource(it)
                 imageView.visibility = View.VISIBLE

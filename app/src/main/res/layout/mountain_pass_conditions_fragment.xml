@@ -32,6 +32,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_margin="8dp"
                 android:paddingTop="8dp"
+                android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
 
@@ -45,7 +46,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="8dp"
-                android:paddingTop="8dp"
                 android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>

@@ -10,8 +10,11 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.5"
+
+        // Updating to 4.4.0 causes crash when selecting notification check box.
         classpath 'com.google.gms:google-services:4.3.15'
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.8'
+
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
 
         // Updating to 2.0.0 causes error. Manifest merger failed.
         classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.2.0"

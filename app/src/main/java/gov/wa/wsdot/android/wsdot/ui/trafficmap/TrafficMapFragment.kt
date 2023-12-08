@@ -106,6 +106,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private var selectedCameraMarker: Marker? = null
     private var selectedAlertMarker: Marker? = null
 
+    var showTrafficLayer: Boolean = true
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
     var showMountainPasses: Boolean = true
@@ -234,6 +235,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
         showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+        showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
 
         mountainPassViewModel = ViewModelProvider(this, viewModelFactory)
             .get(MountainPassViewModel::class.java)
@@ -368,7 +370,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = false
 
-        mMap.isTrafficEnabled = true
+        if(showTrafficLayer) {
+            mMap.isTrafficEnabled = true
+        }
 
         mapLocationViewModel.mapLocation.removeObservers(viewLifecycleOwner)
         mapLocationViewModel.mapLocation.observe(viewLifecycleOwner, Observer {location ->
@@ -695,6 +699,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
     }
 
+    private fun setTrafficLayerVisibility(visibility: Boolean){
+            mMap.isTrafficEnabled = visibility
+    }
+
     private fun setRestAreaMarkerVisibility(visibility: Boolean){
         val collection = mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id))
         for (marker in collection.markers) {
@@ -807,9 +815,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mFab.addActionItem(getCameraClusterAction(), 0)
         mFab.addActionItem(getCameraVisibilityAction(), 1)
-        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 2)
-        mFab.addActionItem(getRestAreasVisibilityAction(), 3)
-        mFab.addActionItem(getMountainPassVisibilityAction(), 4)
+        mFab.addActionItem(getRestAreasVisibilityAction(), 2)
+        mFab.addActionItem(getMountainPassVisibilityAction(), 3)
+        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 4)
+        mFab.addActionItem(getTrafficLayerVisibilityAction(), 5)
 
         mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
 
@@ -898,6 +907,35 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_mountain_passes_visibility_action, icon)
             .setLabel(R.string.fab_mountain_passes_label)
+            .setFabImageTintColor(Color.WHITE)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getTrafficLayerVisibilityAction(): SpeedDialActionItem  {
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
+        var icon = R.drawable.ic_layers
+
+        if (!showTrafficLayer) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_traffic_layer_visibility_action, icon)
+            .setLabel(R.string.fab_traffic_layer_label)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1014,6 +1052,20 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     showAlerts = !show
 
                     mFab.replaceActionItem(actionItem, getHighwayAlertsVisibilityAction())
+
+                }
+
+                R.id.fab_traffic_layer_visibility_action -> {
+                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
+                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+                    val editor = settings.edit()
+                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), !show)
+                    editor.apply()
+
+                    setTrafficLayerVisibility(!show)
+                    showTrafficLayer = !show
+
+                    mFab.replaceActionItem(actionItem, getTrafficLayerVisibilityAction())
 
                 }
 
