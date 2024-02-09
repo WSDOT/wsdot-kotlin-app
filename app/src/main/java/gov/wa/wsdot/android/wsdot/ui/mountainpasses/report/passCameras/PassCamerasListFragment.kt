@@ -72,7 +72,7 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = cameraListViewModel
         binding = dataBinding
 
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        sharedElementReturnTransition = context?.let { TransitionInflater.from(it).inflateTransition(R.transition.move) }
 
         return dataBinding.root
 

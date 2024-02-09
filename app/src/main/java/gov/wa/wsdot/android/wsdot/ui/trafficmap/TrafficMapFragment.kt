@@ -231,7 +231,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         travelChartsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelChartsViewModel::class.java)
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
         showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
@@ -828,9 +828,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getHighwayAlertsVisibilityAction(): SpeedDialActionItem  {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
+        val showCameras = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -842,7 +842,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showCameras) {
+        if (!showCameras!!) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -857,9 +857,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getRestAreasVisibilityAction(): SpeedDialActionItem  {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+        val showRestAreas = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -871,7 +871,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showRestAreas) {
+        if (!showRestAreas!!) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -886,9 +886,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getMountainPassVisibilityAction(): SpeedDialActionItem  {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+        val showMountainPasses = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -900,7 +900,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showMountainPasses) {
+        if (!showMountainPasses!!) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -915,9 +915,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getTrafficLayerVisibilityAction(): SpeedDialActionItem  {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+        val showTrafficLayer = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -929,7 +929,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showTrafficLayer) {
+        if (!showTrafficLayer!!) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -944,9 +944,10 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getCameraVisibilityAction(): SpeedDialActionItem {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
+        val showCameras =
+            settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -958,7 +959,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_layers
 
-        if (!showCameras) {
+        if (!showCameras!!) {
             actionColor = resources.getColor(R.color.gray)
             icon = R.drawable.ic_layers_off
         }
@@ -973,9 +974,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     private fun getCameraClusterAction(): SpeedDialActionItem {
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showCameras = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
+        val showCameras = settings?.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
@@ -986,7 +987,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         var icon = R.drawable.ic_done
 
-        if (!showCameras) {
+        if (!showCameras!!) {
             actionColor = resources.getColor(R.color.gray)
         }
 
@@ -1003,52 +1004,68 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         actionItem?.let {
             when(it.id) {
                 R.id.fab_camera_visibility_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_cameras), !show)
-                    editor.apply()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_cameras), !show!!)
+                    editor?.apply()
 
-                    setCameraMarkerVisibility(!show)
+                    setCameraMarkerVisibility(!show!!)
 
                     mFab.replaceActionItem(actionItem, getCameraVisibilityAction())
 
                 }
 
                 R.id.fab_rest_area_visibility_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), !show)
-                    editor.apply()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), !show!!)
+                    editor?.apply()
 
-                    setRestAreaMarkerVisibility(!show)
+                    setRestAreaMarkerVisibility(!show!!)
                     showRestAreas = !show
 
                     mFab.replaceActionItem(actionItem, getRestAreasVisibilityAction())
                 }
 
                 R.id.fab_mountain_passes_visibility_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), !show)
-                    editor.apply()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), !show!!)
+                    editor?.apply()
 
-                    setMountainPassMarkerVisibility(!show)
+                    setMountainPassMarkerVisibility(!show!!)
                     showMountainPasses = !show
 
                     mFab.replaceActionItem(actionItem, getMountainPassVisibilityAction())
                 }
 
                 R.id.fab_highway_alert_visibility_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), !show)
-                    editor.apply()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), !show!!)
+                    editor?.apply()
 
-                    setHighwayAlertMarkerVisibility(!show)
+                    setHighwayAlertMarkerVisibility(!show!!)
                     showAlerts = !show
 
                     mFab.replaceActionItem(actionItem, getHighwayAlertsVisibilityAction())
@@ -1056,13 +1073,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.fab_traffic_layer_visibility_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val show = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), !show)
-                    editor.apply()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), !show!!)
+                    editor?.apply()
 
-                    setTrafficLayerVisibility(!show)
+                    setTrafficLayerVisibility(!show!!)
                     showTrafficLayer = !show
 
                     mFab.replaceActionItem(actionItem, getTrafficLayerVisibilityAction())
@@ -1070,11 +1091,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 R.id.fab_camera_cluster_action -> {
-                    val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                    val cluster = settings.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
-                    val editor = settings.edit()
-                    editor.putBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), !cluster)
-                    editor.commit()
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val cluster = settings?.getBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_cluster_cameras), !cluster!!)
+                    editor?.commit()
 
                     mCameraClusterManager.clearItems()
                     mCameraClusterManager.addItems(cameraClusterItems)

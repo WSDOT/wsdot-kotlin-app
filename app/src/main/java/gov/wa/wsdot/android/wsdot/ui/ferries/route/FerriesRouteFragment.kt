@@ -458,11 +458,11 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
             }
         }
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = settings.edit()
-        editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), latitude)
-        editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), longitude)
-        editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), zoom)
-        editor.commit()
+        val settings = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        val editor = settings?.edit()
+        editor?.putDouble(getString(R.string.user_preference_vessel_watch_latitude), latitude)
+        editor?.putDouble(getString(R.string.user_preference_vessel_watch_longitude), longitude)
+        editor?.putFloat(getString(R.string.user_preference_vessel_watch_zoom), zoom)
+        editor?.commit()
     }
 }

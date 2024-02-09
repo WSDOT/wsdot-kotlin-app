@@ -71,7 +71,8 @@ class ExpressLanesFragment: DaggerFragment(), Injectable {
         binding = dataBinding
 
         // animation
-        sharedElementReturnTransition = androidx.transition.TransitionInflater.from(context).inflateTransition(R.transition.move)
+        sharedElementReturnTransition =
+            context?.let { androidx.transition.TransitionInflater.from(it).inflateTransition(R.transition.move) }
 
         return dataBinding.root
 

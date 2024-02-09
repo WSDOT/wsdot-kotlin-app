@@ -128,43 +128,48 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         binding!!.lifecycleOwner = viewLifecycleOwner
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(context)
-        val showCameras = settings.getBoolean(getString(R.string.pref_key_show_fav_camera_inline), true)
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        val showCameras =
+            settings?.getBoolean(getString(R.string.pref_key_show_fav_camera_inline), true)
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = FavoritesListAdapter(
-            dataBindingComponent,
-            appExecutors,
-            this,
-            getOrderedViewTypes(context, resources),
-            showCameras,
-            { camera ->
-                navigateToCamera(camera)
-            },
-            { ferrySchedule ->
-                navigateToSchedule(ferrySchedule)
-            },
-            { mountainPass ->
-                navigateToMountainPass(mountainPass)
-            },
-            { crossing ->
-                navigateToBorderCameras(crossing)
-            },
-            { locationItem ->
-                navigateToLocation(locationItem)
-            },
-            { locationItem, locationItemView ->
-                showEditMenu(locationItem, locationItemView)
-            },
-            { sign, index ->
-                if (sign.trips.size > index) {
-                    navigateToTollMap(
-                        LatLng(sign.startLatitude, sign.startLongitude),
-                        LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
-                }
-            })
+        val adapter = showCameras?.let {
+            FavoritesListAdapter(
+                dataBindingComponent,
+                appExecutors,
+                this,
+                getOrderedViewTypes(context, resources),
+                it,
+                { camera ->
+                    navigateToCamera(camera)
+                },
+                { ferrySchedule ->
+                    navigateToSchedule(ferrySchedule)
+                },
+                { mountainPass ->
+                    navigateToMountainPass(mountainPass)
+                },
+                { crossing ->
+                    navigateToBorderCameras(crossing)
+                },
+                { locationItem ->
+                    navigateToLocation(locationItem)
+                },
+                { locationItem, locationItemView ->
+                    showEditMenu(locationItem, locationItemView)
+                },
+                { sign, index ->
+                    if (sign.trips.size > index) {
+                        navigateToTollMap(
+                            LatLng(sign.startLatitude, sign.startLongitude),
+                            LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
+                    }
+                })
+        }
 
-        this.adapter = adapter
+        if (adapter != null) {
+            this.adapter = adapter
+        }
 
         addFavoriteItemTouchHelper(this.adapter, binding!!.favoritesList)
 
@@ -180,43 +185,43 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         favoritesListViewModel.favoriteTravelTimes.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setTravelTimes(it)
+                adapter?.setTravelTimes(it)
             }
         })
 
         favoritesListViewModel.favoriteCameras.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setCameras(it)
+                adapter?.setCameras(it)
             }
         })
 
         favoritesListViewModel.favoriteFerrySchedules.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setFerrySchedules(it)
+                adapter?.setFerrySchedules(it)
             }
         })
 
         favoritesListViewModel.favoriteMountainPasses.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setMountainPasses(it)
+                adapter?.setMountainPasses(it)
             }
         })
 
         favoritesListViewModel.favoriteBorderCrossings.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let{
-                adapter.setBorderCrossings(it)
+                adapter?.setBorderCrossings(it)
             }
         })
 
         favoritesListViewModel.favoriteLocations.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setLocations(it)
+                adapter?.setLocations(it)
             }
         })
 
         favoritesListViewModel.favoriteTollSigns.observe(viewLifecycleOwner, Observer { favItems ->
             favItems?.let {
-                adapter.setTollSign(it)
+                adapter?.setTollSign(it)
             }
         })
 
@@ -538,12 +543,12 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
     @SuppressLint("ApplySharedPref")
     private fun navigateToLocation(location: FavoriteLocation) {
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        val editor = settings.edit()
-        editor.putDouble(getString(R.string.user_preference_traffic_map_latitude), location.latitude)
-        editor.putDouble(getString(R.string.user_preference_traffic_map_longitude), location.longitude)
-        editor.putFloat(getString(R.string.user_preference_traffic_map_zoom), location.zoom)
-        editor.apply()
+        val settings = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        val editor = settings?.edit()
+        editor?.putDouble(getString(R.string.user_preference_traffic_map_latitude), location.latitude)
+        editor?.putDouble(getString(R.string.user_preference_traffic_map_longitude), location.longitude)
+        editor?.putFloat(getString(R.string.user_preference_traffic_map_zoom), location.zoom)
+        editor?.apply()
 
         mapLocationViewModel.updateLocation(MapLocationItem(
             LatLng(location.latitude, location.longitude),
@@ -576,30 +581,44 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
             val orderedViewTypes = mutableListOf<Int>()
 
-            val settings = PreferenceManager.getDefaultSharedPreferences(context)
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
-            orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_seven), ITEM_TYPE_TOLL_SIGN))
+            val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_one), ITEM_TYPE_FERRY))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_two), ITEM_TYPE_MOUNTAIN_PASS))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_three), ITEM_TYPE_TRAVEL_TIME))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_four), ITEM_TYPE_BORDER_CROSSING))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_five), ITEM_TYPE_LOCATION))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_six), ITEM_TYPE_CAMERA))
+            }
+            if (settings != null) {
+                orderedViewTypes.add(settings.getInt(resources.getString(R.string.favorites_seven), ITEM_TYPE_TOLL_SIGN))
+            }
 
             return orderedViewTypes
         }
 
         fun setOrderedViewTypes(context: Context?, resources: Resources, orderedViewTypes: IntArray) {
             if(orderedViewTypes.size == 7) {
-                val settings = PreferenceManager.getDefaultSharedPreferences(context)
-                val editor = settings.edit()
-                editor.putInt(resources.getString(R.string.favorites_one), orderedViewTypes[0])
-                editor.putInt(resources.getString(R.string.favorites_two), orderedViewTypes[1])
-                editor.putInt(resources.getString(R.string.favorites_three), orderedViewTypes[2])
-                editor.putInt(resources.getString(R.string.favorites_four), orderedViewTypes[3])
-                editor.putInt(resources.getString(R.string.favorites_five), orderedViewTypes[4])
-                editor.putInt(resources.getString(R.string.favorites_six), orderedViewTypes[5])
-                editor.putInt(resources.getString(R.string.favorites_seven), orderedViewTypes[6])
-                editor.apply()
+                val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+                val editor = settings?.edit()
+                editor?.putInt(resources.getString(R.string.favorites_one), orderedViewTypes[0])
+                editor?.putInt(resources.getString(R.string.favorites_two), orderedViewTypes[1])
+                editor?.putInt(resources.getString(R.string.favorites_three), orderedViewTypes[2])
+                editor?.putInt(resources.getString(R.string.favorites_four), orderedViewTypes[3])
+                editor?.putInt(resources.getString(R.string.favorites_five), orderedViewTypes[4])
+                editor?.putInt(resources.getString(R.string.favorites_six), orderedViewTypes[5])
+                editor?.putInt(resources.getString(R.string.favorites_seven), orderedViewTypes[6])
+                editor?.apply()
             }
         }
     }

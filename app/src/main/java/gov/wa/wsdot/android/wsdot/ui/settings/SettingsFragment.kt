@@ -36,14 +36,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         super.onResume()
         // Set up a listener whenever a key changes
         preferenceScreen.sharedPreferences
-            .registerOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)
+            ?.registerOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)
     }
 
     override fun onPause() {
         super.onPause()
         // Unregister the listener whenever a key changes
         preferenceScreen.sharedPreferences
-            .unregisterOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)
+            ?.unregisterOnSharedPreferenceChangeListener(activity as SharedPreferences.OnSharedPreferenceChangeListener)
     }
 
     private fun navigateToFavSortSetting(){

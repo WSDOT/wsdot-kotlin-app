@@ -82,7 +82,7 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
         binding = dataBinding
 
         // animation
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(R.transition.move)
+        sharedElementReturnTransition = context?.let { TransitionInflater.from(it).inflateTransition(R.transition.move) }
 
         return dataBinding.root
 
