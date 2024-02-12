@@ -13,8 +13,7 @@ class TravelTimeListViewModel @Inject constructor(travelTimesRepository: TravelT
     private val _travelTimeQuery: MutableLiveData<TravelTimeQuery> = MutableLiveData()
 
     // used for loading & display status
-    private var travelTimesLiveDate: LiveData<Resource<List<TravelTime>>> = Transformations
-        .switchMap(_travelTimeQuery) { input ->
+    private var travelTimesLiveDate: LiveData<Resource<List<TravelTime>>> = _travelTimeQuery.switchMap { input ->
             input.ifExists { queryText ->
                 repo.loadTravelTimesWithQuery(queryText, false)
             }
@@ -33,8 +32,7 @@ class TravelTimeListViewModel @Inject constructor(travelTimesRepository: TravelT
 
     fun refresh() {
         travelTimes.removeSource(travelTimesLiveDate)
-        travelTimesLiveDate = Transformations
-            .switchMap(_travelTimeQuery) { input ->
+        travelTimesLiveDate = _travelTimeQuery.switchMap { input ->
                 input.ifExists { queryText ->
                     repo.loadTravelTimesWithQuery(queryText, true)
                 }

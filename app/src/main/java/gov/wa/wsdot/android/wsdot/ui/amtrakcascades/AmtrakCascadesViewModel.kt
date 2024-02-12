@@ -24,8 +24,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     private val _departuresQuery: MutableLiveData<DeparturesQuery> = MutableLiveData()
 
     // repo data with departure information for route queried byu the _departuresQuery Class
-    private val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = Transformations
-        .switchMap(_departuresQuery) { input ->
+    private val departures: LiveData<Resource<List<AmtrakScheduleResponse>>> = _departuresQuery.switchMap { input ->
             input.ifExists { date, fromLocation, toLocation ->
                 amtrakCascadesRepository.getDestinations(statusDate = date, fromLocation = fromLocation, toLocation = toLocation)
             }

@@ -2,8 +2,9 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.ui.cameras.DataBoundCameraListViewModel
@@ -18,18 +19,15 @@ class TerminalCamerasViewModel @Inject constructor(cameraRepository: CameraRepos
     private val _terminalCameraQuery: MutableLiveData<TerminalCameraQuery> = MutableLiveData()
 
     // needed for loading status
-    override val cameras: LiveData<Resource<List<Camera>>> = Transformations
-        .switchMap(_terminalCameraQuery) { input ->
+    override val cameras: LiveData<Resource<List<Camera>>> = _terminalCameraQuery.switchMap { input ->
             input.ifExists {
                 cameraRepository.loadCamerasOnRoad("Ferries", false)
             }
         }
 
     // used for display
-    val terminalCameras: LiveData<List<Camera>> = Transformations
-        .switchMap(_terminalCameraQuery) { input ->
-            input.ifExists { terminalId ->
-                Transformations.map(cameras) {
+    val terminalCameras: LiveData<List<Camera>> = _terminalCameraQuery.switchMap { input ->
+            input.ifExists { terminalId -> cameras.map {
                     processTerminalCameras(terminalId, it.data)
                 }
             }

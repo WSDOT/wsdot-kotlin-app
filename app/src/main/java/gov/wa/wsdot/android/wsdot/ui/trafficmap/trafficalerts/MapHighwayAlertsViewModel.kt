@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
@@ -15,8 +15,7 @@ class MapHighwayAlertsViewModel @Inject constructor(highwayAlertRepository: High
 
     private val _alertQueryLatLng: MutableLiveData<LatLngBoundQuery> = MutableLiveData()
 
-    val alerts: LiveData<Resource<List<HighwayAlert>>> = Transformations
-        .switchMap(_alertQueryLatLng) { input ->
+    val alerts: LiveData<Resource<List<HighwayAlert>>> = _alertQueryLatLng.switchMap { input ->
             input.ifExists { bounds, refresh ->
 
                 highwayAlertRepository.loadHighwayAlertsInBounds(bounds, refresh)

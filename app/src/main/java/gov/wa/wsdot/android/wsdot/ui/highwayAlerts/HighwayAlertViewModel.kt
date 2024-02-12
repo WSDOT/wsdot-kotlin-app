@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.highwayAlerts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
 import gov.wa.wsdot.android.wsdot.repository.HighwayAlertRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -16,8 +16,7 @@ class HighwayAlertViewModel @Inject constructor(highwayAlertsRepository: Highway
 
     private val repo = highwayAlertsRepository
 
-    val alert: LiveData<Resource<HighwayAlert>> = Transformations
-        .switchMap(_alertQuery) { input ->
+    val alert: LiveData<Resource<HighwayAlert>> = _alertQuery.switchMap { input ->
             input.ifExists {
                 highwayAlertsRepository.loadHighwayAlert(it)
             }

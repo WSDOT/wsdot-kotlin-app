@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
 import gov.wa.wsdot.android.wsdot.repository.TollRateRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -15,8 +15,7 @@ class TollRateTableViewModel @Inject constructor(tollRateRepository: TollRateRep
     val route: LiveData<Route>
         get() = _route
 
-    val tollTable : LiveData<Resource<TollRateTable>> = Transformations
-        .switchMap(_route) { route ->
+    val tollTable : LiveData<Resource<TollRateTable>> = _route.switchMap { route ->
             tollRateRepository.loadTollTableForRoute(route.route, false)
         }
 

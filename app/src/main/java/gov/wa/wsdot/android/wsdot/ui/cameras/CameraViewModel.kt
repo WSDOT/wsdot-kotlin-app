@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.cameras
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -20,8 +20,7 @@ class CameraViewModel @Inject constructor(cameraRepository: CameraRepository) : 
 
     private val repo = cameraRepository
 
-    val camera: LiveData<Resource<Camera>> = Transformations
-        .switchMap(_cameraQuery) { input ->
+    val camera: LiveData<Resource<Camera>> = _cameraQuery.switchMap { input ->
             input.ifExists {
                 cameraRepository.loadCamera(it)
             }

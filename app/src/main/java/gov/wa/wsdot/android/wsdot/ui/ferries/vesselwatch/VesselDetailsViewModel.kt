@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.repository.VesselRepository
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
@@ -16,8 +16,7 @@ class VesselDetailsViewModel @Inject constructor(vesselRepository: VesselReposit
 
     private val _vesselQuery: MutableLiveData<VesselQuery> = MutableLiveData()
 
-    val vessel: LiveData<Resource<Vessel>> = Transformations
-        .switchMap(_vesselQuery) { input ->
+    val vessel: LiveData<Resource<Vessel>> = _vesselQuery.switchMap { input ->
             input.ifExists {
                 vesselRepository.loadVessel(it)
             }
