@@ -122,7 +122,7 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 var lat = alert.data.latitude
                 var long = alert.data.longitude
-                var zoom = 14.0f
+                var zoom = 12.0f
 
                 if (lat == 0.0 && long == 0.0) {
                     lat = 47.7511

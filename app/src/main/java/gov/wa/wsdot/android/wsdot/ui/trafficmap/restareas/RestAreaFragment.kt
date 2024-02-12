@@ -120,7 +120,7 @@ class RestAreaFragment: DaggerFragment(), Injectable, OnMapReadyCallback {
 
             val restArea = (restAreas.filter { it.description == args.description }).first()
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(restArea.latitude, restArea.longitude), 14.0f))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(restArea.latitude, restArea.longitude), 12.0f))
             mMap.addMarker(
                 MarkerOptions()
                     .position(LatLng(restArea.latitude, restArea.longitude))

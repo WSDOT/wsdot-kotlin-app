@@ -166,7 +166,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera)
                 val cameraLocation = LatLng(cameraResponse.data.latitude, cameraResponse.data.longitude)
 
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 14.0f))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraLocation, 12.0f))
                 mMap.addMarker(
                     MarkerOptions()
                         .position(cameraLocation)
