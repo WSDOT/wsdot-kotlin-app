@@ -97,8 +97,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         map:cameraZoom="12"
-                        map:mapType="normal"
-                        map:liteMode="true"/>
+                        map:mapType="normal"/>
                 </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
