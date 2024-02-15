@@ -95,7 +95,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+
+    // Updating to 18.2.0 causes periodic load issues with the Google Map traffic layer.
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-analytics:21.3.0'
