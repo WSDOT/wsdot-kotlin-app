@@ -105,7 +105,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navBorderCrossingsFragment,
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
-                R.id.navAmtrakCascadesFragment
+                R.id.navAmtrakCascadesFragment,
+                R.id.navNotificationsFragment,
+                R.id.navAboutFragment,
+                R.id.navSettingsFragment
             ), drawerLayout
         )
 
