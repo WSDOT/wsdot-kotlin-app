@@ -100,7 +100,7 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
 
     override fun shouldRenderAsCluster(cluster: Cluster<CameraClusterItem>?): Boolean {
         mContext?.let {
-            val settings = PreferenceManager.getDefaultSharedPreferences(mContext)
+            val settings = PreferenceManager.getDefaultSharedPreferences(mContext!!)
             val shouldCluster = settings.getBoolean(it.getString(R.string.user_preference_traffic_map_cluster_cameras), true)
             if (!shouldCluster) {
                 return shouldCluster
@@ -120,7 +120,7 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
 
     private fun isVisible(): Boolean {
         mContext?.let {
-            val settings = PreferenceManager.getDefaultSharedPreferences(mContext)
+            val settings = PreferenceManager.getDefaultSharedPreferences(mContext!!)
             return settings.getBoolean(it.getString(R.string.user_preference_traffic_map_show_cameras), true)
         }
         return true

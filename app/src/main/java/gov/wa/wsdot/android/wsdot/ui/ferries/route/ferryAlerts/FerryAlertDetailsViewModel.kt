@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.ferries.FerryAlert
 import gov.wa.wsdot.android.wsdot.repository.FerriesRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -13,8 +13,7 @@ class FerryAlertDetailsViewModel @Inject constructor(ferryRepository: FerriesRep
 
     private val _ferryAlertQuery: MutableLiveData<FerryAlertsQuery> = MutableLiveData()
 
-    val ferryAlert: LiveData<Resource<FerryAlert>> = Transformations
-        .switchMap(_ferryAlertQuery) { input ->
+    val ferryAlert: LiveData<Resource<FerryAlert>> = _ferryAlertQuery.switchMap { input ->
             input.ifExists { alertId ->
                 ferryRepository.loadFerryAlert(alertId)
             }

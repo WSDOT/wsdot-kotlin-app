@@ -133,8 +133,10 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-        showCameras = settings.getBoolean(getString(R.string.user_preference_vessel_watch_cameras), true)
+        val settings = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        if (settings != null) {
+            showCameras = settings.getBoolean(getString(R.string.user_preference_vessel_watch_cameras), true)
+        }
 
         vesselViewModel.setShowCameras(showCameras)
 
@@ -195,15 +197,18 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             checkAppPermissions()
         }
 
-        val settings = PreferenceManager.getDefaultSharedPreferences(activity)
+        val settings = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val latitude = settings.getDouble(getString(R.string.user_preference_vessel_watch_latitude), 47.583571)
-        val longitude = settings.getDouble(getString(R.string.user_preference_vessel_watch_longitude), -122.473468)
-        val zoom = settings.getFloat(getString(R.string.user_preference_vessel_watch_zoom), 10f)
+        val latitude =
+            settings?.getDouble(getString(R.string.user_preference_vessel_watch_latitude), 47.583571)
+        val longitude =
+            settings?.getDouble(getString(R.string.user_preference_vessel_watch_longitude), -122.473468)
+        val zoom = settings?.getFloat(getString(R.string.user_preference_vessel_watch_zoom), 10f)
 
-        val startLocation = LatLng(latitude, longitude)
+        val startLocation = latitude?.let { longitude?.let { it1 -> LatLng(it, it1) } }
 
-        mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, zoom))
+        startLocation?.let { zoom?.let { it1 -> CameraUpdateFactory.newLatLngZoom(it, it1) } }
+            ?.let { mMap?.moveCamera(it) }
         mMap?.setOnMarkerClickListener(this)
 
         vesselViewModel.vessels.observe(viewLifecycleOwner, Observer { vessels ->
@@ -266,9 +271,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         })
 
         binding.cameraVisibilityFab.setOnClickListener {
-            val editor = PreferenceManager.getDefaultSharedPreferences(activity).edit()
-            editor.putBoolean(getString(R.string.user_preference_vessel_watch_cameras), !showCameras)
-            editor.apply()
+            val editor = activity?.let { it1 -> PreferenceManager.getDefaultSharedPreferences(it1).edit() }
+            editor?.putBoolean(getString(R.string.user_preference_vessel_watch_cameras), !showCameras)
+            editor?.apply()
             showCameras = !showCameras
             vesselViewModel.setShowCameras(showCameras)
 
@@ -289,12 +294,12 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onPause() {
 
         mMap?.let { map ->
-            val settings = PreferenceManager.getDefaultSharedPreferences(activity)
-            val editor = settings.edit()
-            editor.putDouble(getString(R.string.user_preference_vessel_watch_latitude), map.projection.visibleRegion.latLngBounds.center.latitude)
-            editor.putDouble(getString(R.string.user_preference_vessel_watch_longitude), map.projection.visibleRegion.latLngBounds.center.longitude)
-            editor.putFloat(getString(R.string.user_preference_vessel_watch_zoom), map.cameraPosition.zoom)
-            editor.apply()
+            val settings = activity?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+            val editor = settings?.edit()
+            editor?.putDouble(getString(R.string.user_preference_vessel_watch_latitude), map.projection.visibleRegion.latLngBounds.center.latitude)
+            editor?.putDouble(getString(R.string.user_preference_vessel_watch_longitude), map.projection.visibleRegion.latLngBounds.center.longitude)
+            editor?.putFloat(getString(R.string.user_preference_vessel_watch_zoom), map.cameraPosition.zoom)
+            editor?.apply()
         }
 
         vesselUpdateHandler.removeCallbacks(vesselUpdateTask)

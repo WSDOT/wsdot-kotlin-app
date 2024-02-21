@@ -27,13 +27,11 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
     private val _routeIdQuery: MutableLiveData<RouteIdQuery> = MutableLiveData()
 
     // used by day picker to present available sailing dates.
-    val scheduleRange: LiveData<FerryScheduleRange> = Transformations
-        .switchMap(_routeIdQuery) { routeId ->
+    val scheduleRange: LiveData<FerryScheduleRange> = _routeIdQuery.switchMap { routeId ->
             ferriesRepository.loadScheduleRange(routeId.routeId)
         }
 
-    private val _route : LiveData<Resource<FerrySchedule>> = Transformations
-        .switchMap(_routeIdQuery) { routeId ->
+    private val _route : LiveData<Resource<FerrySchedule>> = _routeIdQuery.switchMap { routeId ->
             ferriesRepository.loadSchedule(routeId.routeId, routeId.needsRefresh)
         }
 
@@ -46,8 +44,7 @@ class FerriesRouteViewModel @Inject constructor(ferriesRepository: FerriesReposi
     }
 
     // Used by spinner
-    val terminals : LiveData<Resource<List<TerminalCombo>>> = Transformations
-        .switchMap(_routeIdQuery) { routeId ->
+    val terminals : LiveData<Resource<List<TerminalCombo>>> = _routeIdQuery.switchMap { routeId ->
             ferriesRepository.loadTerminalCombos(routeId.routeId, routeId.needsRefresh)
         }
 

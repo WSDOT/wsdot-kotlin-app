@@ -35,14 +35,12 @@ class TollSignsViewModel @Inject constructor(
         Pair("Southbound", "S")
     )
 
-    private val _tollSigns: LiveData<Resource<List<TollSign>>> = Transformations
-        .switchMap(_route) { route ->
+    private val _tollSigns: LiveData<Resource<List<TollSign>>> = _route.switchMap { route ->
             tollSignRepository.loadTollSignsOnRouteForDirection(route.route, route.direction, route.needsRefresh)
         }
 
 
-    private val _tollTravelTimes: LiveData<Resource<List<TravelTime>>> = Transformations
-        .switchMap(_travelTimeQuery) { input ->
+    private val _tollTravelTimes: LiveData<Resource<List<TravelTime>>> = _travelTimeQuery.switchMap { input ->
             input.ifExists { id1, id2 ->
                 travelTimeRepo.loadTravelTimesWithIDs(listOf(id1, id2), false)
             }

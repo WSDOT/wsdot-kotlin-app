@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.cameras
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -19,8 +19,7 @@ class CameraListViewModel @Inject constructor(cameraRepository: CameraRepository
     private val _camerasQuery: MutableLiveData<CamerasQuery> = MutableLiveData()
 
     // used for loading & display status
-    override val cameras: LiveData<Resource<List<Camera>>> = Transformations
-        .switchMap(_camerasQuery) { input ->
+    override val cameras: LiveData<Resource<List<Camera>>> = _camerasQuery.switchMap { input ->
             input.ifExists { cameraIds ->
                 cameraRepo.loadCamerasWithIds(cameraIds, false)
             }

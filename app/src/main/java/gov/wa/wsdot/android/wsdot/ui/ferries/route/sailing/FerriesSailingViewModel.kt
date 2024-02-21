@@ -21,22 +21,19 @@ class FerriesSailingViewModel @Inject constructor(ferriesRepository: FerriesRepo
 
     private val _sailingQuery: MutableLiveData<SailingQuery> = MutableLiveData()
 
-    private val sailings: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
-        .switchMap(_sailingQuery) { input ->
+    private val sailings: LiveData<Resource<List<FerrySailingWithStatus>>> = _sailingQuery.switchMap { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 ferriesRepository.loadSailings(routeId, departingId, arrivingId, sailingDate, false)
             }
         }
 
-    private val spaces: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
-        .switchMap(_sailingQuery) { input ->
+    private val spaces: LiveData<Resource<List<FerrySailingWithStatus>>> = _sailingQuery.switchMap { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 ferriesRepository.loadSpaces(routeId, departingId, arrivingId, sailingDate)
             }
         }
 
-    private val vessels: LiveData<Resource<List<FerrySailingWithStatus>>> = Transformations
-        .switchMap(_sailingQuery) { input ->
+    private val vessels: LiveData<Resource<List<FerrySailingWithStatus>>> = _sailingQuery.switchMap { input ->
             input.ifExists { routeId, departingId, arrivingId, sailingDate ->
                 vesselRepository.loadSailingWithVessels(routeId, departingId, arrivingId, sailingDate, true)
             }

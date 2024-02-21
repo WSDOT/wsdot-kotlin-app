@@ -63,7 +63,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        map:cameraZoom="13"
+                        map:cameraZoom="12"
                         map:mapType="normal"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

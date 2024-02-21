@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlert
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.util.AbsentLiveData
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -16,8 +16,7 @@ class BridgeAlertViewModel @Inject constructor(bridgeAlertsRepository: BridgeAle
 
     private val repo = bridgeAlertsRepository
 
-    val alert: LiveData<Resource<BridgeAlert>> = Transformations
-        .switchMap(_alertQuery) { input ->
+    val alert: LiveData<Resource<BridgeAlert>> = _alertQuery.switchMap { input ->
             input.ifExists {
                 bridgeAlertsRepository.loadBridgeAlert(it, true)
             }

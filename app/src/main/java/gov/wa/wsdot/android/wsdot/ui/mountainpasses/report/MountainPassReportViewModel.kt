@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
 import gov.wa.wsdot.android.wsdot.repository.MountainPassRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -17,8 +17,7 @@ class MountainPassReportViewModel @Inject constructor(mountainPassRepository: Mo
     val passId: LiveData<PassId>
         get() = _passId
 
-    val pass : LiveData<Resource<MountainPass>> = Transformations
-        .switchMap(_passId) { passId ->
+    val pass : LiveData<Resource<MountainPass>> = _passId.switchMap { passId ->
             mountainPassRepository.loadPass(passId.passId, passId.needsRefresh)
         }
 

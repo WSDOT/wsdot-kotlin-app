@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.bordercrossings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.bordercrossing.BorderCrossing
 import gov.wa.wsdot.android.wsdot.repository.BorderCrossingRepository
 import gov.wa.wsdot.android.wsdot.model.common.Resource
@@ -21,8 +21,7 @@ class BorderCrossingViewModel @Inject constructor(borderCrossingRepository: Bord
 
     private val _crossingDirection: MutableLiveData<CrossingDirection> = MutableLiveData()
 
-    val crossings : LiveData<Resource<List<BorderCrossing>>> = Transformations
-        .switchMap(_crossingDirection) { crossingDirection ->
+    val crossings : LiveData<Resource<List<BorderCrossing>>> = _crossingDirection.switchMap { crossingDirection ->
             borderCrossingRepository.loadCrossingsForDirection(crossingDirection.direction, crossingDirection.needsRefresh)
         }
 

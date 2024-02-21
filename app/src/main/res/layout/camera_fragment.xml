@@ -74,13 +74,13 @@
                         xmlns:map="http://schemas.android.com/apk/res-auto"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:id="@+id/map"
-                        android:layout_height="240dp"
+                        android:layout_height="300dp"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/mapView"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        map:cameraZoom="15"
+                        map:cameraZoom="12"
                         map:mapType="normal"/>
                 </com.google.android.material.card.MaterialCardView>
 

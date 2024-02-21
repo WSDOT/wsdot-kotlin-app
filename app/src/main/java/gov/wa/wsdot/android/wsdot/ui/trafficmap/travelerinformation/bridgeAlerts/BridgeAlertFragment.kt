@@ -106,7 +106,25 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 }
 
             } else {
-                mMap.setMapStyle(null)
+                try {
+                    // Customise the styling of the base map using a JSON object defined
+                    // in a raw resource file.
+                    val success: Boolean = mMap.setMapStyle(
+                        MapStyleOptions.loadRawResourceStyle(
+                            it, R.raw.googlemapstyle
+                        )
+                    )
+                    if (!success) {
+                        Log.e("debug", "Style parsing failed.")
+                        mMap.setMapStyle(null)
+
+                    } else {
+                        Log.e("debug", "Style parsing failed.")
+
+                    }
+                } catch (e: Resources.NotFoundException) {
+                    Log.e("debug", "Can't find style. Error: ", e)
+                }
             }
         }
 
@@ -122,7 +140,7 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 var lat = alert.data.latitude
                 var long = alert.data.longitude
-                var zoom = 14.0f
+                var zoom = 12.0f
 
                 if (lat == 0.0 && long == 0.0) {
                     lat = 47.7511

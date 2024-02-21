@@ -2,8 +2,8 @@ package gov.wa.wsdot.android.wsdot.ui.bordercrossings.bordercameras
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.repository.CameraRepository
 import gov.wa.wsdot.android.wsdot.ui.cameras.DataBoundCameraListViewModel
@@ -20,8 +20,7 @@ class BorderCameraListViewModel @Inject constructor(cameraRepository: CameraRepo
     private val _cameraQuery: MutableLiveData<BorderCamerasQuery> = MutableLiveData()
 
     // used for loading & display status
-    override val cameras: LiveData<Resource<List<Camera>>> = Transformations
-        .switchMap(_cameraQuery) { input ->
+    override val cameras: LiveData<Resource<List<Camera>>> =_cameraQuery.switchMap { input ->
             input.ifExists { roadName, latitude ->
                 cameraRepo.loadCamerasOnRoadNorthOf(roadName, latitude, false)
             }

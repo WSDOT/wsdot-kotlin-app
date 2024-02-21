@@ -29,8 +29,7 @@ class TwitterViewModel @Inject constructor(twitterRepository: TwitterRepository)
         _selectedTwitterAccount.value = twitterAccounts[0]
     }
 
-    val tweets: LiveData<Resource<List<Tweet>>> = Transformations
-        .switchMap(_selectedTwitterAccount) {
+    val tweets: LiveData<Resource<List<Tweet>>> = _selectedTwitterAccount.switchMap {
             it?.let { it1 -> twitterRepository.loadTweetsForAccount(it1.second, false) }
         }
 
