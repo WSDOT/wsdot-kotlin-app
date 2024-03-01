@@ -73,7 +73,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getNotificationIntent(data: MutableMap<String, String>): PendingIntent {
 
         val type = data["type"]
