@@ -526,7 +526,7 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         
         if (findNavController().currentDestination?.id != R.id.navBorderCameraListFragment) {
 
-            val action = if (borderCrossing.direction.toLowerCase(Locale.ENGLISH) == "northbound") {
+            val action = if (borderCrossing.direction.lowercase(Locale.ENGLISH) == "northbound") {
                 NavGraphDirections.actionGlobalNavBorderCameraListFragment(
                     BaseCrossingTimesFragment.northboundRoadNames[borderCrossing.route] ?: "Error",
                     BaseCrossingTimesFragment.northboundMinLats[borderCrossing.route] ?: "0.0",

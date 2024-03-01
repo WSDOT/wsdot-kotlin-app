@@ -53,7 +53,7 @@ class BorderCrossingTimesListAdapter(
         binding.crossing = item
 
         // only show if we have camera data for lane/route
-        if (item.direction.toLowerCase(Locale.ENGLISH) == "northbound" ) {
+        if (item.direction.lowercase(Locale.ENGLISH) == "northbound" ) {
             BaseCrossingTimesFragment.northboundRoadNames[binding.crossing?.route]?.let {
                 binding.crossingCamerasButton.visibility = VISIBLE
                 binding.crossingCamerasButton.setOnClickListener {
@@ -64,7 +64,7 @@ class BorderCrossingTimesListAdapter(
             }
         }
 
-        if (item.direction.toLowerCase(Locale.ENGLISH) == "southbound" ) {
+        if (item.direction.lowercase(Locale.ENGLISH) == "southbound" ) {
             BaseCrossingTimesFragment.southboundRoadNames[binding.crossing?.route]?.let {
                 binding.crossingCamerasButton.visibility = VISIBLE
                 binding.crossingCamerasButton.setOnClickListener {

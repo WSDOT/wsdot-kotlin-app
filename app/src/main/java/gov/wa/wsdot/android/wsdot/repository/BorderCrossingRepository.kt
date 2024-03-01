@@ -94,7 +94,7 @@ class BorderCrossingRepository @Inject constructor(
 
             // Only show northbound until further notice.
             // Accuracy of southbound times cannot be guaranteed indefinitely.
-            if (crossingItem.direction.toLowerCase(Locale.ENGLISH) == "northbound") {
+            if (crossingItem.direction.lowercase(Locale.ENGLISH) == "northbound") {
                 val crossing = BorderCrossing(
                     crossingId = crossingItem.id,
                     name = crossingItem.name,
