@@ -59,21 +59,25 @@ class NewsRepository @Inject constructor(
 
         for (newsItem in newsReleaseResponse.news.items) {
 
-            val news = NewsRelease(
-                newsItem.link,
-                newsItem.title,
-                newsItem.description,
-                parseNewsDate(newsItem.pubdate)
-            )
+            val news = parseNewsDate(newsItem.pubdate)?.let {
+                NewsRelease(
+                    newsItem.link,
+                    newsItem.title,
+                    newsItem.description,
+                    it
+                )
+            }
 
-            dbNewsList.add(news)
+            if (news != null) {
+                dbNewsList.add(news)
+            }
 
         }
 
         newsReleaseDao.updateNewsReleases(dbNewsList)
     }
 
-    private fun parseNewsDate(newsDate: String): Date {
+    private fun parseNewsDate(newsDate: String): Date? {
         val parseDateFormat = SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z") //e.g. "Wed, 14 Aug 2019 00:10:45 +0000"
         parseDateFormat.timeZone = TimeZone.getTimeZone("America/Los_Angeles")
         return parseDateFormat.parse(newsDate)
