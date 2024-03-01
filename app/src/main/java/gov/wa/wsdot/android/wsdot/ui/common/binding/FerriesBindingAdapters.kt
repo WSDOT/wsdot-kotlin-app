@@ -88,7 +88,7 @@ object FerriesBindingAdapters {
 
             val vesselName = when {
                 sailing.vesselName != null -> {
-                    sailing.vesselName.toUpperCase(Locale.ENGLISH) + " "
+                    sailing.vesselName.uppercase(Locale.ENGLISH) + " "
                 }
                 else -> { sailing.vesselName }
             }
