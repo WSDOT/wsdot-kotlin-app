@@ -10,7 +10,7 @@ data class HighwayAlert(
     val roadName: String?,
     val priority: String,
     val travelCenterPriorityId: Int?,
-    val category: String,
+    val category: String?,
     val eventCategoryTypeDescription: String?,
     val startLatitude: Double,
     val startLongitude: Double,
