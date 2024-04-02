@@ -78,12 +78,20 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             if (alert?.data != null) {
                 binding.highwayAlert = alert.data
 
-                mapLocationViewModel.updateLocation(
+                alert.data.displayLatitude?.let { alert.data.displayLongitude?.let { it1 ->
+                    LatLng(it,
+                        it1
+                    )
+                } }?.let {
                     MapLocationItem(
-                        LatLng(alert.data.startLatitude, alert.data.startLongitude),
+                        it,
                         12.0f
                     )
-                )
+                }?.let {
+                    mapLocationViewModel.updateLocation(
+                        it
+                    )
+                }
 
 
             }
@@ -157,8 +165,8 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 binding.highwayAlert = alert.data
 
-                var lat = alert.data.startLatitude
-                var long = alert.data.startLongitude
+                var lat = alert.data.displayLatitude
+                var long = alert.data.displayLongitude
                 var zoom = 12.0f
 
                 if (lat == 0.0 && long == 0.0) {
@@ -168,7 +176,7 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                 }
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    LatLng(lat, long),
+                    LatLng(lat!!, long!!),
                     zoom))
                 mMap.addMarker(
                     MarkerOptions()

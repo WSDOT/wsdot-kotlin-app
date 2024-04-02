@@ -27,8 +27,8 @@ class HighwayAlertListAdapter(
             return oldItem.headline == newItem.headline
                     && oldItem.localCacheDate == newItem.localCacheDate
                     && oldItem.travelCenterPriorityId == newItem.travelCenterPriorityId
-                    && oldItem.startLatitude == newItem.startLatitude
-                    && oldItem.startLongitude == newItem.startLongitude
+                    && oldItem.displayLatitude == newItem.displayLatitude
+                    && oldItem.displayLongitude == newItem.displayLongitude
         }
     }
 ) {
