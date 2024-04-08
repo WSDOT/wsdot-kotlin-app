@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -45,6 +46,8 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var mMap: GoogleMap
+
+    private var showTrafficLayer: Boolean = true
 
     var binding by autoCleared<CameraFragmentBinding>()
 
@@ -157,6 +160,13 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             }
         }
 
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
+        showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+
+
+        if(showTrafficLayer) {
+            mMap.isTrafficEnabled = true
+        }
 
         mMap.uiSettings.isMapToolbarEnabled = false
 
