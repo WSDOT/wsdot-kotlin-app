@@ -12,7 +12,7 @@ abstract class HighwayAlertDao {
     @Query("SELECT * FROM HighwayAlert")
     abstract fun loadHighwayAlerts(): LiveData<List<HighwayAlert>>
 
-    @Query("SELECT * FROM HighwayAlert WHERE priority = \"Highest\" OR (startLatitude == 0.0 AND startLongitude == 0.0)")
+    @Query("SELECT * FROM HighwayAlert WHERE priority = \"Highest\" OR eventCategoryType == \"Statewide\" OR eventCategoryType == \"Region\" OR eventCategoryType == \"County\"")
     abstract fun loadStatewideAndHighestImpactAlerts(): LiveData<List<HighwayAlert>>
 
     @Query("SELECT * FROM HighwayAlert WHERE alertId = :alertId")
