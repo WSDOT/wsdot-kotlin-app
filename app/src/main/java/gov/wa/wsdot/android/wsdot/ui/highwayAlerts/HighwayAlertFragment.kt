@@ -173,6 +173,13 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
                     lat = 47.7511
                     long = -120.7401
                     zoom = 6.0f
+
+                    mapLocationViewModel.updateLocation(
+                        MapLocationItem(
+                            LatLng(lat, long),
+                            zoom
+                        )
+                    )
                 }
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
