@@ -65,10 +65,11 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         TollSign::class,
         NotificationTopic::class
     ],
-    version = 4,
+    version = 5,
     autoMigrations = [
-        AutoMigration (from = 2, to = 4),
-        AutoMigration (from = 3, to = 4)
+        AutoMigration (from = 2, to = 5),
+        AutoMigration (from = 3, to = 5),
+        AutoMigration (from = 4, to = 5)
     ],
     exportSchema = true
 )

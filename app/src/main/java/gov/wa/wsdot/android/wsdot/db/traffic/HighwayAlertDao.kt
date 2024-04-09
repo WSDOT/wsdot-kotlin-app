@@ -12,13 +12,13 @@ abstract class HighwayAlertDao {
     @Query("SELECT * FROM HighwayAlert")
     abstract fun loadHighwayAlerts(): LiveData<List<HighwayAlert>>
 
-    @Query("SELECT * FROM HighwayAlert WHERE priority = \"Highest\" OR (startLatitude == 0.0 AND startLongitude == 0.0)")
+    @Query("SELECT * FROM HighwayAlert WHERE priority = \"Highest\" OR eventCategoryType == \"Statewide\" OR eventCategoryType == \"Region\" OR eventCategoryType == \"County\"")
     abstract fun loadStatewideAndHighestImpactAlerts(): LiveData<List<HighwayAlert>>
 
     @Query("SELECT * FROM HighwayAlert WHERE alertId = :alertId")
     abstract fun loadHighwayAlert(alertId: Int): LiveData<HighwayAlert>
 
-    @Query("SELECT * FROM HighwayAlert WHERE (startLatitude BETWEEN :minLat AND :maxLat) AND (startLongitude BETWEEN :minLng AND :maxLng)")
+    @Query("SELECT * FROM HighwayAlert WHERE (displayLatitude BETWEEN :minLat AND :maxLat) AND (displayLongitude BETWEEN :minLng AND :maxLng)")
     abstract fun loadHighwayAlertsInBounds(minLat: Double, maxLat: Double, minLng: Double, maxLng: Double): LiveData<List<HighwayAlert>>
 
     @Transaction

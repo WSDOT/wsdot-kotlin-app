@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -40,6 +41,8 @@ class RestAreaFragment: DaggerFragment(), Injectable, OnMapReadyCallback {
     private lateinit var mapFragment: SupportMapFragment
 
     private lateinit var mMap: GoogleMap
+
+    private var showTrafficLayer: Boolean = true
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -112,6 +115,14 @@ class RestAreaFragment: DaggerFragment(), Injectable, OnMapReadyCallback {
                     Log.e("debug", "Can't find style. Error: ", e)
                 }
             }
+        }
+
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
+        showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+
+
+        if(showTrafficLayer) {
+            mMap.isTrafficEnabled = true
         }
 
         mMap.uiSettings.isMapToolbarEnabled = false

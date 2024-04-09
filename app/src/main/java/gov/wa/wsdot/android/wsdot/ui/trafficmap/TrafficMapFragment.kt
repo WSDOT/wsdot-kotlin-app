@@ -421,8 +421,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 for (alert in alerts.data) {
 
                     // don't show alerts with coordinates (0,0)
-                    if (alert.startLatitude == 0.0
-                        && alert.startLongitude == 0.0) {
+                    if (alert.displayLatitude == 0.0
+                        && alert.displayLongitude == 0.0) {
                         continue
                     }
 
@@ -434,13 +434,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         else -> BitmapDescriptorFactory.fromResource(R.drawable.alert_low)
                     }
 
-                    val marker = mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).addMarker(
-                        MarkerOptions()
-                            .position(LatLng(alert.startLatitude, alert.startLongitude))
-                            .visible(showAlerts)
-                            .icon(alertIcon))
+                    if (alert.displayLatitude != null && alert.displayLongitude != null) {
+                        val marker =
+                            mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id))
+                                .addMarker(
+                                    MarkerOptions()
+                                        .position(
+                                            LatLng(
+                                                alert.displayLatitude,
+                                                alert.displayLongitude
+                                            )
+                                        )
+                                        .visible(showAlerts)
+                                        .icon(alertIcon)
+                                )
 
-                    highwayAlertMarkers[marker] = alert
+                        highwayAlertMarkers[marker] = alert
+                    }
                 }
             }
         })
@@ -534,11 +544,17 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
 
             selectedAlertMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
-                .addMarker(MarkerOptions()
-                    .zIndex(100f)
-                    .position(LatLng(alert .startLatitude, alert .startLongitude))
-                    .visible(true)
-                    .icon(icon))
+                .addMarker(alert.displayLatitude?.let { alert.displayLongitude?.let { it1 ->
+                    LatLng(it,
+                        it1
+                    )
+                } }?.let {
+                    MarkerOptions()
+                        .zIndex(100f)
+                        .position(it)
+                        .visible(true)
+                        .icon(icon)
+                })
 
             from(binding!!.cameraBottomSheet).state = STATE_HIDDEN
 

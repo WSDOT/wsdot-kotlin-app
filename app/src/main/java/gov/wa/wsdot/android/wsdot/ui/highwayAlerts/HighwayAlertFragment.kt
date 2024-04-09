@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -46,6 +47,8 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
+    private var showTrafficLayer: Boolean = true
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
@@ -78,12 +81,20 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             if (alert?.data != null) {
                 binding.highwayAlert = alert.data
 
-                mapLocationViewModel.updateLocation(
+                alert.data.displayLatitude?.let { alert.data.displayLongitude?.let { it1 ->
+                    LatLng(it,
+                        it1
+                    )
+                } }?.let {
                     MapLocationItem(
-                        LatLng(alert.data.startLatitude, alert.data.startLongitude),
+                        it,
                         12.0f
                     )
-                )
+                }?.let {
+                    mapLocationViewModel.updateLocation(
+                        it
+                    )
+                }
 
 
             }
@@ -141,6 +152,14 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
             }
         }
 
+        val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
+        showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
+
+
+        if(showTrafficLayer) {
+            mMap.isTrafficEnabled = true
+        }
+
         mMap.uiSettings.isMapToolbarEnabled = false
 
         alertViewModel.alert.observe(viewLifecycleOwner, Observer { alert ->
@@ -157,18 +176,25 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
                 binding.highwayAlert = alert.data
 
-                var lat = alert.data.startLatitude
-                var long = alert.data.startLongitude
+                var lat = alert.data.displayLatitude
+                var long = alert.data.displayLongitude
                 var zoom = 12.0f
 
                 if (lat == 0.0 && long == 0.0) {
                     lat = 47.7511
                     long = -120.7401
                     zoom = 6.0f
+
+                    mapLocationViewModel.updateLocation(
+                        MapLocationItem(
+                            LatLng(lat, long),
+                            zoom
+                        )
+                    )
                 }
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    LatLng(lat, long),
+                    LatLng(lat!!, long!!),
                     zoom))
                 mMap.addMarker(
                     MarkerOptions()
