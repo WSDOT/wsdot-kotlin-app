@@ -69,10 +69,6 @@ class TravelerInfoBottomSheetFragment:
             )
         )
 
-        listItems.add(
-            TravelerInfoMenuEventItem("Bridge Alerts", TravelerMenuItemType.BRIDGE_ALERTS)
-        )
-
         val listHeader = view.findViewById<TextView>(R.id.list_header)
         listHeader.text = "Traveler Information"
 
@@ -114,11 +110,6 @@ class TravelerInfoBottomSheetFragment:
             }
             TravelerMenuItemType.COMMERCIAL_VEHICLE_RESTRICTIONS -> {
                 val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://wsdot.com/travel/real-time/truck-restrictions", "Restrictions")
-                findNavController().navigate(action)
-            }
-            TravelerMenuItemType.BRIDGE_ALERTS -> {
-                val action =
-                    TravelerInfoBottomSheetFragmentDirections.actionNavTrafficMapFragmentToNavBridgeAlertsFragment()
                 findNavController().navigate(action)
             }
         }
