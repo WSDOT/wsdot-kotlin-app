@@ -41,6 +41,7 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
     private var hoodCanalBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
     private var firstAveBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
     private var interstateBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
+    private var newBridgeAdapter by autoCleared<BridgeAlertListAdapter>()
 
     // Toast
     private lateinit var toast: Toast
@@ -111,6 +112,11 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         this.interstateBridgeAdapter = interstateBridgeAdapter
         binding.interstateBridgeList.adapter = interstateBridgeAdapter
 
+        val newBridgeAdapter = BridgeAlertListAdapter(dataBindingComponent, appExecutors)
+        { alert -> navigateToAlert(alert) }
+        this.newBridgeAdapter = newBridgeAdapter
+        binding.newBridgeList.adapter = newBridgeAdapter
+
         // animations
         postponeEnterTransition()
         binding.hoodCanalBridgeList.viewTreeObserver
@@ -129,10 +135,17 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                 true
             }
 
+        binding.newBridgeList.viewTreeObserver
+            .addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
+
         bridgeAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alertResource ->
             val hoodCanalBridgeList: MutableList<BridgeAlert> = mutableListOf()
             val firstAveBridgeList: MutableList<BridgeAlert> = mutableListOf()
             val interstateBridgeList: MutableList<BridgeAlert> = mutableListOf()
+            val newBridgeList: MutableList<BridgeAlert> = mutableListOf()
 
             when (alertResource.status) {
                 Status.LOADING -> {
@@ -143,6 +156,7 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                         firstAveBridgeAdapter.submitList(emptyList())
                         hoodCanalBridgeAdapter.submitList(emptyList())
                         interstateBridgeAdapter.submitList(emptyList())
+                        newBridgeAdapter.submitList(emptyList())
                         showToast("Error Loading")
                 }
                 Status.SUCCESS -> {
@@ -177,15 +191,32 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                             bridgeAlerts("Interstate Bridge", false)
                         }
 
+                        for (bridge in alertResource.data) {
+                            if (bridge.bridge != "Hood Canal Bridge" && bridge.bridge != "1st Avenue South Bridge" && bridge.bridge != "Interstate Bridge") {
+                                newBridgeList.add(bridge)
+                                bridgeAlerts(bridge.bridge, true)
+                                new_bridge_header.visibility = VISIBLE
+
+                            }
+                        }
+                        if (newBridgeList.isEmpty()) {
+                            bridgeAlerts("", false)
+                            new_bridge_header.visibility = GONE
+
+                        }
+
                         hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList)
                         firstAveBridgeAdapter.submitList(firstAveBridgeList)
                         interstateBridgeAdapter.submitList(interstateBridgeList)
+                        newBridgeAdapter.submitList(newBridgeList)
+
                     }
                     else {
                         binding.bridgeLayout.visibility = GONE
                         firstAveBridgeAdapter.submitList(emptyList())
                         hoodCanalBridgeAdapter.submitList(emptyList())
                         interstateBridgeAdapter.submitList(emptyList())
+                        newBridgeAdapter.submitList(emptyList())
                         showToast("Error Loading")
                     }
                 }
@@ -212,6 +243,12 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                     binding.interstateBridgeEmptyView.visibility = GONE
                     binding.interstateBridgeEmptyListView.visibility = GONE
                 }
+
+                "Bridge Alerts" -> {
+                    binding.newBridgeList.visibility = VISIBLE
+                    binding.newBridgeEmptyView.visibility = GONE
+                    binding.newBridgeEmptyListView.visibility = GONE
+                }
             }
         } else {
             when (bridge) {
@@ -231,6 +268,13 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                         getString(R.string.no_bridge_alerts_string)
                     binding.interstateBridgeEmptyView.visibility = VISIBLE
                     binding.interstateBridgeEmptyListView.visibility = VISIBLE
+
+                }
+                "Bridge Alerts" -> {
+                    binding.newBridgeEmptyListView.text =
+                        getString(R.string.no_bridge_alerts_string)
+                    binding.newBridgeEmptyView.visibility = VISIBLE
+                    binding.newBridgeEmptyListView.visibility = VISIBLE
 
                 }
             }
