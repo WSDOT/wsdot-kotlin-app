@@ -77,6 +77,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/new_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             android:layout_below="@+id/new_bridge_header"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -134,6 +135,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/first_ave_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             android:layout_below="@+id/first_ave_bridge_header"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -191,6 +193,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/hood_canal_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             android:layout_below="@+id/hood_canal_bridge_header"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
@@ -248,6 +251,7 @@
 
                         <androidx.cardview.widget.CardView
                             android:id="@+id/interstate_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
                             android:layout_below="@+id/interstate_bridge_header"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
