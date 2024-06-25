@@ -205,9 +205,9 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
 
                         }
 
-                        hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList)
-                        firstAveBridgeAdapter.submitList(firstAveBridgeList)
-                        interstateBridgeAdapter.submitList(interstateBridgeList)
+                        hoodCanalBridgeAdapter.submitList(hoodCanalBridgeList.sortedByDescending{it.lastUpdatedTime})
+                        firstAveBridgeAdapter.submitList(firstAveBridgeList.sortedByDescending{it.lastUpdatedTime})
+                        interstateBridgeAdapter.submitList(interstateBridgeList.sortedByDescending{it.lastUpdatedTime})
                         newBridgeAdapter.submitList(newBridgeList)
 
                     }
