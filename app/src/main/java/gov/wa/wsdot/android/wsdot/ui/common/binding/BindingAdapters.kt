@@ -315,6 +315,18 @@ object BindingAdapters {
         }
     }
 
+    @JvmStatic
+    @BindingAdapter("bindOpeningTimeDate")
+    fun bindOpeningTimeDate(textView: TextView, date: Date?) {
+        if (date != null) {
+            textView.visibility = View.VISIBLE
+            date.let { textView.text = "Opening Time: " + getDateTimeStamp(it) }
+        }
+        else {
+            textView.visibility = View.GONE
+        }
+    }
+
     // Creates an updated timestamp from date object
     private fun getDateString(date: Date): String {
         val displayDateFormat = SimpleDateFormat("EEE, MMMM d", Locale.ENGLISH)

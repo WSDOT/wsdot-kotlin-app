@@ -1,12 +1,8 @@
 package gov.wa.wsdot.android.wsdot.repository
 
 import androidx.lifecycle.LiveData
-import com.google.android.gms.maps.model.LatLngBounds
 import gov.wa.wsdot.android.wsdot.api.WebDataService
-import gov.wa.wsdot.android.wsdot.api.response.traffic.HighwayAlertsResponse
 import gov.wa.wsdot.android.wsdot.api.response.travelerinfo.BridgeAlertResponse
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
-import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlertDao
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlert
 import gov.wa.wsdot.android.wsdot.db.travelerinfo.BridgeAlertDao
 import gov.wa.wsdot.android.wsdot.model.common.NetworkBoundResource
@@ -108,6 +104,7 @@ class BridgeAlertRepository @Inject constructor(
                 alertItem.eventText,
                 alertItem.travelCenterPriorityId,
                 parseBridgeDate(alertItem.openingTime),
+                alertItem.lastUpdatedTime?.substring(6, 19)?.let { Date(it.toLong()) },
                 Date()
             )
             dbAlertList.add(alert)

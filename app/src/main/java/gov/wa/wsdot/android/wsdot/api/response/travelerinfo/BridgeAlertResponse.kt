@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.api.response.travelerinfo
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 class BridgeAlertResponse (
     @field:SerializedName("BridgeOpeningId")
@@ -17,6 +18,8 @@ class BridgeAlertResponse (
     val eventText: String,
     @field:SerializedName("TravelCenterPriorityId")
     val travelCenterPriorityId: Int,
+    @field:SerializedName("LastUpdatedTime")
+    val lastUpdatedTime: String?,
     @field:SerializedName("BridgeLocation")
     val bridgeLocation: BridgeLocation
 ) {
