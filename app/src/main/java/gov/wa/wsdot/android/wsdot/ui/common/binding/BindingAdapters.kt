@@ -377,11 +377,19 @@ object BindingAdapters {
             val relativeDate = Date()
             val delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
             when {
-                delta < 60 -> "Just now"
-                delta < 120 -> "1 minute ago"
-                delta < 60 * 60 -> (delta / 60).toString() + " minutes ago"
-                delta < 120 * 60 -> "1 hour ago"
-                delta < 24 * 60 * 60 -> (delta / 3600).toString() + " hours ago"
+                delta < 60 -> "Just now" // < 1 minute
+                delta < 120 -> "1 minute ago" // < 2 minutes
+                delta < 3600 -> (delta / 60).toString() + " minutes ago" // < 1 hour
+                delta < 7200 -> "1 hour ago" // < 2 hours
+                delta < 86400 -> (delta / 3600).toString() + " hours ago" // < 1 day
+                delta < 172800 -> "1 day ago" // < 2 days
+                delta < 604800 -> (delta / 86400).toString() + " days ago" // < 7 days
+                delta < 1209600 -> "1 week ago" // < 14 days
+                delta < 2629800 -> (delta / 604800).toString() + " weeks ago" // < 1 month
+                delta < 5259600 -> "1 month ago" // < 2 months
+                delta < 31557600 -> (delta / 2629800).toString() + " months ago" // < 1 year
+                delta < 63115200 -> "1 year ago" // < 2 years
+                delta < 157788000 -> (delta / 31557600).toString() + " years ago" // < 5 years
                 else -> displayDateFormat.format(date)
             }
         } catch (e: Exception) {
