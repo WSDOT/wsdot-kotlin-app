@@ -24,6 +24,7 @@ import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import kotlinx.android.synthetic.main.bridge_alerts_fragment.*
+import java.util.*
 import javax.inject.Inject
 
 class BridgeAlertsFragment : DaggerFragment(), Injectable {
@@ -45,6 +46,8 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
 
     // Toast
     private lateinit var toast: Toast
+
+    lateinit var t: Timer
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -89,6 +92,11 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
 
         return dataBinding.root
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        t.cancel()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -222,6 +230,9 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                 }
             }
         })
+
+        startBridgeAlertTask()
+
     }
 
     private fun bridgeAlerts(bridge: String, visible: Boolean) {
@@ -313,4 +324,21 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         val action = NavGraphDirections.actionGlobalNavBridgeAlertFragment(alert.alertId, alert.bridge)
         findNavController().navigate(action)
     }
+
+    private fun startBridgeAlertTask() {
+        t = Timer()
+        t.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        bridgeAlertsViewModel.refresh()
+                    }
+                }
+            },
+            60000,
+            120000
+        )
+
+    }
+
 }
