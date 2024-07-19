@@ -47,7 +47,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:paddingBottom="8dp"
                         app:bindHTML="@{bridgeAlert.description}"
                         app:layout_constraintTop_toBottomOf="@id/alertRoadName"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -59,14 +58,6 @@
                         app:layout_constraintTop_toBottomOf="@id/alertTitle"
                         android:paddingBottom="8dp"
                         android:layout_height="match_parent">
-                    <TextView
-                        android:id="@+id/openingTime"
-                        style="@style/CardSubTitleText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        app:bindOpeningTimeDate="@{bridgeAlert.openingTime}"
-                        app:layout_constraintStart_toStartOf="parent" />
 
                     <TextView
                         android:id="@+id/timestamp"
@@ -75,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         app:bindRelativeDate="@{bridgeAlert.lastUpdatedTime}"
-                        app:layout_constraintTop_toBottomOf="@id/openingTime"
+                        app:layout_constraintTop_toBottomOf="@id/timeInfo"
                         app:layout_constraintStart_toStartOf="parent" />
                     </LinearLayout>
 

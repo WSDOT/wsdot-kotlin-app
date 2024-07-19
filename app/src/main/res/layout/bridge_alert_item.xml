@@ -44,21 +44,9 @@
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:paddingBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginEnd="@dimen/default_margin"/>
-
-            <TextView
-                android:id="@+id/openingTime"
-                style="@style/CardSubTitleText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:paddingBottom="8dp"
-                app:bindOpeningTimeDate="@{alert.openingTime}"
-                app:layout_constraintTop_toBottomOf="@id/subTitleView"
-                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/timestamp"
@@ -66,9 +54,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:paddingBottom="8dp"
+                android:paddingBottom="16dp"
                 app:bindRelativeDate="@{alert.lastUpdatedTime}"
-                app:layout_constraintTop_toBottomOf="@id/openingTime"
+                app:layout_constraintTop_toBottomOf="@id/subTitleView"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -83,7 +83,6 @@ class BridgeAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
             } else if (alert.status != Status.LOADING){
                 binding.alertTitle.text = getString(R.string.no_alert_string)
-                binding.openingTime.visibility = View.GONE
                 binding.alertRoadName.visibility = View.GONE
                 binding.timestamp.text = ""
             }
