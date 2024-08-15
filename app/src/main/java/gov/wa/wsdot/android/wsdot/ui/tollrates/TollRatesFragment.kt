@@ -45,7 +45,7 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId){
             R.id.action_good_to_go -> {
-                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://mygoodtogo.com/olcsc/", "My Good To Go")
+                val action = NavGraphDirections.actionGlobalNavWebViewFragment("https://mygoodtogo.com", "My Good To Go")
                 findNavController().navigate(action)
             }
         }
