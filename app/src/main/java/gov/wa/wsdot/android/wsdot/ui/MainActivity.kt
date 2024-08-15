@@ -268,9 +268,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.extras?.let { handleExtras(it) }
+        intent.extras?.let { handleExtras(it) }
     }
 
     private fun getStartDestination(extras: Bundle?): Int {

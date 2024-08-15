@@ -32,7 +32,7 @@ class TollRateRepository @Inject constructor(
                 var update = false
 
                 if (data != null ){
-                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 1440)) {
+                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 60)) {
                         update = true
                     }
                 } else {
