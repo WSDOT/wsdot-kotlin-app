@@ -171,14 +171,13 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                     if (alertResource.data != null) {
                         binding.bridgeLayout.visibility = VISIBLE
                         for (bridge in alertResource.data) {
-                            if (bridge.bridge == "Hood Canal") {
-                                bridge.bridge = "Hood Canal Bridge"
+                            if (bridge.bridge == "Hood Canal Bridge") {
                                 hoodCanalBridgeList.add(bridge)
-                                bridgeAlerts("Hood Canal", true)
+                                bridgeAlerts("Hood Canal Bridge", true)
                             }
                         }
                         if (hoodCanalBridgeList.isEmpty()) {
-                            bridgeAlerts("Hood Canal", false)
+                            bridgeAlerts("Hood Canal Bridge", false)
                         }
                         for (bridge in alertResource.data) {
                             if (bridge.bridge == "1st Avenue South Bridge") {
@@ -239,7 +238,7 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
 
         if (visible) {
             when (bridge) {
-                "Hood Canal" -> {
+                "Hood Canal Bridge" -> {
                     binding.hoodCanalBridgeList.visibility = VISIBLE
                     binding.hoodCanalBridgeEmptyView.visibility = GONE
                     binding.hoodCanalBridgeEmptyListView.visibility = GONE
@@ -263,7 +262,7 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
             }
         } else {
             when (bridge) {
-                "Hood Canal" -> {
+                "Hood Canal Bridge" -> {
                     binding.hoodCanalBridgeEmptyListView.text =
                         getString(R.string.no_bridge_alerts_string)
                     binding.hoodCanalBridgeEmptyView.visibility = VISIBLE
