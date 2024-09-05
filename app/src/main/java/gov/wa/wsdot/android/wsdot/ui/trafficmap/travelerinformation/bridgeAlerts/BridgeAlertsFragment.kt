@@ -84,7 +84,6 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         dataBinding.viewModel = bridgeAlertsViewModel
 
         binding = dataBinding
-        bridgeAlertsViewModel.refresh()
 
         // animation
         sharedElementReturnTransition =
@@ -93,6 +92,12 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
         return dataBinding.root
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        bridgeAlertsViewModel.refresh()
+    }
+
 
     override fun onPause() {
         super.onPause()
