@@ -29,6 +29,11 @@
             android:title="@string/menu_mountain_passes"/>
 
         <item
+            android:id="@+id/nav_bridge_alerts"
+            android:icon="@drawable/ic_bridge_alerts_home"
+            android:title="@string/menu_bridge_alerts"/>
+
+        <item
             android:id="@+id/nav_toll_rates"
             android:icon="@drawable/ic_toll_rates_home"
             android:title="@string/menu_toll_rates"/>

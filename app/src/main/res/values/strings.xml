@@ -16,6 +16,7 @@
     <string name="menu_traffic_map">Traffic Map</string>
     <string name="menu_ferries">Ferries</string>
     <string name="menu_mountain_passes">Mountain Passes</string>
+    <string name="menu_bridge_alerts">Bridge Alerts</string>
     <string name="menu_toll_rates">Toll Rates</string>
     <string name="menu_border_waits">Canadian Border Waits</string>
     <string name="menu_amtrak_cascades">Amtrak Cascades</string>
@@ -127,6 +128,7 @@
     <string name="key_value_traffic_nav">KEY_TRAFFIC_NAV</string>
     <string name="key_value_ferries_nav">KEY_FERRIES_NAV</string>
     <string name="key_value_mountain_passes_nav">KEY_PASSES_NAV</string>
+    <string name="key_value_bridge_alerts_nav">KEY_BRIDGE_ALERTS_NAV</string>
     <string name="key_value_toll_rates_nav">KEY_TOLL_RATES_NAV</string>
     <string name="key_value_border_waits_nav">KEY_BORDER_WAITS_NAV</string>
     <string name="key_value_amtrak_nav">KEY_AMTRAK_NAV</string>
@@ -215,7 +217,12 @@
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="no_bridge_alerts_string">No Bridge Alerts Reported</string>
+    <string name="no_bridge_alerts_string">No Alerts Reported</string>
 
+    // Bridges
+    <string name="_1st_avenue_south_bridge">1st Avenue South Bridge</string>
+    <string name="hood_canal_bridge">Hood Canal Bridge</string>
+    <string name="interstate_bridge">Interstate Bridge</string>
+    <string name="new_bridges">Bridge Alerts</string>
 
 </resources>

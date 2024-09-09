@@ -12,6 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/alert_view"
+        app:cardBackgroundColor="?attr/colorSurface"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true">
@@ -39,7 +40,7 @@
                 android:id="@+id/subTitleView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:bindHTML="@{alert.description}"
+                app:bindAlertHTML="@{alert.description}"
                 app:layout_constraintTop_toBottomOf="@id/titleView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,20 +49,15 @@
                 android:layout_marginEnd="@dimen/default_margin"/>
 
             <TextView
+                android:id="@+id/timestamp"
                 style="@style/CardFooterText"
-                android:id="@+id/FooterView"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:bindRelativeDate="@{alert.localCacheDate}"
-                tools:text=""
+                android:layout_margin="8dp"
+                android:paddingBottom="16dp"
+                app:bindRelativeDate="@{alert.lastUpdatedTime}"
                 app:layout_constraintTop_toBottomOf="@id/subTitleView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginEnd="@dimen/default_margin"/>
-
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

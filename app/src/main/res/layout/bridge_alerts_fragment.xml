@@ -34,26 +34,250 @@
             app:refreshing="@{((Resource) viewModel.alerts).status == Status.LOADING}"
             app:onRefreshListener="@{() -> viewModel.refresh()}">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/alert_list"
-                app:layoutManager="LinearLayoutManager"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                tools:listitem="@layout/highway_alert_item" />
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <RelativeLayout
+                    android:id="@+id/bridge_layout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/new_bridge"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/new_bridge_header"
+                            style="@style/HeaderTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@string/new_bridges"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/new_bridge_list"
+                            app:layoutManager="LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/new_bridge_header"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            tools:listitem="@layout/bridge_alert_item"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/new_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
+                            android:layout_below="@+id/new_bridge_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:visibility="gone"
+                            app:cardUseCompatPadding="true">
+
+                            <TextView
+                                android:id="@+id/new_bridge_empty_list_view"
+                                style="@style/CardSubTitleText"
+                                android:layout_below="@+id/new_bridge_empty_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"/>
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/first_ave_bridge"
+                        android:orientation="vertical"
+                        android:layout_below="@+id/new_bridge"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/first_ave_bridge_header"
+                            style="@style/HeaderTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@string/_1st_avenue_south_bridge"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/first_ave_bridge_list"
+                            app:layoutManager="LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/first_ave_bridge_header"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            tools:listitem="@layout/bridge_alert_item"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/first_ave_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
+                            android:layout_below="@+id/first_ave_bridge_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:visibility="gone"
+                            app:cardUseCompatPadding="true">
+
+                            <TextView
+                                android:id="@+id/first_ave_bridge_empty_list_view"
+                                style="@style/CardSubTitleText"
+                                android:layout_below="@+id/first_ave_bridge_empty_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"/>
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/hood_canal_bridge"
+                        android:layout_below="@+id/first_ave_bridge"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/hood_canal_bridge_header"
+                            style="@style/HeaderTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@string/hood_canal_bridge"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/hood_canal_bridge_list"
+                            app:layoutManager="LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/hood_canal_bridge_header"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            tools:listitem="@layout/bridge_alert_item" />
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/hood_canal_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
+                            android:layout_below="@+id/hood_canal_bridge_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:visibility="gone"
+                            app:cardUseCompatPadding="true">
+
+                            <TextView
+                                android:id="@+id/hood_canal_bridge_empty_list_view"
+                                style="@style/CardSubTitleText"
+                                android:layout_below="@+id/hood_canal_bridge_empty_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"/>
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/interstate_bridge"
+                        android:layout_below="@+id/hood_canal_bridge"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/interstate_bridge_header"
+                            style="@style/HeaderTitleText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:text="@string/interstate_bridge"
+                            android:textStyle="bold"
+                            android:paddingTop="10dp"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"/>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/interstate_bridge_list"
+                            app:layoutManager="LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/interstate_bridge_header"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            tools:listitem="@layout/bridge_alert_item"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/interstate_bridge_empty_view"
+                            app:cardBackgroundColor="?attr/colorSurface"
+                            android:layout_below="@+id/interstate_bridge_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginBottom="0dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="0dp"
+                            android:visibility="gone"
+                            app:cardUseCompatPadding="true">
+
+                            <TextView
+                                android:id="@+id/interstate_bridge_empty_list_view"
+                                style="@style/CardSubTitleText"
+                                android:layout_below="@+id/interstate_bridge_empty_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="0dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:visibility="gone"/>
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+                </RelativeLayout>
+            </ScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-        <TextView
-            android:id="@+id/empty_list_view"
-            style="@style/CardTitleText"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"/>
 
         <include
             layout="@layout/loading_error_state"

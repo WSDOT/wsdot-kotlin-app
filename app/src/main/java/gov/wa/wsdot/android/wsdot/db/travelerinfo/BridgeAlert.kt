@@ -6,11 +6,16 @@ import java.util.*
 @Entity(primaryKeys = ["alertId"])
 data class BridgeAlert(
     val alertId: Int,
-    val bridge: String,
+    val status: String?,
+    var bridge: String,
     val title: String,
     val latitude: Double,
     val longitude: Double,
+    val roadName: String?,
+    val direction: String?,
     val description: String,
+    val travelCenterPriorityId: Int?,
     val openingTime: Date?,
+    val lastUpdatedTime: Date?,
     val localCacheDate: Date
 )

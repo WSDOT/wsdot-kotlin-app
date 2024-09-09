@@ -594,6 +594,11 @@
         app:popUpTo="@id/nav_graph"/>
 
     <action
+        android:id="@+id/action_global_navBridgeAlertsFragment"
+        app:destination="@id/navBridgeAlertsFragment"
+        app:popUpTo="@id/nav_graph"/>
+
+    <action
         android:id="@+id/action_global_navBorderCrossingsFragment"
         app:destination="@id/navBorderCrossingsFragment"
         app:popUpTo="@id/nav_graph"/>

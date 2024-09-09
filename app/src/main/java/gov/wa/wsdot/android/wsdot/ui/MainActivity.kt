@@ -102,6 +102,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navTrafficMapFragment,
                 R.id.navFerriesHomeFragment,
                 R.id.navMountainPassHomeFragment,
+                R.id.navBridgeAlertsFragment,
                 R.id.navBorderCrossingsFragment,
                 R.id.navTollRatesFragment,
                 R.id.navFavoritesFragment,
@@ -119,6 +120,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navFerriesHomeFragment -> navView.menu.findItem(R.id.nav_ferries).isChecked =
                     true
                 R.id.navMountainPassHomeFragment -> navView.menu.findItem(R.id.nav_mountain_passes).isChecked =
+                    true
+                R.id.navBridgeAlertsFragment -> navView.menu.findItem(R.id.nav_bridge_alerts).isChecked =
                     true
                 R.id.navTollRatesFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked =
                     true
@@ -312,6 +315,10 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             getString(R.string.key_value_mountain_passes_nav) -> {
                 navView.menu.findItem(R.id.nav_mountain_passes).isChecked = true
                 return R.id.navMountainPassHomeFragment
+            }
+            getString(R.string.key_value_bridge_alerts_nav) -> {
+                navView.menu.findItem(R.id.nav_bridge_alerts).isChecked = true
+                return R.id.navBridgeAlertsFragment
             }
             getString(R.string.key_value_toll_rates_nav) -> {
                 navView.menu.findItem(R.id.nav_toll_rates).isChecked = true
@@ -581,6 +588,12 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 navLocation = getString(R.string.key_value_mountain_passes_nav)
                 if (navController.currentDestination?.id != R.id.navMountainPassHomeFragment) {
                     findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navMountainPassHomeFragment)
+                }
+            }
+            R.id.nav_bridge_alerts -> {
+                navLocation = getString(R.string.key_value_bridge_alerts_nav)
+                if (navController.currentDestination?.id != R.id.navBridgeAlertsFragment) {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navBridgeAlertsFragment)
                 }
             }
             R.id.nav_toll_rates -> {
