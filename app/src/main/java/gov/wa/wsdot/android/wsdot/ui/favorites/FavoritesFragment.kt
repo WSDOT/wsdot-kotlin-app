@@ -190,38 +190,38 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
         })
 
         favoritesListViewModel.favoriteCameras.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setCameras(it)
+            favItems?.let { it ->
+                adapter?.setCameras(it.sortedBy{it.title})
             }
         })
 
         favoritesListViewModel.favoriteFerrySchedules.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setFerrySchedules(it)
+            favItems?.let { it ->
+                adapter?.setFerrySchedules(it.sortedBy{it.description})
             }
         })
 
         favoritesListViewModel.favoriteMountainPasses.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setMountainPasses(it)
+            favItems?.let { it ->
+                adapter?.setMountainPasses(it.sortedBy{it.passName})
             }
         })
 
         favoritesListViewModel.favoriteBorderCrossings.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let{
-                adapter?.setBorderCrossings(it)
+            favItems?.let{ it ->
+                adapter?.setBorderCrossings(it.sortedBy{it.name})
             }
         })
 
         favoritesListViewModel.favoriteLocations.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setLocations(it)
+            favItems?.let { it ->
+                adapter?.setLocations(it.sortedBy{it.title})
             }
         })
 
         favoritesListViewModel.favoriteTollSigns.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setTollSign(it)
+            favItems?.let { it ->
+                adapter?.setTollSign(it.sortedBy{it.locationName})
             }
         })
 
