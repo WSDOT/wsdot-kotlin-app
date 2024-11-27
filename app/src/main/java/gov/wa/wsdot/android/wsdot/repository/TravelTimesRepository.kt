@@ -201,6 +201,7 @@ class TravelTimesRepository @Inject constructor(
                 travelTimeItem.status,
                 travelTimeItem.avgTime,
                 travelTimeItem.currentTime,
+                travelTimeItem.hovCurrentTime,
                 travelTimeItem.miles,
                 travelTimeItem.startLocationLatitude,
                 travelTimeItem.startLocationLongitude,

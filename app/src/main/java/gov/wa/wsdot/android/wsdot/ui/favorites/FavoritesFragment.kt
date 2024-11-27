@@ -164,7 +164,11 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
                             LatLng(sign.startLatitude, sign.startLongitude),
                             LatLng(sign.trips[index].endLatitude, sign.trips[index].endLongitude))
                     }
-                })
+                },
+                { travelTime ->
+                    navigateToTravelTime(travelTime)
+                }
+            )
         }
 
         if (adapter != null) {
@@ -184,8 +188,8 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
             }
 
         favoritesListViewModel.favoriteTravelTimes.observe(viewLifecycleOwner, Observer { favItems ->
-            favItems?.let {
-                adapter?.setTravelTimes(it)
+            favItems?.let { it ->
+                adapter?.setTravelTimes(it.sortedBy{it.title})
             }
         })
 
@@ -503,6 +507,18 @@ class FavoritesFragment : DaggerFragment(), AdapterDataSetChangedListener, Injec
 
         (activity as MainActivity).disableAds()
 
+        findNavController().navigate(action)
+    }
+
+    private fun navigateToTravelTime(travelTime: TravelTime){
+        val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(
+            startLatitude = travelTime.startLocationLatitude.toString(),
+            startLongitude = travelTime.startLocationLongitude.toString(),
+            endLatitude = travelTime.endLocationLatitude.toString(),
+            endLongitude = travelTime.endLocationLongitude.toString(),
+            title = "Travel Time",
+            routeId = travelTime.travelTimeId
+        )
         findNavController().navigate(action)
     }
 

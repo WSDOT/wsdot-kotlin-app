@@ -11,6 +11,7 @@ data class TravelTime (
     val status: String,
     val avgTime: Int,
     val currentTime: Int,
+    val hovCurrentTime: Int?,
     val miles: Float,
     val startLocationLatitude: Double,
     val startLocationLongitude: Double,

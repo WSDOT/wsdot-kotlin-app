@@ -44,6 +44,7 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.StatewideAndHighes
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.bridgeAlerts.BridgeAlertViewModel
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel
+import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeViewModel
 
 @Suppress("unused")
 @Module
@@ -168,6 +169,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TravelTimeListViewModel::class)
     abstract fun bindTravelTimeListViewModel(travelTimeListViewModel: TravelTimeListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TravelTimeViewModel::class)
+    abstract fun bindTravelTimeViewModel(travelTimeViewModel: TravelTimeViewModel): ViewModel
 
     @Binds
     @IntoMap

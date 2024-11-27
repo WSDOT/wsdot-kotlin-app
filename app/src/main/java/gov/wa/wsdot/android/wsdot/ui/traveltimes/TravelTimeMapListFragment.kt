@@ -5,14 +5,12 @@ import android.transition.TransitionInflater
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.TravelTimeListFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
@@ -25,14 +23,16 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.google.android.gms.maps.model.LatLng
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
+import gov.wa.wsdot.android.wsdot.databinding.TravelTimeMapListFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
-class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryTextListener {
+class TravelTimeMapListFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -41,10 +41,12 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
     @Inject
     lateinit var appExecutors: AppExecutors
 
-    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
-    var binding by autoCleared<TravelTimeListFragmentBinding>()
+    val args: TravelTimeMapListFragmentArgs by navArgs()
 
-    private var adapter by autoCleared<TravelTimeListAdapter>()
+    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    var binding by autoCleared<TravelTimeMapListFragmentBinding>()
+
+    private var adapter by autoCleared<TravelTimeMapListAdapter>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -59,16 +61,16 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         travelTimeListViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelTimeListViewModel::class.java)
 
         travelTimeListViewModel.setTravelTimeQuery("")
 
-        val dataBinding = DataBindingUtil.inflate<TravelTimeListFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<TravelTimeMapListFragmentBinding>(
             inflater,
-            R.layout.travel_time_list_fragment,
+            R.layout.travel_time_map_list_fragment,
             container,
             false
         )
@@ -81,28 +83,20 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
 
         dataBinding.viewModel = travelTimeListViewModel
 
-        dataBinding.searchView.setOnQueryTextListener(this)
-
         binding = dataBinding
 
 
         val adapter =
-            TravelTimeListAdapter(
+            TravelTimeMapListAdapter(
                 dataBindingComponent,
-                appExecutors,
-                { travelTime ->
-                    travelTimeListViewModel.updateFavorite(travelTime.travelTimeId, !travelTime.favorite)
-                },
-                { travelTime ->
-                        navigateToMap(
-                            LatLng(travelTime.startLocationLatitude, travelTime.startLocationLongitude),
-                            LatLng(travelTime.endLocationLatitude, travelTime.endLocationLatitude),
-                            travelTime
-                        )
-
-
-
-                })
+                appExecutors
+            ) { travelTime ->
+                navigateToMap(
+                    LatLng(travelTime.startLocationLatitude, travelTime.startLocationLongitude),
+                    LatLng(travelTime.endLocationLatitude, travelTime.endLocationLatitude),
+                    travelTime
+                )
+            }
 
         this.adapter = adapter
 
@@ -120,20 +114,14 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         binding.lifecycleOwner = viewLifecycleOwner
 
         // pass function to be called on adapter item tap and favorite
-        val adapter = TravelTimeListAdapter(dataBindingComponent, appExecutors,
-            { travelTime ->
-                travelTimeListViewModel.updateFavorite(travelTimeId = travelTime.travelTimeId, isFavorite = !travelTime.favorite)
-            },
-            { travelTime ->
-                navigateToMap(
-                    LatLng(travelTime.startLocationLatitude, travelTime.startLocationLongitude),
-                    LatLng(travelTime.endLocationLatitude, travelTime.endLocationLongitude),
-                    travelTime
-                )
-            }
-
-
-        )
+        val adapter = TravelTimeMapListAdapter(dataBindingComponent, appExecutors
+        ) { travelTime ->
+            navigateToMap(
+                LatLng(travelTime.startLocationLatitude, travelTime.startLocationLongitude),
+                LatLng(travelTime.endLocationLatitude, travelTime.endLocationLongitude),
+                travelTime
+            )
+        }
 
         this.adapter = adapter
 
@@ -142,6 +130,8 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         binding.travelTimeList.addItemDecoration(itemDivider)
 
         binding.travelTimeList.adapter = adapter
+
+
 
         // animations
         postponeEnterTransition()
@@ -153,7 +143,19 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
 
         travelTimeListViewModel.travelTimes.observe(viewLifecycleOwner, Observer { travelTimesResourse ->
             if (travelTimesResourse.data != null) {
-                adapter.submitList(travelTimesResourse.data.sortedBy{it.title})
+
+                val list: ArrayList<TravelTime> = ArrayList()
+                val routeIds = args.routeIds.toList()
+
+                for (travelTime in travelTimesResourse.data) {
+
+                    if (routeIds.contains(travelTime.travelTimeId)) {
+                        list.add(travelTime)
+                    }
+                }
+
+                adapter.submitList(list.sortedBy{it.title})
+
                 if (travelTimesResourse.data.isEmpty() && travelTimesResourse.status != Status.LOADING) {
                     binding.emptyListView.visibility = VISIBLE
                     binding.travelTimeList.visibility = GONE
@@ -164,7 +166,7 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
             }
 
             if (travelTimesResourse.status == Status.ERROR) {
-                binding.emptyListView.visibility = View.GONE
+                binding.emptyListView.visibility = GONE
                 Toast.makeText(
                     context,
                     getString(R.string.loading_error_message),
@@ -185,21 +187,6 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         }
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let {
-            travelTimeListViewModel.setTravelTimeQuery(it)
-        }
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let {
-            travelTimeListViewModel.setTravelTimeQuery(it)
-
-        }
-        return true
-    }
-
     private fun navigateToMap(startLocation: LatLng, endLocation: LatLng, travelTime: TravelTime){
         val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(
             startLatitude = startLocation.latitude.toString(),
@@ -208,7 +195,7 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
             endLongitude = endLocation.longitude.toString(),
             title = "Travel Time",
             routeId = travelTime.travelTimeId
-            )
+        )
 
         findNavController().navigate(action)
     }

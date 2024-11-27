@@ -48,7 +48,9 @@ class FavoritesListAdapter(
     private val viewCamerasClickCallback: ((BorderCrossing) -> Unit)?,
     private val locationClickCallback: ((FavoriteLocation) -> Unit)?,
     private val locationEditClickCallback: ((FavoriteLocation, View) -> Unit)?,
-    private val viewMapClickCallback: ((TollSign, Int) -> Unit)?
+    private val viewMapClickCallback: ((TollSign, Int) -> Unit)?,
+    private val viewTravelTimeMapClickCallback: ((TravelTime) -> Unit)?
+
 ) : RecyclerView.Adapter<FavoriteViewHolder>() {
 
     private val travelTimesDiffer: AsyncListDiffer<TravelTime> = AsyncListDiffer<TravelTime>(
@@ -456,6 +458,12 @@ class FavoritesListAdapter(
             false,
             dataBindingComponent
         )
+
+        binding.root.findViewById<Button>(R.id.show_map).setOnClickListener {
+            binding.travelTime?.let {
+                viewTravelTimeMapClickCallback?.invoke(it)
+            }
+        }
 
         binding.root.findViewById<ImageButton>(R.id.favorite_button).visibility = GONE
         binding.root.findViewById<View>(R.id.divider).visibility = VISIBLE

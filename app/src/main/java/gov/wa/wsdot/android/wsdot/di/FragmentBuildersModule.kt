@@ -66,7 +66,9 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighwayAlertTabFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.HighestAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsFragment
+import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeFragment
 import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListFragment
+import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeMapListFragment
 
 @Suppress("unused")
 @Module
@@ -145,6 +147,9 @@ abstract class FragmentBuildersModule {
     abstract fun contributeTravelTimeListFragment(): TravelTimeListFragment
 
     @ContributesAndroidInjector
+    abstract fun contributeTravelTimeMapListFragment(): TravelTimeMapListFragment
+
+    @ContributesAndroidInjector
     abstract fun contributeNewsReleaseFragment(): NewsReleaseFragment
 
     @ContributesAndroidInjector
@@ -185,6 +190,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeTollTripFragment(): TollTripFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTravelTimeFragment(): TravelTimeFragment
 
     @ContributesAndroidInjector
     abstract fun contributeAmtrakCascadesFragment(): AmtrakCascadesFragment
