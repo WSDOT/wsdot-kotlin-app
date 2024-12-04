@@ -36,9 +36,9 @@ object TrafficBindingAdapters {
         else if (travelTime.currentTime == -1) {
             textView.setTextColor(Color.parseColor("#000000"))
         }
-        else if (travelTime.currentTime < travelTime.avgTime - 1) {
+        else if (travelTime.currentTime < travelTime.avgTime) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
-        } else if (travelTime.currentTime > travelTime.avgTime + 1) {
+        } else if (travelTime.currentTime > travelTime.avgTime) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
         } else {
             textView.setTextColor(Color.parseColor("#000000"))
@@ -73,10 +73,10 @@ object TrafficBindingAdapters {
             travelTime.currentTime == -1 -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
             }
-            travelTime.currentTime < travelTime.avgTime - 1 -> {
+            travelTime.currentTime < travelTime.avgTime -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#007B5F"))
             }
-            travelTime.currentTime > travelTime.avgTime + 1 -> {
+            travelTime.currentTime > travelTime.avgTime -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#c62828"))
             }
             else -> {
