@@ -57,7 +57,7 @@ object TrafficBindingAdapters {
     fun bindTravelTimeInfo(textView: TextView, travelTime: TravelTime) {
 
          if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
-            textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
+            textView.text = String.format("%.2f miles", travelTime.miles)
         } else {
             textView.text = "Not Available"
         }
