@@ -44,10 +44,7 @@ object TrafficBindingAdapters {
             textView.setTextColor(Color.parseColor("#000000"))
         }
 
-        if (travelTime.status.lowercase(Locale.ENGLISH) == "closed") {
-            textView.text = "Closed"
-        }
-        else if ((travelTime.currentTime != 0) && (travelTime.currentTime != -1)) {
+        if ((travelTime.currentTime != 0) && (travelTime.currentTime != -1)) {
             textView.text = String.format("%s min", travelTime.currentTime)
         } else {
             textView.text = "N/A"
@@ -58,10 +55,8 @@ object TrafficBindingAdapters {
     @JvmStatic
     @BindingAdapter("bindTravelTimeInfo")
     fun bindTravelTimeInfo(textView: TextView, travelTime: TravelTime) {
-        if (travelTime.status.lowercase(Locale.ENGLISH) == "closed") {
-            textView.text = ""
-        }
-        else if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
+
+         if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
             textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
         } else {
             textView.text = "Not Available"
@@ -191,7 +186,7 @@ object TrafficBindingAdapters {
     @BindingAdapter("setVisibility")
     fun setVisibility(button: Button, travelTime: TravelTime?) {
         if (travelTime != null) {
-            if (travelTime.currentTime == -1 || travelTime.status.lowercase(Locale.ENGLISH) == "closed") {
+            if (travelTime.currentTime == -1) {
                 button.visibility = View.INVISIBLE
             }
             else {
