@@ -132,7 +132,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     private val travelTimeClusterItems = mutableListOf<TravelTimeClusterItem>()
 
     private val mountainPassMarkers = HashMap<Marker, MountainPass>()
-    private val travelTimeMarkers = HashMap<Marker, TravelTime>()
 
     private var selectedCameraMarker: Marker? = null
     private var selectedAlertMarker: Marker? = null
@@ -632,25 +631,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                                 && (travelTime.endLocationLatitude.toInt() != 0 && travelTime.endLocationLongitude.toInt() != 0)
                             ) {
 
-                                var icon: BitmapDescriptor =
-                                    BitmapDescriptorFactory.fromResource(R.drawable.traveltimes)
-                                val marker =
-                                    mMarkerManager.getCollection(getString(R.string.travel_time_marker_collection_id))
-                                        .addMarker(
-                                            MarkerOptions()
-                                                .position(
-                                                    LatLng(
-                                                        travelTime.startLocationLatitude,
-                                                        travelTime.startLocationLongitude
-                                                    )
-                                                )
-                                                .visible(showTravelTimes)
-                                                .icon(icon)
-                                                .zIndex(0.0f)
-
-                                        )
-                                travelTimeMarkers[marker] = travelTime
-
                                 val clusterItem = TravelTimeClusterItem(
                                     travelTime.startLocationLatitude,
                                     travelTime.startLocationLongitude,
@@ -682,12 +662,12 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                                     })
                             }
 
-                            mTravelTimeClusterManager.setOnClusterClickListener { clusterItems ->
+                            mTravelTimeClusterManager.setOnClusterClickListener { travelTimeListItems ->
 
                                 if (findNavController().currentDestination?.id != R.id.navTravelTimeMapListFragment) {
                                     val action =
                                         NavGraphDirections.actionGlobalNavTravelTimeMapListFragment(
-                                            clusterItems.items.map { it.mTravelTime.travelTimeId }
+                                            travelTimeListItems.items.map { it.mTravelTime.travelTimeId }
                                                 .toIntArray(),
                                             "Travel Times"
                                         )
@@ -698,22 +678,21 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                                 return@setOnClusterClickListener false
                             }
 
-                            mTravelTimeClusterManager.setOnClusterItemClickListener { travelTimeClusterItem ->
+                            mTravelTimeClusterManager.setOnClusterItemClickListener { travelTimeItem ->
 
-                                if (travelTimeClusterItem.mTravelTime.travelTimeId != R.id.navTravelTimeFragment) {
+                                if (travelTimeItem.mTravelTime.travelTimeId != R.id.navTravelTimeFragment) {
                                     val action =
                                         NavGraphDirections.actionGlobalNavTravelTimeFragment(
-                                            travelTimeClusterItem.mTravelTime.startLocationLatitude.toString(),
-                                            travelTimeClusterItem.mTravelTime.startLocationLongitude.toString(),
-                                            travelTimeClusterItem.mTravelTime.endLocationLatitude.toString()
-                                                .toString(),
-                                            travelTimeClusterItem.mTravelTime.endLocationLongitude.toString(),
-                                            travelTimeClusterItem.mTravelTime.title,
-                                            travelTimeClusterItem.mTravelTime.travelTimeId
+                                            travelTimeItem.mTravelTime.startLocationLatitude.toString(),
+                                            travelTimeItem.mTravelTime.startLocationLongitude.toString(),
+                                            travelTimeItem.mTravelTime.endLocationLatitude.toString(),
+                                            travelTimeItem.mTravelTime.endLocationLongitude.toString(),
+                                            travelTimeItem.mTravelTime.title,
+                                            travelTimeItem.mTravelTime.travelTimeId
                                         )
                                     findNavController().navigate(action)
                                     (activity as MainActivity).supportActionBar?.title =
-                                        travelTimeClusterItem.mTravelTime.title
+                                        travelTimeItem.mTravelTime.title
                                 }
 
                                 return@setOnClusterItemClickListener false
@@ -815,15 +794,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 val action = NavGraphDirections.actionGlobalNavMountainPassReportFragment(it.passId)
                 findNavController().navigate(action)
                 (activity as MainActivity).supportActionBar?.title = it.passName
-            }
-            return true
-        }
-
-        travelTimeMarkers[marker]?.let {
-            if (findNavController().currentDestination?.id != R.id.navTravelTimeFragment) {
-                val action = NavGraphDirections.actionGlobalNavTravelTimeFragment(it.startLocationLatitude.toString(), it.startLocationLongitude.toString(), it.endLocationLatitude.toString(), it.endLocationLongitude.toString(), it.title, it.travelTimeId)
-                findNavController().navigate(action)
-                (activity as MainActivity).supportActionBar?.title = it.title
             }
             return true
         }
