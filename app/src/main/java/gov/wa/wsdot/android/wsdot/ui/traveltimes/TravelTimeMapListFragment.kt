@@ -154,7 +154,13 @@ class TravelTimeMapListFragment : DaggerFragment(), Injectable {
                     }
                 }
 
-                adapter.submitList(list.sortedBy{it.title})
+                adapter.submitList(
+                    list.asSequence().sortedBy{it.title}
+                    .filter {it.travelTimeId != 36} // Bellevue to Lynnwood
+                    .filter {it.travelTimeId != 37} // Lynnwood to Bellevue
+                    .filter {it.travelTimeId != 68}	// Auburn to Renton
+                    .filter {it.travelTimeId != 69}.toList() // Renton to Auburn
+                )
 
                 if (travelTimesResourse.data.isEmpty() && travelTimesResourse.status != Status.LOADING) {
                     binding.emptyListView.visibility = VISIBLE

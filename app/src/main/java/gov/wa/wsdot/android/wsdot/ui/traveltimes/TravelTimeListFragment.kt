@@ -153,7 +153,13 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
 
         travelTimeListViewModel.travelTimes.observe(viewLifecycleOwner, Observer { travelTimesResourse ->
             if (travelTimesResourse.data != null) {
-                adapter.submitList(travelTimesResourse.data.sortedBy{it.title})
+                adapter.submitList(
+                    travelTimesResourse.data.asSequence().sortedBy{it.title}
+                        .filter {it.travelTimeId != 36} // Bellevue to Lynnwood
+                        .filter {it.travelTimeId != 37} // Lynnwood to Bellevue
+                        .filter {it.travelTimeId != 68}	// Auburn to Renton
+                        .filter {it.travelTimeId != 69}.toList() // Renton to Auburn
+                )
                 if (travelTimesResourse.data.isEmpty() && travelTimesResourse.status != Status.LOADING) {
                     binding.emptyListView.visibility = VISIBLE
                     binding.travelTimeList.visibility = GONE
