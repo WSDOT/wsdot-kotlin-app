@@ -25,7 +25,7 @@ object TravelTimeBindingAdapters {
         val via = travelTime?.via
 
         textView.text =
-            Html.fromHtml("<b>Route: </b>" + travelTime?.let {
+            Html.fromHtml("<b>Routes: </b>" + travelTime?.let {
                 if (via != null) {
                     String.format(via)
                 }
