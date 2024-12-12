@@ -200,7 +200,7 @@ class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         builder.include(marker1)
         builder.include(marker2)
         val bounds = builder.build()
-        val padding = 125
+        val padding = 150
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
         googleMap.animateCamera(cameraUpdate)
     }
