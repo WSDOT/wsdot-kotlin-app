@@ -190,7 +190,10 @@ class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         )
 
         adjustMapToDisplayMarkers(mMap, marker1, marker2)
-}
+
+        mMap.setMaxZoomPreference(12.0F)
+
+    }
 
     private fun adjustMapToDisplayMarkers(googleMap: GoogleMap, marker1: LatLng, marker2: LatLng) {
         val builder = LatLngBounds.Builder()
