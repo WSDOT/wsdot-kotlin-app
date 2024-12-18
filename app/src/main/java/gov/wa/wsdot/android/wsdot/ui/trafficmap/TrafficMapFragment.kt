@@ -616,6 +616,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         travelTimesViewModel.routes.observe(viewLifecycleOwner, Observer { travelTimes ->
             if (travelTimes.data != null) {
 
+                travelTimeClusterItems.clear()
+                mTravelTimeClusterManager.clearItems()
+
                     for (travelTime in travelTimes.data) {
 
                         if (travelTime.travelTimeId != 36 && travelTime.travelTimeId != 37 && travelTime.travelTimeId != 68 &&
