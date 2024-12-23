@@ -15,7 +15,13 @@ import android.os.Looper
 import android.text.InputType
 import android.util.Log
 import android.util.TypedValue
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -29,19 +35,36 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Circle
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_DRAGGING
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HALF_EXPANDED
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_HIDDEN
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_SETTLING
+import com.google.android.material.bottomsheet.BottomSheetBehavior.from
 import com.google.maps.android.MarkerManager
-import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
@@ -50,12 +73,13 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.MapFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.mountainpass.MountainPass
-import gov.wa.wsdot.android.wsdot.model.MountainPassItem
 import gov.wa.wsdot.android.wsdot.db.traffic.HighwayAlert
+import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.model.RestAreaItem
 import gov.wa.wsdot.android.wsdot.model.map.CameraClusterItem
+import gov.wa.wsdot.android.wsdot.model.map.TravelTimeClusterItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertViewModel
@@ -64,19 +88,22 @@ import gov.wa.wsdot.android.wsdot.ui.trafficmap.favoriteLocation.FavoriteLocatio
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.restareas.RestAreaViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.trafficalerts.MapHighwayAlertsViewModel
 import gov.wa.wsdot.android.wsdot.ui.trafficmap.travelcharts.TravelChartsViewModel
-import gov.wa.wsdot.android.wsdot.util.*
+import gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeViewModel
+import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import gov.wa.wsdot.android.wsdot.util.BadgeDrawable
+import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.map.CameraClusterManager
 import gov.wa.wsdot.android.wsdot.util.map.CameraRenderer
+import gov.wa.wsdot.android.wsdot.util.map.TravelTimeClusterManager
+import gov.wa.wsdot.android.wsdot.util.map.TravelTimeRenderer
+import gov.wa.wsdot.android.wsdot.util.nullableAutoCleared
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
 import java.util.*
 import javax.inject.Inject
 
 
 class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     GoogleMap.OnMarkerClickListener,
-    ClusterManager.OnClusterItemClickListener<CameraClusterItem>,
-    ClusterManager.OnClusterClickListener<CameraClusterItem>,
     GoogleMap.OnCameraIdleListener, GoogleMap.OnCameraMoveStartedListener,
     SpeedDialView.OnActionSelectedListener, Toolbar.OnMenuItemClickListener {
 
@@ -95,12 +122,15 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     lateinit var travelChartsViewModel: TravelChartsViewModel
     lateinit var mapLocationViewModel: MapLocationViewModel
     lateinit var mountainPassViewModel: MountainPassViewModel
+    lateinit var travelTimesViewModel: TravelTimeViewModel
 
 
     // Maps markers to their underlying data
     private val highwayAlertMarkers = HashMap<Marker, HighwayAlert>()
     private val restAreaMarkers = HashMap<Marker, RestAreaItem>()
     private val cameraClusterItems = mutableListOf<CameraClusterItem>()
+    private val travelTimeClusterItems = mutableListOf<TravelTimeClusterItem>()
+
     private val mountainPassMarkers = HashMap<Marker, MountainPass>()
 
     private var selectedCameraMarker: Marker? = null
@@ -110,6 +140,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     var showAlerts: Boolean = true
     var showRestAreas: Boolean = true
     var showMountainPasses: Boolean = true
+    var showTravelTimes: Boolean = true
     var requestLocationUpgrade: Boolean = true
     var goToLocation: Boolean = true
     private var alertQueryTask: Boolean = false
@@ -122,6 +153,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     // Clusters
     private lateinit var mCameraClusterManager: CameraClusterManager
+    private lateinit var mTravelTimeClusterManager: TravelTimeClusterManager
+
     private lateinit var mMarkerManager: MarkerManager
 
     var binding by nullableAutoCleared<MapFragmentBinding>()
@@ -231,14 +264,18 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         travelChartsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TravelChartsViewModel::class.java)
 
+        mountainPassViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MountainPassViewModel::class.java)
+
+        travelTimesViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(TravelTimeViewModel::class.java)
+
         val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)
         showAlerts = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_highway_alerts), true)
         showRestAreas = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_rest_areas), true)
         showMountainPasses = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_mountain_passes), true)
+        showTravelTimes = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_travel_times), true)
         showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_traffic_map_show_traffic_layer), true)
-
-        mountainPassViewModel = ViewModelProvider(this, viewModelFactory)
-            .get(MountainPassViewModel::class.java)
 
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -327,6 +364,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         mMap = map as GoogleMap
 
+        mMap.uiSettings.isMapToolbarEnabled = false
+
         context?.let {
             if (NightModeConfig.nightModeOn(it)) {
                 try {
@@ -384,12 +423,14 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         // set up a cluster manager with the MarkerManager
         mCameraClusterManager = CameraClusterManager(context, mMap, mMarkerManager)
+        mTravelTimeClusterManager = TravelTimeClusterManager(context, mMap, mMarkerManager)
+
         // Give it a custom renderer (used to modify icons, etc...)
         mCameraClusterManager.renderer = CameraRenderer(context, mMap, mCameraClusterManager)
-        mCameraClusterManager.renderer.setAnimation(false)
+        mTravelTimeClusterManager.renderer = TravelTimeRenderer(context, mMap, mTravelTimeClusterManager)
 
-        mCameraClusterManager.setOnClusterItemClickListener(this)
-        mCameraClusterManager.setOnClusterClickListener(this)
+        mCameraClusterManager.renderer.setAnimation(false)
+        mTravelTimeClusterManager.renderer.setAnimation(false)
 
         mMap.setOnCameraIdleListener(this)
         mMap.setOnCameraMoveStartedListener(this)
@@ -403,9 +444,13 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mMarkerManager.newCollection(getString(R.string.highway_alert_marker_collection_id))
         mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id)).setOnMarkerClickListener(this)
 
-        // init a new collection for alert markers
+        // init a new collection for mountain pass markers
         mMarkerManager.newCollection(getString(R.string.mountain_pass_marker_collection_id))
         mMarkerManager.getCollection(getString(R.string.mountain_pass_marker_collection_id)).setOnMarkerClickListener(this)
+
+        // init a new collection for travel times markers
+        mMarkerManager.newCollection(getString(R.string.travel_time_marker_collection_id))
+        mMarkerManager.getCollection(getString(R.string.travel_time_marker_collection_id)).setOnMarkerClickListener(this)
 
         mapHighwayAlertsViewModel.alerts.observe(viewLifecycleOwner, Observer { alerts ->
             if (alerts.data != null) {
@@ -439,6 +484,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                             mMarkerManager.getCollection(getString(R.string.highway_alert_marker_collection_id))
                                 .addMarker(
                                     MarkerOptions()
+                                        .zIndex(1.0f)
                                         .position(
                                             LatLng(
                                                 alert.displayLatitude,
@@ -462,6 +508,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 cameraClusterItems.clear()
                 mCameraClusterManager.clearItems()
 
+                val cameraClusterManager = ClusterManager<CameraClusterItem>(context, mMap)
+                cameraClusterManager.renderer = CameraRenderer(context, mMap, cameraClusterManager)
+
                 for (camera in cameras.data) {
                     val clusterItem = CameraClusterItem(camera.latitude, camera.longitude, camera)
                     mCameraClusterManager.addItem(clusterItem)
@@ -469,8 +518,84 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 }
 
                 mCameraClusterManager.cluster()
+
+                mCameraClusterManager.setOnClusterClickListener { clusterItems ->
+
+                    // Open if cluster has 10 or less items?
+                    if (clusterItems.size <= 10) {
+
+                        val locations = clusterItems.items.map { LatLng(it.mCamera.latitude, it.mCamera.longitude)  }.toTypedArray()
+                        val latitude = locations[0].latitude
+                        val longitude = locations[0].longitude
+
+                        if  (locations.any{ it.latitude != latitude && it.longitude != longitude }) {
+
+                            val builder = LatLngBounds.builder()
+                            for (item in clusterItems.items) {
+                                builder.include(item.position)
+                            }
+
+                            val bounds = builder.build()
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+
+                        } else {
+                            if (findNavController().currentDestination?.id != R.id.navCameraListFragment) {
+                                val action = NavGraphDirections.actionGlobalNavCameraListFragment(
+                                    clusterItems.items.map { it.mCamera.cameraId }.toIntArray(),
+                                    "Traffic Cameras"
+                                )
+                                findNavController().navigate(action)
+                            }
+                        }
+
+                    } else {
+                        val builder = LatLngBounds.builder()
+                        for (item in clusterItems.items) {
+                            builder.include(item.position)
+                        }
+
+                        val bounds = builder.build()
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+                    }
+
+                return@setOnClusterClickListener false
+                }
+
+                mCameraClusterManager.setOnClusterItemClickListener { cameraClusterItem ->
+
+                    from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
+
+                    selectedCameraMarker?.remove()
+                    val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
+
+                    selectedCameraMarker =
+                        mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
+                            .addMarker(
+                                MarkerOptions()
+                                    .zIndex(1.0f)
+                                    .position(
+                                        LatLng(
+                                            cameraClusterItem.mCamera.latitude,
+                                            cameraClusterItem.mCamera.longitude
+                                        )
+                                    )
+                                    .visible(true)
+                                    .icon(icon)
+                            )
+
+                    cameraViewModel.setCameraQuery(cameraClusterItem.mCamera.cameraId)
+
+                    binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
+                        cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
+                    }
+
+                    from(binding!!.cameraBottomSheet).state = STATE_EXPANDED
+
+                    return@setOnClusterItemClickListener false
+                }
             }
         })
+
 
 
         mountainPassViewModel.passes.observe(viewLifecycleOwner, Observer { passes ->
@@ -479,6 +604,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     var icon: BitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.mountainpass)
                     val marker = mMarkerManager.getCollection(getString(R.string.mountain_pass_marker_collection_id)).addMarker(
                         MarkerOptions()
+                            .zIndex(1.0f)
                             .position(LatLng(pass.latitude, pass.longitude))
                             .visible(showMountainPasses)
                             .icon(icon))
@@ -487,6 +613,98 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
         })
 
+        travelTimesViewModel.routes.observe(viewLifecycleOwner, Observer { travelTimes ->
+            if (travelTimes.data != null) {
+
+                travelTimeClusterItems.clear()
+                mTravelTimeClusterManager.clearItems()
+
+                    for (travelTime in travelTimes.data) {
+
+                        if (travelTime.travelTimeId != 36 && travelTime.travelTimeId != 37 && travelTime.travelTimeId != 68 &&
+                            travelTime.travelTimeId != 69
+                        ) {
+
+                            val travelTimeClusterManager =
+                                ClusterManager<TravelTimeClusterItem>(context, mMap)
+                            travelTimeClusterManager.renderer =
+                                TravelTimeRenderer(context, mMap, travelTimeClusterManager)
+
+                            if ((travelTime.startLocationLatitude.toInt() != 0 && travelTime.startLocationLongitude.toInt() != 0)
+                                && (travelTime.endLocationLatitude.toInt() != 0 && travelTime.endLocationLongitude.toInt() != 0)
+                            ) {
+
+                                val clusterItem = TravelTimeClusterItem(
+                                    travelTime.startLocationLatitude,
+                                    travelTime.startLocationLongitude,
+                                    travelTime
+                                )
+                                mTravelTimeClusterManager.addItem(clusterItem)
+                                travelTimeClusterItems.add(clusterItem)
+
+                                val zoom = mMap.cameraPosition.zoom
+
+                                mapLocationViewModel.mapLocation.observe(
+                                    viewLifecycleOwner,
+                                    Observer { location ->
+                                        if (::mMap.isInitialized) {
+                                            mMap.moveCamera(
+                                                CameraUpdateFactory.newLatLngZoom(
+                                                    location.location,
+                                                    21.0f
+                                                )
+                                            )
+                                            mTravelTimeClusterManager.cluster()
+                                            mMap.moveCamera(
+                                                CameraUpdateFactory.newLatLngZoom(
+                                                    location.location,
+                                                    zoom
+                                                )
+                                            )
+                                        }
+                                    })
+                            }
+
+                            mTravelTimeClusterManager.setOnClusterClickListener { travelTimeListItems ->
+
+                                if (findNavController().currentDestination?.id != R.id.navTravelTimeMapListFragment) {
+                                    val action =
+                                        NavGraphDirections.actionGlobalNavTravelTimeMapListFragment(
+                                            travelTimeListItems.items.map { it.mTravelTime.travelTimeId }
+                                                .toIntArray(),
+                                            "Travel Times"
+                                        )
+                                    findNavController().navigate(action)
+                                }
+
+
+                                return@setOnClusterClickListener false
+                            }
+
+                            mTravelTimeClusterManager.setOnClusterItemClickListener { travelTimeItem ->
+
+                                if (travelTimeItem.mTravelTime.travelTimeId != R.id.navTravelTimeFragment) {
+                                    val action =
+                                        NavGraphDirections.actionGlobalNavTravelTimeFragment(
+                                            travelTimeItem.mTravelTime.startLocationLatitude.toString(),
+                                            travelTimeItem.mTravelTime.startLocationLongitude.toString(),
+                                            travelTimeItem.mTravelTime.endLocationLatitude.toString(),
+                                            travelTimeItem.mTravelTime.endLocationLongitude.toString(),
+                                            travelTimeItem.mTravelTime.title,
+                                            travelTimeItem.mTravelTime.travelTimeId
+                                        )
+                                    findNavController().navigate(action)
+                                    (activity as MainActivity).supportActionBar?.title =
+                                        travelTimeItem.mTravelTime.title
+                                }
+
+                                return@setOnClusterItemClickListener false
+                            }
+
+                        }
+                    }
+            }
+        })
 
         // init a new collection for rest area markers
         mMarkerManager.newCollection(getString(R.string.rest_area_marker_collection_id))
@@ -509,6 +727,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
                 val marker = mMarkerManager.getCollection(getString(R.string.rest_area_marker_collection_id)).addMarker(
                     MarkerOptions()
+                        .zIndex(1.0f)
                         .position(LatLng(restArea.latitude, restArea.longitude))
                         .visible(showRestAreas)
                         .icon(BitmapDescriptorFactory.fromResource(restArea.icon)))
@@ -550,7 +769,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     )
                 } }?.let {
                     MarkerOptions()
-                        .zIndex(100f)
+                        .zIndex(1.0f)
                         .position(it)
                         .visible(true)
                         .icon(icon)
@@ -581,7 +800,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
             }
             return true
         }
-        
+
         return true
     }
 
@@ -751,76 +970,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
     }
 
-    // Called when a clusterable marker is clicked
-    override fun onClusterItemClick(p0: CameraClusterItem?): Boolean {
-        p0?.let { cameraClusterItem ->
-
-            from(binding!!.highwayAlertBottomSheet).state = STATE_HIDDEN
-
-            selectedCameraMarker?.remove()
-            val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
-
-            selectedCameraMarker = mMarkerManager.getCollection(getString(R.string.selected_marker_collection_id))
-                .addMarker(MarkerOptions()
-                .zIndex(100f)
-                .position(LatLng(cameraClusterItem.mCamera.latitude, cameraClusterItem.mCamera.longitude))
-                .visible(true)
-                .icon(icon))
-
-            cameraViewModel.setCameraQuery(cameraClusterItem.mCamera.cameraId)
-
-            binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
-                cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
-            }
-
-            from(binding!!.cameraBottomSheet).state = STATE_EXPANDED
+    private fun setTravelTimesMarkerVisibility(visibility: Boolean){
+        val collection = mMarkerManager.getCollection(getString(R.string.travel_time_marker_collection_id))
+        for (marker in collection.markers) {
+            marker.isVisible = visibility
         }
-        return true
-    }
 
-    // Called when a cluster that represents multiple markers is clicked
-    override fun onClusterClick(p0: Cluster<CameraClusterItem>?): Boolean {
-
-        p0?.let { clusterItems ->
-
-            // Open if cluster has 10 or less items?
-            if (clusterItems.size <= 10) {
-
-                val locations = clusterItems.items.map { LatLng(it.mCamera.latitude, it.mCamera.longitude)  }.toTypedArray()
-                val latitude = locations[0].latitude
-                val longitude = locations[0].longitude
-
-                if  (locations.any{ it.latitude != latitude && it.longitude != longitude }) {
-
-                    val builder = LatLngBounds.builder()
-                    for (item in clusterItems.items) {
-                        builder.include(item.position)
-                    }
-
-                    val bounds = builder.build()
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
-
-                } else {
-                    if (findNavController().currentDestination?.id != R.id.navCameraListFragment) {
-                        val action = NavGraphDirections.actionGlobalNavCameraListFragment(
-                            clusterItems.items.map { it.mCamera.cameraId }.toIntArray(),
-                            "Traffic Cameras"
-                        )
-                        findNavController().navigate(action)
-                    }
-                }
-
-            } else {
-                val builder = LatLngBounds.builder()
-                for (item in clusterItems.items) {
-                    builder.include(item.position)
-                }
-
-                val bounds = builder.build()
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+        mTravelTimeClusterManager.markerCollection?.markers?.let{ markers ->
+            for (marker in markers){
+                marker.isVisible = visibility
             }
         }
-        return true
+        mTravelTimeClusterManager.clusterMarkerCollection?.markers?.let { clusters ->
+            for (cluster in clusters){
+                cluster.isVisible = visibility
+            }
+        }
+
     }
 
     // settings FAB
@@ -833,8 +999,9 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mFab.addActionItem(getCameraVisibilityAction(), 1)
         mFab.addActionItem(getRestAreasVisibilityAction(), 2)
         mFab.addActionItem(getMountainPassVisibilityAction(), 3)
-        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 4)
-        mFab.addActionItem(getTrafficLayerVisibilityAction(), 5)
+        mFab.addActionItem(getTravelTimesVisibilityAction(), 4)
+        mFab.addActionItem(getHighwayAlertsVisibilityAction(), 5)
+        mFab.addActionItem(getTrafficLayerVisibilityAction(), 6)
 
         mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
 
@@ -923,6 +1090,35 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_mountain_passes_visibility_action, icon)
             .setLabel(R.string.fab_mountain_passes_label)
+            .setFabImageTintColor(Color.WHITE)
+            .setFabBackgroundColor(actionColor)
+            .create()
+
+    }
+
+    private fun getTravelTimesVisibilityAction(): SpeedDialActionItem  {
+
+        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+
+        val showTravelTimes = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_travel_times), true)
+
+        var actionColor = resources.getColor(R.color.wsdotGreen)
+
+        activity?.let {
+            val typedValue: TypedValue = TypedValue()
+            it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
+            actionColor = typedValue.data
+        }
+
+        var icon = R.drawable.ic_layers
+
+        if (!showTravelTimes!!) {
+            actionColor = resources.getColor(R.color.gray)
+            icon = R.drawable.ic_layers_off
+        }
+
+        return SpeedDialActionItem.Builder(R.id.fab_travel_times_visibility_action, icon)
+            .setLabel(R.string.fab_travel_times_label)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1068,6 +1264,23 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     showMountainPasses = !show
 
                     mFab.replaceActionItem(actionItem, getMountainPassVisibilityAction())
+                }
+
+                R.id.fab_travel_times_visibility_action -> {
+                    val settings = context?.let { it1 ->
+                        PreferenceManager.getDefaultSharedPreferences(
+                            it1
+                        )
+                    }
+                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_travel_times), true)
+                    val editor = settings?.edit()
+                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_travel_times), !show!!)
+                    editor?.apply()
+
+                    setTravelTimesMarkerVisibility(!show!!)
+                    showTravelTimes = !show
+
+                    mFab.replaceActionItem(actionItem, getTravelTimesVisibilityAction())
                 }
 
                 R.id.fab_highway_alert_visibility_action -> {

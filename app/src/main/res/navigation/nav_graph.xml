@@ -252,6 +252,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/navTravelTimeMapListFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeMapListFragment"
+        android:label="{title}"
+        tools:layout="@layout/travel_time_map_list_fragment">
+        <argument
+            android:name="route_ids"
+            app:argType="integer[]" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/navBorderCameraListFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.bordercrossings.bordercameras.BorderCameraListFragment"
         android:label="{title}"
@@ -289,6 +303,33 @@
             android:name="title"
             app:argType="string"
             android:defaultValue="WSDOT"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/navTravelTimeFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeFragment"
+        android:label="{title}"
+        tools:layout="@layout/travel_time_fragment" >
+        <argument
+            android:name="start_latitude"
+            app:argType="string" />
+        <argument
+            android:name="start_longitude"
+            app:argType="string" />
+        <argument
+            android:name="end_latitude"
+            app:argType="string" />
+        <argument
+            android:name="end_longitude"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT" />
+        <argument
+            android:name="route_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
     <fragment
@@ -682,6 +723,14 @@
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     <action
+        android:id="@+id/action_global_navTravelTimeMapListFragment"
+        app:destination="@id/navTravelTimeMapListFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
         android:id="@+id/action_global_navBorderCameraListFragment"
         app:destination="@id/navBorderCameraListFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
@@ -716,6 +765,14 @@
     <action
         android:id="@+id/action_global_navTollTripFragment"
         app:destination="@id/navTollTripFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTravelTimeFragment"
+        app:destination="@id/navTravelTimeFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

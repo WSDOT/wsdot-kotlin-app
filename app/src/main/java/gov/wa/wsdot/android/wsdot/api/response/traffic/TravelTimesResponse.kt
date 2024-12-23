@@ -22,6 +22,9 @@ data class TravelTimesResponse (
     @field:SerializedName("current_time")
     val currentTime: Int,
 
+    @field:SerializedName("hovCurrentTime")
+    val hovCurrentTime: Int,
+
     @field:SerializedName("miles")
     val miles: Float,
 

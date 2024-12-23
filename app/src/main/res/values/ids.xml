@@ -5,5 +5,6 @@
     <item name="fab_camera_cluster_action" type="id" />
     <item name="fab_rest_area_visibility_action" type="id" />
     <item name="fab_mountain_passes_visibility_action" type="id" />
+    <item name="fab_travel_times_visibility_action" type="id" />
     <item name="fab_traffic_layer_visibility_action" type="id" />
 </resources>

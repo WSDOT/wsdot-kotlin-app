@@ -66,7 +66,6 @@
                     android:id="@+id/crossingCamerasButton"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:text="check cameras"
-                    android:textColor="?themeColorAccent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/directionView"

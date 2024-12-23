@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Status" />
+        <import type="gov.wa.wsdot.android.wsdot.model.common.Resource" />
+        <import type="androidx.lifecycle.LiveData"/>
+        <import type="gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeListViewModel" />
+
+        <variable
+            name="viewModel"
+            type="TravelTimeListViewModel"/>
+
+        <variable
+            name="retryCallback"
+            type="gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:refreshing="@{((Resource) viewModel.travelTimes).status == Status.LOADING}"
+            app:onRefreshListener="@{() -> viewModel.refresh()}">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/travel_time_list"
+                app:layoutManager="LinearLayoutManager"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="0dp"
+                tools:listitem="@layout/travel_time_map_item"
+                android:paddingStart="@dimen/content_padding"
+                android:paddingEnd="@dimen/content_padding"/>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/empty_list_view"
+            style="@style/CardTitleText"
+            android:text="No Travel Times"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

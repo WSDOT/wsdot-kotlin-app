@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="gov.wa.wsdot.android.wsdot.ui.traveltimes.TravelTimeViewModel" />
+
+        <variable
+            name="travelTime"
+            type="gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime"/>
+
+        <variable
+            name="viewModel"
+            type="TravelTimeViewModel"/>
+
+    </data>
+
+    <ScrollView
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titleText"
+                style="@style/CardTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeTitle="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/travelTimeRoute"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeRoute="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="@id/titleText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/travelTimeDistance"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeDistance="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="@id/travelTimeRoute"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/travelTimeAverageTime"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeAverageTime="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="@id/travelTimeDistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/travelTimeCurrentTime"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeCurrentTime="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="@id/travelTimeAverageTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/travelTimeHOVCurrentTime"
+                style="@style/CardSubTitleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindTravelTimeHOVCurrentTime="@{travelTime}"
+                app:layout_constraintTop_toBottomOf="@id/travelTimeCurrentTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/timestamp"
+                style="@style/CardFooterText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:bindRelativeDate="@{travelTime.updated}"
+                android:layout_marginStart="8dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@id/travelTimeHOVCurrentTime"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    xmlns:map="http://schemas.android.com/apk/res-auto"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/google_map"
+                    android:layout_height="300dp"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toBottomOf="@id/timestamp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    map:cameraZoom="12"
+                    map:mapType="normal"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

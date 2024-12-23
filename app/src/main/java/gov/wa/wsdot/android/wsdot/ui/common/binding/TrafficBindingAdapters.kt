@@ -5,6 +5,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
@@ -17,6 +18,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.db.socialmedia.Tweet
 import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTime
 import gov.wa.wsdot.android.wsdot.ui.common.SpinnerStringPairAdapter
+import java.util.*
 
 /**
  * Data Binding adapters specific to the app.
@@ -28,12 +30,15 @@ object TrafficBindingAdapters {
     @BindingAdapter("bindTravelTime")
     fun bindTravelTime(textView: TextView, travelTime: TravelTime) {
 
-        if (travelTime.currentTime == -1) {
+        if (travelTime.status.lowercase(Locale.ENGLISH) == "closed") {
             textView.setTextColor(Color.parseColor("#000000"))
         }
-        else if (travelTime.currentTime < travelTime.avgTime - 1) {
+        else if (travelTime.currentTime == -1) {
+            textView.setTextColor(Color.parseColor("#000000"))
+        }
+        else if (travelTime.currentTime < travelTime.avgTime) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
-        } else if (travelTime.currentTime > travelTime.avgTime + 1) {
+        } else if (travelTime.currentTime > travelTime.avgTime) {
             textView.setTextColor(Color.parseColor("#FFFFFF"))
         } else {
             textView.setTextColor(Color.parseColor("#000000"))
@@ -50,8 +55,9 @@ object TrafficBindingAdapters {
     @JvmStatic
     @BindingAdapter("bindTravelTimeInfo")
     fun bindTravelTimeInfo(textView: TextView, travelTime: TravelTime) {
-        if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
-            textView.text = String.format("%.2f miles / %s min", travelTime.miles, travelTime.avgTime)
+
+         if (travelTime.miles != 0f && travelTime.avgTime != 0 && travelTime.currentTime != -1) {
+            textView.text = String.format("%.2f miles", travelTime.miles)
         } else {
             textView.text = "Not Available"
         }
@@ -61,13 +67,16 @@ object TrafficBindingAdapters {
     @BindingAdapter("bindTravelTimeColor")
     fun bindTravelTimeColor(cardView: CardView, travelTime: TravelTime) {
         when {
+            travelTime.status.lowercase(Locale.ENGLISH) == "closed" -> {
+                cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
+            }
             travelTime.currentTime == -1 -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#eeeeee"))
             }
-            travelTime.currentTime < travelTime.avgTime - 1 -> {
+            travelTime.currentTime < travelTime.avgTime -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#007B5F"))
             }
-            travelTime.currentTime > travelTime.avgTime + 1 -> {
+            travelTime.currentTime > travelTime.avgTime -> {
                 cardView.setCardBackgroundColor(Color.parseColor("#c62828"))
             }
             else -> {
@@ -173,4 +182,31 @@ object TrafficBindingAdapters {
         spinner.setSelection(0)
     }
 
+    @JvmStatic
+    @BindingAdapter("setVisibility")
+    fun setVisibility(button: Button, travelTime: TravelTime?) {
+        if (travelTime != null) {
+            if (travelTime.currentTime == -1) {
+                button.visibility = View.INVISIBLE
+            }
+            else {
+                button.visibility = VISIBLE
+            }
+        }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("bindTravelTimeMap")
+    fun bindTravelTimeMap(cardView: CardView, travelTime: TravelTime?) {
+
+        if (travelTime != null) {
+            if ((travelTime.startLocationLatitude.toInt() != 0 && travelTime.startLocationLongitude.toInt() != 0)
+                && (travelTime.endLocationLatitude.toInt() != 0 && travelTime.endLocationLongitude.toInt() != 0))
+                cardView.visibility = VISIBLE
+            else {
+                cardView.visibility = GONE
+            }
+        }
+    }
 }
