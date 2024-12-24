@@ -619,90 +619,79 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                 travelTimeClusterItems.clear()
                 mTravelTimeClusterManager.clearItems()
 
-                    for (travelTime in travelTimes.data) {
+                val travelTimeClusterManager = ClusterManager<TravelTimeClusterItem>(context, mMap)
+                travelTimeClusterManager.renderer = TravelTimeRenderer(context, mMap, travelTimeClusterManager)
 
-                        if (travelTime.travelTimeId != 36 && travelTime.travelTimeId != 37 && travelTime.travelTimeId != 68 &&
-                            travelTime.travelTimeId != 69
-                        ) {
+                for (travelTime in travelTimes.data) {
 
-                            val travelTimeClusterManager =
-                                ClusterManager<TravelTimeClusterItem>(context, mMap)
-                            travelTimeClusterManager.renderer =
-                                TravelTimeRenderer(context, mMap, travelTimeClusterManager)
+                    // Exclude duplicate travel times and missing lat/long
+                    if (travelTime.travelTimeId !in listOf(36, 37, 68, 69) &&
+                        (travelTime.startLocationLatitude.toInt() != 0 && travelTime.startLocationLongitude.toInt() != 0)
+                        && (travelTime.endLocationLatitude.toInt() != 0 && travelTime.endLocationLongitude.toInt() != 0)) {
 
-                            if ((travelTime.startLocationLatitude.toInt() != 0 && travelTime.startLocationLongitude.toInt() != 0)
-                                && (travelTime.endLocationLatitude.toInt() != 0 && travelTime.endLocationLongitude.toInt() != 0)
-                            ) {
+                        val clusterItem = TravelTimeClusterItem(
+                            travelTime.startLocationLatitude,
+                            travelTime.startLocationLongitude,
+                            travelTime
+                        )
+                        mTravelTimeClusterManager.addItem(clusterItem)
+                        travelTimeClusterItems.add(clusterItem)
+                    }
+                }
 
-                                val clusterItem = TravelTimeClusterItem(
-                                    travelTime.startLocationLatitude,
-                                    travelTime.startLocationLongitude,
-                                    travelTime
+                val zoom = mMap.cameraPosition.zoom
+
+                mapLocationViewModel.mapLocation.observe(
+                    viewLifecycleOwner,
+                    Observer { location ->
+                        if (::mMap.isInitialized) {
+                            mMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    location.location,
+                                    21.0f
                                 )
-                                mTravelTimeClusterManager.addItem(clusterItem)
-                                travelTimeClusterItems.add(clusterItem)
+                            )
+                            mTravelTimeClusterManager.cluster()
+                            mMap.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    location.location,
+                                    zoom
+                                )
+                            )
+                        }
+                    })
 
-                                val zoom = mMap.cameraPosition.zoom
-
-                                mapLocationViewModel.mapLocation.observe(
-                                    viewLifecycleOwner,
-                                    Observer { location ->
-                                        if (::mMap.isInitialized) {
-                                            mMap.moveCamera(
-                                                CameraUpdateFactory.newLatLngZoom(
-                                                    location.location,
-                                                    21.0f
-                                                )
-                                            )
-                                            mTravelTimeClusterManager.cluster()
-                                            mMap.moveCamera(
-                                                CameraUpdateFactory.newLatLngZoom(
-                                                    location.location,
-                                                    zoom
-                                                )
-                                            )
-                                        }
-                                    })
-                            }
-
-                            mTravelTimeClusterManager.setOnClusterClickListener { travelTimeListItems ->
-
-                                if (findNavController().currentDestination?.id != R.id.navTravelTimeMapListFragment) {
-                                    val action =
-                                        NavGraphDirections.actionGlobalNavTravelTimeMapListFragment(
-                                            travelTimeListItems.items.map { it.mTravelTime.travelTimeId }
+                mTravelTimeClusterManager.setOnClusterClickListener { travelTimeListItems ->
+                    if (findNavController().currentDestination?.id != R.id.navTravelTimeMapListFragment) {
+                        val action = NavGraphDirections.actionGlobalNavTravelTimeMapListFragment(
+                            travelTimeListItems.items.map { it.mTravelTime.travelTimeId }
                                                 .toIntArray(),
                                             "Travel Times"
-                                        )
-                                    findNavController().navigate(action)
-                                }
-
-
-                                return@setOnClusterClickListener false
-                            }
-
-                            mTravelTimeClusterManager.setOnClusterItemClickListener { travelTimeItem ->
-
-                                if (travelTimeItem.mTravelTime.travelTimeId != R.id.navTravelTimeFragment) {
-                                    val action =
-                                        NavGraphDirections.actionGlobalNavTravelTimeFragment(
-                                            travelTimeItem.mTravelTime.startLocationLatitude.toString(),
-                                            travelTimeItem.mTravelTime.startLocationLongitude.toString(),
-                                            travelTimeItem.mTravelTime.endLocationLatitude.toString(),
-                                            travelTimeItem.mTravelTime.endLocationLongitude.toString(),
-                                            travelTimeItem.mTravelTime.title,
-                                            travelTimeItem.mTravelTime.travelTimeId
-                                        )
-                                    findNavController().navigate(action)
-                                    (activity as MainActivity).supportActionBar?.title =
-                                        travelTimeItem.mTravelTime.title
-                                }
-
-                                return@setOnClusterItemClickListener false
-                            }
-
-                        }
+                        )
+                        findNavController().navigate(action)
                     }
+
+                    return@setOnClusterClickListener false
+                }
+
+                mTravelTimeClusterManager.setOnClusterItemClickListener { travelTimeItem ->
+                    if (travelTimeItem.mTravelTime.travelTimeId != R.id.navTravelTimeFragment) {
+                        val action =
+                            NavGraphDirections.actionGlobalNavTravelTimeFragment(
+                                travelTimeItem.mTravelTime.startLocationLatitude.toString(),
+                                travelTimeItem.mTravelTime.startLocationLongitude.toString(),
+                                travelTimeItem.mTravelTime.endLocationLatitude.toString(),
+                                travelTimeItem.mTravelTime.endLocationLongitude.toString(),
+                                travelTimeItem.mTravelTime.title,
+                                travelTimeItem.mTravelTime.travelTimeId
+                            )
+                        findNavController().navigate(action)
+                        (activity as MainActivity).supportActionBar?.title =
+                            travelTimeItem.mTravelTime.title
+                    }
+
+                    return@setOnClusterItemClickListener false
+                }
             }
         })
 
