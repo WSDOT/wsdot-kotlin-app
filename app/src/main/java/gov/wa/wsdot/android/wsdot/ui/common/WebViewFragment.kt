@@ -47,6 +47,8 @@ class WebViewFragment: Fragment() {
         val webView = dataBinding.root.findViewById<WebView>(R.id.webview)
 
         webView.loadUrl(args.url)
+        webView.settings.builtInZoomControls = true
+        webView.settings.displayZoomControls = false
 
         // Enable Javascript
         // We only allow web client to load pages from our site
