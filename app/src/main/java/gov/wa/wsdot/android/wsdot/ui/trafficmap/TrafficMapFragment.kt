@@ -558,7 +558,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
                     }
 
-                return@setOnClusterClickListener false
+                return@setOnClusterClickListener true
                 }
 
                 mCameraClusterManager.setOnClusterItemClickListener { cameraClusterItem ->
