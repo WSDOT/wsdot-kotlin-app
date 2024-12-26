@@ -32,11 +32,16 @@ import gov.wa.wsdot.android.wsdot.databinding.TravelTimeFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.MapLocationItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
+import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
+import java.util.*
 import javax.inject.Inject
 
 class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     var binding by autoCleared<TravelTimeFragmentBinding>()
 
@@ -48,6 +53,8 @@ class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
     private var showTrafficLayer: Boolean = true
 
     private var isFavorite: Boolean = false
+
+    lateinit var t: Timer
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -89,7 +96,14 @@ class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         mapFragment = childFragmentManager.findFragmentById(R.id.google_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        startTravelTimeAlertTask()
+
         return dataBinding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        t.cancel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -203,6 +217,22 @@ class TravelTimeFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
         val padding = 150
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
         googleMap.animateCamera(cameraUpdate)
+    }
+
+    private fun startTravelTimeAlertTask() {
+        t = Timer()
+        t.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        travelTimeViewModel.refresh()
+                    }
+                }
+            },
+            60000,
+            120000
+        )
+
     }
 
 }
