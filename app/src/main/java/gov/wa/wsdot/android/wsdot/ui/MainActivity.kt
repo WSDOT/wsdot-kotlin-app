@@ -8,8 +8,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -36,8 +35,6 @@ import gov.wa.wsdot.android.wsdot.WsdotApp
 import gov.wa.wsdot.android.wsdot.ui.eventbanner.EventBannerViewModel
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsViewModel
 import gov.wa.wsdot.android.wsdot.util.*
-import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -67,7 +64,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
             val density = outMetrics.density
 
-            var adWidthPixels = ad_banner_box.width.toFloat()
+            val adBannerBox: LinearLayout = findViewById(R.id.ad_banner_box)
+
+            var adWidthPixels = adBannerBox.width.toFloat()
             if (adWidthPixels == 0f) {
                 adWidthPixels = outMetrics.widthPixels.toFloat()
             }
@@ -144,7 +143,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val startDestination = getStartDestination(intent?.extras)
 
-        graph.startDestination = startDestination
+        graph.setStartDestination(startDestination)
 
         navController.graph = graph
 
@@ -206,7 +205,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         MobileAds.initialize(this) { }
 
         adView = AdManagerAdView(this)
-        ad_banner_box.addView(adView)
+//        adBannerBox.addView(adView)
         adView?.setAdSizes(adSize)
         adView?.adUnitId = ApiKeys.UNIT_ID
 
@@ -662,7 +661,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      */
     fun enableAds(targets: Map<String, String>) {
 
-        ad_banner_box?.visibility = VISIBLE
+//        adBannerBox?.visibility = VISIBLE
 
         //val testDeviceIds = Arrays.asList("2531EB5FD75758B5E8BDD4669A870BF7")
         //val configuration = RequestConfiguration.Builder()
@@ -709,7 +708,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
      *  WARNING: don't call in onCreate
      */
     fun disableAds() {
-        ad_banner_box?.visibility = GONE
+
+//        adBannerBox?.visibility = GONE
         adView?.pause()
     }
 

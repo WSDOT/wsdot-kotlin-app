@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.*
 import gov.wa.wsdot.android.wsdot.db.notificationtopic.NotificationTopic
-import kotlinx.android.synthetic.main.topic_item.view.*
 
 class TopicListAdapter(
     private val dataBindingComponent: DataBindingComponent,
@@ -144,7 +143,7 @@ class TopicListAdapter(
 
                  if (!NotificationManagerCompat.from(parent.context).areNotificationsEnabled() && binding.root.findViewById<CheckBox>(R.id.sub_checkbox).isPressed) {
 
-                     binding.root.sub_checkbox.isChecked = !binding.root.sub_checkbox.isChecked
+                     binding.root.findViewById<CheckBox>(R.id.sub_checkbox).isChecked = !binding.root.findViewById<CheckBox>(R.id.sub_checkbox).isChecked
                      subscribeClickCallback?.invoke(it, !isChecked)
 
                      val notificationMessage =

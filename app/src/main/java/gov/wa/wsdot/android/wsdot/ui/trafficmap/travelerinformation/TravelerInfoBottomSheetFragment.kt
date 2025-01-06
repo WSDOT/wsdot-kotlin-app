@@ -16,7 +16,8 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.model.eventItems.TravelerInfoMenuEventItem
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
+
 
 @Parcelize
 class TravelerInfoBottomSheetFragment:

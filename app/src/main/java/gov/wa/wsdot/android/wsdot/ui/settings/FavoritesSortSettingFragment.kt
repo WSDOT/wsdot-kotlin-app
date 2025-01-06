@@ -19,7 +19,6 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.favorites.FavoritesFragment
 import gov.wa.wsdot.android.wsdot.ui.favorites.recyclerview.FavoritesListAdapter
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
-import kotlinx.android.synthetic.main.amtrak_cascades_item.*
 import javax.inject.Inject
 
 class FavoritesSortSettingFragment : DaggerFragment(), Injectable, OnItemDragListener<String> {
