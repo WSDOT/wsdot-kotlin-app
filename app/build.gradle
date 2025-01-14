@@ -14,11 +14,12 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
     defaultConfig {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 23
-        targetSdkVersion 34
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 35
         versionCode 23062802
         versionName "6.28.0"
         vectorDrawables.useSupportLibrary = true
