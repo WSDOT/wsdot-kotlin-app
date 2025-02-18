@@ -17,7 +17,7 @@ interface WebDataService {
     /**
      * @GET declares an HTTP GET request
      */
-    @GET("WSFRouteSchedules.js")
+    @GET("WSFRouteSchedules.json")
     fun getFerrySchedules(): LiveData<ApiResponse<List<FerryScheduleResponse>>>
 
     @GET("MountainPassConditions.js")

@@ -23,7 +23,6 @@ import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.ui.common.callback.RetryCallback
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import kotlinx.android.synthetic.main.bridge_alerts_fragment.*
 import java.util.*
 import javax.inject.Inject
 
@@ -207,13 +206,13 @@ class BridgeAlertsFragment : DaggerFragment(), Injectable {
                             if (bridge.bridge != "Hood Canal Bridge" && bridge.bridge != "1st Avenue South Bridge" && bridge.bridge != "Interstate Bridge") {
                                 newBridgeList.add(bridge)
                                 bridgeAlerts(bridge.bridge, true)
-                                new_bridge_header.visibility = VISIBLE
+                                binding.root.findViewById<View>(R.id.new_bridge_header).visibility = VISIBLE
 
                             }
                         }
                         if (newBridgeList.isEmpty()) {
                             bridgeAlerts("", false)
-                            new_bridge_header.visibility = GONE
+                            binding.root.findViewById<View>(R.id.new_bridge_header).visibility = GONE
 
                         }
 

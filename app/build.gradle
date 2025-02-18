@@ -7,20 +7,22 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
     defaultConfig {
         applicationId "gov.wa.wsdot.android.wsdot"
         minSdkVersion 23
-        targetSdkVersion 34
-        versionCode 23062802
-        versionName "6.28.0"
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 35
+        versionCode 23062901
+        versionName "6.29.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         compileOptions {
@@ -40,8 +42,7 @@ android {
 
     buildFeatures{
         dataBinding = true
-        // for view binding :
-        // viewBinding = true
+        viewBinding = true
     }
 
     buildTypes {
@@ -80,6 +81,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    namespace 'gov.wa.wsdot.android.wsdot'
 }
 
 dependencies {
@@ -139,7 +141,7 @@ dependencies {
     kapt "com.android.databinding:compiler:3.1.4"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
-    def nav_version = "2.3.5"
+    def nav_version = "2.8.5"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 

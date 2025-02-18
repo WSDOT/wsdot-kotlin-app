@@ -6,7 +6,6 @@ import gov.wa.wsdot.android.wsdot.R
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
