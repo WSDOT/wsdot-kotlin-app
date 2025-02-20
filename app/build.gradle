@@ -129,7 +129,7 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
     // drag and drop list
-    implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:0.5.1'
+    implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
 
     // Map Utils
     implementation 'com.google.maps.android:android-maps-utils:0.5'
