@@ -168,9 +168,9 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
 
     // PermissionsDispatcher https://github.com/permissions-dispatcher/PermissionsDispatcher
-    def permissionDispatcherVer = '4.3.1'
-    implementation "org.permissionsdispatcher:permissionsdispatcher:$permissionDispatcherVer"
-    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:$permissionDispatcherVer"
+    def permissionDispatcherVer = '4.9.2'
+    implementation "com.github.permissions-dispatcher:permissionsdispatcher:$permissionDispatcherVer"
+    kapt "com.github.permissions-dispatcher:permissionsdispatcher:$permissionDispatcherVer"
 
     // Testing
     androidTestImplementation "android.arch.persistence.room:testing:2.2.5"
