@@ -1021,6 +1021,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_highway_alert_visibility_action, icon)
             .setLabel(R.string.fab_highway_alerts_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1050,6 +1052,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_rest_area_visibility_action, icon)
             .setLabel(R.string.fab_rest_areas_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1079,6 +1083,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_mountain_passes_visibility_action, icon)
             .setLabel(R.string.fab_mountain_passes_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1108,6 +1114,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_travel_times_visibility_action, icon)
             .setLabel(R.string.fab_travel_times_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1137,6 +1145,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_traffic_layer_visibility_action, icon)
             .setLabel(R.string.fab_traffic_layer_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1167,6 +1177,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_camera_visibility_action, icon)
             .setLabel(R.string.fab_camera_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
@@ -1194,6 +1206,8 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
         return SpeedDialActionItem.Builder(R.id.fab_camera_cluster_action, icon)
             .setLabel(R.string.fab_camera_Clusters_label)
+            .setLabelColor(resources.getColor(R.color.cardLightGray))
+            .setLabelBackgroundColor(Color.WHITE)
             .setFabImageTintColor(Color.WHITE)
             .setFabBackgroundColor(actionColor)
             .create()
