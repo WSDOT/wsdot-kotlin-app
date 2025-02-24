@@ -115,7 +115,7 @@ class ExpressLanesFragment: DaggerFragment(), Injectable {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_express_lanes, menu);
+        inflater.inflate(R.menu.menu_express_lanes, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }
