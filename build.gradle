@@ -7,9 +7,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.8.0'
+        classpath 'com.android.tools.build:gradle:8.8.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.5'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.7'
 
         // Updating to 4.4.0 causes crash when selecting notification check box.
         classpath 'com.google.gms:google-services:4.3.15'
