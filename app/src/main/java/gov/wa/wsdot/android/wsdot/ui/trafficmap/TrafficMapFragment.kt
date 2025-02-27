@@ -362,7 +362,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
     override fun onMapReady(map: GoogleMap) {
 
-        mMap = map as GoogleMap
+        mMap = map
 
         mMap.uiSettings.isMapToolbarEnabled = false
 

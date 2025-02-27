@@ -114,7 +114,7 @@ class HighwayAlertFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
 
-        mMap = map as GoogleMap
+        mMap = map
 
         context?.let {
             if (NightModeConfig.nightModeOn(it)) {
