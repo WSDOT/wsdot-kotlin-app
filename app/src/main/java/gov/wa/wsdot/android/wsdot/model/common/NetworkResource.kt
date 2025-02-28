@@ -49,7 +49,7 @@ internal constructor(private val appExecutors: AppExecutors) {
                         Resource.error(
                             response.errorMessage,
                             null
-                        );
+                        )
                     onFetchFailed()
                 }
             }

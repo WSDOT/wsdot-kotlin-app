@@ -119,7 +119,7 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
 
         if (findNavController().currentDestination?.id != R.id.navBorderCameraListFragment) {
 
-            val action = if (borderCrossing.direction.toLowerCase(Locale.ENGLISH) == "northbound") {
+            val action = if (borderCrossing.direction.lowercase(Locale.ENGLISH) == "northbound") {
                 NavGraphDirections.actionGlobalNavBorderCameraListFragment(
                     northboundRoadNames[borderCrossing.route]?: "Error",
                     northboundMinLats[borderCrossing.route]?: "0.0",

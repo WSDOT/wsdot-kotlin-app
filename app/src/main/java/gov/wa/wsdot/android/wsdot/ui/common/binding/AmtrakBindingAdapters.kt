@@ -16,13 +16,14 @@ object AmtrakBindingAdapters {
                     view.text = String.format(
                         "%s %s at %s",
                         if (type.equals("Estimated",true)) "Estimated" else "Departed",
-                        it.departureComment?.toLowerCase(Locale.ENGLISH),
+                        it.departureComment?.lowercase(Locale.ENGLISH),
                         BindingAdapters.getHourString(it.departureTime))
                 } else {
                     view.text = String.format(
                         "%s %s",
                         if (type.equals("Estimated",true)) "Estimated" else "Departed",
-                        it.departureComment?.toLowerCase(Locale.ENGLISH))
+                        it.departureComment?.lowercase(Locale.ENGLISH)
+                    )
                 }
             }
         }
@@ -37,13 +38,14 @@ object AmtrakBindingAdapters {
                     view.text = String.format(
                         "%s %s at %s",
                         if (type.equals("Estimated",true)) "Estimated" else "Arrived",
-                        it.arrivalComment?.toLowerCase(Locale.ENGLISH),
+                        it.arrivalComment?.lowercase(Locale.ENGLISH),
                         BindingAdapters.getHourString(it.arrivalTime))
                 } else {
                     view.text = String.format(
                         "%s %s",
                         if (type.equals("Estimated",true)) "Estimated" else "Arrived",
-                        it.arrivalComment?.toLowerCase(Locale.ENGLISH))
+                        it.arrivalComment?.lowercase(Locale.ENGLISH)
+                    )
                 }
             }
         }

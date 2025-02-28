@@ -7,7 +7,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'kotlin-android'
-//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 
@@ -50,7 +49,6 @@ android {
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 // These paths are relative to the app/ folder
-                strippedNativeLibsDir "build/ndklibs/obj"
                 unstrippedNativeLibsDir "build/ndklibs/libs"
             }
             shrinkResources true
@@ -90,41 +88,38 @@ dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.activity:activity-ktx:1.9.1'
-    implementation 'androidx.fragment:fragment-ktx:1.6.2'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.7.0'
+    implementation 'androidx.activity:activity-ktx:1.10.1'
+    implementation 'androidx.fragment:fragment-ktx:1.8.6'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.8.7'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.7'
 
-    implementation 'com.google.android.gms:play-services-ads:23.2.0'
+    implementation 'com.google.android.gms:play-services-ads:24.0.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
 
-    // Updating to 21.3.0 causes Kotlin compatibility error.
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-
-    // Updating to 18.2.0 causes periodic load issues with the Google Map traffic layer.
+    // Updating to 19.0.0 changes styling of traffic map.
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-analytics:22.3.0'
+    implementation 'com.google.firebase:firebase-messaging:24.1.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.1'
 
-    // Updating to 22.0.2 causes Kotlin compatibility error.
-    implementation 'com.google.firebase:firebase-analytics:21.3.0'
-    implementation 'com.google.firebase:firebase-messaging:24.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.0.3'
-
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.15.0'
 
     implementation 'androidx.preference:preference-ktx:1.2.1'
     
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
-    kapt "androidx.lifecycle:lifecycle-common-java8:2.8.4"
+    kapt "androidx.lifecycle:lifecycle-common-java8:2.8.7"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation "androidx.room:room-runtime:2.6.1"
 
+    // Library supports using KSP instead of kapt
     kapt "androidx.room:room-compiler:2.6.1"
     annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
@@ -141,16 +136,18 @@ dependencies {
     kapt "com.android.databinding:compiler:3.1.4"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
-    def nav_version = "2.8.5"
+    def nav_version = "2.8.7"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Glide - https://github.com/bumptech/glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+
+    // Library supports using KSP instead of kapt
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     // gson
-    implementation 'com.google.code.gson:gson:2.10'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.3.0"
@@ -182,7 +179,7 @@ dependencies {
     androidTestImplementation 'androidx.test:core:1.6.1'
     testImplementation "androidx.room:room-testing:2.6.1"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
-    androidTestImplementation 'androidx.test:runner:1.6.1'
+    androidTestImplementation 'androidx.test:runner:1.6.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 

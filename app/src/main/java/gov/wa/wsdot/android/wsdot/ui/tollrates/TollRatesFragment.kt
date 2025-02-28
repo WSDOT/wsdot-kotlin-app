@@ -37,7 +37,7 @@ class TollRatesFragment: SimpleTabFragment(), Injectable {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_tolling, menu);
+        inflater.inflate(R.menu.menu_tolling, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }

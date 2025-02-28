@@ -89,7 +89,7 @@ class CameraRenderer(context: Context?, map: GoogleMap?, clusterManager: Cluster
             val bucket = getBucket(cluster)
             var descriptor: BitmapDescriptor? = mIcons.get(bucket)
             if (descriptor == null) {
-                mColoredCircleBackground.paint.color = getColor(bucket);
+                mColoredCircleBackground.paint.color = getColor(bucket)
                 descriptor = BitmapDescriptorFactory.fromBitmap(mIconGenerator.makeIcon(getClusterText(bucket)))
                 mIcons.put(bucket, descriptor)
             }

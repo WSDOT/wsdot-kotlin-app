@@ -154,7 +154,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     override fun onMapReady(map: GoogleMap) {
 
-        mMap = map as GoogleMap
+        mMap = map
 
         context?.let {
             if (NightModeConfig.nightModeOn(it)) {
