@@ -20,43 +20,43 @@ interface WebDataService {
     @GET("WSFRouteSchedules.json")
     fun getFerrySchedules(): LiveData<ApiResponse<List<FerryScheduleResponse>>>
 
-    @GET("MountainPassConditions.js")
+    @GET("MountainPassConditions.json")
     fun getMountainPassReports(): LiveData<ApiResponse<MountainPassResponse>>
 
-    @GET("HighwayAlerts.js")
+    @GET("HighwayAlerts.json")
     fun getHighwayAlerts(): LiveData<ApiResponse<HighwayAlertsResponse>>
 
-    @GET("BridgeOpenings.js")
+    @GET("BridgeOpenings.json")
     fun getBridgeAlerts(): LiveData<ApiResponse<List<BridgeAlertResponse>>>
 
-    @GET("Cameras.js")
+    @GET("Cameras.json")
     fun getCameras(): LiveData<ApiResponse<CamerasResponse>>
 
-    @GET("ExpressLanes.js")
+    @GET("ExpressLanes.json")
     fun getExpressLanesStatus(): LiveData<ApiResponse<ExpressLanesStatusResponse>>
 
-    @GET("TravelTimesv2.js")
+    @GET("TravelTimesv2.json")
     fun getTravelTimes(): LiveData<ApiResponse<List<TravelTimesResponse>>>
 
-    @GET("News.js")
+    @GET("News.json")
     fun getNewsItems(): LiveData<ApiResponse<NewsReleaseResponse>>
 
-    @GET("BorderCrossings.js")
+    @GET("BorderCrossings.json")
     fun getBorderCrossingItems(): LiveData<ApiResponse<BorderCrossingResponse>>
 
-    @GET("StaticTollRates.js")
+    @GET("StaticTollRates.json")
     fun getTollRateTables(): LiveData<ApiResponse<TollRateTableResponse>>
 
-    @GET("EventStatus.js")
+    @GET("EventStatus.json")
     fun getEventStatus(): LiveData<ApiResponse<EventStatusResponse>>
 
-    @GET("TravelCharts.js")
+    @GET("TravelCharts.json")
     fun getTravelChartsStatus(): LiveData<ApiResponse<TravelChartsStatusResponse>>
 
-    @GET("NotificationTopics.js")
+    @GET("NotificationTopics.json")
     fun getNotificationTopics(): LiveData<ApiResponse<NotificationTopicResponse>>
 
-    @GET("NotificationTopicsVersion.js")
+    @GET("NotificationTopicsVersion.json")
     fun getNotificationTopicVersion(): LiveData<ApiResponse<NotificationVersionResponse>>
 
 }

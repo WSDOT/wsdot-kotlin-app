@@ -285,7 +285,7 @@ class AmtrakCascadesFragment : DaggerFragment(), Injectable {
                             Manifest.permission.ACCESS_COARSE_LOCATION
                         )
                     ) {
-                        AlertDialog.Builder(context!!)
+                        AlertDialog.Builder(requireContext())
                             .setTitle("Location Permission")
                             .setMessage(R.string.permission_station_location_rationale)
                             .setCancelable(false)

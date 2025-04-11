@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,27 +16,32 @@
         android:id="@+id/list_header"
         style="@style/CardTitleText"/>
 
-        <gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.BottomSheetListView
-            android:id="@+id/bottom_sheet_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:drawable/divider_horizontal_textfield"/>
+    <gov.wa.wsdot.android.wsdot.ui.trafficmap.travelerinformation.BottomSheetListView
+        android:id="@+id/bottom_sheet_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:drawable/divider_horizontal_textfield"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@android:drawable/divider_horizontal_textfield"/>
 
-    <ImageView
-        android:id="@+id/map_legend"
-        android:layout_width="310dp"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="fitStart"
-        android:paddingTop="15dp"
-        android:paddingStart="15dp"
-        android:paddingEnd="0dp"
-        android:paddingBottom="15dp"
-        android:src="@drawable/map_legend"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/map_legend"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:paddingTop="15dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="0dp"
+            android:paddingBottom="15dp"
+            android:src="@drawable/map_legend"/>
+        
+    </ScrollView>
 </LinearLayout>

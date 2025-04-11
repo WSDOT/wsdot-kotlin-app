@@ -34,7 +34,7 @@ class FavoritesListViewModel @Inject constructor(
     val favoriteMountainPasses = MediatorLiveData<List<MountainPass>>()
     val favoriteBorderCrossings = MediatorLiveData<List<BorderCrossing>>()
     val favoriteLocations = MediatorLiveData<List<FavoriteLocation>>()
-    val favoriteTollSigns = MediatorLiveData<List<TollSign>>()
+    val favoriteTollSigns = MediatorLiveData<List<TollSign>?>()
 
     private var travelTimeLiveData : LiveData<Resource<List<TravelTime>>> = travelTimesRepository.loadFavoriteTravelTimes(false)
     private var cameraLiveData : LiveData<Resource<List<Camera>>> = cameraRepository.loadFavoriteCameras(false)

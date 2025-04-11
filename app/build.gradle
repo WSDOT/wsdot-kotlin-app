@@ -49,6 +49,7 @@ android {
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 // These paths are relative to the app/ folder
+                strippedNativeLibsDir "build/ndklibs/obj"
                 unstrippedNativeLibsDir "build/ndklibs/libs"
             }
             shrinkResources true
@@ -96,13 +97,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:24.0.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 
-    // Updating to 19.0.0 changes styling of traffic map.
-    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.android.gms:play-services-maps:19.1.0'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics:22.3.0'
-    implementation 'com.google.firebase:firebase-messaging:24.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.1'
+    implementation 'com.google.firebase:firebase-analytics:22.4.0'
+    implementation 'com.google.firebase:firebase-messaging:24.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.2'
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core-ktx:1.15.0'

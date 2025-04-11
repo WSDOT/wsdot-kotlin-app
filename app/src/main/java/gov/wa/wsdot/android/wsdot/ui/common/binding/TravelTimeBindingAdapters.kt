@@ -49,7 +49,7 @@ object TravelTimeBindingAdapters {
     fun bindTravelTimeAverageTime(textView: TextView, travelTime: TravelTime?) {
 
         if (travelTime != null) {
-            if (travelTime.currentTime == -1) {
+            if (travelTime.avgTime == -1) {
                 textView.text = "N/A"
                 textView.text = Html.fromHtml("<b>Average Time: </b>" + travelTime.let {
                     "N/A"})
