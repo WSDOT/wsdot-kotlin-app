@@ -97,7 +97,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:24.0.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 
-    implementation 'com.google.android.gms:play-services-maps:19.1.0'
+    // Updating to 19.0.0 changes styling of traffic map.
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-analytics:22.4.0'
