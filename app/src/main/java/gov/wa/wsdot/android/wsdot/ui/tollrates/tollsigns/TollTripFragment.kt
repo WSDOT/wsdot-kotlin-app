@@ -60,7 +60,7 @@ class TollTripFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
 
-        mMap = map
+        mMap = map as GoogleMap
         mMap.uiSettings.isMapToolbarEnabled = false
 
         val settings = PreferenceManager.getDefaultSharedPreferences(activity as MainActivity)

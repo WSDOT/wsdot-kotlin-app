@@ -79,7 +79,7 @@ class RestAreaFragment: DaggerFragment(), Injectable, OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
 
-        mMap = map
+        mMap = map as GoogleMap
 
         context?.let {
             if (NightModeConfig.nightModeOn(it)) {
