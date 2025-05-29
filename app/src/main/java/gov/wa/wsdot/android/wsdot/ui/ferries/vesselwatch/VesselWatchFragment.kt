@@ -45,6 +45,7 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
+import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
@@ -67,6 +68,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private val vesselMarkers = HashMap<Marker, Vessel>()
     private val cameraMarkers = HashMap<Marker, Camera>()
+    private val terminalMarkers = HashMap<Marker, Vessel>()
     private val vesselLabels = HashMap<Marker, Vessel>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -228,16 +230,22 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         vesselViewModel.vessels.observe(viewLifecycleOwner, Observer { vessels ->
             if (vessels.data != null) {
 
-                // loop over vessel vesselMarkers, removing any old ones from google map and vesselMarkers hash map
+                // loop over markers, removing any old ones from google map and hash map
                 with(vesselMarkers.iterator()) {
                     forEach {
-                            it.key.remove()
-                            remove()
+                        it.key.remove()
+                        remove()
                     }
                 }
 
-                // loop over vessel vesselLabels, removing any old ones from google map and vesselLabels hash map
                 with(vesselLabels.iterator()) {
+                    forEach {
+                        it.key.remove()
+                        remove()
+                    }
+                }
+
+                with(terminalMarkers.iterator()) {
                     forEach {
                         it.key.remove()
                         remove()
@@ -246,48 +254,72 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
                 for (vessel in vessels.data) {
 
-                    bitmap.eraseColor(Color.TRANSPARENT)
-                    text.color = Color.BLACK
-                    text.textSize = 30f
-                    text.textAlign = Align.CENTER
-                    background.setColor(Color.WHITE)
-                    background.style = Paint.Style.FILL
-                    canvas.drawPaint(background)
-                    canvas.drawText(vesselNames[vessel.vesselName].toString(),
-                        (canvas.width/2).toFloat(), (canvas.height/2).toFloat() - ((text.descent() + text.ascent())/2), text)
-
                     if (vessel.inService) {
-                        val marker = mMap?.addMarker(MarkerOptions()
-                            .position(LatLng(vessel.latitude, vessel.longitude))
-                            .rotation(vessel.heading.toFloat())
-                            .zIndex(100F)
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0)))
+                        val vesselMarker = mMap?.addMarker(
+                            MarkerOptions()
+                                .position(LatLng(vessel.latitude, vessel.longitude))
+                                .rotation(vessel.heading.toFloat())
+                                .zIndex(3F)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0))
+                        )
 
-                        val label = mMap?.addMarker(MarkerOptions()
-                            .anchor(0.5f, 2.0f)
-                            .zIndex(1F)
-                            .position(LatLng(vessel.latitude, vessel.longitude))
-                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap)))
+                        bitmap.eraseColor(Color.TRANSPARENT)
+                        text.color = Color.BLACK
+                        text.textSize = 30f
+                        text.textAlign = Align.CENTER
+                        background.setColor(Color.WHITE)
+                        background.style = Paint.Style.FILL
+                        canvas.drawPaint(background)
+                        canvas.drawText(
+                            vesselNames[vessel.vesselName].toString(),
+                            (canvas.width / 2).toFloat(),
+                            (canvas.height / 2).toFloat() - ((text.descent() + text.ascent()) / 2),
+                            text
+                        )
 
-                        marker?.let {
+                        val label = mMap?.addMarker(
+                            MarkerOptions()
+                                .anchor(0.5f, 2.0f)
+                                .zIndex(3F)
+                                .position(LatLng(vessel.latitude, vessel.longitude))
+                                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                        )
+
+                        vesselMarker?.let {
                             vesselMarkers[it] = vessel
                         }
 
                         label?.let {
                             vesselLabels[it] = vessel
                         }
+
                     }
                 }
-            }
 
-            if (vessels.status == Status.ERROR) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.loading_error_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
+                val terminals = DistanceUtils.getTerminals()
+                for (terminal in terminals) {
+
+                    val terminalMarker = mMap?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(terminal.first, terminal.second))
+                            .zIndex(1F)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.terminal))
+                    )
+
+//                    terminalMarker?.let {
+//                        terminalMarkers[it] = terminal
+//                    }
+                }
+
+                if (vessels.status == Status.ERROR) {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.loading_error_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         })
 
 
@@ -305,6 +337,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     val marker = mMap?.addMarker(MarkerOptions()
                         .position(LatLng(camera.latitude, camera.longitude))
                         .visible(showCameras)
+                        .zIndex(2F)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
                     marker?.let {
                         cameraMarkers[it] = camera
@@ -364,7 +397,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
 
             selectedCameraMarker = mMap?.addMarker(MarkerOptions()
-                .zIndex(100f)
+                .zIndex(2f)
                 .position(LatLng(camera .latitude, camera .longitude))
                 .visible(true)
                 .icon(icon))
