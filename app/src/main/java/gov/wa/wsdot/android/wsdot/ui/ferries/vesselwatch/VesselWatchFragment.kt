@@ -4,6 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Paint.Align
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +23,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.createBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -37,15 +42,14 @@ import gov.wa.wsdot.android.wsdot.databinding.VesselWatchBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
-import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.util.putDouble
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.RuntimePermissions
 import javax.inject.Inject
 
 class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -63,6 +67,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private val vesselMarkers = HashMap<Marker, Vessel>()
     private val cameraMarkers = HashMap<Marker, Camera>()
+    private val vesselLabels = HashMap<Marker, Vessel>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -70,6 +75,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private var selectedCameraMarker: Marker? = null
     var requestLocation: Boolean = true
 
+    val bitmap = createBitmap(70, 35)
+    val canvas = Canvas(bitmap)
+    val text = Paint()
+    val background = Paint()
+
+    private val vesselNames = mapOf("Cathlamet" to "CAT", "Chelan" to "CHE", "Chetzemoka" to "CHZ", "Issaquah" to "ISS",
+    "Kaleetan" to "KAL", "Kennewick" to "KEN", "Kitsap" to "KIS", "Kittitas" to "KIT", "Puyallup" to "PUY", "Salish" to "SAL", "Samish" to "SAM",
+    "Sealth" to "SEA", "Spokane" to "SPO", "Suquamish" to "SUQ", "Tacoma" to "TAC", "Tillikum" to "TIL", "Tokitae" to "TOK", "Walla Walla" to "WAL",
+        "Yakima" to "YAK")
 
     private lateinit var vesselUpdateHandler: Handler
     private val vesselUpdateTask = object: Runnable {
@@ -222,15 +236,45 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     }
                 }
 
+                // loop over vessel vesselLabels, removing any old ones from google map and vesselLabels hash map
+                with(vesselLabels.iterator()) {
+                    forEach {
+                        it.key.remove()
+                        remove()
+                    }
+                }
+
                 for (vessel in vessels.data) {
+
+                    bitmap.eraseColor(Color.TRANSPARENT)
+                    text.color = Color.BLACK
+                    text.textSize = 30f
+                    text.textAlign = Align.CENTER
+                    background.setColor(Color.WHITE)
+                    background.style = Paint.Style.FILL
+                    canvas.drawPaint(background)
+                    canvas.drawText(vesselNames[vessel.vesselName].toString(),
+                        (canvas.width/2).toFloat(), (canvas.height/2).toFloat() - ((text.descent() + text.ascent())/2), text)
 
                     if (vessel.inService) {
                         val marker = mMap?.addMarker(MarkerOptions()
                             .position(LatLng(vessel.latitude, vessel.longitude))
                             .rotation(vessel.heading.toFloat())
+                            .zIndex(100F)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0)))
+
+                        val label = mMap?.addMarker(MarkerOptions()
+                            .anchor(0.5f, 2.0f)
+                            .zIndex(1F)
+                            .position(LatLng(vessel.latitude, vessel.longitude))
+                            .icon(BitmapDescriptorFactory.fromBitmap(bitmap)))
+
                         marker?.let {
                             vesselMarkers[it] = vessel
+                        }
+
+                        label?.let {
+                            vesselLabels[it] = vessel
                         }
                     }
                 }
