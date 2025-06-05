@@ -386,7 +386,13 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onMarkerClick(marker: Marker): Boolean {
 
         vesselMarkers[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, it.vesselName)
+            val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, "Vessel Watch")
+            findNavController().navigate(action)
+            return true
+        }
+
+        vesselLabels[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, "Vessel Watch")
             findNavController().navigate(action)
             return true
         }
