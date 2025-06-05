@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses.report.passCameras
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +42,9 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<CameraListFragmentBinding>()
 
     private var adapter by autoCleared<CameraListAdapter>()
+
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -90,6 +94,25 @@ class PassCamerasListFragment : DaggerFragment(), Injectable {
             },
             {
                 cameraListViewModel.updateFavorite(it.cameraId, !it.favorite)
+
+                isFavorite = it.favorite
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
             })
 
         this.adapter = adapter

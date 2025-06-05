@@ -218,6 +218,9 @@
     <string name="action_rename">edit name</string>
     <string name="action_express_lanes">Schedule</string>
     <string name="space">&#160;</string>
+    <string name="favorite_added_message">Added to Favorites</string>
+    <string name="favorite_removed_message">Removed from Favorites</string>
+
 
     // notification channel
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>

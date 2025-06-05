@@ -46,6 +46,9 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
 
     private var adapter by autoCleared<TravelTimeListAdapter>()
 
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as MainActivity).setScreenName(this::class.java.simpleName)
@@ -123,6 +126,25 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
         val adapter = TravelTimeListAdapter(dataBindingComponent, appExecutors,
             { travelTime ->
                 travelTimeListViewModel.updateFavorite(travelTimeId = travelTime.travelTimeId, isFavorite = !travelTime.favorite)
+
+                isFavorite = travelTime.favorite
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
             },
             { travelTime ->
                 navigateToMap(
@@ -131,8 +153,6 @@ class TravelTimeListFragment : DaggerFragment(), Injectable, SearchView.OnQueryT
                     travelTime
                 )
             }
-
-
         )
 
         this.adapter = adapter

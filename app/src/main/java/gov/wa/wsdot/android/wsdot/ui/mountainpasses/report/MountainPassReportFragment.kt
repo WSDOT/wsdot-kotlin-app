@@ -41,7 +41,6 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
 
     val args: MountainPassReportFragmentArgs by navArgs()
 
-    // Toast
     private lateinit var toast: Toast
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -120,6 +119,23 @@ class MountainPassReportFragment : DaggerFragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
                 passReportViewModel.updateFavorite(args.passId)
                 return false
             }

@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.mountainpasses
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,9 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<MountainPassHomeFragmentBinding>()
 
     private var adapter by autoCleared<MountainPassListAdapter>()
+
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -99,7 +103,25 @@ class MountainPassHomeFragment : DaggerFragment(), Injectable {
                     pass -> navigateToPassReport(pass.passId, pass.passName)
             },
             {
-                    pass -> passViewModel.updateFavorite(pass.passId, !pass.favorite)
+                pass -> passViewModel.updateFavorite(pass.passId, !pass.favorite)
+
+                isFavorite = pass.favorite
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
             })
 
         this.adapter = adapter

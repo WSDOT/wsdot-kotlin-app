@@ -15,6 +15,8 @@ import android.os.Handler
 import android.os.Looper
 import androidx.preference.PreferenceManager
 import android.util.Log
+import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +80,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     var requestLocation: Boolean = true
 
     val bitmap = createBitmap(70, 35)
+    var showTrafficLayer: Boolean = true
+    var showTerminalLayer: Boolean = true
+
+    private lateinit var toast: Toast
+
+    // FAB
+    private lateinit var mFab: SpeedDialView
+
+    val bitmap = createBitmap(70, 30)
     val canvas = Canvas(bitmap)
     val text = Paint()
     val background = Paint()
@@ -411,7 +422,25 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             cameraViewModel.setCameraQuery(camera.cameraId)
 
             binding.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
-                cameraViewModel.updateFavorite(camera .cameraId)
+                cameraViewModel.updateFavorite(camera.cameraId)
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!camera.favorite) {
+                    camera.favorite = true
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    camera.favorite = false
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
             }
 
             BottomSheetBehavior.from(binding.cameraBottomSheet).state =
