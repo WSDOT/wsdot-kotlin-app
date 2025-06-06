@@ -256,7 +256,8 @@ object FerriesBindingAdapters {
             val relativeDate = Date()
             val delta = ((relativeDate.time - date.time) / 1000).toInt() // convert to seconds
             when {
-                delta < 60 -> "Just now" // < 1 minute
+                delta < 3 -> "Just now" // < 1 minute
+                delta < 60 -> (delta).toString() + " seconds ago"
                 delta < 120 -> "1 minute ago" // < 2 minutes
                 delta < 3600 -> (delta / 60).toString() + " minutes ago" // < 1 hour
                 delta < 7200 -> "1 hour ago" // < 2 hours

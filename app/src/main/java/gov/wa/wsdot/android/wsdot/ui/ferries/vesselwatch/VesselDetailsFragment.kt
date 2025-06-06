@@ -18,6 +18,9 @@ import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import javax.inject.Inject
 import androidx.core.net.toUri
+import gov.wa.wsdot.android.wsdot.util.AppExecutors
+import java.util.Timer
+import java.util.TimerTask
 
 
 class VesselDetailsFragment : DaggerFragment(), Injectable {
@@ -26,7 +29,12 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     lateinit var vesselDetailsViewModel: VesselDetailsViewModel
 
+    lateinit var t: Timer
+
     val args: VesselDetailsFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var appExecutors: AppExecutors
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -77,8 +85,28 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
         dataBinding.lifecycleOwner = viewLifecycleOwner
         dataBinding.vesselViewModel = vesselDetailsViewModel
 
+        startVesselDetailsAlertTask()
+
         return dataBinding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        t.cancel()
+    }
 
+    private fun startVesselDetailsAlertTask() {
+        t = Timer()
+        t.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    appExecutors.mainThread().execute {
+                        vesselDetailsViewModel.refresh(args.vesselId)
+                    }
+                }
+            },
+            60000,
+            120000
+        )
+    }
 }

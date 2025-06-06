@@ -30,8 +30,9 @@ class VesselDetailsViewModel @Inject constructor(vesselRepository: VesselReposit
         _vesselQuery.value = update
     }
 
-    fun refresh() {
-
+    fun refresh(vesselId: Int) {
+            _vesselQuery.value = VesselQuery(vesselId)
+            repo.loadVessel(vesselId)
     }
 
 
