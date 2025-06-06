@@ -29,15 +29,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/camera_visibility_fab"
+        <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:tint="@color/white"
-            app:backgroundTint="?themeColorAccent"
-            app:setCameraIconForFab="@{vesselViewModel.showCameras}"
-            android:layout_gravity="bottom|end"/>
+            android:layout_gravity="bottom|end"
+            app:sdMainFabClosedBackgroundColor="?themeColorAccent"
+            app:sdMainFabOpenedBackgroundColor="?themeColorAccent"
+            app:sdMainFabAnimationRotateAngle="0"
+            app:sdMainFabClosedSrc="@drawable/ic_layers"
+            android:backgroundTint="@color/white"
+            android:tint="@color/white"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/camera_bottom_sheet"

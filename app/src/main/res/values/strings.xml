@@ -93,6 +93,8 @@
 
     // Pref
     <string name="user_preference_vessel_watch_cameras">USER_PREF_KEY_VESSEL_WATCH_CAMERAS</string>
+    <string name="user_preference_vessel_watch_vessels">USER_PREF_KEY_VESSEL_WATCH_VESSELS</string>
+    <string name="user_preference_vessel_watch_labels">USER_PREF_KEY_VESSEL_WATCH_LABELS</string>
     <string name="user_preference_traffic_map_latitude">USER_PREF_KEY_TRAFFIC_MAP_LAT</string>
     <string name="user_preference_traffic_map_longitude">USER_PREF_KEY_TRAFFIC_MAP_LONG</string>
     <string name="user_preference_traffic_map_zoom">USER_PREF_KEY_TRAFFIC_MAP_ZOOM</string>
@@ -106,6 +108,8 @@
     <string name="user_preference_traffic_map_show_mountain_passes">USER_PREF_KEY_TRAFFIC_MAP_SHOW_MOUNTAIN_PASSES</string>
     <string name="user_preference_traffic_map_show_travel_times">USER_PREF_KEY_TRAFFIC_MAP_SHOW_TRAVEL_TIMES</string>
     <string name="user_preference_traffic_map_show_traffic_layer">USER_PREF_KEY_TRAFFIC_MAP_SHOW_TRAFFIC_LAYER</string>
+    <string name="user_preference_vessel_watch_show_traffic_layer">USER_PREF_KEY_VESSEL_WATCH_SHOW_TRAFFIC_LAYER</string>
+    <string name="user_preference_vessel_watch_show_terminal_layer">USER_PREF_KEY_VESSEL_WATCH_SHOW_TERMINAL_LAYER</string>
 
     // pref list keys
 
@@ -140,11 +144,14 @@
     // FAB labels
     <string name="fab_highway_alerts_label">Highway Alerts</string>
     <string name="fab_camera_label">Cameras</string>
+    <string name="fab_vessel_label">Vessels</string>
+    <string name="fab_label_label">Labels</string>
     <string name="fab_camera_Clusters_label">Group Cameras</string>
     <string name="fab_rest_areas_label">Rest Areas</string>
     <string name="fab_mountain_passes_label">Mountain Passes</string>
     <string name="fab_travel_times_label">Travel Times</string>
     <string name="fab_traffic_layer_label">Traffic Layer</string>
+    <string name="fab_terminal_layer_label">Terminals</string>
 
     // Ads
     <string name="ad_banner_description">advertisement</string>

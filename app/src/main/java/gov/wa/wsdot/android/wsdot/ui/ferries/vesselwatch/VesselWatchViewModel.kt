@@ -16,9 +16,21 @@ class VesselWatchViewModel @Inject constructor(vesselRepository: VesselRepositor
 
     // Camera display toggle logic
     private val _showCameras: MutableLiveData<Boolean> = MutableLiveData()
+    private val _showVessels: MutableLiveData<Boolean> = MutableLiveData()
+    private val _showLabels: MutableLiveData<Boolean> = MutableLiveData()
+
     fun setShowCameras(showCameras: Boolean) {
         _showCameras.value = showCameras
     }
+
+    fun setShowVessels(showVessels: Boolean) {
+        _showVessels.value = showVessels
+    }
+
+    fun setShowLabels(showLabels: Boolean) {
+        _showLabels.value = showLabels
+    }
+
 
     val showCameras: LiveData<Boolean>
         get() = _showCameras
