@@ -180,13 +180,22 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         override fun run() {
 
             if (alertQueryTask) {
+
+                // refresh traffic alerts
                 mapHighwayAlertsViewModel.setAlertQuery(
                     mMap.projection.visibleRegion.latLngBounds,
                     false
                 )
+
+                // refresh traffic layer
+                if (showTrafficLayer) {
+                    mMap.isTrafficEnabled = false
+                    mMap.isTrafficEnabled = true
+                }
             }
-                mapHighwayAlertsViewModel.refresh()
-            mapUpdateHandler.postDelayed(this, 300000)
+
+            mapHighwayAlertsViewModel.refresh()
+            mapUpdateHandler.postDelayed(this, 240000)
             alertQueryTask = true
 
         }
