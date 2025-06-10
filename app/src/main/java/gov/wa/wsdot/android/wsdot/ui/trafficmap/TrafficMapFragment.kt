@@ -162,9 +162,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     // Camera update task timer
     var t: Timer? = null
 
-    // Traffic Layer update task timer
-    var t2: Timer? = null
-
     // Approximate location radius circle
     private var radiusCircle: Circle? = null
 
@@ -183,13 +180,22 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         override fun run() {
 
             if (alertQueryTask) {
+
+                // refresh traffic alerts
                 mapHighwayAlertsViewModel.setAlertQuery(
                     mMap.projection.visibleRegion.latLngBounds,
                     false
                 )
+
+                // refresh traffic layer
+                if (showTrafficLayer) {
+                    mMap.isTrafficEnabled = false
+                    mMap.isTrafficEnabled = true
+                }
             }
-                mapHighwayAlertsViewModel.refresh()
-            mapUpdateHandler.postDelayed(this, 300000)
+
+            mapHighwayAlertsViewModel.refresh()
+            mapUpdateHandler.postDelayed(this, 240000)
             alertQueryTask = true
 
         }
@@ -312,7 +318,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
     override fun onResume() {
         super.onResume()
         mapUpdateHandler.post(alertsUpdateTask)
-        startTrafficMapLayerTask()
     }
 
     override fun onPause() {
@@ -338,7 +343,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         mapUpdateHandler.removeCallbacks(alertsUpdateTask)
 
         t?.cancel()
-        t2?.cancel()
         alertQueryTask = false
 
     }
@@ -796,22 +800,6 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         }
 
         return true
-    }
-
-    // Refresh traffic layer
-    private fun startTrafficMapLayerTask() {
-        t2 = Timer()
-        t2?.schedule(
-            object : TimerTask() {
-                override fun run() {
-                    appExecutors.mainThread().execute {
-                        if (showTrafficLayer) {
-                            mMap.isTrafficEnabled = false
-                            mMap.isTrafficEnabled = true
-                        }}}},
-            120000,
-            120000
-        )
     }
 
     // functions to handle bottom sheet logic
