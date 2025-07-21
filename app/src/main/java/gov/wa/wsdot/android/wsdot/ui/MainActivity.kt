@@ -570,6 +570,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
+        eventViewModel.refresh()
+        invalidateOptionsMenu()
+
         when (item.itemId) {
             R.id.nav_traffic_map -> {
                 navLocation = getString(R.string.key_value_traffic_nav)
@@ -634,7 +637,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
-                eventViewModel.refresh()
             }
             R.id.nav_notifications -> {
                 if (navController.currentDestination?.id != R.id.navNotificationsFragment) {
