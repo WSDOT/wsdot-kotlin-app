@@ -177,7 +177,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
-
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text = ""
                     editor.putString(getString(R.string.pref_key_last_seen_event), "")
                     editor.putString(getString(R.string.pref_key_current_event), "")
                     editor.putInt(getString(R.string.pref_key_theme), 0)
@@ -240,7 +240,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
-
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text = ""
                     editor.putString(getString(R.string.pref_key_last_seen_event), "")
                     editor.putString(getString(R.string.pref_key_current_event), "")
                     editor.putInt(getString(R.string.pref_key_theme), 0)
