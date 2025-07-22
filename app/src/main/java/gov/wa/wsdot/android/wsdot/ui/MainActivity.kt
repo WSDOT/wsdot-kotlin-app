@@ -177,7 +177,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
-
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text = ""
                     editor.putString(getString(R.string.pref_key_last_seen_event), "")
                     editor.putString(getString(R.string.pref_key_current_event), "")
                     editor.putInt(getString(R.string.pref_key_theme), 0)
@@ -240,7 +240,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
                 } else {
                     navView.menu.setGroupVisible(R.id.event_banner_group, false)
-
+                    navView.menu.findItem(R.id.event_banner).actionView?.findViewById<TextView>(R.id.event_banner_text)?.text = ""
                     editor.putString(getString(R.string.pref_key_last_seen_event), "")
                     editor.putString(getString(R.string.pref_key_current_event), "")
                     editor.putInt(getString(R.string.pref_key_theme), 0)
@@ -570,6 +570,9 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
+        eventViewModel.refresh()
+        invalidateOptionsMenu()
+
         when (item.itemId) {
             R.id.nav_traffic_map -> {
                 navLocation = getString(R.string.key_value_traffic_nav)
@@ -634,7 +637,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     val action = NavGraphDirections.actionGlobalNavEventDetailsFragment(eventTitle)
                     findNavController(R.id.nav_host_fragment).navigate(action)
                 }
-                eventViewModel.refresh()
             }
             R.id.nav_notifications -> {
                 if (navController.currentDestination?.id != R.id.navNotificationsFragment) {
