@@ -20,7 +20,8 @@ object TravelTimeTestUtil {
         updated = Date(),
         localCacheDate = Date(),
         favorite = false,
-        remove = false
+        remove = false,
+        hovCurrentTime = TODO()
     )
 
 }

@@ -46,7 +46,13 @@ object TrafficTestUtil {
         endLatitude = 0.0,
         endLongitude = 0.0,
         lastUpdatedTime = Date(),
-        localCacheDate = Date()
+        localCacheDate = Date(),
+        travelCenterPriorityId = TODO(),
+        eventCategoryType = TODO(),
+        eventCategoryTypeDescription = TODO(),
+        displayLatitude = TODO(),
+        displayLongitude = TODO(),
+        direction = TODO()
     )
 
     fun createFavoriteLocation(
