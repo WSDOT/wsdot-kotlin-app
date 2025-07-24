@@ -76,7 +76,7 @@ object DistanceUtils {
         ferriesTerminalMap.put(10, FerriesTerminalItem(10, "Friday Harbor", 48.535783, -123.013844))
         ferriesTerminalMap.put(12, FerriesTerminalItem(12, "Kingston", 47.794606, -122.494328))
         ferriesTerminalMap.put(13, FerriesTerminalItem(13, "Lopez Island", 48.570928, -122.882764))
-        ferriesTerminalMap.put(14, FerriesTerminalItem(14, "Mukilteo", 47.949544, -122.304997))
+        ferriesTerminalMap.put(14, FerriesTerminalItem(14, "Mukilteo", 47.9506, -122.297))
         ferriesTerminalMap.put(15, FerriesTerminalItem(15, "Orcas Island", 48.597333, -122.943494))
         ferriesTerminalMap.put(16, FerriesTerminalItem(16, "Point Defiance", 47.306519, -122.514053))
         ferriesTerminalMap.put(17, FerriesTerminalItem(17, "Port Townsend", 48.110847, -122.759039))
