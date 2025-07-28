@@ -90,32 +90,4 @@ object DistanceUtils {
         return ferriesTerminalMap
     }
 
-    fun getTerminals(): List<LatLng> {
-
-        val ferriesTerminals = listOf(
-            LatLng(48.507351, -122.677), // Anacortes
-            LatLng(47.622339, -122.509617), // Bainbridge Island
-            LatLng(47.561847, -122.624089), // Bremerton
-            LatLng(47.9754, -122.349581), // Clinton
-            LatLng(48.159008, -122.672603), // Coupeville
-            LatLng(47.813378, -122.385378), // Edmonds
-            LatLng(47.5232, -122.3967), // Fauntleroy
-            LatLng(48.535783, -123.013844), // Friday Harbor
-            LatLng(47.794606, -122.494328), // Kingston
-            LatLng(48.570928, -122.882764), // Lopez Island
-            LatLng(47.949544, -122.304997), // Mukilteo
-            LatLng(48.597333, -122.943494), // Orcas Island
-            LatLng(47.306519, -122.514053), // Point Defiance
-            LatLng(48.110847, -122.759039), // Port Townsend
-            LatLng(47.602501, -122.340472), // Seattle
-            LatLng(48.584792, -122.92965), // Shaw Island
-            LatLng(48.643114, -123.396739), // Sidney B.C.
-            LatLng(47.513064, -122.495742), // Southworth
-            LatLng(47.331961, -122.507786), // Tahlequah
-            LatLng(47.51095, -122.463639) // Vashon Island
-        )
-
-        return ferriesTerminals
-    }
-
 }

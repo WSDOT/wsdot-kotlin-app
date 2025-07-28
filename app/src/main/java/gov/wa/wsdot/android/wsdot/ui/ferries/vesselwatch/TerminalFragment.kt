@@ -14,27 +14,28 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
-import gov.wa.wsdot.android.wsdot.databinding.VesselDetailsFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import javax.inject.Inject
+import gov.wa.wsdot.android.wsdot.databinding.TerminalFragmentBinding
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import java.util.Timer
 import java.util.TimerTask
 
 
-class VesselDetailsFragment : DaggerFragment(), Injectable {
+class TerminalFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    lateinit var vesselDetailsViewModel: VesselDetailsViewModel
+    lateinit var terminalViewModel: TerminalViewModel
 
     lateinit var t: Timer
 
     private lateinit var toast: Toast
     private var paused = false
 
-    val args: VesselDetailsFragmentArgs by navArgs()
+    val args: TerminalFragmentArgs by navArgs()
+
 
     @Inject
     lateinit var appExecutors: AppExecutors
@@ -46,13 +47,13 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.ferry_menu, menu)
+        inflater.inflate(R.menu.terminal_menu, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_refresh -> {
-                vesselDetailsViewModel.refresh(args.vesselId)
+                terminalViewModel.refresh(args.terminalId)
                 showToast("refreshing...")
                 return false
             }
@@ -78,22 +79,22 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        vesselDetailsViewModel = ViewModelProvider(this, viewModelFactory)
-            .get(VesselDetailsViewModel::class.java)
-        vesselDetailsViewModel.setVesselQuery(args.vesselId)
+        terminalViewModel = ViewModelProvider(this, viewModelFactory)
+            .get(TerminalViewModel::class.java)
+        terminalViewModel.setTerminalQuery(args.terminalId)
 
         // create the data binding
-        val dataBinding = DataBindingUtil.inflate<VesselDetailsFragmentBinding>(
+        val dataBinding = DataBindingUtil.inflate<TerminalFragmentBinding>(
             inflater,
-            R.layout.vessel_details_fragment,
+            R.layout.terminal_fragment,
             container,
             false
         )
 
         dataBinding.lifecycleOwner = viewLifecycleOwner
-        dataBinding.vesselDetailViewModel = vesselDetailsViewModel
+        dataBinding.terminalViewModel = terminalViewModel
 
-        startVesselDetailsAlertTask()
+        startTerminalAlertTask()
 
         return dataBinding.root
     }
@@ -106,21 +107,21 @@ class VesselDetailsFragment : DaggerFragment(), Injectable {
 
     override fun onResume() {
         super.onResume()
-
         if (paused) {
-            vesselDetailsViewModel.refresh(args.vesselId)
-            startVesselDetailsAlertTask()
+            terminalViewModel.refresh(args.terminalId)
+            startTerminalAlertTask()
         }
         paused = false
     }
 
-    private fun startVesselDetailsAlertTask() {
+
+    private fun startTerminalAlertTask() {
         t = Timer()
         t.schedule(
             object : TimerTask() {
                 override fun run() {
                     appExecutors.mainThread().execute {
-                        vesselDetailsViewModel.refresh(args.vesselId)
+                        terminalViewModel.refresh(args.terminalId)
                     }
                 }
             },

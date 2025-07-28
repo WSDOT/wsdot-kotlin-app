@@ -502,6 +502,20 @@
             android:defaultValue="WSDOT"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/navTerminalFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.TerminalFragment"
+        android:label="{title}"
+        tools:layout="@layout/terminal_fragment" >
+        <argument
+            android:name="terminal_id"
+            app:argType="integer"/>
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="WSDOT"/>
+    </fragment>
+
 
     <fragment
         android:id="@+id/navMountainPassHomeFragment"
@@ -813,6 +827,14 @@
     <action
         android:id="@+id/action_global_navVesselDetailsFragment"
         app:destination="@id/navVesselDetailsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    <action
+        android:id="@+id/action_global_navTerminalFragment"
+        app:destination="@id/navTerminalFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"

@@ -2,9 +2,12 @@ package gov.wa.wsdot.android.wsdot.ui.common.binding
 
 import android.R
 import android.graphics.Color
+import android.os.Build
+import android.text.Html
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.webkit.WebView
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Spinner
@@ -12,11 +15,14 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import gov.wa.wsdot.android.wsdot.db.ferries.FerrySailingWithStatus
+import gov.wa.wsdot.android.wsdot.db.ferries.TerminalAlert
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
-import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.ui.ferries.route.TerminalComboAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +39,95 @@ object FerriesBindingAdapters {
             textView.text = vessel.data.vesselName
             return
         }
-        textView.text = "Vessel Name Unavailable"
+        textView.text = ""
+    }
+
+    // Regular Binding Adapters
+    @JvmStatic
+    @BindingAdapter("bindTerminalName")
+    fun bindTerminalName(webView: WebView, terminal: Resource<TerminalAlert>) {
+
+        val start = "<html><head><style>*{font-size: 18px}</style></head><body>"
+        val end = "</body></html>"
+
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.getSettings(), true)
+        }
+
+        webView.setBackgroundColor(Color.TRANSPARENT)
+
+        if (terminal.data != null) {
+            webView.loadData(start + "<b>" + terminal.data.terminalName + " Terminal</b>" + end,"text/html; charset=utf-8",
+                null)
+        }
+        else {
+        webView.loadData("Terminal Name Unavailable","text/html; charset=utf-8",null)
+        }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("bindTerminalAddress")
+    fun bindTerminalAddress(webView: WebView, terminal: Resource<TerminalAlert>) {
+
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.getSettings(), true)
+        }
+
+        webView.setBackgroundColor(Color.TRANSPARENT)
+
+        if (terminal.data != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    webView.loadData(terminal.data.addressLineOne + "<br>" +  terminal.data.city + " " + terminal.data.state + " " + terminal.data.zipCode + "<br>","text/html; charset=utf-8",null)
+                }
+            return
+        }
+        else {
+            webView.loadData("","text/html; charset=utf-8",null)
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindTerminalBulletins")
+    fun bindTerminalBulletins(webView: WebView, terminal: Resource<TerminalAlert>) {
+
+        val alerts = ArrayList<String>()
+
+        val start = "<html><head><style>*{prefers-color-scheme: dark}a{color: rgb(51, 149, 127)}.footer{opacity: 0.6;font-size: .8em}@media (prefers-color-scheme: dark) {hr{border-color: rgb(0, 0, 0)}}</style></head><body>"
+        val end = "</body></html>"
+
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.getSettings(), true)
+        }
+
+        webView.settings.defaultFontSize = 16
+        webView.setBackgroundColor(Color.TRANSPARENT)
+
+        if (terminal.data != null) {
+
+            if (!terminal.data.bulletins.isEmpty()) {
+                for (item in terminal.data.bulletins) {
+                    alerts.add(
+                        "<hr><br><b>" + item.bulletinTitle + "</b><br>" + item.bulletinText + "<br><span class=\"footer\">" + getDateString(
+                            Date(item.bulletinLastUpdated.drop(6).dropLast(10).toLong() * 1000)
+                        ) + "</span><br><br>"
+                    )
+                }
+                webView.loadData(
+                    start + alerts.joinToString(separator = "").replace(Regex("#"), "&num;") + "<hr>" + end,
+                    "text/html; charset=utf-8",
+                    null
+                )
+                return
+            }
+            else {
+                val bulletin = "<hr><li><b>No Posted Bulletins</b><hr><br>"
+                webView.loadData(start + bulletin + end, "text/html; charset=utf-8", null)
+            }
+        }
+        else {
+            webView.loadData("", "text/html; charset=utf-8", null)
+        }
     }
 
     @JvmStatic
@@ -276,4 +370,12 @@ object FerriesBindingAdapters {
             "Not Available"
         }
     }
+
+private fun stripHtml(html: String): String {
+    return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString()
+    } else {
+        Html.fromHtml(html).toString()
+    }
+}
     }

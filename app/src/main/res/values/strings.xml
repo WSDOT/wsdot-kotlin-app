@@ -92,15 +92,9 @@
     <string name="permission_map_location_rationale">WSDOT wants permission to show your location on the map</string>
 
     // Pref
-    <string name="user_preference_vessel_watch_cameras">USER_PREF_KEY_VESSEL_WATCH_CAMERAS</string>
-    <string name="user_preference_vessel_watch_vessels">USER_PREF_KEY_VESSEL_WATCH_VESSELS</string>
-    <string name="user_preference_vessel_watch_labels">USER_PREF_KEY_VESSEL_WATCH_LABELS</string>
     <string name="user_preference_traffic_map_latitude">USER_PREF_KEY_TRAFFIC_MAP_LAT</string>
     <string name="user_preference_traffic_map_longitude">USER_PREF_KEY_TRAFFIC_MAP_LONG</string>
     <string name="user_preference_traffic_map_zoom">USER_PREF_KEY_TRAFFIC_MAP_ZOOM</string>
-    <string name="user_preference_vessel_watch_latitude">USER_PREF_KEY_VESSEL_WATCH_LAT</string>
-    <string name="user_preference_vessel_watch_longitude">USER_PREF_VESSEL_WATCH_LONG</string>
-    <string name="user_preference_vessel_watch_zoom">USER_PREF_VESSEL_WATCH_ZOOM</string>
     <string name="user_preference_traffic_map_show_cameras">USER_PREF_KEY_TRAFFIC_MAP_SHOW_CAMERAS</string>
     <string name="user_preference_traffic_map_show_highway_alerts">USER_PREF_KEY_TRAFFIC_MAP_SHOW_HIGHWAY_ALERTS</string>
     <string name="user_preference_traffic_map_cluster_cameras">USER_PREF_KEY_TRAFFIC_MAP_CLUSTER_CAMERAS</string>
@@ -108,8 +102,15 @@
     <string name="user_preference_traffic_map_show_mountain_passes">USER_PREF_KEY_TRAFFIC_MAP_SHOW_MOUNTAIN_PASSES</string>
     <string name="user_preference_traffic_map_show_travel_times">USER_PREF_KEY_TRAFFIC_MAP_SHOW_TRAVEL_TIMES</string>
     <string name="user_preference_traffic_map_show_traffic_layer">USER_PREF_KEY_TRAFFIC_MAP_SHOW_TRAFFIC_LAYER</string>
+
+    <string name="user_preference_vessel_watch_latitude">USER_PREF_KEY_VESSEL_WATCH_LAT</string>
+    <string name="user_preference_vessel_watch_longitude">USER_PREF_VESSEL_WATCH_LONG</string>
+    <string name="user_preference_vessel_watch_zoom">USER_PREF_VESSEL_WATCH_ZOOM</string>
     <string name="user_preference_vessel_watch_show_traffic_layer">USER_PREF_KEY_VESSEL_WATCH_SHOW_TRAFFIC_LAYER</string>
-    <string name="user_preference_vessel_watch_show_terminal_layer">USER_PREF_KEY_VESSEL_WATCH_SHOW_TERMINAL_LAYER</string>
+    <string name="user_preference_vessel_watch_show_terminals">USER_PREF_KEY_VESSEL_WATCH_SHOW_TERMINAL_LAYER</string>
+    <string name="user_preference_vessel_watch_cameras">USER_PREF_KEY_VESSEL_WATCH_CAMERAS</string>
+    <string name="user_preference_vessel_watch_vessels">USER_PREF_KEY_VESSEL_WATCH_VESSELS</string>
+    <string name="user_preference_vessel_watch_labels">USER_PREF_KEY_VESSEL_WATCH_LABELS</string>
 
     // pref list keys
 

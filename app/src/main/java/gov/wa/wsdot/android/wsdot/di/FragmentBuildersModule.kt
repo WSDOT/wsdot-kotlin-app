@@ -36,6 +36,7 @@ import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertDetails
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.ferryAlerts.FerryAlertsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.sailing.FerriesSailingFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.route.terminalCameras.TerminalCamerasListFragment
+import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.TerminalFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.ferries.vesselwatch.VesselWatchFragment
 import gov.wa.wsdot.android.wsdot.ui.highwayAlerts.HighwayAlertFragment
@@ -121,6 +122,9 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeVesselDetailsFragment(): VesselDetailsFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeTerminalFragment(): TerminalFragment
 
     @ContributesAndroidInjector
     abstract fun contributeFerryAlertsFragment(): FerryAlertsFragment

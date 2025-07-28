@@ -3,6 +3,7 @@ package gov.wa.wsdot.android.wsdot.api
 import androidx.lifecycle.LiveData
 import gov.wa.wsdot.android.wsdot.api.response.amtrakcascades.AmtrakScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
+import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryTerminalResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.VesselResponse
 import gov.wa.wsdot.android.wsdot.api.response.socialmedia.TwitterResponse
 import gov.wa.wsdot.android.wsdot.api.response.tollrates.TollTripResponse
@@ -24,6 +25,11 @@ interface WsdotApiService {
     fun getFerryVessels(
         @Query("apiaccesscode") apiKey: String
     ): LiveData<ApiResponse<List<VesselResponse>>>
+
+    @GET("ferries/api/terminals/rest/terminalverbose")
+    fun getTerminals(
+        @Query("apiaccesscode") apiKey: String
+    ): LiveData<ApiResponse<List<FerryTerminalResponse>>>
 
     @GET("news/socialroom/posts/twitter/{accountName}")
     fun getWSDOTTweets(

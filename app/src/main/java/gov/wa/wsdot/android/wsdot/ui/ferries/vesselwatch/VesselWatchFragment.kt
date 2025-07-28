@@ -52,13 +52,13 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.VesselWatchBinding
+import gov.wa.wsdot.android.wsdot.db.ferries.TerminalAlert
 import gov.wa.wsdot.android.wsdot.db.ferries.Vessel
 import gov.wa.wsdot.android.wsdot.db.traffic.Camera
 import gov.wa.wsdot.android.wsdot.di.Injectable
 import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.cameras.CameraViewModel
-import gov.wa.wsdot.android.wsdot.util.DistanceUtils
 import gov.wa.wsdot.android.wsdot.util.NightModeConfig
 import gov.wa.wsdot.android.wsdot.util.autoCleared
 import gov.wa.wsdot.android.wsdot.util.getDouble
@@ -79,10 +79,10 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     private lateinit var mapFragment: SupportMapFragment
 
-    private val vesselMarkers = HashMap<Marker, Vessel>()
     private val cameraMarkers = HashMap<Marker, Camera>()
-    private val vesselLabels = HashMap<Marker, Vessel>()
-    private val terminalMarkers: MutableList<Marker> = mutableListOf()
+    private val terminalMarkers = HashMap<Marker, TerminalAlert>()
+    private val vesselMarkers = HashMap<Marker, Vessel>()
+    private val vesselMarkerLabels = HashMap<Marker, Vessel>()
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -90,12 +90,12 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private var selectedCameraMarker: Marker? = null
     private var showVessels: Boolean = true
     private var showLabels: Boolean = true
+    private var showTerminals: Boolean = true
+    private var showTrafficLayer: Boolean = true
+
     var requestLocation: Boolean = true
 
     private lateinit var toast: Toast
-
-    var showTrafficLayer: Boolean = true
-    var showTerminalLayer: Boolean = true
 
     // FAB
     private lateinit var mFab: SpeedDialView
@@ -105,10 +105,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     val text = Paint()
     val background = Paint()
 
-    private val vesselNames = mapOf("Cathlamet" to "CAT", "Chelan" to "CHE", "Chetzemoka" to "CHZ", "Issaquah" to "ISS",
+    private val vesselNames = mapOf("Cathlamet" to "CAT", "Chelan" to "CHE", "Chetzemoka" to "CHZ", "Chimacum" to "CHI", "Issaquah" to "ISS",
     "Kaleetan" to "KAL", "Kennewick" to "KEN", "Kitsap" to "KIS", "Kittitas" to "KIT", "Puyallup" to "PUY", "Salish" to "SAL", "Samish" to "SAM",
-    "Sealth" to "SEA", "Spokane" to "SPO", "Suquamish" to "SUQ", "Tacoma" to "TAC", "Tillikum" to "TIL", "Tokitae" to "TOK", "Walla Walla" to "WAL",
-        "Yakima" to "YAK")
+    "Sealth" to "SEA", "Spokane" to "SPO", "Suquamish" to "SUQ", "Tacoma" to "TAC", "Tillikum" to "TIL", "Tokitae" to "TOK", "Walla Walla" to "WAL", "Wenatchee" to "WEN", "Yakima" to "YAK")
 
     private lateinit var vesselUpdateHandler: Handler
     private val vesselUpdateTask = object: Runnable {
@@ -177,13 +176,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             showCameras = settings.getBoolean(getString(R.string.user_preference_vessel_watch_cameras), true)
             showVessels = settings.getBoolean(getString(R.string.user_preference_vessel_watch_vessels), true)
             showLabels = settings.getBoolean(getString(R.string.user_preference_vessel_watch_labels), true)
+            showTerminals = settings.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminals), true)
             showTrafficLayer = settings.getBoolean(getString(R.string.user_preference_vessel_watch_show_traffic_layer), true)
-            showTerminalLayer = settings.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminal_layer), true)
         }
 
         vesselViewModel.setShowCameras(showCameras)
         vesselViewModel.setShowVessels(showVessels)
         vesselViewModel.setShowLabels(showLabels)
+        vesselViewModel.setShowTerminals(showTerminals)
+        vesselViewModel.setTrafficLayer(showTrafficLayer)
 
         dataBinding.vesselViewModel = vesselViewModel
 
@@ -273,7 +274,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     }
                 }
 
-                with(vesselLabels.iterator()) {
+                with(vesselMarkerLabels.iterator()) {
                     forEach {
                         it.key.remove()
                         remove()
@@ -299,8 +300,15 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                             background.setColor(Color.WHITE)
                             background.style = Paint.Style.FILL
                             canvas.drawPaint(background)
+
+                            var vesselName =  vesselNames[vessel.vesselName].toString()
+
+                            if (vesselName == "null") {
+                                vesselName = ""
+                            }
+
                             canvas.drawText(
-                                vesselNames[vessel.vesselName].toString(),
+                                vesselName,
                                 (canvas.width/2).toFloat(),
                                 (canvas.height/2).toFloat() - ((text.descent() + text.ascent())/2),
                                 text
@@ -322,13 +330,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                             }
 
                             label?.let {
-                                vesselLabels[it] = vessel
+                                vesselMarkerLabels[it] = vessel
                             }
 
                         }
                     }
-
-                setTerminalLayerVisibility(showTerminalLayer)
 
                 if (vessels.status == Status.ERROR) {
                     Toast.makeText(
@@ -355,17 +361,40 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     val marker = mMap?.addMarker(MarkerOptions()
                         .position(LatLng(camera.latitude, camera.longitude))
                         .visible(showCameras)
-                        .zIndex(2F)
+                        .zIndex(1F)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.camera)))
                     marker?.let {
                         cameraMarkers[it] = camera
                     }
 
                 }
+
             }
         })
 
+        vesselViewModel.terminals.observe(viewLifecycleOwner, Observer { terminals ->
 
+            if (terminals.data != null) {
+
+                with(terminalMarkers.iterator()) {
+                    forEach {
+                        it.key.remove()
+                        remove()
+                    }
+                }
+
+                for (terminal in terminals.data) {
+                    val marker = mMap?.addMarker(MarkerOptions()
+                        .position(LatLng(terminal.latitude, terminal.longitude))
+                        .visible(showTerminals)
+                        .zIndex(2F)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.terminal)))
+                    marker?.let {
+                        terminalMarkers[it] = terminal
+                    }
+                }
+            }
+        })
     }
 
     fun checkHeading(heading: Float): Pair<Float,Float> {
@@ -439,39 +468,29 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         vesselViewModel.setShowLabels(showLabels)
 
         // loop over labels, setting viability
-        with(vesselLabels.iterator()) {
+        with(vesselMarkerLabels.iterator()) {
             forEach {
                 it.key.isVisible = showLabels
             }
         }
     }
 
-    private fun setTerminalLayerVisibility (visibility: Boolean) {
-
-        val terminals = DistanceUtils.getTerminals()
-
-        val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
-        val showTerminalLayer = settings?.getBoolean(
-            getString(R.string.user_preference_vessel_watch_show_terminal_layer),
-            true
-        )
-
-        for (terminal in terminals) {
-            val marker = mMap?.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(terminal.latitude, terminal.longitude))
-                        .zIndex(1F)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.terminal))
-                )
-
-            terminalMarkers.add(marker!!)
-
-        }
-        if (!showTerminalLayer!!) {
-            for(marker in terminalMarkers)
-                marker.isVisible = false
+    private fun setTerminalLayerVisibility(visibility: Boolean){
+        val editor = activity?.let { it1 -> PreferenceManager.getDefaultSharedPreferences(it1).edit() }
+        editor?.putBoolean(getString(R.string.user_preference_vessel_watch_show_terminals), !showTerminals)
+        editor?.apply()
+        showTerminals = !showTerminals
+        vesselViewModel.setShowTerminals(showTerminals)
+        // loop over camera markers, setting viability
+        with(terminalMarkers.iterator()) {
+            forEach {
+                it.key.isVisible = showTerminals
+            }
         }
     }
+
+
+
 
 
     // settings FAB
@@ -481,9 +500,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         mFab = view.findViewById(R.id.speedDial)
 
         mFab.addActionItem(getVesselLabelMarkerVisibility(), 0)
-        mFab.addActionItem(getVesselLayerMarkerVisibility(), 1)
-        mFab.addActionItem(getCameraVisibilityAction(), 2)
-        mFab.addActionItem(getTerminalLayerVisibilityAction(), 3)
+        mFab.addActionItem(getVesselMarkerVisibility(), 1)
+        mFab.addActionItem(getCameraMarkerVisibilityAction(), 2)
+        mFab.addActionItem(getTerminalMarkerVisibilityAction(), 3)
         mFab.addActionItem(getTrafficLayerVisibilityAction(), 4)
         mFab.mainFab.imageTintList = ColorStateList.valueOf(Color.WHITE)
         mFab.setOnActionSelectedListener(this)
@@ -521,11 +540,11 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     }
 
-    private fun getTerminalLayerVisibilityAction(): SpeedDialActionItem  {
+    private fun getTerminalMarkerVisibilityAction(): SpeedDialActionItem  {
 
         val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
-        val showTerminalLayer = settings?.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminal_layer), true)
+        val showTerminalLayer = settings?.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminals), true)
 
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
@@ -542,7 +561,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             icon = R.drawable.ic_layers_off
         }
 
-        return SpeedDialActionItem.Builder(R.id.fab_terminal_layer_visibility_action, icon)
+        return SpeedDialActionItem.Builder(R.id.fab_terminal_visibility_action, icon)
             .setLabel(R.string.fab_terminal_layer_label)
             .setLabelColor(resources.getColor(R.color.cardLightGray))
             .setLabelBackgroundColor(Color.WHITE)
@@ -552,7 +571,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     }
 
-    private fun getCameraVisibilityAction(): SpeedDialActionItem {
+    private fun getCameraMarkerVisibilityAction(): SpeedDialActionItem {
 
         val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
@@ -574,7 +593,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             icon = R.drawable.ic_layers_off
         }
 
-        return SpeedDialActionItem.Builder(R.id.fab_camera_visibility_action, icon)
+        return SpeedDialActionItem.Builder(R.id.fab_vessel_camera_visibility_action, icon)
             .setLabel(R.string.fab_camera_label)
             .setLabelColor(resources.getColor(R.color.cardLightGray))
             .setLabelBackgroundColor(Color.WHITE)
@@ -584,7 +603,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     }
 
-    private fun getVesselLayerMarkerVisibility(): SpeedDialActionItem {
+    private fun getVesselMarkerVisibility(): SpeedDialActionItem {
 
         val settings = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
 
@@ -652,20 +671,20 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         actionItem?.let {
             when(it.id) {
 
-                R.id.fab_camera_visibility_action -> {
+                R.id.fab_vessel_camera_visibility_action -> {
                     val settings = context?.let { it1 ->
                         PreferenceManager.getDefaultSharedPreferences(
                             it1
                         )
                     }
-                    val show = settings?.getBoolean(getString(R.string.user_preference_traffic_map_show_cameras), true)
+                    val show = settings?.getBoolean(getString(R.string.user_preference_vessel_watch_cameras), true)
                     val editor = settings?.edit()
-                    editor?.putBoolean(getString(R.string.user_preference_traffic_map_show_cameras), !show!!)
+                    editor?.putBoolean(getString(R.string.user_preference_vessel_watch_cameras), !show!!)
                     editor?.apply()
 
                     setCameraMarkerVisibility(!show!!)
 
-                    mFab.replaceActionItem(actionItem, getCameraVisibilityAction())
+                    mFab.replaceActionItem(actionItem, getCameraMarkerVisibilityAction())
 
                 }
 
@@ -687,21 +706,21 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
                 }
 
-                R.id.fab_terminal_layer_visibility_action -> {
+                R.id.fab_terminal_visibility_action -> {
                     val settings = context?.let { it1 ->
                         PreferenceManager.getDefaultSharedPreferences(
                             it1
                         )
                     }
-                    val show = settings?.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminal_layer), true)
+                    val show = settings?.getBoolean(getString(R.string.user_preference_vessel_watch_show_terminals), true)
                     val editor = settings?.edit()
-                    editor?.putBoolean(getString(R.string.user_preference_vessel_watch_show_terminal_layer), !show!!)
+                    editor?.putBoolean(getString(R.string.user_preference_vessel_watch_show_terminals), !show!!)
                     editor?.apply()
 
                     setTerminalLayerVisibility(!show!!)
-                    showTerminalLayer = !show
+                    showTerminals = !show
 
-                    mFab.replaceActionItem(actionItem, getTerminalLayerVisibilityAction())
+                    mFab.replaceActionItem(actionItem, getTerminalMarkerVisibilityAction())
 
                 }
 
@@ -719,7 +738,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                     setVesselMarkerVisibility(!show!!)
                     showVessels = !show
 
-                    mFab.replaceActionItem(actionItem, getVesselLayerMarkerVisibility())
+                    mFab.replaceActionItem(actionItem, getVesselMarkerVisibility())
 
                 }
 
@@ -770,20 +789,20 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
     override fun onMarkerClick(marker: Marker): Boolean {
 
+        terminalMarkers[marker]?.let {
+            val action = NavGraphDirections.actionGlobalNavTerminalFragment(it.terminalID, "Terminal Bulletins")
+            findNavController().navigate(action)
+            return true
+        }
+
         vesselMarkers[marker]?.let {
             val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, "Vessel Watch")
             findNavController().navigate(action)
             return true
         }
 
-        vesselLabels[marker]?.let {
+        vesselMarkerLabels[marker]?.let {
             val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, "Vessel Watch")
-            findNavController().navigate(action)
-            return true
-        }
-
-        vesselLabels[marker]?.let {
-            val action = NavGraphDirections.actionGlobalNavVesselDetailsFragment(it.vesselId, it.vesselName)
             findNavController().navigate(action)
             return true
         }
@@ -794,7 +813,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
             val icon = BitmapDescriptorFactory.fromResource(R.drawable.camera_selected)
 
             selectedCameraMarker = mMap?.addMarker(MarkerOptions()
-                .zIndex(2f)
+                .zIndex(1f)
                 .position(LatLng(camera .latitude, camera .longitude))
                 .visible(true)
                 .icon(icon))

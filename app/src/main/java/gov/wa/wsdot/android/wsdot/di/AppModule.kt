@@ -110,6 +110,12 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideTerminalAlertDao(db: WsdotDB): TerminalAlertDao {
+        return db.terminalAlertDao()
+    }
+
+    @Singleton
+    @Provides
     fun provideFerrySpacesDao(db: WsdotDB): FerrySpaceDao {
         return db.ferrySpaceDao()
     }

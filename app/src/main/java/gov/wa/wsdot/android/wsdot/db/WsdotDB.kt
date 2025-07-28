@@ -53,6 +53,7 @@ import gov.wa.wsdot.android.wsdot.db.traveltimes.TravelTimeDao
         FerrySailing::class,
         FerryAlert::class,
         FerrySpace::class,
+        TerminalAlert::class,
         Vessel::class,
         Camera::class,
         MountainPass::class,
@@ -87,6 +88,8 @@ abstract class WsdotDB : RoomDatabase() {
     abstract fun ferrySailingDao(): FerrySailingDao
 
     abstract fun ferryAlertDao(): FerryAlertDao
+
+    abstract fun terminalAlertDao(): TerminalAlertDao
 
     abstract fun ferrySpaceDao(): FerrySpaceDao
 
