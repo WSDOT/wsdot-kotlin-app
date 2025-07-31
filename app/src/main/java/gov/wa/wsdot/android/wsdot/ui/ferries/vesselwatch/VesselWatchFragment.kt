@@ -96,9 +96,8 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     var requestLocation: Boolean = true
 
     private lateinit var toast: Toast
-
-    // FAB
     private lateinit var mFab: SpeedDialView
+    private var trafficLayerTask: Boolean = false
 
     val bitmap = createBitmap(70, 30)
     val canvas = Canvas(bitmap)
@@ -114,6 +113,23 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         override fun run() {
             vesselViewModel.refresh()
             vesselUpdateHandler.postDelayed(this, 30000)
+        }
+    }
+
+    private lateinit var trafficLayerUpdateHandler: Handler
+    private val trafficLayerUpdateTask = object: Runnable {
+        override fun run() {
+
+            if (trafficLayerTask) {
+
+                // refresh traffic layer
+                if (showTrafficLayer) {
+                    mMap?.isTrafficEnabled = false
+                    mMap?.isTrafficEnabled = true
+                }
+            }
+            trafficLayerUpdateHandler.postDelayed(this, 240000)
+            trafficLayerTask = true
         }
     }
 
@@ -149,7 +165,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vesselUpdateHandler = Handler(Looper.getMainLooper())
-
+        trafficLayerUpdateHandler = Handler(Looper.getMainLooper())
     }
 
     override fun onCreateView(
@@ -770,6 +786,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     override fun onResume() {
         super.onResume()
         vesselUpdateHandler.post(vesselUpdateTask)
+        trafficLayerUpdateHandler.post(trafficLayerUpdateTask)
     }
 
     override fun onPause() {
@@ -784,6 +801,9 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
         }
 
         vesselUpdateHandler.removeCallbacks(vesselUpdateTask)
+        trafficLayerUpdateHandler.removeCallbacks(trafficLayerUpdateTask)
+        trafficLayerTask = false
+
         super.onPause()
     }
 
