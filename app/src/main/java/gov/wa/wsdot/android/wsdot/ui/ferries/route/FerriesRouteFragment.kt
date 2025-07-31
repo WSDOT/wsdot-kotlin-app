@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -32,6 +33,7 @@ import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.FerriesRouteFragmentBinding
 import gov.wa.wsdot.android.wsdot.db.ferries.TerminalCombo
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 import gov.wa.wsdot.android.wsdot.ui.common.DayPickerFragment
 import gov.wa.wsdot.android.wsdot.ui.common.SimpleFragmentPagerAdapter
@@ -75,6 +77,7 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
 
     lateinit var dayPickerViewModel: SharedDateViewModel
 
+    private lateinit var toast: Toast
     private var isFavorite: Boolean = false
 
     private lateinit var fragmentPagerAdapter: FragmentStatePagerAdapter
@@ -255,7 +258,25 @@ class FerriesRouteFragment : DaggerFragment(), Injectable {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
                 routeViewModel.updateFavorite(args.routeId)
+
                 return false
             }
             else -> {}

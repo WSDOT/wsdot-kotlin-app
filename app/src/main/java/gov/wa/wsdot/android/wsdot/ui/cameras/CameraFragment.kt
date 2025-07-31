@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -42,6 +43,7 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
 
     val args: CameraFragmentArgs by navArgs()
 
+    private lateinit var toast: Toast
     private var isFavorite: Boolean = false
 
     private lateinit var mapFragment: SupportMapFragment
@@ -195,7 +197,26 @@ class CameraFragment : DaggerFragment(), Injectable, OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
+
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
                 cameraViewModel.updateFavorite(args.cameraId)
+
                 return false
             }
             else -> {}

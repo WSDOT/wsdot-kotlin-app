@@ -22,6 +22,7 @@ import android.net.Uri
 import android.content.Intent
 import android.text.style.UnderlineSpan
 import android.text.SpannableString
+import android.view.Gravity
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.model.LatLng
@@ -43,6 +44,9 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<TollSignFragmentBinding>()
 
     lateinit var t: Timer
+
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -84,6 +88,25 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
                 appExecutors,
                 { sign ->
                     tollSignsViewModel.updateFavorite(sign.id, !sign.favorite)
+
+                    isFavorite = sign.favorite
+
+                    if (this::toast.isInitialized)
+                    {
+                        toast.cancel()
+                    }
+
+                    if (!isFavorite) {
+                        toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER,0,500)
+                        toast.show()
+                    }
+                    else {
+                        toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER,0,500)
+                        toast.show()
+                    }
+
                 },
                 { sign, index ->
                     if (sign.trips.size > index) {

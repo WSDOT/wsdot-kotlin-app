@@ -596,6 +596,24 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
 
                     binding!!.includedCameraBottomSheetView.favoriteButton.setOnClickListener {
                         cameraViewModel.updateFavorite(cameraClusterItem.mCamera.cameraId)
+
+                        if (this::toast.isInitialized)
+                        {
+                            toast.cancel()
+                        }
+
+                        if (!cameraClusterItem.mCamera.favorite) {
+                            cameraClusterItem.mCamera.favorite = true
+                            toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                            toast.setGravity(Gravity.CENTER,0,500)
+                            toast.show()
+                        }
+                        else {
+                            cameraClusterItem.mCamera.favorite = false
+                            toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                            toast.setGravity(Gravity.CENTER,0,500)
+                            toast.show()
+                        }
                     }
 
                     from(binding!!.cameraBottomSheet).state = STATE_EXPANDED

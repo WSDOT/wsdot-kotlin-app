@@ -15,6 +15,6 @@ data class Camera(
     val url: String,
     val hasVideo: Boolean,
     val localCacheDate: Date,
-    val favorite: Boolean,
+    var favorite: Boolean,
     val remove: Boolean
 )

@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.bordercrossings.crossingtimes
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,9 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var appExecutors: AppExecutors
 
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
+
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private var adapter by autoCleared<BorderCrossingTimesListAdapter>()
 
@@ -75,6 +79,25 @@ abstract class BaseCrossingTimesFragment : DaggerFragment(), Injectable {
                 appExecutors,
                 { crossing ->
                     borderCrossingViewModel.updateFavorite(crossing.crossingId, !crossing.favorite)
+
+                    isFavorite = crossing.favorite
+
+                    if (this::toast.isInitialized)
+                    {
+                        toast.cancel()
+                    }
+
+                    if (!isFavorite) {
+                        toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER,0,500)
+                        toast.show()
+                    }
+                    else {
+                        toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER,0,500)
+                        toast.show()
+                    }
+
                 },
                 { crossing ->
                     navigateToBorderCameras(crossing)

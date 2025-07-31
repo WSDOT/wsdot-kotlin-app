@@ -5,6 +5,7 @@ import gov.wa.wsdot.android.wsdot.api.WebDataService
 import gov.wa.wsdot.android.wsdot.api.WsdotApiService
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryScheduleResponse
 import gov.wa.wsdot.android.wsdot.api.response.ferries.FerrySpacesResponse
+import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryTerminalResponse
 import gov.wa.wsdot.android.wsdot.db.ferries.*
 import gov.wa.wsdot.android.wsdot.util.ApiKeys
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
@@ -46,7 +47,8 @@ class FerriesRepository @Inject constructor(
     private val ferrySailingDao: FerrySailingDao,
     private val ferrySpaceDao: FerrySpaceDao,
     private val ferrySailingWithStatusDao: FerrySailingWithStatusDao,
-    private val ferryAlertDao: FerryAlertDao
+    private val ferryAlertDao: FerryAlertDao,
+    private val terminalAlertDao: TerminalAlertDao
 ) {
 
     fun loadSchedules(forceRefresh: Boolean): LiveData<Resource<List<FerrySchedule>>> {
@@ -233,6 +235,67 @@ class FerriesRepository @Inject constructor(
 
         }.asLiveData()
     }
+
+
+    fun loadTerminals(): LiveData<Resource<List<TerminalAlert>>> {
+
+        return object : NetworkBoundResource<List<TerminalAlert>, List<FerryTerminalResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryTerminalResponse>) = saveTerminals(item)
+
+            override fun shouldFetch(data: List<TerminalAlert>?): Boolean {
+
+
+                var update = false
+
+                if (data != null) {
+                    if (data.isEmpty()) {
+                        update = true
+                    }
+                } else {
+                    update = true
+                }
+
+                return update
+
+            }
+
+            override fun loadFromDb() = terminalAlertDao.loadTerminals()
+
+            override fun createCall() = wsdotWebservice.getTerminals(ApiKeys.WSDOT_KEY)
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+
+
+    fun loadTerminal(terminalId: Int): LiveData<Resource<TerminalAlert>> {
+
+        return object : NetworkBoundResource<TerminalAlert, List<FerryTerminalResponse>>(appExecutors) {
+
+            override fun saveCallResult(item: List<FerryTerminalResponse>) = saveTerminals(item)
+
+            override fun shouldFetch(data: TerminalAlert?): Boolean {
+
+                return true
+
+            }
+            override fun loadFromDb() = terminalAlertDao.loadTerminal(terminalId)
+
+            override fun createCall() = wsdotWebservice.getTerminals(ApiKeys.WSDOT_KEY)
+
+            override fun onFetchFailed() {
+                //repoListRateLimit.reset(owner)
+            }
+
+        }.asLiveData()
+    }
+
+
 
     fun loadFerryAlert(alertId: Int): LiveData<Resource<FerryAlert>> {
 
@@ -464,4 +527,32 @@ class FerriesRepository @Inject constructor(
         }
         ferrySpaceDao.updateSpaces(dbSpacesList)
     }
+
+
+    private fun saveTerminals(terminalResponse: List<FerryTerminalResponse>) {
+
+        var dbTerminalList = arrayListOf<TerminalAlert>()
+
+        for (terminalItem in terminalResponse) {
+
+                var vessel = TerminalAlert(
+                    terminalItem.terminalID,
+                    terminalItem.terminalName,
+                    terminalItem.addressLineOne,
+                    terminalItem.city,
+                    terminalItem.state,
+                    terminalItem.zipCode,
+                    terminalItem.latitude,
+                    terminalItem.longitude,
+                    terminalItem.bulletins
+
+                )
+
+                dbTerminalList.add(vessel)
+
+            }
+
+        terminalAlertDao.updateAlerts(dbTerminalList)
+    }
+
 }

@@ -3,6 +3,7 @@ package gov.wa.wsdot.android.wsdot.db
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import gov.wa.wsdot.android.wsdot.api.response.ferries.FerryTerminalResponse
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateRow
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
 import java.util.*
@@ -77,4 +78,19 @@ class WsdotTypeConverters {
         }
         return value
     }
+
+    @TypeConverter
+    fun fromBulletinList(bulletins: List<FerryTerminalResponse.BulletinAlert>): String {
+        return Gson().toJson(bulletins)
+    }
+
+    @TypeConverter
+    fun toBulletinList(bulletinString: String): List<FerryTerminalResponse.BulletinAlert> {
+        val bulletins = Gson().fromJson(bulletinString, Array<FerryTerminalResponse.BulletinAlert>::class.java) as Array<FerryTerminalResponse.BulletinAlert>
+        return bulletins.toList()
+    }
+
+
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,6 +46,9 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
     var binding by autoCleared<FerriesHomeFragmentBinding>()
 
     private var adapter by autoCleared<FerryScheduleListAdapter>()
+
+    private lateinit var toast: Toast
+    private var isFavorite: Boolean = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -132,6 +136,25 @@ class FerriesHomeFragment : DaggerFragment(), Injectable {
             },
             { schedule ->
                 ferriesViewModel.updateFavorite(schedule.routeId, !schedule.favorite)
+
+                isFavorite = schedule.favorite
+
+                if (this::toast.isInitialized)
+                {
+                    toast.cancel()
+                }
+
+                if (!isFavorite) {
+                    toast = Toast.makeText(context, getString(R.string.favorite_added_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+                else {
+                    toast = Toast.makeText(context, getString(R.string.favorite_removed_message), Toast.LENGTH_SHORT)
+                    toast.setGravity(Gravity.CENTER,0,500)
+                    toast.show()
+                }
+
             })
 
         this.adapter = adapter
