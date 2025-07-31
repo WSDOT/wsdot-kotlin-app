@@ -295,7 +295,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
 
                             bitmap.eraseColor(Color.TRANSPARENT)
                             text.color = Color.BLACK
-                            text.textSize = 35F
+                            text.textSize = 32F
                             text.textAlign = Align.CENTER
                             background.setColor(Color.WHITE)
                             background.style = Paint.Style.FILL
