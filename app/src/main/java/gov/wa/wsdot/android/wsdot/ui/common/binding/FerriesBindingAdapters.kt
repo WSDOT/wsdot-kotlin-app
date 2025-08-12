@@ -61,7 +61,7 @@ object FerriesBindingAdapters {
                 null)
         }
         else {
-        webView.loadData("Terminal Name Unavailable","text/html; charset=utf-8",null)
+        webView.loadData("","text/html; charset=utf-8",null)
         }
     }
 
