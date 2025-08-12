@@ -9,6 +9,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.Align
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -25,6 +27,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.createBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -99,8 +102,6 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     private lateinit var mFab: SpeedDialView
     private var trafficLayerTask: Boolean = false
 
-    val bitmap = createBitmap(70, 30)
-    val canvas = Canvas(bitmap)
     val text = Paint()
     val background = Paint()
 
@@ -309,15 +310,31 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ferry_0))
                             )
 
-                            bitmap.eraseColor(Color.TRANSPARENT)
+
+                            var vesselName =  vesselNames[vessel.vesselName].toString()
+                            val textBounds = Rect()
+                            text.getTextBounds(vesselName, 0, vesselName.length, textBounds)
+
+                            val textWidth = textBounds.width()
+                            val textHeight = textBounds.height()
+
+                            val labelBitMap = createBitmap(textWidth + 5, textHeight + 5)
+                            val canvas = Canvas(labelBitMap)
+
+                            val ferryIcon = ResourcesCompat.getDrawable(resources, R.drawable.ferry_0, null);
+                            val labelWidth = ferryIcon?.intrinsicWidth?.plus(5)?.toFloat()
+
+                            labelBitMap.eraseColor(Color.TRANSPARENT)
                             text.color = Color.BLACK
-                            text.textSize = 32F
+                            
+                            if (labelWidth != null) {
+                                text.textSize = labelWidth
+                            }
                             text.textAlign = Align.CENTER
                             background.setColor(Color.WHITE)
                             background.style = Paint.Style.FILL
                             canvas.drawPaint(background)
 
-                            var vesselName =  vesselNames[vessel.vesselName].toString()
 
                             if (vesselName == "null") {
                                 vesselName = ""
@@ -338,7 +355,7 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
                                     .zIndex(3F)
                                     .visible(showLabels)
                                     .position(LatLng(vessel.latitude, vessel.longitude))
-                                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                                    .icon(BitmapDescriptorFactory.fromBitmap(labelBitMap))
                             )
 
                             vesselMarker?.let {
@@ -416,26 +433,26 @@ class VesselWatchFragment: DaggerFragment(), Injectable, OnMapReadyCallback, Goo
     fun checkHeading(heading: Float): Pair<Float,Float> {
         return when (heading) {
             in 0F..15F -> Pair(0.5F, -0.5F)
-            in 16F..30F -> Pair(0.5F, -1.0F)
+            in 16F..30F -> Pair(0.5F, -0.75F)
             in 31F..45F -> Pair(0.0F, -1.0F)
             in 46F..60F -> Pair(0.0F, -1.0F)
             in 61F..75F -> Pair(0.0F, -1.0F)
             in 76F..90F -> Pair(0.0F, -1.0F)
-            in 91F..105F -> Pair(0.0F, -1.5F)
-            in 106F..120F -> Pair(0.0F, -2.0F)
-            in 121F..145F -> Pair(0.0F, -2.0F)
+            in 91F..105F -> Pair(0.0F, -1.25F)
+            in 106F..120F -> Pair(0.0F, -1.75F)
+            in 121F..145F -> Pair(0.0F, -2.25F)
             in 146F..160F -> Pair(0.0F, -2.5F)
             in 161F..175F -> Pair(0.5F, -2.5F)
             in 176F..190F -> Pair(0.5F, -2.5F)
             in 191F..205F -> Pair(0.5F, -2.5F)
-            in 206F..220F -> Pair(1.0F, -2.0F)
+            in 206F..220F -> Pair(1.0F, -2.25F)
             in 221F..245F -> Pair(1.0F, -2.0F)
             in 246F..260F -> Pair(1.0F, -1.5F)
             in 261F..275F -> Pair(1.0F, -1.0F)
             in 276F..290F -> Pair(1.0F, -1.0F)
             in 291F..305F -> Pair(1.0F, -1.0F)
             in 306F..320F -> Pair(1.0F, -1.0F)
-            in 321F..345F -> Pair(0.5F, -1.0F)
+            in 321F..345F -> Pair(0.5F, -0.75F)
             in 346F..360F -> Pair(0.5F, -0.5F)
             else -> Pair(0.0F, -1.0F)
         }
