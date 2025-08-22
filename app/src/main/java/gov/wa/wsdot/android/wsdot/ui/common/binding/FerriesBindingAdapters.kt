@@ -246,6 +246,18 @@ object FerriesBindingAdapters {
     }
 
     @JvmStatic
+    @BindingAdapter("bindVesselSpeed")
+    fun bindVesselSpeed(textView: TextView, vessel: Resource<Vessel>) {
+        if (vessel.data != null) {
+            if (vessel.data.speed != null) {
+                textView.text = vessel.data.speed.toString() + " knots"
+                return
+            }
+        }
+        textView.text = "Not Available"
+    }
+
+    @JvmStatic
     @BindingAdapter("bindVesselUpdated")
     fun bindVesselUpdated(textView: TextView, vessel: Resource<Vessel>) {
         if (vessel.data != null) {
