@@ -36,103 +36,59 @@
 
             <TextView
                 android:id="@+id/route_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/CardSubTitleBoldText"
-                android:text="Route:"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/vessel_name"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/route_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/CardSubTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/vessel_name"
-                app:layout_constraintStart_toEndOf="@id/route_label"
-                app:bindVesselRoute="@{vesselDetailViewModel.vessel}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:bindVesselRoute="@{vesselDetailViewModel.vessel}"
+                app:layout_constraintTop_toBottomOf="@id/vessel_name"/>
 
             <TextView
                 android:id="@+id/sche_depart_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/CardSubTitleBoldText"
-                android:text="Scheduled Departure:"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/route_textview"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/sche_depart_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/CardSubTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/route_textview"
-                app:layout_constraintStart_toEndOf="@id/sche_depart_label"
-                app:bindVesselSchDeparture="@{vesselDetailViewModel.vessel}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:bindVesselSchDeparture="@{vesselDetailViewModel.vessel}"
+                app:layout_constraintTop_toBottomOf="@id/route_label"/>
 
             <TextView
                 android:id="@+id/actual_depart_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/CardSubTitleBoldText"
-                android:text="Actual Departure:"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/sche_depart_label"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/actual_depart_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/CardSubTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/sche_depart_label"
-                app:layout_constraintStart_toEndOf="@id/actual_depart_label"
-                app:bindVesselActualDeparture="@{vesselDetailViewModel.vessel}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:bindVesselActualDeparture="@{vesselDetailViewModel.vessel}"
+                app:layout_constraintTop_toBottomOf="@id/sche_depart_label"/>
+
 
             <TextView
                 android:id="@+id/eta_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/CardSubTitleBoldText"
-                android:text="Estimated Arrival Time:"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/actual_depart_label"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/eta_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/CardSubTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/actual_depart_label"
-                app:layout_constraintStart_toEndOf="@id/eta_label"
-                app:bindVesselEta="@{vesselDetailViewModel.vessel}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:bindVesselEta="@{vesselDetailViewModel.vessel}"
+                app:layout_constraintTop_toBottomOf="@id/actual_depart_label"/>
 
             <TextView
                 android:id="@+id/speed_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/CardSubTitleBoldText"
-                android:text="Speed:"
-                android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/eta_label"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <TextView
-                android:id="@+id/speed_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 style="@style/CardSubTitleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/eta_label"
-                app:layout_constraintStart_toEndOf="@id/speed_label"
-                app:bindVesselSpeed="@{vesselDetailViewModel.vessel}"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:bindVesselSpeed="@{vesselDetailViewModel.vessel}"
+                app:layout_constraintTop_toBottomOf="@id/eta_label"/>
 
             <TextView
                 android:id="@+id/updated"
@@ -141,7 +97,7 @@
                 android:width="0dp"
                 style="@style/CardFooterText"
                 android:layout_margin="8dp"
-                app:layout_constraintTop_toBottomOf="@id/speed_textview"
+                app:layout_constraintTop_toBottomOf="@id/speed_label"
                 app:layout_constraintStart_toStartOf="parent"
                 app:bindVesselUpdated="@{vesselDetailViewModel.vessel}"/>
 
