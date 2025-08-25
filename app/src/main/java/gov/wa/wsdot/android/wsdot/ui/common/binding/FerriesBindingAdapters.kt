@@ -164,12 +164,11 @@ object FerriesBindingAdapters {
         if (vessel.data != null) {
             vessel.data.arrivingTerminalName?.isEmpty()?.let {
                 if ((!vessel.data.departingTerminalName.isEmpty()) && (!it)) {
-
-                    textView.text = vessel.data.departingTerminalName + " to " + vessel.data.arrivingTerminalName
+                    textView.text = Html.fromHtml("<b>" + "Route: </b>" + vessel.data.departingTerminalName + " to " + vessel.data.arrivingTerminalName)
                     return
                 }
             }
-            textView.text = "Not Available"
+            textView.text = Html.fromHtml("<b>" + "Route: </b>" + "Not Available")
         }
     }
 
@@ -214,11 +213,11 @@ object FerriesBindingAdapters {
     fun bindVesselSchDeparture(textView: TextView, vessel: Resource<Vessel>) {
         if (vessel.data != null) {
             if (vessel.data.scheduledDeparture != null) {
-                textView.text = BindingAdapters.getHourString(vessel.data.scheduledDeparture)
+                textView.text = Html.fromHtml("<b>" + "Scheduled Departure: </b>" + BindingAdapters.getHourString(vessel.data.scheduledDeparture))
                 return
             }
         }
-        textView.text = "--:--"
+        textView.text = Html.fromHtml("<b>" + "Scheduled Departure: </b>" + "--:--")
     }
 
     @JvmStatic
@@ -226,11 +225,11 @@ object FerriesBindingAdapters {
     fun bindVesselActualDeparture(textView: TextView, vessel: Resource<Vessel>) {
         if (vessel.data != null) {
             if (vessel.data.leftDock != null) {
-                textView.text = BindingAdapters.getHourString(vessel.data.leftDock)
+                textView.text = Html.fromHtml("<b>" + "Actual Departure: </b>" + BindingAdapters.getHourString(vessel.data.leftDock))
                 return
             }
         }
-        textView.text = "--:--"
+        textView.text = Html.fromHtml("<b>" + "Actual Departure: </b>" + "--:--")
     }
 
     @JvmStatic
@@ -238,11 +237,23 @@ object FerriesBindingAdapters {
     fun bindVesselEta(textView: TextView, vessel: Resource<Vessel>) {
         if (vessel.data != null) {
             if (vessel.data.eta != null) {
-                textView.text = BindingAdapters.getHourString(vessel.data.eta)
+                textView.text = Html.fromHtml("<b>" + "Estimated Arrival Time: </b>" + BindingAdapters.getHourString(vessel.data.eta))
                 return
             }
         }
-        textView.text = "--:--"
+        textView.text = Html.fromHtml("<b>" + "Estimated Arrival Time: </b>" + "--:--")
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindVesselSpeed")
+    fun bindVesselSpeed(textView: TextView, vessel: Resource<Vessel>) {
+        if (vessel.data != null) {
+            if (vessel.data.speed != null) {
+                textView.text = Html.fromHtml("<b>" + "Speed: </b>" + vessel.data.speed.toString() + " knots")
+                return
+            }
+        }
+        textView.text = Html.fromHtml("<b>" + "Speed: </b>" + "Not Available")
     }
 
     @JvmStatic
