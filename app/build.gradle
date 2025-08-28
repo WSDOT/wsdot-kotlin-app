@@ -115,7 +115,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.room:room-testing-android:2.7.2'
 
-    kapt "androidx.lifecycle:lifecycle-common-java8:2.8.7"
+    kapt "androidx.lifecycle:lifecycle-common-java8:2.9.3"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation "androidx.room:room-runtime:2.7.2"
