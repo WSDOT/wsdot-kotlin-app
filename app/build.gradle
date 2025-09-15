@@ -142,7 +142,7 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Glide - https://github.com/bumptech/glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:5.0.5'
 
     // Library supports using KSP instead of kapt
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
