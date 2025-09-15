@@ -94,7 +94,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.9.3'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.9.3'
 
-    implementation 'com.google.android.gms:play-services-ads:24.0.0'
+    implementation 'com.google.android.gms:play-services-ads:24.6.0'
     implementation 'com.google.android.gms:play-services-location:21.3.0'
 
     implementation 'com.google.android.gms:play-services-maps:19.2.0'
