@@ -13,6 +13,7 @@ buildscript {
 
         classpath 'com.google.gms:google-services:4.4.3'
 
+        // Updating to v3.0.6 causes strippedNativeLibsDir() error.
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
 
         // Updating to 2.0.0 causes error. Manifest merger failed.
