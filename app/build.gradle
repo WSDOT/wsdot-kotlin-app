@@ -121,8 +121,8 @@ dependencies {
     implementation "androidx.room:room-runtime:2.8.0"
 
     // Library supports using KSP instead of kapt
-    kapt "androidx.room:room-compiler:2.7.2"
-    annotationProcessor 'androidx.room:room-compiler:2.7.2'
+    kapt "androidx.room:room-compiler:2.8.0"
+    annotationProcessor 'androidx.room:room-compiler:2.8.0'
 
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
