@@ -1,19 +1,19 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '2.1.0'
+    ext.kotlin_version = '2.2.0'
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.9.0'
+        classpath 'com.android.tools.build:gradle:8.11.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.8.7'
+        classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.4'
 
-        // Updating to 4.4.0 causes crash when selecting notification check box.
-        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.gms:google-services:4.4.3'
 
+        // Updating to v3.0.6 causes strippedNativeLibsDir() error.
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
 
         // Updating to 2.0.0 causes error. Manifest merger failed.
