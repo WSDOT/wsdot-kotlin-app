@@ -79,7 +79,7 @@ object AmtrakCascadesBindingAdapters {
     @BindingAdapter("bindTrainStationName")
     fun bindTrainStationName(textView: TextView, station: String?) {
         textView.text = when(station) {
-            "VAC" -> "Vancouver, BC"
+            "VAC" -> "Vancouver, CANADA"
             "BEL" -> "Bellingham, WA"
             "MVW" -> "Mount Vernon, WA"
             "STW" -> "Stanwood, WA"
@@ -91,7 +91,7 @@ object AmtrakCascadesBindingAdapters {
             "OLW" -> "Olympia/Lacey, WA"
             "CTL" -> "Centralia, WA"
             "KEL" -> "Kelso/Longview, WA"
-            "VAN" -> "Vancouver, WA"
+            "VAN" -> "Vancouver, USA"
             "PDX" -> "Portland, OR"
             "ORC" -> "Oregon City, OR"
             "SLM" -> "Salem, OR"

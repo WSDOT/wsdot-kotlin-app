@@ -37,7 +37,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     // Lists of  available stations
     // used by origin spinner
     val originStations : List<Pair<String, String>> = arrayListOf(
-        Pair("Vancouver, BC", "VAC"),
+        Pair("Vancouver, CANADA", "VAC"),
         Pair("Bellingham, WA", "BEL"),
         Pair("Mount Vernon, WA", "MVW"),
         Pair("Stanwood, WA", "STW"),
@@ -49,7 +49,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         Pair("Olympia, WA", "OLW"),
         Pair("Centralia, WA", "CTL"),
         Pair("Kelso/Longview, WA", "KEL"),
-        Pair("Vancouver, WA", "VAN"),
+        Pair("Vancouver, USA", "VAN"),
         Pair("Portland, OR", "PDX"),
         Pair("Oregon City, OR", "ORC"),
         Pair("Salem, OR", "SLM"),
@@ -59,7 +59,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
     // used by destination spinner
     val destinationStations : List<Pair<String, String>> = arrayListOf(
 //        Pair("All", "N/A"),
-        Pair("Vancouver, BC", "VAC"),
+        Pair("Vancouver, CANADA", "VAC"),
         Pair("Bellingham, WA", "BEL"),
         Pair("Mount Vernon, WA", "MVW"),
         Pair("Stanwood, WA", "STW"),
@@ -71,7 +71,7 @@ class AmtrakCascadesViewModel @Inject constructor(amtrakCascadesRepository: Amtr
         Pair("Olympia, WA", "OLW"),
         Pair("Centralia, WA", "CTL"),
         Pair("Kelso/Longview, WA", "KEL"),
-        Pair("Vancouver, WA", "VAN"),
+        Pair("Vancouver, USA", "VAN"),
         Pair("Portland, OR", "PDX"),
         Pair("Oregon City, OR", "ORC"),
         Pair("Salem, OR", "SLM"),
