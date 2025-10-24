@@ -210,42 +210,6 @@ class TollSignRepository @Inject constructor(
     private fun filter167LocationName(locationName: String, direction: String): String {
         var locationName = locationName
 
-        // Southbound name changes suggested by Tolling
-        if (direction == "S") {
-
-            if (locationName == "4th Ave N") {
-                locationName = "SR 516"
-            }
-
-            if (locationName == "S 192nd St") {
-                locationName = "S 180th St"
-            }
-
-            if (locationName == "S 23rd St") {
-                locationName = "I-405 (Renton)"
-            }
-        }
-
-        // Northbound name changes suggested by Tolling
-        if (direction == "N") {
-
-            if (locationName == "15th St SW") {
-                locationName = "SR 18 (Auburn)"
-            }
-
-            if (locationName == "7th St NW") {
-                locationName = "15th St SW"
-            }
-
-            if (locationName == "30th St NW") {
-                locationName = "S 277th St"
-            }
-
-            if (locationName == "S 265th St") {
-                locationName = "SR 516"
-            }
-        }
-
         locationName = "Lane entrance near $locationName"
 
         return locationName
@@ -299,7 +263,49 @@ class TollSignRepository @Inject constructor(
             return true
         }
 
-        return trip.startLocationName == "Green River" && trip.travelDirection == "S"
+        if (trip.startLocationName == "Green River" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        // SR 167 legacy trips which should be removed
+        if (trip.startLocationName == "S 23rd St" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "S 192nd St" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "4th Ave N" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "15th St SW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "30th St NW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "S 265th St" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "7th St NW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        // Temporarily remove these until tolling starts
+        if (trip.startLocationName == "SR 410" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "Stewart Rd" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        return false;
 
     }
 
