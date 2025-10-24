@@ -209,7 +209,7 @@ class TollSignRepository @Inject constructor(
 
     private fun filter167LocationName(locationName: String, direction: String): String {
         var locationName = locationName
-        
+
         locationName = "Lane entrance near $locationName"
 
         return locationName
@@ -263,7 +263,9 @@ class TollSignRepository @Inject constructor(
             return true
         }
 
-        return trip.startLocationName == "Green River" && trip.travelDirection == "S"
+        if (trip.startLocationName == "Green River" && trip.travelDirection == "S") {
+            return true;
+        }
 
     }
 
