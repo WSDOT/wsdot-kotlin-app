@@ -209,43 +209,7 @@ class TollSignRepository @Inject constructor(
 
     private fun filter167LocationName(locationName: String, direction: String): String {
         var locationName = locationName
-
-        // Southbound name changes suggested by Tolling
-        if (direction == "S") {
-
-            if (locationName == "4th Ave N") {
-                locationName = "SR 516"
-            }
-
-            if (locationName == "S 192nd St") {
-                locationName = "S 180th St"
-            }
-
-            if (locationName == "S 23rd St") {
-                locationName = "I-405 (Renton)"
-            }
-        }
-
-        // Northbound name changes suggested by Tolling
-        if (direction == "N") {
-
-            if (locationName == "15th St SW") {
-                locationName = "SR 18 (Auburn)"
-            }
-
-            if (locationName == "7th St NW") {
-                locationName = "15th St SW"
-            }
-
-            if (locationName == "30th St NW") {
-                locationName = "S 277th St"
-            }
-
-            if (locationName == "S 265th St") {
-                locationName = "SR 516"
-            }
-        }
-
+        
         locationName = "Lane entrance near $locationName"
 
         return locationName
