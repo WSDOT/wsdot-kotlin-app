@@ -267,6 +267,46 @@ class TollSignRepository @Inject constructor(
             return true;
         }
 
+        // SR 167 legacy trips which should be removed
+        if (trip.startLocationName == "S 23rd St" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "S 192nd St" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "4th Ave N" && trip.travelDirection == "S") {
+            return true;
+        }
+
+        if (trip.startLocationName == "15th St SW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "30th St NW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "S 265th St" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "7th St NW" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        // Temporarily remove these until tolling starts
+        if (trip.startLocationName == "SR 410" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        if (trip.startLocationName == "Stewart Rd" && trip.travelDirection == "N") {
+            return true;
+        }
+
+        return false;
+
     }
 
 }
