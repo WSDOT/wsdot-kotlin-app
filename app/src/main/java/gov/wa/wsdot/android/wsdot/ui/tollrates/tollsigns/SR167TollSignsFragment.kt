@@ -21,7 +21,7 @@ class SR167TollSignsFragment: TollSignsFragment() {
     }
 
     override fun getInfoLinkURL(): String {
-        return "https://www.wsdot.wa.gov/Tolling/SR167HotLanes/default.htm"
+        return "https://wsdot.wa.gov/travel/roads-bridges/toll-roads-bridges-tunnels/sr-167-express-toll-lanes"
     }
     override fun getInfoLinkText(): String {
         return getString(R.string.info_167)
