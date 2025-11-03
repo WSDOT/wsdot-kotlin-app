@@ -147,10 +147,12 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Glide - https://github.com/bumptech/glide
-    implementation 'com.github.bumptech.glide:glide:5.0.5'
+    // Updating to v5.0.5 causes a crash on Android 6.0 (SDK 23)
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
     // Library supports using KSP instead of kapt
-    kapt 'com.github.bumptech.glide:compiler:5.0.5'
+    // Updating to v5.0.5 causes a crash on Android 6.0 (SDK 23)
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     // gson
     implementation 'com.google.code.gson:gson:2.13.2'
