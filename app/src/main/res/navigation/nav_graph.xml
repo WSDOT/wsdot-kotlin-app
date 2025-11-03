@@ -193,16 +193,6 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navTollRatesFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment"
-        android:label="Toll Rates"
-        tools:layout="@layout/tab_layout"
-        app:popUpTo="@+id/nav_graph"
-        app:popUpToInclusive="true">
-
-    </fragment>
-
-    <fragment
         android:id="@+id/navTollRatesListFragment"
         android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesListFragment"
         android:label="Toll Rates"

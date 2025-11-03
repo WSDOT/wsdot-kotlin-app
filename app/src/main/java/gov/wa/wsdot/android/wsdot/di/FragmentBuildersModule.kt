@@ -49,7 +49,6 @@ import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationDetailsFragment
 import gov.wa.wsdot.android.wsdot.ui.notifications.NotificationsFragment
 import gov.wa.wsdot.android.wsdot.ui.settings.FavoritesSortSettingFragment
 import gov.wa.wsdot.android.wsdot.ui.socialmedia.TwitterFragment
-import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesListFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment
 import gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment
@@ -172,9 +171,6 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     abstract fun contributeSouthboundCrossingTimesFragment(): SouthboundCrossingTimesFragment
-
-    @ContributesAndroidInjector
-    abstract fun contributeTollRatesFragment(): TollRatesFragment
 
     @ContributesAndroidInjector
     abstract fun contributeTollRatesListFragment(): TollRatesListFragment
