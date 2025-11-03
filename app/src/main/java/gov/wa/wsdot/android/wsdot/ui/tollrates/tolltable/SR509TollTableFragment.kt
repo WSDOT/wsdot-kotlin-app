@@ -1,4 +1,4 @@
-package gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns
+package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,7 +10,7 @@ import gov.wa.wsdot.android.wsdot.NavGraphDirections
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.ui.MainActivity
 
-class SR167TollSignsFragment: TollSignsFragment() {
+class SR509TollTableFragment: TollTableFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -22,25 +22,8 @@ class SR167TollSignsFragment: TollSignsFragment() {
         setHasOptionsMenu(true)
     }
 
-    override fun initTravelTimeIds(viewModel: TollSignsViewModel) {
-        viewModel.setTravelTimeIds(
-            67,
-            68,
-            70,
-            69
-        )
-    }
-
-    override fun getInfoLinkURL(): String {
-        return "https://wsdot.wa.gov/travel/roads-bridges/toll-roads-bridges-tunnels/sr-167-express-toll-lanes"
-    }
-
-    override fun getInfoLinkText(): String {
-        return getString(R.string.info_167)
-    }
-
     override fun getRoute(): Int {
-        return 167
+        return 50983
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -60,5 +43,4 @@ class SR167TollSignsFragment: TollSignsFragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

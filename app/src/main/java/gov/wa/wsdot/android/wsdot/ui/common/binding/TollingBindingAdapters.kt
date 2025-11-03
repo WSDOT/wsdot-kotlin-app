@@ -61,4 +61,16 @@ object TollingBindingAdapters {
 
     }
 
+    @JvmStatic
+    @BindingAdapter("showTollSpinner")
+    fun showTollSpinner(view: View, tollTable: Resource<TollRateTable>) {
+
+        view.visibility = View.GONE
+
+        if (tollTable.data != null) {
+            if (tollTable.data.route == 50978 || tollTable.data.route == 50983) {
+                view.visibility = View.VISIBLE
+            }
+        }
+    }
 }

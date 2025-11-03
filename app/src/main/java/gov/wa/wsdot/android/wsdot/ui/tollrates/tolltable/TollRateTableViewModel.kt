@@ -1,6 +1,7 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
@@ -18,6 +19,22 @@ class TollRateTableViewModel @Inject constructor(tollRateRepository: TollRateRep
     val tollTable : LiveData<Resource<TollRateTable>> = _route.switchMap { route ->
             tollRateRepository.loadTollTableForRoute(route.route, false)
         }
+
+    // 2-way binding value for spinner
+    private val _selectedDirection = MediatorLiveData<Pair<String, String>>()
+    val selectedDirection: MutableLiveData<Pair<String, String>>
+        get() = _selectedDirection
+
+    // Used by spinner
+    val directions = listOf(
+        Pair("Northbound","N"),
+        Pair("Southbound", "S")
+    )
+
+    init {
+        _selectedDirection.value = directions[0]
+    }
+
 
     fun refresh() {
         val route = _route.value?.route

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -27,6 +29,8 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
 
     @Inject
     lateinit var appExecutors: AppExecutors
+
+    private lateinit var spinner: Spinner
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private var adapter by autoCleared<TollTableListAdapter>()
@@ -88,6 +92,26 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
                 }
             }
 
+            spinner = binding.root.findViewById(R.id.tollSpinner)
+
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (tollRateTableViewModel.route.value?.route == 50978) {
+                        tollRateTableViewModel.setRoute(50983)
+                    } else {
+                        tollRateTableViewModel.setRoute(50978)
+                    }
+                }
+            }
         })
 
         return dataBinding.root

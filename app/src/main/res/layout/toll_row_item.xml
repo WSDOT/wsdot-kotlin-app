@@ -19,6 +19,7 @@
             android:padding="8dp"
             android:text="@{tollRateRow.values[0]}"
             app:visibleGone="@{tollRateRow.values[0] != null}"
+            android:gravity="center"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
