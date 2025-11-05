@@ -1,13 +1,19 @@
 package gov.wa.wsdot.android.wsdot.ui.common.binding
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import gov.wa.wsdot.android.wsdot.R
+import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateRow
 import gov.wa.wsdot.android.wsdot.db.tollrates.constant.TollRateTable
 import gov.wa.wsdot.android.wsdot.db.tollrates.dynamic.TollTrip
 import gov.wa.wsdot.android.wsdot.model.common.Resource
+import gov.wa.wsdot.android.wsdot.util.TimeUtils
+import java.util.Calendar
 
 object TollingBindingAdapters {
 
@@ -59,6 +65,31 @@ object TollingBindingAdapters {
     fun bindTripColor(view: CardView, tollTrip: TollTrip?) {
         view.setBackgroundColor(Color.DKGRAY)
 
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindTextColor")
+
+    fun bindTextColor(textView: TextView, tollRateRow: TollRateRow) {
+        val context = textView.context
+        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val isDarkModeOn = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+        textView.setTextColor(ContextCompat.getColor(context, R.color.black))
+
+       if (tollRateRow.startTime != null && tollRateRow.endTime != null){
+            if (TimeUtils.isCurrentHour(tollRateRow.startTime, tollRateRow.endTime, Calendar.getInstance())){
+                if ((tollRateRow.weekday && !TimeUtils.weekendOrWAC468270071Holiday(Calendar.getInstance()))
+                    || (!tollRateRow.weekday && TimeUtils.weekendOrWAC468270071Holiday(Calendar.getInstance()))) {
+                        textView.setTextColor(ContextCompat.getColor(context, R.color.white))
+                }
+            }
+        }
+        else {
+           textView.setTextColor(ContextCompat.getColor(context, R.color.black))
+       }
+        if (isDarkModeOn) {
+           textView.setTextColor(ContextCompat.getColor(context, R.color.white))
+       }
     }
 
     @JvmStatic

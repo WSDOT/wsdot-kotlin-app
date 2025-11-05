@@ -46,7 +46,8 @@ class TollTableListAdapter (
             if (TimeUtils.isCurrentHour(item.startTime, item.endTime, Calendar.getInstance())){
                 if ((item.weekday && !TimeUtils.weekendOrWAC468270071Holiday(Calendar.getInstance()))
                     || (!item.weekday && TimeUtils.weekendOrWAC468270071Holiday(Calendar.getInstance()))) {
-                    binding.tapView.background.setColorFilter(Color.parseColor("#59315F88"), PorterDuff.Mode.MULTIPLY)
+                    binding.tapView.background.setColorFilter(Color.parseColor("#007b5f"), PorterDuff.Mode.SRC_IN)
+
                 }
             }
         }
