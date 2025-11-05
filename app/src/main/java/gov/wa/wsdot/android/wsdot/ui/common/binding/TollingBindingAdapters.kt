@@ -29,6 +29,9 @@ object TollingBindingAdapters {
     @JvmStatic
     @BindingAdapter("bindTollMessage")
     fun bindTollMessage(textView: TextView, tollTable: Resource<TollRateTable>) {
+
+        textView.visibility = View.GONE
+
         if (tollTable.data != null){
             if (tollTable.data.message != "") {
                 textView.text = tollTable.data.message
