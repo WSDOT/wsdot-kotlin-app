@@ -23,7 +23,7 @@ class SR99TollTableFragment: TollTableFragment() {
     }
 
     override fun getRoute(): Int {
-        return 99
+        return 2
     }
 
     override fun getInfoLinkURL(): String {

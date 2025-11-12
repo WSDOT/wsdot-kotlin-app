@@ -122,10 +122,10 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
                     position: Int,
                     id: Long
                 ) {
-                    if (tollRateTableViewModel.route.value?.route == 50978) {
-                        tollRateTableViewModel.setRoute(50983)
+                    if (tollRateTableViewModel.route.value?.route == 3) {
+                        tollRateTableViewModel.setRoute(4)
                     } else {
-                        tollRateTableViewModel.setRoute(50978)
+                        tollRateTableViewModel.setRoute(3)
                     }
                 }
             }

@@ -117,7 +117,9 @@ object TollingBindingAdapters {
         view.visibility = View.GONE
 
         if (tollTable.data != null) {
-            if (tollTable.data.route == 50978 || tollTable.data.route == 50983) {
+
+            // SR 509  Expressway
+            if (tollTable.data.id == 3 || tollTable.data.id == 4) {
                 view.visibility = View.VISIBLE
             }
         }
