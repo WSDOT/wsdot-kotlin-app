@@ -1,6 +1,10 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +56,19 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
         )
 
         binding = dataBinding
+
+        val content = SpannableString(getInfoLinkText())
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        binding.infoButton.text = content
+
+        binding.infoButton.setTextColor(resources.getColor(R.color.wsdotGreen))
+
+        binding.infoButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.data = Uri.parse(getInfoLinkURL())
+            startActivity(intent)
+        }
 
         binding.viewModel = tollRateTableViewModel
         dataBinding.lifecycleOwner = viewLifecycleOwner
@@ -118,5 +135,7 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
     }
 
     abstract fun getRoute(): Int
+    abstract fun getInfoLinkText(): String
+    abstract fun getInfoLinkURL(): String
 
 }

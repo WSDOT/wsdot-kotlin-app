@@ -26,6 +26,13 @@ class SR520TollTableFragment: TollTableFragment() {
         return 520
     }
 
+    override fun getInfoLinkURL(): String {
+        return "https://wsdot.wa.gov/travel/roads-bridges/toll-roads-bridges-tunnels/sr-520-bridge-tolling"
+    }
+    override fun getInfoLinkText(): String {
+        return getString(R.string.info_520)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_tolling, menu)
         super.onCreateOptionsMenu(menu, inflater)

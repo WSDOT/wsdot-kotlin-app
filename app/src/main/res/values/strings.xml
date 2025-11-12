@@ -27,8 +27,12 @@
     // Toll Rates
     <string name="tolling_disclaimer">Estimated toll rates provided as a courtesy. You\'ll always pay the toll you see on actual road signs when you enter.</string>
     <string name="action_good_to_go">My Good To Go</string>
-    <string name="info_450">Learn how I-405 tolls work</string>
+    <string name="info_16">Learn how SR 16 tolls work</string>
+    <string name="info_99">Learn how SR 99 tolls work</string>
     <string name="info_167">Learn how SR 167 tolls work</string>
+    <string name="info_509">Learn how SR 509 tolls work</string>
+    <string name="info_520">Learn how SR 520 tolls work</string>
+    <string name="info_450">Learn how I-405 tolls work</string>
 
     // Toolbar
     <string name="action_favorite">Favorite</string>

@@ -24,6 +24,41 @@
         android:layout_height="match_parent"
         android:clipToPadding="false">
 
+        <RelativeLayout
+            android:id="@+id/info_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/info_button"
+            android:layout_height="35dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="-4dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoLink="web"
+            app:bindTollInfoButton="@{viewModel.tollTable}"
+            app:layout_constraintTop_toTopOf="parent"
+            android:linksClickable="true"
+            android:clickable="true"
+            android:focusable="true"/>
+
+        <TextView
+            android:id="@+id/message_text"
+            style="@style/CardSubTitleText"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:bindTollMessage="@{viewModel.tollTable}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/toolbar_grid"
             android:orientation="vertical"
@@ -34,8 +69,8 @@
             android:clipToPadding="false"
             android:elevation="4dp"
             app:showTollSpinner="@{viewModel.tollTable}"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/info_layout"
             app:layout_constraintStart_toStartOf="parent"
             android:paddingStart="@dimen/content_padding"
             android:paddingEnd="@dimen/content_padding">
@@ -44,7 +79,6 @@
                 android:layout_height="38dp"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
@@ -66,23 +100,13 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/message_text"
-            style="@style/CardSubTitleText"
-            android:textAlignment="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            app:bindTollMessage="@{viewModel.tollTable}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_grid"
-            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/message_text"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_grid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:refreshing="@{((Resource) viewModel.tollTable).status == Status.LOADING}"
