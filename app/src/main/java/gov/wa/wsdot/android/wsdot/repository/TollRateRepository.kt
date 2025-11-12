@@ -73,6 +73,7 @@ class TollRateRepository @Inject constructor(
             }
 
             val tollRateTable = TollRateTable(
+                id = tollTableItem.id,
                 route = tollTableItem.route,
                 message = tollTableItem.message,
                 numCol = tollTableItem.numCol,
