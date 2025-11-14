@@ -193,14 +193,61 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navTollRatesFragment"
-        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesFragment"
+        android:id="@+id/navTollRatesListFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.TollRatesListFragment"
         android:label="Toll Rates"
         tools:layout="@layout/tab_layout"
         app:popUpTo="@+id/nav_graph"
         app:popUpToInclusive="true">
-
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_SR16TollTableFragment"
+            app:destination="@id/SR16TollTableFragment" />
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_SR99TollTableFragment"
+            app:destination="@id/SR99TollTableFragment" />
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_SR167TollTableFragment"
+            app:destination="@id/SR167TollTableFragment" />
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_SR509TollTableFragment"
+            app:destination="@id/SR509TollTableFragment" />
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_SR520TollTableFragment"
+            app:destination="@id/SR520TollTableFragment" />
+        <action
+            android:id="@+id/action_TollRatesListFragment_to_I405TollTableFragment"
+            app:destination="@id/I405TollTableFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/SR16TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR16TollTableFragment"
+        android:label="SR 16" />
+
+    <fragment
+        android:id="@+id/SR99TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR99TollTableFragment"
+        android:label="SR 99" />
+
+    <fragment
+        android:id="@+id/SR167TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.SR167TollSignsFragment"
+        android:label="SR 167" />
+
+    <fragment
+        android:id="@+id/SR509TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR509TollTableFragment"
+        android:label="SR 509" />
+
+    <fragment
+        android:id="@+id/SR520TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable.SR520TollTableFragment"
+        android:label="SR 520" />
+
+    <fragment
+        android:id="@+id/I405TollTableFragment"
+        android:name="gov.wa.wsdot.android.wsdot.ui.tollrates.tollsigns.I405TollSignsFragment"
+        android:label="I-405" />
 
     <fragment
         android:id="@+id/navHighwayAlertTabFragment"
@@ -659,8 +706,8 @@
         app:popUpTo="@id/nav_graph"/>
 
     <action
-        android:id="@+id/action_global_navTollRatesFragment"
-        app:destination="@id/navTollRatesFragment"
+        android:id="@+id/action_global_navTollRatesListFragment"
+        app:destination="@id/navTollRatesListFragment"
         app:popUpTo="@id/nav_graph"/>
 
     <action

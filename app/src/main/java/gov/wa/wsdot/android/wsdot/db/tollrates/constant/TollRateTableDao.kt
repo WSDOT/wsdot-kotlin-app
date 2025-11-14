@@ -9,8 +9,8 @@ abstract class TollRateTableDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertNewTollRateTable(tollTable: List<TollRateTable>)
 
-    @Query("SELECT * FROM TollRateTable WHERE route = :route")
-    abstract fun loadTollRateTableForRoute(route: Int): LiveData<TollRateTable>
+    @Query("SELECT * FROM TollRateTable WHERE id = :id")
+    abstract fun loadTollRateTableForRoute(id: Int): LiveData<TollRateTable>
 
     @Query("DELETE FROM TollRateTable")
     abstract fun deleteOldTollRateTable()

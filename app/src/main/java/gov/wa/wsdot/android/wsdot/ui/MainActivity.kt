@@ -103,7 +103,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                 R.id.navMountainPassHomeFragment,
                 R.id.navBridgeAlertsFragment,
                 R.id.navBorderCrossingsFragment,
-                R.id.navTollRatesFragment,
+                R.id.navTollRatesListFragment,
                 R.id.navFavoritesFragment,
                 R.id.navAmtrakCascadesFragment,
                 R.id.navNotificationsFragment,
@@ -122,7 +122,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
                     true
                 R.id.navBridgeAlertsFragment -> navView.menu.findItem(R.id.nav_bridge_alerts).isChecked =
                     true
-                R.id.navTollRatesFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked =
+                R.id.navTollRatesListFragment -> navView.menu.findItem(R.id.nav_toll_rates).isChecked =
                     true
                 R.id.navBorderCrossingsFragment -> navView.menu.findItem(R.id.nav_border_waits).isChecked =
                     true
@@ -321,7 +321,7 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
             getString(R.string.key_value_toll_rates_nav) -> {
                 navView.menu.findItem(R.id.nav_toll_rates).isChecked = true
-                return R.id.navTollRatesFragment
+                return R.id.navTollRatesListFragment
             }
             getString(R.string.key_value_border_waits_nav) -> {
                 navView.menu.findItem(R.id.nav_border_waits).isChecked = true
@@ -600,8 +600,8 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             }
             R.id.nav_toll_rates -> {
                 navLocation = getString(R.string.key_value_toll_rates_nav)
-                if (navController.currentDestination?.id != R.id.navTollRatesFragment) {
-                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesFragment)
+                if (navController.currentDestination?.id != R.id.navTollRatesListFragment) {
+                    findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_navTollRatesListFragment)
                 }
             }
             R.id.nav_border_waits -> {

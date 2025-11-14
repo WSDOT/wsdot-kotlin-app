@@ -52,7 +52,13 @@ abstract class TollSignsFragment : DaggerFragment(), Injectable {
 
         tollSignsViewModel = ViewModelProvider(this, viewModelFactory)
             .get(TollSignsViewModel::class.java)
-        tollSignsViewModel.setRoute(getRoute(), "N")
+
+        if (tollSignsViewModel.selectedDirection.value.toString() == "(Northbound, N)") {
+            tollSignsViewModel.setRoute(getRoute(), "N")
+        }
+        else {
+            tollSignsViewModel.setRoute(getRoute(), "S")
+        }
 
         initTravelTimeIds(tollSignsViewModel)
 

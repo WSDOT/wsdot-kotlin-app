@@ -32,7 +32,7 @@ class TollRateRepository @Inject constructor(
                 var update = false
 
                 if (data != null ){
-                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 60)) {
+                    if (TimeUtils.isOverXMinOld(data.localCacheDate, x = 5)) {
                         update = true
                     }
                 } else {
@@ -73,6 +73,7 @@ class TollRateRepository @Inject constructor(
             }
 
             val tollRateTable = TollRateTable(
+                id = tollTableItem.id,
                 route = tollTableItem.route,
                 message = tollTableItem.message,
                 numCol = tollTableItem.numCol,

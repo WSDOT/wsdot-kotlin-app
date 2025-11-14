@@ -3,8 +3,9 @@ package gov.wa.wsdot.android.wsdot.db.tollrates.constant
 import androidx.room.Entity
 import java.util.*
 
-@Entity(primaryKeys = ["route"])
+@Entity(primaryKeys = ["id"])
 data class TollRateTable(
+    val id: Int?,
     val route: Int,
     val message: String?,
     val numCol: Int,

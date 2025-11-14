@@ -7,6 +7,8 @@ data class TollRateTableResponse (
     val tollRates: List<TollTable>
 ) {
     data class TollTable (
+        @field:SerializedName("id")
+        val id: Int,
         @field:SerializedName("route")
         val route: Int,
         @field:SerializedName("message")

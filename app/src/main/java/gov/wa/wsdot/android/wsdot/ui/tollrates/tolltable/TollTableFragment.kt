@@ -1,9 +1,15 @@
 package gov.wa.wsdot.android.wsdot.ui.tollrates.tolltable
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Spinner
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -28,6 +34,8 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
     @Inject
     lateinit var appExecutors: AppExecutors
 
+    private lateinit var spinner: Spinner
+
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private var adapter by autoCleared<TollTableListAdapter>()
 
@@ -48,6 +56,19 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
         )
 
         binding = dataBinding
+
+        val content = SpannableString(getInfoLinkText())
+        content.setSpan(UnderlineSpan(), 0, content.length, 0)
+        binding.infoButton.text = content
+
+        binding.infoButton.setTextColor(resources.getColor(R.color.wsdotGreen))
+
+        binding.infoButton.setOnClickListener {
+            val intent = Intent()
+            intent.action = Intent.ACTION_VIEW
+            intent.data = Uri.parse(getInfoLinkURL())
+            startActivity(intent)
+        }
 
         binding.viewModel = tollRateTableViewModel
         dataBinding.lifecycleOwner = viewLifecycleOwner
@@ -88,11 +109,33 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
                 }
             }
 
+            spinner = binding.root.findViewById(R.id.tollSpinner)
+
+            spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    
+                }
+
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (tollRateTableViewModel.route.value?.route == 3) {
+                        tollRateTableViewModel.setRoute(4)
+                    } else {
+                        tollRateTableViewModel.setRoute(3)
+                    }
+                }
+            }
         })
 
         return dataBinding.root
     }
 
     abstract fun getRoute(): Int
+    abstract fun getInfoLinkText(): String
+    abstract fun getInfoLinkURL(): String
 
 }
