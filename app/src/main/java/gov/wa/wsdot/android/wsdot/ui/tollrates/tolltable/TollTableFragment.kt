@@ -19,10 +19,10 @@ import dagger.android.support.DaggerFragment
 import gov.wa.wsdot.android.wsdot.R
 import gov.wa.wsdot.android.wsdot.databinding.TollRateTableFragmentBinding
 import gov.wa.wsdot.android.wsdot.di.Injectable
+import gov.wa.wsdot.android.wsdot.model.common.Status
 import gov.wa.wsdot.android.wsdot.ui.common.binding.FragmentDataBindingComponent
 import gov.wa.wsdot.android.wsdot.util.AppExecutors
 import gov.wa.wsdot.android.wsdot.util.autoCleared
-import gov.wa.wsdot.android.wsdot.model.common.Status
 import javax.inject.Inject
 
 abstract class TollTableFragment : DaggerFragment(), Injectable {
@@ -35,6 +35,8 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
     lateinit var appExecutors: AppExecutors
 
     private lateinit var spinner: Spinner
+
+    private var spinnerSelected: Boolean = false
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private var adapter by autoCleared<TollTableListAdapter>()
@@ -111,6 +113,12 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
 
             spinner = binding.root.findViewById(R.id.tollSpinner)
 
+            spinner.setOnTouchListener { spinner, _ ->
+                spinnerSelected = true
+                spinner.performClick()
+                false
+            }
+
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                     
@@ -122,10 +130,15 @@ abstract class TollTableFragment : DaggerFragment(), Injectable {
                     position: Int,
                     id: Long
                 ) {
-                    if (tollRateTableViewModel.route.value?.route == 3) {
-                        tollRateTableViewModel.setRoute(4)
-                    } else {
-                        tollRateTableViewModel.setRoute(3)
+                    if (spinnerSelected) {
+                        binding.tollTableList.visibility = View.GONE
+                        if (tollRateTableViewModel.route.value?.route == 3) {
+                            // SR 509 Southbound
+                            tollRateTableViewModel.setRoute(4)
+                        } else {
+                            // SR 509 Northbound
+                            tollRateTableViewModel.setRoute(3)
+                        }
                     }
                 }
             }
