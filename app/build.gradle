@@ -117,16 +117,16 @@ dependencies {
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.room:room-testing-android:2.8.0'
+    implementation 'androidx.room:room-testing-android:2.8.4'
 
     kapt "androidx.lifecycle:lifecycle-common-java8:2.9.3"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
-    implementation "androidx.room:room-runtime:2.8.0"
+    implementation "androidx.room:room-runtime:2.8.4"
 
     // Library supports using KSP instead of kapt
-    kapt "androidx.room:room-compiler:2.8.0"
-    annotationProcessor 'androidx.room:room-compiler:2.8.0'
+    kapt "androidx.room:room-compiler:2.8.4"
+    annotationProcessor 'androidx.room:room-compiler:2.8.4'
 
     // drag and drop list
     implementation 'com.ernestoyaquello.dragdropswiperecyclerview:drag-drop-swipe-recyclerview:1.2.0'
@@ -182,7 +182,7 @@ dependencies {
     // Optional -- Robolectric environment
     testImplementation 'androidx.test:core:1.7.0'
     androidTestImplementation 'androidx.test:core:1.7.0'
-    testImplementation "androidx.room:room-testing:2.8.0"
+    testImplementation "androidx.room:room-testing:2.8.4"
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
     androidTestImplementation 'androidx.test:runner:1.7.0'
     androidTestImplementation 'androidx.test.ext:junit:1.3.0'
