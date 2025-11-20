@@ -10,11 +10,8 @@ buildscript {
         classpath 'com.android.tools.build:gradle:8.13.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'androidx.navigation:navigation-safe-args-gradle-plugin:2.9.6'
-
         classpath 'com.google.gms:google-services:4.4.4'
-
-        // Updating to v3.0.6 causes strippedNativeLibsDir() error.
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.6'
 
         // Updating to 2.0.0 causes error. Manifest merger failed.
         classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:1.2.0"

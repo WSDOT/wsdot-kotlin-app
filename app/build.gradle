@@ -49,7 +49,6 @@ android {
             firebaseCrashlytics {
                 nativeSymbolUploadEnabled true
                 // These paths are relative to the app/ folder
-                strippedNativeLibsDir "build/ndklibs/obj"
                 unstrippedNativeLibsDir "build/ndklibs/libs"
             }
             shrinkResources true
