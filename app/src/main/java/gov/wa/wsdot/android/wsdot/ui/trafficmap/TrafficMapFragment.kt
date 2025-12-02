@@ -1034,7 +1034,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
@@ -1065,7 +1065,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
@@ -1096,7 +1096,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
@@ -1158,7 +1158,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
@@ -1190,7 +1190,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
         var actionColor = resources.getColor(R.color.wsdotGreen)
 
         activity?.let {
-            val typedValue: TypedValue = TypedValue()
+            val typedValue = TypedValue()
             it.theme.resolveAttribute(R.attr.themeColorAccent, typedValue, true)
             actionColor = typedValue.data
         }
