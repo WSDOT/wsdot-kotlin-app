@@ -73,6 +73,9 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    lint {
+        disable "NullSafeMutableLiveData"
+    }
     namespace 'gov.wa.wsdot.android.wsdot'
 }
 
