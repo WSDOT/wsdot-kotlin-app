@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -94,6 +95,18 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
 
         val navView: NavigationView = findViewById(R.id.drawer_nav_view)
         navView.setNavigationItemSelectedListener(this)
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
 
         // Navigation component setup with drawer
         val config = AppBarConfiguration(
@@ -581,15 +594,6 @@ class MainActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             theme.applyStyle(R.style.ThemeWSDOTGreen, true)
         }
         return theme
-    }
-
-    override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

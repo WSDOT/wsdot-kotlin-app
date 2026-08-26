@@ -933,7 +933,7 @@ class TrafficMapFragment : DaggerFragment(), Injectable, OnMapReadyCallback,
                     }
                 }
                 isEnabled = false
-                requireActivity().onBackPressed()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
 
