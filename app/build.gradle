@@ -17,7 +17,7 @@ android {
     compileSdkVersion 37
     defaultConfig {
         applicationId "gov.wa.wsdot.android.wsdot"
-        minSdkVersion 23
+        minSdkVersion 24
         //noinspection EditedTargetSdkVersion
         targetSdkVersion 37
         versionCode 23064100
