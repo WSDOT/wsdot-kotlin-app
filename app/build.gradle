@@ -148,7 +148,7 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
     // gson
-    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'com.google.code.gson:gson:2.14.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
