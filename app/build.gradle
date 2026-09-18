@@ -17,7 +17,7 @@ android {
     compileSdkVersion 37
     defaultConfig {
         applicationId "gov.wa.wsdot.android.wsdot"
-        minSdkVersion 23
+        minSdkVersion 24
         //noinspection EditedTargetSdkVersion
         targetSdkVersion 37
         versionCode 23064100
@@ -84,36 +84,36 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.google.android.material:material:1.14.0'
 
-    implementation 'androidx.activity:activity-ktx:1.10.1'
-    implementation 'androidx.fragment:fragment-ktx:1.8.9'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.10.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.10.0'
+    implementation 'androidx.activity:activity-ktx:1.13.0'
+    implementation 'androidx.fragment:fragment-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.11.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-savedstate:2.11.0'
 
-    implementation 'com.google.android.gms:play-services-ads:24.9.0'
-    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.gms:play-services-ads:25.4.0'
+    implementation 'com.google.android.gms:play-services-location:21.4.0'
 
-    implementation 'com.google.android.gms:play-services-maps:19.2.0'
+    implementation 'com.google.android.gms:play-services-maps:20.0.0'
 
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics:23.0.0'
-    implementation 'com.google.firebase:firebase-messaging:25.0.1'
+    implementation 'com.google.firebase:firebase-analytics:23.2.0'
+    implementation 'com.google.firebase:firebase-messaging:25.1.2'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.4'
 
-    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.appcompat:appcompat:1.8.0'
 
-    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.core:core-ktx:1.19.0'
 
     implementation 'androidx.preference:preference-ktx:1.2.1'
     
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     implementation 'androidx.room:room-testing-android:2.8.4'
 
-    kapt "androidx.lifecycle:lifecycle-common-java8:2.10.0"
+    kapt "androidx.lifecycle:lifecycle-common-java8:2.11.0"
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     implementation "androidx.room:room-runtime:2.8.4"
@@ -135,20 +135,18 @@ dependencies {
     kapt "com.android.databinding:compiler:3.1.4"
 
     // Navigation - https://developer.android.com/jetpack/androidx/releases/navigation
-    def nav_version = "2.9.6"
+    def nav_version = "2.10.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     // Glide - https://github.com/bumptech/glide
-    // Updating to v5.0.5 causes a crash on Android 6.0 (SDK 23)
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.github.bumptech.glide:glide:5.0.9'
 
     // Library supports using KSP instead of kapt
-    // Updating to v5.0.5 causes a crash on Android 6.0 (SDK 23)
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:5.0.9'
 
     // gson
-    implementation 'com.google.code.gson:gson:2.13.2'
+    implementation 'com.google.code.gson:gson:2.14.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
